@@ -1,0 +1,19 @@
+{
+    "border": "pixel",
+    "current_border_width": 2,
+    "floating": "auto_off",
+    "geometry": {
+       "height": 480,
+       "width": 640,
+       "x": 0,
+       "y": 0
+    },
+    "percent": 1,
+    "swallows": [
+       {
+         "class": "^Thunar$"
+       }
+    ],
+    "type": "con"
+}
+

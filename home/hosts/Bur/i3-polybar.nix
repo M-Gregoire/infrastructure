@@ -1,0 +1,43 @@
+{ pkgs, ... }:
+
+{
+  services.polybar.extraConfig = ''
+[module/battery]
+adapter=ADP0
+animation-charging-0=
+animation-charging-1=
+animation-charging-2=
+animation-charging-3=
+animation-charging-4=
+animation-charging-5=
+animation-charging-6=
+animation-charging-foreground=#D1A375
+animation-charging-framerate=1000
+animation-discharging-0=
+animation-discharging-1=
+animation-discharging-10=
+animation-discharging-2=
+animation-discharging-3=
+animation-discharging-4=
+animation-discharging-5=
+animation-discharging-6=
+animation-discharging-7=
+animation-discharging-8=
+animation-discharging-9=
+animation-discharging-foreground=#D1A375
+animation-discharging-framerate=500
+battery=BAT0
+format-charging=<animation-charging>-<label-charging>
+format-discharging=<animation-discharging>-<label-discharging>
+format-full-prefix=-
+format-full-prefix-foreground=#D1A375
+full-at=100
+label-charging=%percentage%%
+label-charging-foreground=#C37561
+label-discharging=%percentage%%
+label-discharging-foreground=#C37561
+label-full=%percentage%%
+label-full-foreground=#C37561
+type=internal/battery
+  '';
+}

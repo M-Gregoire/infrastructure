@@ -1,0 +1,16 @@
+!*
+packages/*
+auto-save-list/*
+smex-items
+abbrev_defs
+*~
+\#*
+irony/*
+projectile-bookmarks.eld
+url/*
+.python-environments/*
+recentf
+custom.el
+.#*
+tramp
+elpa/*
