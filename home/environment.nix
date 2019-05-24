@@ -32,5 +32,8 @@
       # Recover font and font size for Emacs
       EMACS_FONT = "${config.resources.font.name}";
       EMACS_FONT_SIZE = "${config.resources.font.size}";
+      # Avoid Firefox profile change
+      # https://github.com/NixOS/nixpkgs/issues/58923
+      SNAP_NAME = "firefox";
   };
 }
