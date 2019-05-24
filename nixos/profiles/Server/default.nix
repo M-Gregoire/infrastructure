@@ -10,5 +10,7 @@
     git
     # Utilities
     wget unzip
+    # Certificate
+    openssl
   ];
 }
