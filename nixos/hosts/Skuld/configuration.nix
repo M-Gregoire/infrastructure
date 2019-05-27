@@ -16,6 +16,8 @@
   networking.hosts = {
     "127.0.0.1" = [ "${config.resources.host.name}" ];
     "::1" = [ "${config.resources.host.name}" ];
+    "${config.resources.hosts.eldir}" = [ "Eldir" ];
+    "${config.resources.hosts.rind}" = [ "Rind" ];
   };
 
   networking.firewall.allowedTCPPorts = [
