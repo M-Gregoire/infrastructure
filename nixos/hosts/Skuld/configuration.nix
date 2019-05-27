@@ -35,6 +35,9 @@
     8123
     # OpenVPN
     1194
+    # Mosquitto MQTT broker
+    1883
+    9001
   ];
 
   boot.loader.efi.canTouchEfiVariables = true;
