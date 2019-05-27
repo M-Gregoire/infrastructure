@@ -7,7 +7,7 @@
     ./dev/docker.nix
   ];
 
-  environment.systemPackages = [ pkgs.file ];
+  environment.systemPackages = with pkgs; [ file bc ];
 
   # Boot with last kernel
   # https://github.com/NixOS/nixpkgs/issues/30335
