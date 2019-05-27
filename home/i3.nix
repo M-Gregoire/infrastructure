@@ -67,7 +67,6 @@ in
        # Use xprop
        "${workspace1}" = [{class="Firefox";}];
        "${workspace3}" = [{class="Emacs";}];
-       "${workspace5}" = [{class="Standard Notes";}];
        "${workspace7}" = [{class="KeePass"; title="Open Database - Passwords.kdbx";} {class="KeePass"; title="Passwords.kdbx - KeePass";}];
        "${workspace8}" = [{class="rambox";}];
        "${workspace9}" = [{class="Thunderbird";}];
@@ -237,7 +236,6 @@ in
 
       startup = [
         { command = "${config.resources.browser}"; always = false; notification = false; }
-        { command = "standardnotes"; always = false; notification = false; }
         { command = "${config.resources.mailer}"; always = false; notification = false; }
         { command = "spotify"; always = false; notification = false; }
         { command = "compton"; always = false; notification = false; }

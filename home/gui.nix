@@ -28,7 +28,6 @@ home.packages = with pkgs; with xfce4-13; [
     # Ebook
     calibre
     # Editors
-    standardnotes
     texstudio
     libreoffice
     leafpad
@@ -60,6 +59,8 @@ home.packages = with pkgs; with xfce4-13; [
     evince
     # PDF notetaking
     xournal
+    # Vector graphics
+    inkscape
   ];
 
   home.file.".mozilla/firefox/${config.resources.firefox.profile}/user.js".source = ../dotfiles/firefox/user.js;
