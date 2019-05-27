@@ -34,7 +34,7 @@
     ];
   };
 
-  # Hosts outside home network
+  # Non-PC hosts
   networking.hosts = {
     "${config.resources.hosts.skuld}" = [ "Skuld" "backup.local" ];
     "${config.resources.hosts.eldir}" = [ "Eldir" ];
