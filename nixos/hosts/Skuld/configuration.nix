@@ -40,6 +40,11 @@
     # Mosquitto MQTT broker
     1883
     9001
+    # Gitlab SSH
+    22
+    # Gitlab webUI
+    180
+    1443
   ];
 
   boot.loader.efi.canTouchEfiVariables = true;
