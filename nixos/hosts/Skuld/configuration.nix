@@ -2,6 +2,7 @@
 
 {
  imports = [
+    ./services.nix
     ../../common.nix
     ../../systemd-boot.nix
     ./hardware-configuration.nix
