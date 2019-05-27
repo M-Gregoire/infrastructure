@@ -2,6 +2,9 @@
   Eldir =
     { config, pkgs, ... }:
     {
-      deployment.targetHost = "Eldir";
+      deployment = {
+        targetHost = "Eldir";
+        targetPort = config.resources.ssh.deploymentPort;
+      };
     };
 }

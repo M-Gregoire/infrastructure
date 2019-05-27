@@ -172,12 +172,23 @@
       };
     };
 
-    ssh.publicKeys = mkOption {
-      type = with types; listOf str;
-      example = [ "ssh-ed25519 AAAABBBBCCCCDDDDEEEEFFFFGGGGHHHHIIIIJJJJKKKKLLLLMMMMNNNNOOOOPPPPQQQQ" ];
-      description = "Public SSH keys to allow access to";
+    ssh = {
+      publicKeys = mkOption {
+        type = with types; listOf str;
+        example = [ "ssh-ed25519 AAAABBBBCCCCDDDDEEEEFFFFGGGGHHHHIIIIJJJJKKKKLLLLMMMMNNNNOOOOPPPPQQQQ" ];
+        description = "Public SSH keys to allow access to";
+      };
+      ports = mkOption {
+        type = with types; listOf port;
+        example = [ "[ 22 ]" ];
+        description = "Specifies on which ports the SSH daemon listens. ";
+      };
+      deploymentPort = mkOption {
+        type = types.port;
+        example = [ "22" ];
+        description = "Specifies on which port NixOps should deploy.";
+      };
     };
-
     gpg.publicKey.fingerprint = mkOption {
       type = types.strMatching "[[:alnum:]]{40}";
       description = "GPG key fingerprint";

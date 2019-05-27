@@ -2,6 +2,9 @@
   Skuld =
     { config, pkgs, ... }:
     {
-      deployment.targetHost = "Skuld";
+      deployment = {
+        targetHost = "Skuld";
+        targetPort = config.resources.ssh.deploymentPort;
+      };
     };
 }
