@@ -11,6 +11,7 @@
     ../../dev/openvpn-client.nix
     ../../dev/teamviewer.nix
     ../../dev/ipfs.nix
+    ../../dev/3D.nix
   ];
 
   nix.nixPath = with builtins; [

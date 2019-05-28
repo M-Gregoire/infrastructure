@@ -2,7 +2,6 @@
 
 {
   imports = [
-    ./dev/3D.nix
     ./dev/compton.nix
     ./dev/git.nix
     ./dev/go.nix
