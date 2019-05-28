@@ -9,6 +9,9 @@ width : 220mm
 depth : 220mm
 height : 240mm
 ```
+
+I also change the first layer height to be ~85% of the layer height.
+
 ## Simplify 3D
 
 Used the online profile. Chaned :
@@ -167,7 +170,36 @@ When fine tuning steps:
 //#define PREVENT_COLD_EXTRUSION
 ```
 
+# Autotune
+
+I've ran `M303 S200 C10` to start the autotune process for PLA(`M303` is the command, `S` specified the target temperature and `C` the number of times to repeat the process). Then, this is applied in my Marlin config with (Example):
+
+```
+  #define DEFAULT_Kp 21.0
+  #define DEFAULT_Ki 1.25
+  #define DEFAULT_Kd 86.0
+
+```
+You can also do the hotbed with `M303 S40 C3 E-1` (`E` specified the heating element, `-1` is hotbed, `0` is first hotend, `1` the second hotend...).  
+
+*Note:* `#define PIDTEMPBED` must be uncommented to run this command. You will need to comment `BED_LIMIT_SWITCHING` to do so.  
+
+This is saved with (Example):
+
+```
+  #define DEFAULT_bedKp 10.00
+  #define DEFAULT_bedKi .023
+  #define DEFAULT_bedKd 305.4
+```
+
 # BLTOUCH
+
+To obtain the best results with my auto leveling sensor, here is my process:
+1) Make hotend tip touch the hotbed
+2) Install the sensor so that the tip of the BLTouch is above the hotbed by ~0.5mm (No need to be precise, offset will be configured later on)
+
+Then, Marlin configuration is flashed:
+
 ```
 #define BLTOUCH
 #define SERVO0_PIN 27
@@ -175,7 +207,7 @@ When fine tuning steps:
   //#define BLTOUCH_DELAY 375   // (ms) Enable and increase if needed
 #endif
 
-#define Z_MIN_PROBE_ENDSTOP_INVERTING false 
+#define Z_MIN_PROBE_ENDSTOP_INVERTING false
 
 #define AUTO_BED_LEVELING_BILINEAR
 
@@ -188,18 +220,36 @@ When fine tuning steps:
 
 #define X_PROBE_OFFSET_FROM_EXTRUDER -50
 #define Y_PROBE_OFFSET_FROM_EXTRUDER 0
+# The bottom of the housing ofthe BLTouch (Not the tip!) should be 8.3mm above the hotend tip.
 #define Z_PROBE_OFFSET_FROM_EXTRUDER 0
 
 #define EEPROM_SETTINGS  
 
-#define LEFT_PROBE_BED_POSITION 34
-#define RIGHT_PROBE_BED_POSITION 170
-#define FRONT_PROBE_BED_POSITION 30
-#define BACK_PROBE_BED_POSITION 190
+#define LEFT_PROBE_BED_POSITION 10
+#define RIGHT_PROBE_BED_POSITION 185
+#define FRONT_PROBE_BED_POSITION 10
+#define BACK_PROBE_BED_POSITION 205
 
-``` 
+// Travel limits (mm) after homing, corresponding to endstop positions.
+#define X_MIN_POS -15
+#define Y_MIN_POS -10
+#define Z_MIN_POS 0
+#define X_MAX_POS 245
+#define Y_MAX_POS 215
+#define Z_MAX_POS 240
+
+```
+
+Finally, the Z offet then needs to be configured. To do so, see [here](https://3dprinting.stackexchange.com/questions/5857/z-offset-on-autoleveling-sensor-setup). Mine is `-0.70`.  
 
 When it's correctly working, springs can be removed thanks to [this](https://www.thingiverse.com/thing:2165389) upgrade.
+
+## Advanced config
+
+This section discuss changes made to `Configuration_adv.h` 
+
+- Enable Babystepping to easily find Z probe offset by uncommenting `#define BABYSTEPPING`.
+
 
 # Upgrades you should not need
 Anti-Z wobble :
