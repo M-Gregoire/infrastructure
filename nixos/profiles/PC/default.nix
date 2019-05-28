@@ -10,6 +10,7 @@
     ../../dev/fwudp.nix
     ../../dev/openvpn-client.nix
     ../../dev/teamviewer.nix
+    ../../dev/ipfs.nix
   ];
 
   nix.nixPath = with builtins; [
