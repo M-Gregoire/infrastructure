@@ -70,6 +70,11 @@
         example = "1.1.1.1";
         description = "Ip of the host";
       };
+      octopi = mkOption {
+        type = types.str;
+        example = "1.1.1.1";
+        description = "Ip of the host";
+      };
     };
 
     taskd = {
