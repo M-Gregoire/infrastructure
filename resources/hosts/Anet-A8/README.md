@@ -1,44 +1,9 @@
 # Anet-A8
 My settings for my Anet A8 3D printer
 
-## Cura
+## Slic3r
 
-I created settings from the `Prusa i3` model and edited the :
-```
-width : 220mm
-depth : 220mm
-height : 240mm
-```
-
-I also change the first layer height to be ~85% of the layer height.
-
-## Simplify 3D
-
-Used the online profile. Chaned :
-Size bed 
-```
-width : 220mm
-depth : 220mm
-height : 240mm
-```
-
-Temperature > Heated bed :
-```
-Layer 1 : 60
-Layer 2 : 50
-```
-
-Cooling > Fan speed :
-```
-Layer 1 : 0
-Layer 5 : 51
-```
-
-Layer > First layer settings :
-```
-First layer height : 85
-First layer width : 150
-```
+Profile included in the folder.
 
 # Upgrades
 

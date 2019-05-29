@@ -3,6 +3,7 @@
 {
   environment.systemPackages = with pkgs; [
     cura
+    slic3r
   ];
 
   services.octoprint.enable = true;
