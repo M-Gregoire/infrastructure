@@ -5,6 +5,25 @@ My settings for my Anet A8 3D printer
 
 Profile included in the folder.
 
+## Octoprint
+
+I use an Octoprint server running on a Raspberry Pi. I've installed the following plugins:
+
+- Bed Level Visualizer (Install can take a long time, ~30min. This is a known issue. It might need to be run manually and not through plugin manager.) using:  
+```
+G28
+M155 S30
+@BEDLEVELVISUALIZER
+G29 T
+M155 S3
+
+```
+- EEPROM Marlin Editor
+- Marlin flasher (Need to install `arduino-cli`, see [this](https://github.com/arduino/arduino-cli))
+- OctoPrint-BLTouch
+- OctoPrint-Slic3r (See [this](https://github.com/OctoPrint/OctoPrint-Slic3r/wiki/How-to-install-Slic3r-on-RPi))
+- TabOrder to use icon in place of tab title
+
 # Upgrades
 
 ## 3D printed
@@ -122,13 +141,15 @@ Using [marlin](http://marlinfw.org/) and [SkyNet3D](https://github.com/SkyNet3D/
 #define HEATER_0_MINTEMP 5
 // Set extruder rate for pancake motor (42BYGH22 (1.8 degree))
 #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 400, 418.5 }
-// Lower extruder feed rate
-#define DEFAULT_MAX_FEEDRATE          { 400, 400, 8, 50 }
 // Adapt X home position for E3D carriage
 #define X_MIN_POS -10
-// Set PLA preheat to 200C
-#define PREHEAT_1_TEMP_HOTEND 200
+// Set PLA preheat to 215C and bed to 65C
+// Note 215C for PLA is only for my first layer
+#define PREHEAT_1_TEMP_HOTEND 215
+#define PREHEAT_1_TEMP_BED     65
 ```
+
+For the Titan extruder, I also had to set `#define INVERT_E0_DIR true` in order for the filament to go in the right direction.
 
 When fine tuning steps:
 ```
@@ -191,7 +212,7 @@ Then, Marlin configuration is flashed:
 #define EEPROM_SETTINGS  
 
 #define LEFT_PROBE_BED_POSITION 10
-#define RIGHT_PROBE_BED_POSITION 185
+#define RIGHT_PROBE_BED_POSITION 175
 #define FRONT_PROBE_BED_POSITION 10
 #define BACK_PROBE_BED_POSITION 205
 
@@ -205,7 +226,11 @@ Then, Marlin configuration is flashed:
 
 ```
 
-Finally, the Z offet then needs to be configured. To do so, see [here](https://3dprinting.stackexchange.com/questions/5857/z-offset-on-autoleveling-sensor-setup). Mine is `-0.70`.  
+Finally, the Z offet then needs to be configured. To do so, see [here](https://3dprinting.stackexchange.com/questions/5857/z-offset-on-autoleveling-sensor-setup).
+
+You can also modify `#define Z_PROBE_OFFSET_FROM_EXTRUDER <offset>` accordingly. This way, If you reset your EEPROM with `M502` this setting is kept (Info on `EEPROM` can be found [here](https://github.com/MarlinFirmware/Marlin/wiki/EEPROM)).
+
+You can now level the bed following [this](http://marlinfw.org/docs/features/auto_bed_leveling.html). You can modify your slicer config to run `G28` then `G29` to auto-level on every print.
 
 When it's correctly working, springs can be removed thanks to [this](https://www.thingiverse.com/thing:2165389) upgrade.
 
