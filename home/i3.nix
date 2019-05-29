@@ -125,7 +125,7 @@ in
         # Functions
         "F1" = "exec --no-startup-id mono ${pkgs.keepass.out}/lib/dotnet/keepass/KeePass.exe --auto-type";
         "F2" = "exec --no-startup-id $SCRIPTS/switchSoundCard.sh";
-        "Escape" = "exec --no-startup-id $SCRIPTS/hidePolybar.sh";
+        "F12" = "exec --no-startup-id $SCRIPTS/hidePolybar.sh";
         "Scroll_Lock" = "exec --no-startup-id $SCRIPTS/kbdLayout.sh";
         "Print" = "exec --no-startup-id scrot -e 'mv $f ${screenshot}' && notify-send 'Screenshot taken'";
         "--release ${modifier}+Print" = "exec --no-startup-id scrot -s -e 'mv $f ${screenshot}' && notify-send 'Screenshot taken'";
