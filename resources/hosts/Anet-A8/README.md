@@ -1,15 +1,19 @@
 # Anet-A8
-My settings for my Anet A8 3D printer
+My settings and upgrades for my Anet A8 3D printer
 
 ## Slic3r
 
 Profile included in the folder.
 
+## Meshmixer
+
+Unfortunately not native on Linux but allows to create awesome support, using less material and less destructive to the printed model.
+
 ## Octoprint
 
 I use an Octoprint server running on a Raspberry Pi. I've installed the following plugins:
 
-- Bed Level Visualizer (Install can take a long time, ~30min. This is a known issue. It might need to be run manually and not through plugin manager.) using:  
+- [OctoPrint-BedLevelVisualizer](https://github.com/jneilliii/OctoPrint-BedLevelVisualizer) (Install can take a long time, ~30min. This is a known issue. It might need to be run manually and not through plugin manager.). I use the following commands:
 ```
 G28
 M155 S30
@@ -18,152 +22,131 @@ G29 T
 M155 S3
 
 ```
-- EEPROM Marlin Editor
-- Marlin flasher (Need to install `arduino-cli`, see [this](https://github.com/arduino/arduino-cli))
-- OctoPrint-BLTouch
-- OctoPrint-Slic3r (See [this](https://github.com/OctoPrint/OctoPrint-Slic3r/wiki/How-to-install-Slic3r-on-RPi))
-- TabOrder to use icon in place of tab title
+- [OctoPrint-BLTouch](https://github.com/jneilliii/OctoPrint-BLTouch)
+- [OctoPrint-DisplayProgress](https://github.com/OctoPrint/OctoPrint-DisplayProgress)
+- [OctoPrint-EEPROM-Marlin](https://github.com/amsbr/OctoPrint-EEprom-Marlin)
+- [OctoPrint-FilamentManager](malnvenshorn/OctoPrint-FilamentManager) and [OctoPrint-CostEstimation](https://github.com/malnvenshorn/OctoPrint-CostEstimation)
+- [OctoPrint-Fullscreen](OctoPrint-FullScreen)
+- [OctoPrint-MQTTPublish](https://github.com/jneilliii/OctoPrint-MQTTPublish)
+- [OctoPrint-Marlin-Flasher](https://github.com/Renaud11232/OctoPrint-Marlin-Flasher) (Need to install `arduino-cli`, see [this](https://github.com/arduino/arduino-cli))
+- [OctoPrint-PrintTimeGenius](https://github.com/eyal0/OctoPrint-PrintTimeGenius)
+- [OctoPrint-Slic3r](https://github.com/OctoPrint/OctoPrint-Slic3r) (See [this](https://github.com/OctoPrint/OctoPrint-Slic3r/wiki/How-to-install-Slic3r-on-RPi))
+- [OctoPrint-TabOrder](https://github.com/jneilliii/OctoPrint-TabOrder) to change tabs to icons
+- [OctoPrint-WebcamTab](malnvenshorn/OctoPrint-WebcamTab)
+- [Octolapse](https://github.com/FormerLurker/Octolapse)
+
 
 # Upgrades
 
-## 3D printed
+## General improvements
 
-Spool holder :
-https://www.thingiverse.com/thing:1624641
+- [Mainboard cover](https://www.thingiverse.com/thing:2013479)
 
-Extruder button :
-https://www.thingiverse.com/thing:1935151
+- [Anet A8 X-Carriage Mounts](https://www.thingiverse.com/thing:1919544)
 
-Filament guide :
-https://www.thingiverse.com/thing:1764285
+- [X-axis cable chain](https://www.thingiverse.com/thing:2115095)
 
-Center nozzle fan :
-https://www.thingiverse.com/thing:1620630
+- [Y-axis cable chain](https://www.thingiverse.com/thing:1874802) and a [Bed protector](https://www.thingiverse.com/thing:2221564)
 
-Wing nut bed level x4 :
-https://www.thingiverse.com/thing:2000216
+- [Dual mosfet mount](https://www.thingiverse.com/thing:2086107)
 
-M8 nut cap x2 :
-https://www.thingiverse.com/thing:2357524
 
-T-Corner :
-https://www.thingiverse.com/thing:1672959
+## Moving to Bowden
 
-Extruder fan modification for easier access to extruder motor:
-https://www.thingiverse.com/thing:2290361
+I replaced the stock hotend + extruder by an E3D V6 clone and a Titan extruder. To do so, I printed these:
 
-Extruder filament guide for easier filament change :
-https://www.thingiverse.com/thing:2327007
+- [Extruder mount](https://www.thingiverse.com/thing:2253855)
+- [Carriage](https://www.thingiverse.com/thing:2668564)
 
-Mainboard cover :
-https://www.thingiverse.com/thing:2013479
+I also followed this [General guide](https://www.thingiverse.com/thing:2268994).
 
-Bearing tool :
-https://www.thingiverse.com/thing:2430285
+The changes made to the firmware are detailled further in this readme.
 
-Front frame brace :
-https://www.thingiverse.com/thing:1857991
+## Having multiple nozzle size
 
-Rear frame brace :
-https://www.thingiverse.com/thing:1852358
+Playing with nozzle size allows for much more control!
 
-Y-belt tensioner :
-https://www.thingiverse.com/thing:1959208
+## Adding a autoleveling sensor
 
-Razor blade holder :
-https://www.thingiverse.com/thing:2271632
+I bought an BLTouch, installed it on the carriage printed for the E3D V6 hotend and modified the firmware accordingly (Detailled further).
 
-Z-Axis carriage :
-https://www.thingiverse.com/thing:1919544
+## Changing Mosfets
 
-Tool holder :
-https://www.thingiverse.com/thing:2072360
-https://www.thingiverse.com/thing:2086689
+For safety, see [this](https://3dprint.wiki/reprap/electronics/heatbed_mosfet).
 
-Heatsink spacer :
-https://www.thingiverse.com/thing:2387420
+## Changing belts
 
-Y-axis cable chain :
-https://www.thingiverse.com/thing:1874802
-https://www.thingiverse.com/thing:2221564
+Using fiber-glass reinforced belt is cheap and much more durable.
 
-Dual mosfet mount :
-https://www.thingiverse.com/thing:2086107
+## Replaced the bearing
 
-X-axis cable chain :
-https://www.thingiverse.com/thing:2115095
+Some bearing I received with the stock Anet were defective, the rest was just bad. I changed them for Igus DryLin RJ4JP-01-08 x11 (3 for extruder, 4 for hotbed and 4 for Z-axis.)
 
-Power supply cover :
-https://www.thingiverse.com/thing:2320216
+## Added fused switch to power supply
 
-## Not 3D printed
+Added a Power Supply Socket Connector with Rocker Switch with [this](https://www.thingiverse.com/thing:2320216) design.
 
-Changing Mosfets (~ 6€):
-https://3dprint.wiki/reprap/electronics/heatbed_mosfet
+## Changing hotend fan
 
-Changing belt to fiber-glass reinforced ones. (~ 3€)
+For silence, using a 40mm Noctua Fan with [this](https://www.thingiverse.com/thing:2748800/comments) adapter.
 
-Replaced all the bearing with Igus DryLin RJ4JP-01-08 x11 (3 for extruder, 4 for hotbed and 4 for Z-axis.) (~ 20€)
+## Changing the motherboard and stepper drivers
 
-Bought 608ZZ bearing for the anti-wobble (~ 2€)
+I've changed the original motherboard to an MKS Gen 1.4 with TMC2130 SPI stepper drivers.
 
-Power Supply Socket Connector with Rocker Switch (~ 1€)
+## Changing the heat bed
 
-Glass print bed (~ 15€)
+I've replaced the original heat bed by an aluminium place with a silicon heating pad and a glass plate on top. The bed is insulated by a sheet of cork. The silicon heating pad is controlled by an SSR.
 
-Total cost (except PLA filament) : ~ 47€.
+## Filament sensor
 
-# Bowden
+Add a sensor to detect if the filament as run out. In this case, the print is paused.
 
-## 3D printed
-Extruder mount :
-https://www.thingiverse.com/thing:2253855
+## Moving to AM8
 
-Carriage :
-https://www.thingiverse.com/thing:2668564
+This is by far the biggest upgrade I made. This is based on this [guide](https://www.thingiverse.com/thing:2263216). 
+The build guide is very detailled.
 
-General guide :
-https://www.thingiverse.com/thing:2268994
 
-## Not 3D printed
+# Firmware changes
 
-E3D V6 Hot end + Titan extruder (~ 20-30$ for clone)
+In order to customize the firmware on the motherboard, I used [marlin](http://marlinfw.org/). If the original Anet A8 motherboard is used, then [SkyNet3D](https://github.com/SkyNet3D/anet-board) board definition is required. The modified files (`Configration.h` and `Configuration_adv.h`) are included in this folder.
 
-BL Touch (Optional) (~ 15$)
-
-## Firmware upgrade
-
-Using [marlin](http://marlinfw.org/) and [SkyNet3D](https://github.com/SkyNet3D/anet-board) board definition.
-
+## General configuration
 ```
-#define TEMP_SENSOR_0 5
 #define HEATER_0_MAXTEMP 275
 #define HEATER_0_MINTEMP 5
-// Set extruder rate for pancake motor (42BYGH22 (1.8 degree))
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 400, 418.5 }
-// Adapt X home position for E3D carriage
-#define X_MIN_POS -10
 // Set PLA preheat to 215C and bed to 65C
 // Note 215C for PLA is only for my first layer
 #define PREHEAT_1_TEMP_HOTEND 215
 #define PREHEAT_1_TEMP_BED     65
 ```
 
-For the Titan extruder, I also had to set `#define INVERT_E0_DIR true` in order for the filament to go in the right direction.
+## E3D V6 hotend + Titan extruder
 
-When fine tuning steps:
+```
+#define TEMP_SENSOR_0 5
+// Set extruder rate for pancake motor (42BYGH22 (1.8 degree))
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 400, 418.5 }
+// Adapt X home position for E3D carriage
+#define X_MIN_POS -10
+// Correct extrusion direction
+#define INVERT_E0_DIR true
+```
+
+When fine tuning steps, I also changed:
 ```
 //#define PREVENT_COLD_EXTRUSION
 ```
 
-# Autotune
+## Autotune PID
 
 I've ran `M303 S200 C10` to start the autotune process for PLA(`M303` is the command, `S` specified the target temperature and `C` the number of times to repeat the process). Then, this is applied in my Marlin config with (Example):
 
 ```
-  #define DEFAULT_Kp 21.0
-  #define DEFAULT_Ki 1.25
-  #define DEFAULT_Kd 86.0
+#define DEFAULT_Kp 21.0
+#define DEFAULT_Ki 1.25
+#define DEFAULT_Kd 86.0
 
 ```
 You can also do the hotbed with `M303 S40 C3 E-1` (`E` specified the heating element, `-1` is hotbed, `0` is first hotend, `1` the second hotend...).  
@@ -173,18 +156,14 @@ You can also do the hotbed with `M303 S40 C3 E-1` (`E` specified the heating ele
 This is saved with (Example):
 
 ```
-  #define DEFAULT_bedKp 10.00
-  #define DEFAULT_bedKi .023
-  #define DEFAULT_bedKd 305.4
+#define DEFAULT_bedKp 10.00
+#define DEFAULT_bedKi .023
+#define DEFAULT_bedKd 305.4
 ```
 
-# BLTOUCH
+## BLTOUCH
 
-To obtain the best results with my auto leveling sensor, here is my process:
-1) Make hotend tip touch the hotbed
-2) Install the sensor so that the tip of the BLTouch is above the hotbed by ~0.5mm (No need to be precise, offset will be configured later on)
-
-Then, Marlin configuration is flashed:
+Wiring not detailled here as there are plenty of good resources. Hardest part is probably to find the correct wire to cut from the LCD screen. It's the 3rd, counting from the red one.
 
 ```
 #define BLTOUCH
@@ -209,7 +188,7 @@ Then, Marlin configuration is flashed:
 # The bottom of the housing ofthe BLTouch (Not the tip!) should be 8.3mm above the hotend tip.
 #define Z_PROBE_OFFSET_FROM_EXTRUDER 0
 
-#define EEPROM_SETTINGS  
+#define EEPROM_SETTINGS
 
 #define LEFT_PROBE_BED_POSITION 10
 #define RIGHT_PROBE_BED_POSITION 175
@@ -236,21 +215,54 @@ When it's correctly working, springs can be removed thanks to [this](https://www
 
 ## Advanced config
 
-This section discuss changes made to `Configuration_adv.h` 
+This section discuss changes made to `Configuration_adv.h` (included in this folder).
 
 - Enable Babystepping to easily find Z probe offset by uncommenting `#define BABYSTEPPING`.
 
-
-# Upgrades you should not need
-Anti-Z wobble :
-https://www.thingiverse.com/thing:1858435
-
-See https://www.youtube.com/watch?v=T9vI6DqAcmo
-
 # Tools
 
-https://www.thingiverse.com/thing:2271632
+- [Bearing tool](https://www.thingiverse.com/thing:2430285)
+- [Razor blade holder](https://www.thingiverse.com/thing:2271632)
 
 # Calibration
 
-https://www.thingiverse.com/thing:119302
+- [Calibration circle/cross](https://www.thingiverse.com/thing:119302)
+- [Calibration cube](https://www.thingiverse.com/thing:1278865)
+
+# Outdated upgrades
+
+## 3D printed for the Anet A8
+
+These are the upgrades I 3D printed for the Anet A8 version. They became useless when I moved to an Anet AM8:
+
+- [Spool holder](https://www.thingiverse.com/thing:1624641)
+- [Filament guide](https://www.thingiverse.com/thing:1764285)
+- [M8 nut cap](https://www.thingiverse.com/thing:2357524) x2
+- [T-corner](https://www.thingiverse.com/thing:1672959)
+- [Front frame brace](https://www.thingiverse.com/thing:1857991)
+- [Rear frame brace](https://www.thingiverse.com/thing:1852358)
+- [Y-belt tensioner](https://www.thingiverse.com/thing:1959208)
+- [Tool holder (Left)](https://www.thingiverse.com/thing:2072360)
+- [Tool holder (Right)](https://www.thingiverse.com/thing:2086689)
+
+## 3D printer for stock extruder/hotend
+
+These are the upgrades I 3D printed for the original extruder and hotend. I then moved to an E3D V6 hotend with a Titan extruder.
+
+- [Extruder button](https://www.thingiverse.com/thing:1935151)
+- [Extruder fan modification](https://www.thingiverse.com/thing:2290361) for easier access to extruder motor
+- [Extruder filament guide](https://www.thingiverse.com/thing:2327007) for easier filament change
+- [Heatsink spacer](https://www.thingiverse.com/thing:2387420)
+
+## 3D printed for original heat bed
+
+These where printed for the origin heat bed. I since changed it for a aluminium plate with a silicon heater pad and a glass plate on top.
+
+- [Wing nut bed level](https://www.thingiverse.com/thing:2000216) x4
+
+
+# Upgrades you should not need
+- [Anti-Z wobble](https://www.thingiverse.com/thing:1858435)
+
+See https://www.youtube.com/watch?v=T9vI6DqAcmo
+
