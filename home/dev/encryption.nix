@@ -1,7 +1,6 @@
 { pkgs, ... }:
 
 {
-  # pcscd is enabled in NixOS config
   home.packages = with pkgs; [
     # Implementation of PGP
     gnupg

@@ -6,7 +6,6 @@
     ./apps.nix
     ./dev.nix
     ./emacs.nix
-    ./encryption.nix
     ./environment.nix
     ./gui.nix
     ./home.nix

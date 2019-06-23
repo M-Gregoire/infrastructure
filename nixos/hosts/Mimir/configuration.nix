@@ -14,6 +14,8 @@
       ../../../vendor/infrastructure-private/resources/hosts/Mimir
     ];
 
+  services.xserver.libinput.accelSpeed = null;
+
   # Servers are defined in profile, only home network should be defined here
   networking.hosts = {
     "127.0.0.1" = [ "${config.resources.host.name}" ];

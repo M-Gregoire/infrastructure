@@ -21,9 +21,8 @@
     "${config.resources.hosts.mimir}" = [ "Mimir" ];
   };
 
-  # Enable touchpad support.
   services.xserver.libinput = {
-    enable = true;
+   # Enable tapping
     tapping = true;
   };
 

@@ -12,6 +12,9 @@
     };
   };
 
+  # Smart card
+  services.pcscd.enable = true;
+
   # Kwallet was used for storing Nextcloud client identifiers
   # I now only use nextcloud through CLI so It's not needed
   #environment.systemPackages = with pkgs; [ libsForQt5.kwallet kwallet-pam kdeApplications.kwalletmanager ];

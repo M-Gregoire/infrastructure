@@ -3,6 +3,7 @@
 {
   imports = [
     ./dev/compton.nix
+    ./dev/encryption.nix
     ./dev/git.nix
     ./dev/go.nix
     ./dev/kdeconnect.nix
@@ -10,6 +11,7 @@
     ./dev/python.nix
     ./dev/saas.nix
     ./dev/sec.nix
+    ./dev/ssh.nix
     ./dev/sys.nix
     ./dev/teensy.nix
     ./dev/term.nix

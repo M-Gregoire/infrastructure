@@ -19,5 +19,7 @@ in
     mono
     # Needed by Keebase
     kbfs
+    # gopass
+    gopass
   ];
 }

@@ -12,6 +12,7 @@
     ../../dev/teamviewer.nix
     ../../dev/ipfs.nix
     ../../dev/3D.nix
+    ../../dev/pam.nix
   ];
 
   nix.nixPath = with builtins; [
@@ -21,6 +22,13 @@
   sound.enable = true;
   hardware.pulseaudio.enable = true;
   hardware.pulseaudio.support32Bit = true;
+
+  services.xserver.libinput = {
+    # Enable libinput
+    enable = true;
+    # Disable acceleration
+    accelProfile = "flat";
+  };
 
   users.users.${config.resources.host.username} = {
     extraGroups = [
@@ -61,8 +69,19 @@
 
   # NTFS/exFat support
   environment.systemPackages = with pkgs; [ ntfs3g exfat ];
-
   # KDEConnect
   networking.firewall.allowedTCPPortRanges = [ { from = 1714; to = 1764; }];
   networking.firewall.allowedUDPPortRanges = [ { from = 1714; to = 1764; }];
+
+  # Firewall (TCP)
+  networking.firewall.allowedTCPPorts = [
+    # Key servers
+    11371
+  ];
+
+  # Firewall (UDP)
+  networking.firewall.allowedUDPPorts = [
+    # Key servers
+    11371
+  ];
 }
