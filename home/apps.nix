@@ -44,6 +44,8 @@
     # fuser, killall and pstree
     # Needed by polybar theme
     psmisc
+    # Create QRCode
+    qrencode
   ];
 
   xdg.configFile."khal/config".source = ../vendor + builtins.toPath "/${config.resources.config.privateRepo}" + /dotfiles/khal/config;
