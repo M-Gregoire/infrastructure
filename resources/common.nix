@@ -14,7 +14,7 @@
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCj79SiNMAbXEwz10p1+qxjfQHLcK/+/qSLZmnRaskKR5pEUVSzXQ6kX3dBoXrz2TFV5UJ2Y//LtUJzOLMTYcDC3hBOrsl/9wp8TzirVqlmRH1wgx6loH6y4rJM5N3dAqigKa+Pnop3HXb7ea14/vnf5RaFpjdPxRZOVJm7BoTmMa5R1HbJkCkYqvLtuLtLDaprgDwaCH8fE6/c3FTln3WGe/u71c+WT2IFJgtqOuFwuKyOmGy8t4Iu1lN6ULBZWs0lGt+5jzc6N21PJQvxHkgLMNZgFMJYLzDFcSB2M5jZwqAUoPQl2GOHcKuej5apxxBvMzPMYO1p3PZKaws8ujtx gm"
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDFryLXHpP1vlCy1SujFhdnannj+tAt8Wgw2WYJICgwj+BywYwPzm6rhM1V65nmPnO6+KNVqm4aHrPP0mp3ZeIepHky53iaZ4Op91xwTaSMYyWqIdxuQzayq3MNU2C7MEniwr8wd7SxBVhGnIGYZqnUmvZA5i0/VmOKDfax43vsmRPkAsU+fp3sbwzVXcS+seXE8GBcC4T2AOeAyjmBRjGOYJQbjMztfasBWTwLOibzJ2qwfs2qPg50UNP0Ps0fKoGaKlwly45rWSlFEWPK5F2jfSBDSDUtoxXv6i5M7r4zjULwrZCbeyuHRFuvxNI/LiaHrDFusS6jXOmQvfZF7F2lDiFYaOg6MpTpP2evx1hVCXs+bsIwta2sk+E+igzaHe5wJ7VIwAXu92L7NpypbdEOXF8fDEPPasz9//z9r6HfH+/1C9r3WDG+VA9r+tQegpHBsoOnn8J0ePuwiGupzg09T02uizLfhCYZUjCE9c4j+s1pplznvILHbe7fnVw+5soMYo++3O665KwO/O18m+Gbl0D6/QYXXJY6nnivpWbeigqAmYBx+dg6Noy8c6TVIunUGS1fnFYhppNIrrZtcrs5vEs3YbkvjvmNfGGxNo2VxvUGWkOx1MhFZvqo8abNA0nvK71jdCrfJLNG+crTC7Br5/UYV2PVMwZztrFKLYCkjw== backup-machine"
     ];
-    gpg.publicKey.fingerprint = "94693149B3B3BD62B5F977ACD188E9DC20B4AA39";
+    gpg.publicKey.fingerprint = "BF143213786AC8A0788143F814ED68857ABFAB2D";
 
     font.name = "DejaVu Sans Mono Nerd Font";
     font.size = "12";
