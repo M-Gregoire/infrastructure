@@ -30,6 +30,8 @@
     accelProfile = "flat";
   };
 
+  hardware.u2f.enable = true;
+
   users.users.${config.resources.host.username} = {
     extraGroups = [
       "networkmanager"
