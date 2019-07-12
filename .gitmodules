@@ -4,7 +4,7 @@
 	branch = release-18.03
 [submodule "vendor/infrastructure-private"]
 	path = vendor/infrastructure-private
-	url = git@github.com:M-Gregoire/infrastructure-private.git
+	url = git@gitlab.martinache.net:M-Gregoire/infrastructure-private.git
 [submodule "vendor/nixpkgs-unstable"]
 	path = vendor/nixpkgs-unstable
 	url = https://github.com/NixOS/nixpkgs.git
