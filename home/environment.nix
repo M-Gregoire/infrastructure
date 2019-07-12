@@ -21,7 +21,6 @@
       TRANSPARENCY = "${config.resources.theme.alphaPercent}";
       # Used by i3 sensible-terminal https://build.i3wm.org/docs/i3-sensible-terminal.htmlhttps://build.i3wm.org/docs/i3-sensible-terminal.html
       TERMINAL = "${config.home.sessionVariables.TERM}";
-      SSH_AUTH_SOCK = "${config.home.sessionVariables.HOME}/.KeeAgent";
       # Needed for Trash in Thunar
       # https://github.com/NixOS/nixpkgs/issues/29137#issuecomment-354229533
       GIO_EXTRA_MODULES = [ "${pkgs.gvfs}/lib/gio/modules" ];
@@ -35,5 +34,7 @@
       # Avoid Firefox profile change
       # https://github.com/NixOS/nixpkgs/issues/58923
       SNAP_NAME = "firefox";
+      # Use gpg-agent for ssh
+      SSH_AUTH_SOCK = "$(gpgconf --list-dirs agent-ssh-socket)";
   };
 }
