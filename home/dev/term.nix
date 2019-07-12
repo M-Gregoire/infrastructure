@@ -36,7 +36,12 @@
         restartVPN="sudo systemctl restart wireguard-wg0.service";
       };
 
-      initExtra = "khal && $SCRIPTS/showTodo.sh";
+      initExtra = ''
+        khal && $SCRIPTS/showTodo.sh
+        # https://github.com/gopasspw/gopass/issues/585#issuecomment-355339632
+        source <(gopass completion zsh | head -n -1 | tail -n +2)
+        compdef _gopass gopass
+      '';
     };
 
     fzf = {

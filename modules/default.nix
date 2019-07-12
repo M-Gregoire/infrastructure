@@ -312,19 +312,6 @@
       };
     };
 
-    keepass = {
-      db = mkOption {
-        type = types.str;
-        example = "/database.kdbx";
-        description = "Database location for keepass";
-      };
-      key = mkOption {
-        type = types.str;
-        example = "/database.key";
-        description = "Key location for keepass";
-      };
-    };
-
     terminal = mkOption {
       type = types.str;
       example = "kitty";

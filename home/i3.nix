@@ -67,7 +67,6 @@ in
        # Use xprop
        "${workspace1}" = [{class="Firefox";}];
        "${workspace3}" = [{class="Emacs";}];
-       "${workspace7}" = [{class="KeePass"; title="Open Database - Passwords.kdbx";} {class="KeePass"; title="Passwords.kdbx - KeePass";}];
        "${workspace8}" = [{class="rambox";}];
        "${workspace9}" = [{class="Thunderbird";}];
      };
@@ -247,7 +246,6 @@ in
         { command = "xset s off"; always = false; notification = false; }
         { command = "mkdir -p ${screenshot}"; always = false; notification = false; }
         { command = "emacs --daemon && emacsclient -c"; always = false; notification = false; }
-        { command = "keepass ${config.resources.keepass.db} -preselect:${config.resources.keepass.key}"; always = false; notification = false; }
         #{ command = "udiskie"; always = false; notification = false; }
         # Allow accents using ralt
         { command = "setxkbmap -layout us -option compose:ralt"; always = false; notification = false; }
