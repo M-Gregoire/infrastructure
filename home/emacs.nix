@@ -26,6 +26,7 @@
   home.file.".emacs.d/init.el".source = ../dotfiles/emacs.d/init.el;
   home.file.".emacs.d/etc".source = ../dotfiles/emacs.d/etc;
   home.file.".emacs.d/snippets".source = ../dotfiles/emacs.d/snippets;
+  home.file.".emacs.d/bookmarks".source = ../vendor/infrastructure-private/dotfiles/emacs/bookmarks;
 
   xresources.properties = {
     # Font backend settings
