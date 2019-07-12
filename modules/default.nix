@@ -39,6 +39,18 @@
       };
     };
 
+    aliases = {
+      octopi = mkOption {
+        type = types.str;
+        example = "my.octopi";
+        description = "URL alias to local octopi";
+      };
+      router = mkOption {
+        type = types.str;
+        example = "my.router";
+        description = "URL alias to local router";
+      };
+    };
     hosts = {
       beyla = mkOption {
         type = types.str;
