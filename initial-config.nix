@@ -21,7 +21,15 @@
     #efiInstallAsRemovable = true;
   };
 
-  networking.hostName = "nixos-tmp";
+  networking = {
+    hostName = "nixos-tmp";
+    # cat << EOF > /etc/wpa_supplicant.conf
+    #network={
+    #  ssid="ssid_name"
+    #  psk="password"
+    #}
+    wireless = true;
+  };
 
   i18n = {
     consoleFont = "Lat2-Terminus16";
@@ -33,8 +41,12 @@
 
   environment.systemPackages = with pkgs; [ git ];
 
-  services.openssh.enable = true;
-  users.users.root.openssh.authorizedKeys.keys = [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCj79SiNMAbXEwz10p1+qxjfQHLcK/+/qSLZmnRaskKR5pEUVSzXQ6kX3dBoXrz2TFV5UJ2Y//LtUJzOLMTYcDC3hBOrsl/9wp8TzirVqlmRH1wgx6loH6y4rJM5N3dAqigKa+Pnop3HXb7ea14/vnf5RaFpjdPxRZOVJm7BoTmMa5R1HbJkCkYqvLtuLtLDaprgDwaCH8fE6/c3FTln3WGe/u71c+WT2IFJgtqOuFwuKyOmGy8t4Iu1lN6ULBZWs0lGt+5jzc6N21PJQvxHkgLMNZgFMJYLzDFcSB2M5jZwqAUoPQl2GOHcKuej5apxxBvMzPMYO1p3PZKaws8ujtx gm" ];
+  services.openssh = {
+    enable = true;
+    ports = [ 5421 ];
+  };
+
+  users.users.root.openssh.authorizedKeys.keys = [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC3dchSro0m3PmK0ZjxwRZ7kthxIzVU6T+apdG09/7vH/TS9UfoAB3fSUs80dplXB6UxzRmqNdqh5vHd9SUMre/S8NPmFCwwM98bqUNCNx6ZMwstSY/15PCVUkQk8fBXI4L/eUvYGpkBX3jjvqp75XWR8yIvx7l6189ljmt4Wrt1p6gUxJKRO8PjZxFHriAykNOC+MtOkjseT0iK//ij7XYj6zYq1fQLw92lB4AWgw3dvRmhag79yHeKVT2zCBD4zw8q9gAGIp6vc+5L3X/5q2i8wm9hh/TeBY3IhFOiMzzYbPMWIjsx4tk6iUv2Gtpdp/B0Nx/FnlEtS1MZeWfjwA6vQFWS/G/OPM2SHbUmzgJ4lufm2yEj67P0vGSPvHg7uonxhf5OVf8J+p8bmVC5s4SEG5aKuBN/+9El71joN7491+mEWGAl0PqJbDU5UEC6wYigx2wAUVtF3mB5QtbKiZ5UYVly/u+ejACr+K2651+EEAqjPx4xrRm9tlLn2LslMCuRQ2QDzOcl5iM3ZkCbAHIFS8ZGc94w84SNL22jV6kPLcrs8S5isO79cDYuxqUM/Aa3VpYuminpUFNEPYy25UjNtWZUFp2kef1JP9dAD27pWCW1Nlgc0SqmEusBsvflzdQmhvCZuBCU/Xy16WPb2WL8lxcCZVuQvcPKz3dgGQD5w== openpgp-card" ];
 
   system.stateVersion = "18.09";
 
