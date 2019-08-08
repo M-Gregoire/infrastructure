@@ -12,6 +12,7 @@
       ../../networks/home
       ../../../resources/hosts/Bur
       ../../../vendor/infrastructure-private/resources/hosts/Bur
+      ../../../luks.nix
     ];
 
   # Servers are defined in profile, only home network should be defined here
