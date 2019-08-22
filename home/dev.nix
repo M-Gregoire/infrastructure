@@ -18,6 +18,8 @@
     ./dev/web.nix
   ];
 
+  home.file.".editorconfig".source = ../dotfiles/root.editorconfig;
+
   home.packages = with pkgs; [
     gnumake
     gcc
