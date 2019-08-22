@@ -25,7 +25,7 @@ home.packages = with pkgs; with xfce4-13; [
     mpv
     # Torrent
     qbittorrent
-    # Ebook
+    # Ebooks
     calibre
     # Editors
     texstudio
@@ -37,8 +37,8 @@ home.packages = with pkgs; with xfce4-13; [
     # Music
     spotify
     # Chats
-    signal-desktop
-    rambox
+    unstable.signal-desktop
+    unstable.rambox
     # Thunar with archive plugin
     thunar-with-plugins
     # Volume manager
@@ -61,6 +61,10 @@ home.packages = with pkgs; with xfce4-13; [
     xournal
     # Vector graphics
     inkscape
+    # Image viewer
+    nomacs
+    # VNC
+    tightvnc
   ];
 
   home.file.".mozilla/firefox/${config.resources.firefox.profile}/user.js".source = ../dotfiles/firefox/user.js;

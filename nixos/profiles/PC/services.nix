@@ -8,7 +8,7 @@
   services.xserver = {
     enable = true;
     displayManager.lightdm = {
-     enable = true;
+      enable = true;
     };
   };
 
@@ -55,18 +55,7 @@
     serviceConfig.User = "${config.resources.host.username}";
     script = ''
       if [ -d '/home/${config.resources.host.username}/src/github.com/${config.resources.git.username}/${config.resources.config.publicRepo}' ]; then
-        if ${pkgs.git}/bin/git -C /home/${config.resources.host.username}/src/github.com/${config.resources.git.username}/${config.resources.config.publicRepo}/vendor/nixpkgs-unstable pull; then
-          echo "nixpkgs-unstable updated"
-        else
-          echo "nixpkgs-unstable update failed: sending notification"
-          ${pkgs.curl}/bin/curl -X POST "${config.resources.gotify.url}/message?token=${config.resources.gotify.token}" -F "title=Nixpkgs-unstable update failed" -F "message=Check systemctl for more information." -F "priority=5"
-        fi
-      else
-        echo "public repo does not exists"
-      fi
-
-      if [ -d '/home/${config.resources.host.username}/src/github.com/${config.resources.git.username}/${config.resources.config.publicRepo}' ]; then
-        if ${pkgs.git}/bin/git -C /home/${config.resources.host.username}/src/github.com/${config.resources.git.username}/${config.resources.config.publicRepo}/vendor/nixpkgs-release pull; then
+        if ${pkgs.git}/bin/git -C /home/${config.resources.host.username}/src/github.com/${config.resources.git.username}/${config.resources.config.publicRepo}/vendor/nixpkgs-release fetch --all && ${pkgs.git}/bin/git -C /home/${config.resources.host.username}/src/github.com/${config.resources.git.username}/${config.resources.config.publicRepo}/vendor/nixpkgs-release checkout channels/nixos-19.03; then
           echo "nixpkgs-release updated"
         else
           echo "nixpkgs-release update failed: sending notification"
@@ -110,8 +99,8 @@
     description = "Update nixpkgs release every 3h";
     wantedBy = [ "timers.target" ];
     timerConfig = {
-     OnBootSec = "15m";
-     OnUnitInactiveSec = "3h";
+      OnBootSec = "15m";
+      OnUnitInactiveSec = "3h";
     };
   };
 
@@ -119,8 +108,8 @@
     description = "Sync nextcloud every minutes";
     wantedBy = [ "timers.target" ];
     timerConfig = {
-     OnBootSec = "1m";
-     OnUnitInactiveSec = "1m";
+      OnBootSec = "1m";
+      OnUnitInactiveSec = "1m";
     };
   };
 }
