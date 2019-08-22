@@ -52,6 +52,8 @@
     "${config.resources.hosts.skuld}" = [ "Skuld" "backup.local" ];
     "${config.resources.hosts.eldir}" = [ "Eldir" ];
     "${config.resources.hosts.rind}" = [ "Rind" ];
+    "${config.resources.hosts.idunnWifi}" = [ "IdunnWifi" "Idunn" ];
+    "${config.resources.hosts.idunnEth}" = [ "IdunnEth" ];
   };
 
   home-manager.users.${config.resources.host.username} = {...}: {

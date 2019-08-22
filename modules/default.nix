@@ -87,6 +87,16 @@
         example = "1.1.1.1";
         description = "Ip of the host";
       };
+      idunnWifi = mkOption {
+        type = types.str;
+        example = "1.1.1.1";
+        description = "Ip of the host";
+      };
+      idunnEth = mkOption {
+        type = types.str;
+        example = "1.1.1.1";
+        description = "Ip of the host";
+      };
     };
 
     taskd = {
