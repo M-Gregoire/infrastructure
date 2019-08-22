@@ -1,5 +1,5 @@
 # Anet-A8
-My settings and upgrades for my Anet A8 3D printer
+My settings and upgrades for my Anet A8 3D printer.
 
 ## Slic3r
 
@@ -13,28 +13,50 @@ Unfortunately not native on Linux but allows to create awesome support, using le
 
 I use an Octoprint server running on a Raspberry Pi. I've installed the following plugins:
 
-- [OctoPrint-BedLevelVisualizer](https://github.com/jneilliii/OctoPrint-BedLevelVisualizer) (Install can take a long time, ~30min. This is a known issue. It might need to be run manually and not through plugin manager.). I use the following commands:
+- [OctoPrint-BedLevelVisualizer](https://github.com/jneilliii/OctoPrint-BedLevelVisualizer). I use the following commands:
 ```
 G28
 M155 S30
 @BEDLEVELVISUALIZER
 G29 T
 M155 S3
-
 ```
 - [OctoPrint-BLTouch](https://github.com/jneilliii/OctoPrint-BLTouch)
 - [OctoPrint-DisplayProgress](https://github.com/OctoPrint/OctoPrint-DisplayProgress)
 - [OctoPrint-EEPROM-Marlin](https://github.com/amsbr/OctoPrint-EEprom-Marlin)
-- [OctoPrint-FilamentManager](malnvenshorn/OctoPrint-FilamentManager) and [OctoPrint-CostEstimation](https://github.com/malnvenshorn/OctoPrint-CostEstimation)
-- [OctoPrint-Fullscreen](OctoPrint-FullScreen)
-- [OctoPrint-MQTTPublish](https://github.com/jneilliii/OctoPrint-MQTTPublish)
+- [OctoPrint-FilamentManager](https://github.com/malnvenshorn/OctoPrint-FilamentManager) and [OctoPrint-CostEstimation](https://github.com/malnvenshorn/OctoPrint-CostEstimation)
+- [OctoPrint-Fullscreen](https://github.com/BillyBlaze/OctoPrint-FullScreen)
+- [OctoPrint-MQTT](https://github.com/OctoPrint/OctoPrint-MQTT/) and [OctoPrint-MQTTPublish](https://github.com/jneilliii/OctoPrint-MQTTPublish)
 - [OctoPrint-Marlin-Flasher](https://github.com/Renaud11232/OctoPrint-Marlin-Flasher) (Need to install `arduino-cli`, see [this](https://github.com/arduino/arduino-cli))
 - [OctoPrint-PrintTimeGenius](https://github.com/eyal0/OctoPrint-PrintTimeGenius)
 - [OctoPrint-Slic3r](https://github.com/OctoPrint/OctoPrint-Slic3r) (See [this](https://github.com/OctoPrint/OctoPrint-Slic3r/wiki/How-to-install-Slic3r-on-RPi))
 - [OctoPrint-TabOrder](https://github.com/jneilliii/OctoPrint-TabOrder) to change tabs to icons
-- [OctoPrint-WebcamTab](malnvenshorn/OctoPrint-WebcamTab)
+- [OctoPrint-WebcamTab](https://github.com/malnvenshorn/OctoPrint-WebcamTab)
 - [Octolapse](https://github.com/FormerLurker/Octolapse)
 
+
+### Install command
+``` bash
+/home/pi/oprint/bin/pip install \
+	https://github.com/jneilliii/OctoPrint-BedLevelVisualizer/archive/master.zip \
+	https://github.com/jneilliii/OctoPrint-Bltouch/archive/master.zip \
+	https://github.com/OctoPrint/OctoPrint-DisplayProgress/archive/master.zip \
+	https://github.com/amsbr/OctoPrint-EEPROM-Marlin/archive/master.zip \
+	https://github.com/malnvenshorn/OctoPrint-FilamentManager/archive/master.zip https://github.com/malnvenshorn/OctoPrint-CostEstimation/archive/master.zip \
+	https://github.com/BillyBlaze/OctoPrint-FullScreen/archive/master.zip \
+    https://github.com/OctoPrint/OctoPrint-MQTT/archive/master.zip https://github.com/jneilliii/OctoPrint-MQTTPublish/archive/master.zip \
+	https://github.com/Renaud11232/Octoprint-Marlin-Flasher/archive/master.zip \
+	https://github.com/eyal0/OctoPrint-PrintTimeGenius/archive/master.zip \
+	https://github.com/OctoPrint/OctoPrint-Slic3r/archive/master.zip \
+	https://github.com/jneilliii/OctoPrint-TabOrder/archive/master.zip \
+	https://github.com/malnvenshorn/OctoPrint-WebcamTab/archive/master.zip \
+	https://github.com/FormerLurker/Octolapse/archive/master.zip
+```
+
+*Warning*: You need to manually:
+- Install `arduino-cli` for `Octoprint-Marlin-Flasher`
+- Follow the documentation of `Octoprint-Slic3r` to configure it
+- Configure `Octoprint-BedLevelVisualizer`
 
 # Upgrades
 
@@ -57,6 +79,10 @@ I replaced the stock hotend + extruder by an E3D V6 clone and a Titan extruder. 
 
 - [Extruder mount](https://www.thingiverse.com/thing:2253855)
 - [Carriage](https://www.thingiverse.com/thing:2668564)
+
+I later moved to this carriage:
+https://www.thingiverse.com/thing:2748650
+which has the benefit of having the BLTouch at a fixed height.
 
 I also followed this [General guide](https://www.thingiverse.com/thing:2268994).
 
@@ -104,7 +130,7 @@ Add a sensor to detect if the filament as run out. In this case, the print is pa
 
 ## Moving to AM8
 
-This is by far the biggest upgrade I made. This is based on this [guide](https://www.thingiverse.com/thing:2263216). 
+This is by far the biggest upgrade I made. This is based on this [guide](https://www.thingiverse.com/thing:2263216).
 The build guide is very detailled.
 
 
@@ -149,9 +175,9 @@ I've ran `M303 S200 C10` to start the autotune process for PLA(`M303` is the com
 #define DEFAULT_Kd 86.0
 
 ```
-You can also do the hotbed with `M303 S40 C3 E-1` (`E` specified the heating element, `-1` is hotbed, `0` is first hotend, `1` the second hotend...).  
+You can also do the hotbed with `M303 S40 C3 E-1` (`E` specified the heating element, `-1` is hotbed, `0` is first hotend, `1` the second hotend...).
 
-*Note:* `#define PIDTEMPBED` must be uncommented to run this command. You will need to comment `BED_LIMIT_SWITCHING` to do so.  
+*Note:* `#define PIDTEMPBED` must be uncommented to run this command. You will need to comment `BED_LIMIT_SWITCHING` to do so.
 
 This is saved with (Example):
 
@@ -265,4 +291,3 @@ These where printed for the origin heat bed. I since changed it for a aluminium 
 - [Anti-Z wobble](https://www.thingiverse.com/thing:1858435)
 
 See https://www.youtube.com/watch?v=T9vI6DqAcmo
-
