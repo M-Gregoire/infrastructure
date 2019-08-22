@@ -17,6 +17,8 @@
       ALTERNATE_EDITOR = "nano";
       VISUAL = "emacsclient -c -n";
       TERM = "${config.resources.terminal}";
+      # Take personal .desktop files into account for XDG
+      XDG_DATA_DIRS="/home/${config.resources.host.username}/.local/share/applications/emacs.desktop:$XDG_DATA_DIRS";
       # Transparency percentage to use
       TRANSPARENCY = "${config.resources.theme.alphaPercent}";
       # Used by i3 sensible-terminal https://build.i3wm.org/docs/i3-sensible-terminal.htmlhttps://build.i3wm.org/docs/i3-sensible-terminal.html
