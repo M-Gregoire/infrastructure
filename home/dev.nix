@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./dev/LSP.nix
     ./dev/compton.nix
     ./dev/encryption.nix
     ./dev/git.nix
