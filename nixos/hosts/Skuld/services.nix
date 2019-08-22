@@ -24,7 +24,8 @@
         ${pkgs.curl}/bin/curl -X POST "${config.resources.gotify.url}/message?token=${config.resources.gotify.token}" -F "title=Backuped failed" -F "message=An error occured while trying to backup the servers. Fix it!" -F "priority=5"
       fi
     '';
-    wantedBy = [ "default.target" ];
+    # Don't do a backup on reboot
+    #wantedBy = [ "default.target" ];
   };
 
   # systemctl list-timers
