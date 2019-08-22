@@ -1,6 +1,10 @@
 { pkgs, config, lib, ... }:
 
 {
+  imports = [
+    ../../vendor/infrastructure-private/resources/home/aliases.nix
+  ];
+
   home.packages = with pkgs; [
     kitty
     bat
