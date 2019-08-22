@@ -47,6 +47,9 @@
         restartWifi="nmcli radio wifi off && nmcli radio wifi on";
         restartNetwork="nmcli networking off && nmcli networking on";
         restartVPN="sudo systemctl restart wireguard-wg0.service";
+        compressJpg="mogrify -quality 50";
+        compressPdf="gs  -q -dNOPAUSE -dBATCH -dSAFER -sDEVICE=pdfwrite -dCompatibilityLevel=1.3 -dPDFSETTINGS=/screen -dEmbedAllFonts=true -dSubsetFonts=true -dColorImageDownsampleType=/Bicubic -dColorImageResolution=72 -dGrayImageDownsampleType=/Bicubic -dGrayImageResolution=72 -dMonoImageDownsampleType=/Bicubic -dMonoImageResolution=72 -sOutputFile=$2 $1";
+        getMimeType="file -b --mime-type";
       };
 
       initExtra = ''
