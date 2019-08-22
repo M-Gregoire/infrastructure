@@ -22,6 +22,11 @@
       fsType = "vfat";
     };
 
+  #fileSystems."/root/scripts/Backup/backups" =
+  #  { device = "/dev/disk/by-uuid/e199502c-5dcb-4fdc-92f7-1bc3702c2e01";
+  #    fsType = "ext4";
+  #  };
+
   swapDevices =
     [ { device = "/dev/disk/by-uuid/161fe3a6-cdc9-4c8a-9e24-d6213f28eb4a"; }
     ];
