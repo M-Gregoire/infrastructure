@@ -111,18 +111,21 @@
           description = "Ip of the host";
         };
       };
-      idunnWifi = {
-        ip = mkOption {
+      idunn = {
+        wifi.ip = mkOption {
           type = types.str;
           example = "1.1.1.1";
           description = "Ip of the host";
         };
-      };
-      idunnEth = {
-        ip = mkOption {
+        eth.ip = mkOption {
           type = types.str;
           example = "1.1.1.1";
           description = "Ip of the host";
+        };
+        vncPort = mkOption {
+          type = types.str;
+          example = "1234";
+          description = "Specifies vnc port.";
         };
       };
     };

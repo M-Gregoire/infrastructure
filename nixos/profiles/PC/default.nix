@@ -52,8 +52,8 @@
     "${config.resources.hosts.skuld.ip}" = [ "Skuld" "backup.local" ];
     "${config.resources.hosts.eldir.ip}" = [ "Eldir" ];
     "${config.resources.hosts.rind.ip}" = [ "Rind" ];
-    "${config.resources.hosts.idunnWifi.ip}" = [ "IdunnWifi" "Idunn" ];
-    "${config.resources.hosts.idunnEth.ip}" = [ "IdunnEth" ];
+    "${config.resources.hosts.idunn.wifi.ip}" = [ "IdunnWifi" "Idunn" ];
+    "${config.resources.hosts.idunn.eth.ip}" = [ "IdunnEth" ];
   };
 
   home-manager.users.${config.resources.host.username} = {...}: {
