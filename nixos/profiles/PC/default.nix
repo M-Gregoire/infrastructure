@@ -4,6 +4,7 @@
   imports = [
     (import ../../../vendor/home-manager { inherit pkgs; }).nixos
     ../../../modules
+    ./mime.nix
     ./network.nix
     ./services.nix
     ../../dev/android.nix
