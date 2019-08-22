@@ -4,7 +4,7 @@
 ; Open an empty scratch on startup
 (setq initial-scratch-message "")
 
-; Move arround with ALT+Arrow
+; Move around with Alt+Arrow
 (windmove-default-keybindings 'meta)
 
 ; Print line and columns at the bottom
@@ -26,13 +26,13 @@
 ; Fullscreen
 (toggle-frame-fullscreen)
 
-;; Ask "y" or "n" instead of "yes" or "no"
+; Ask "y" or "n" instead of "yes" or "no"
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; Highlight tabulations
+; Highlight tabulations
 (setq-default highlight-tabs t)
 
-;; Show trailing whitespaces
+; Show trailing whitespaces
 (setq-default show-trailing-whitespace t)
 
 ; Remove all menu/tool bar and scrollbar
@@ -52,5 +52,9 @@
 (setq ring-bell-function 'ignore)
 
 ; Enable direnv
-(ue-ensure-installed '(direnv))
+(use-package direnv)
 (direnv-mode)
+
+; sudo-edit
+(load (expand-file-name "sudo-edit.el" pkg-dir) nil t)
+(require 'sudo-edit)

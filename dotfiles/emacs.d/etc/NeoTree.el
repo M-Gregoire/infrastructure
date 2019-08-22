@@ -1,7 +1,6 @@
-; Depends on: [ Ivy ]
-
-(ue-ensure-installed '(all-the-icons))
-(ue-ensure-installed '(neotree))
+(use-package all-the-icons)
+(use-package neotree
+  :after (ivy projectile))
 
 ; Use the icons
 ;(setq neo-theme 'icons)

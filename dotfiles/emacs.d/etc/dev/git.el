@@ -1,10 +1,10 @@
-; Depends on: [ Ivy ]
-
-(ue-ensure-installed '(magit))
-(ue-ensure-installed '(forge))
+(use-package magit
+  :after (ivy))
+(use-package forge
+  :after (magit))
 
 ; Recover the SSH agent to use SSH keys in emacs
-(ue-ensure-installed '(exec-path-from-shell))
+(use-package exec-path-from-shell)
 (exec-path-from-shell-initialize)
 
 (exec-path-from-shell-copy-env "SSH_AGENT_PID")

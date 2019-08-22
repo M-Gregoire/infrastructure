@@ -10,9 +10,9 @@
 (setq comint-scroll-to-bottom-on-output t)
 (setq comint-move-point-for-output t)
 
-  (defun my-ess-start-R ()
-    (interactive)
-    (if (not (member "*R*" (mapcar (function buffer-name) (buffer-list))))
+(defun my-ess-start-R ()
+  (interactive)
+  (if (not (member "*R*" (mapcar (function buffer-name) (buffer-list))))
       (progn
 	(delete-other-windows)
 	(setq w1 (selected-window))
@@ -22,13 +22,13 @@
 	(set-window-buffer w2 "*R*")
 	(set-window-buffer w1 w1name))))
 
-  (defun my-ess-eval ()
-    (interactive)
-    (my-ess-start-R)
-    (if (and transient-mark-mode mark-active)
-	(call-interactively 'ess-eval-region)
-      (call-interactively 'ess-eval-line-and-step)))
+(defun my-ess-eval ()
+  (interactive)
+  (my-ess-start-R)
+  (if (and transient-mark-mode mark-active)
+      (call-interactively 'ess-eval-region)
+    (call-interactively 'ess-eval-line-and-step)))
 
-  (add-hook 'ess-mode-hook
-	    '(lambda()
-	       (local-set-key [(shift return)] 'my-ess-eval)))
+(add-hook 'ess-mode-hook
+	  '(lambda()
+	     (local-set-key [(shift return)] 'my-ess-eval)))

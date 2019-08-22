@@ -1,7 +1,7 @@
-(ue-ensure-installed '(flycheck))
+(use-package flycheck)
 (global-flycheck-mode)
 
 ; Enable popups
-(ue-ensure-installed '(flycheck-pos-tip))
+(use-package flycheck-pos-tip)
 (with-eval-after-load 'flycheck
   (flycheck-pos-tip-mode))

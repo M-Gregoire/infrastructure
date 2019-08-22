@@ -1,7 +1,7 @@
-; Depends on: [ Company ]
-
-(ue-ensure-installed '(nix-mode))
-(ue-ensure-installed '(nixos-options))
-;(ue-ensure-installed '(helm-nixos-options))
-(ue-ensure-installed '(company-nixos-options))
-(ue-ensure-installed '(nix-sandbox))
+(use-package nix-mode)
+(use-package nixos-options)
+(use-package company-nixos-options
+  :after (company)
+  :init
+  (add-to-list 'company-backends 'company-nixos-options))
+(use-package nix-sandbox)

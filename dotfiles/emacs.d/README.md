@@ -1,141 +1,103 @@
 # Here is my Emacs config !
-http://www.techrepublic.com/article/why-i-love-emacs/
 
 ## Install note :
-There are a lot of dependencies to this configuration of Emacs: some softwares need to be installed on the host. I manage this dependencies through NixOS so they are not documented here.
 
-# What's in it ? (Slightly outdated)
+There are a lot of dependencies to this configuration of Emacs: some softwares need to be installed on the host. I manage this dependencies through NixOS so they are not documented here, see [emacs.nix](./../../home/emacs.nix).
 
-## Visual improvements :
+# What's in it ?
 
-|Package|What does it do ?|
-|---|---|
-|monokai-theme|Makes emacs pretty.|
-|nyan-mode|Makes emacs fun !|
-|rainbow-mode|HEX/RGB color are highlighted with the color they represents.|
-|rainbow-delimiters|Put delimiters in color.|
-|tabbar|Use buffers with a tab bar !|
-|all-the-icons|Set of icons used for neotree.|
-|neotree|Tree plugin binded to F8.|
+| Package               | What does it do ?                                                              |
+|-----------------------|--------------------------------------------------------------------------------|
+| ace-jump-mode         | Move your cursor to ANY position in emacs by using only 3 times key press      |
+| adoc-mod              | Major mode for AsciiDoc files.                                                 |
+| ag                    | An Emacs frontend to The Silver Searcher.                                      |
+| all-the-icons         | Set of icons used for neotree.                                                 |
+| auctex                | Package for writing and formatting TeX files.                                  |
+| base16-theme          | Makes emacs pretty using base16 themes.                                        |
+| buffer-move           | Easily swap between buffers.                                                   |
+| company-mode          | Text completion framework. It comes with several back-ends.                    |
+| company-nixos-options | Shows the documentation of the option in a popup-buffer.                       |
+| company-quickhelp     | Documentation popups when idling on a completion candidate.                    |
+| counsel-projectile    | Ivy UI for Projectile.                                                         |
+| direnv                | Direnv integration for emacs.                                                  |
+| editorconfig          | Editorconfig support.                                                          |
+| eglot                 | A client for Language Server Protocol servers.                                 |
+| expand-region         | Increase region by semantic units                                              |
+| flycheck              | On-the-fly syntax checking supporting over 40 programming languages.           |
+| flycheck-pos-tip      | Shows errors under point in pos-tip popups.                                    |
+| forge                 | Work with Git forges from the comfort of Magit.                                |
+| gfm-mode              | Major mode for editing Github Flavored Markdown. *Included in markdown-mode.*  |
+| ivy, counsel, swipper | Completion mechanism for Emacs.                                                |
+| latex-preview-pane    | Integrated component for visualizing your work.                                |
+| magit                 | Interface for git.                                                             |
+| markdown-mode         | Major mode for editing Markdown.                                               |
+| multiple-cursors      | Use multiple-cursors !.                                                        |
+| neotree               | Tree plugin binded to F8.                                                      |
+| nix-mode              | Major mode for nix files.                                                      |
+| nix-sandbox           | Utility functions to work with nix sandboxes.                                  |
+| nixos-options         | Interface for browsing and completing NixOS options.                           |
+| nyan-mode             | Makes emacs fun !                                                              |
+| projectile            | Project interfaction library.                                                  |
+| rainbow-delimiters    | Put delimiters in color.                                                       |
+| rainbow-mode          | HEX/RGB color are highlighted with the color they represents.                  |
+| slime                 | Mode for Common Lisp.                                                          |
+| slime-company         | Company-mode completion backend for Slime.                                     |
+| sudo-edit             | pen files as another user.                                                     |
+| windmove              | Move from window to window with shift and arrow keys. *Now included in emacs.* |
+| yaml-mode             | Minor-mode for yaml.                                                           |
 
-## General improvements :
-|Package|What does it do ?|
-|---|---|
-|Ivy, Counsel, Swipper|Completion mechanism for Emacs.|
-|Yasnippet|For snippets. **WARNING** : Has to required before irony.|
-|expand-region|Increase region by semantic units|
-|windmove|Move from window to window with shift and arrow keys. *Now included in emacs.*|
-|buffer-move| Easily swap between buffers.|
-|multiple-cursors| Use multiple-cursors !(!!!!).|
-|Projectile|Project interfaction library.|
+I use the LSP servers defined in [LSP.el](./../../home/dev/LSP.nix).
 
-## Improvements for programming :
+## Currently disabled (Unmaintained)
 
-#### Programming related
-|Package|What does it do ?|
-|---|---|
-|company-mode|Text completion framework. It comes with several back-ends.|
-|company-quickhelp|Documentation popups when idling on a completion candidate.|
-|flycheck|On-the-fly syntax checking supporting over 40 programming languages.|
-|flycheck-pos-tip|Shows errors under point in pos-tip popups.|
-|EditorConfig.org plugin|Editor-config|
-#### Git & Github
-|Package|What does it do ?|
-|---|---|
-|magit|Interface for git.|
-|magithub|Interface for Github.|
+#### Web
 
-#### AsciiDoc, Markdown and Github Flavored Markdown
-|Package|What does it do ?|
-|---|---|
-|adoc-mod|Major mode for AsciiDoc files.|
-|markdown-mode|Major mode for editing Markdown.|
-|gfm-mode|Major mode for editing Github Flavored Markdown. *Included in markdown-mode.*|
-
-#### C/ C++
-|Package|What does it do ?|
-|---|---|
-|irony-mode|Minor-mode for improving C/C++/Objective-c editing experience.|
-|company-irony|Provides a company-mode asynchronous completion backend for C/C++/Objective-C languages.|
-|company-irony-c-headers|Provide a company-mode for C/C++ heards files that works with irony-mode. *I modified C/C++ hooks so that it doesn't break php-mode.*|
-|flycheck-irony|Provides a flycheck checker for C/C++/Objective-C languages.|
+| Package                  | What does it do ?                                                                                                        |
+|--------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| web-mode                 | Major-mode for editing web templates.                                                                                    |
+| php-mode                 | Major-mode for editing php files.                                                                                        |
+| nvm                      | Manage Node versions within Emacs.                                                                                       |
+| npm                      | Create and rule NPM packages from Emacs.                                                                                 |
+| {jade, sws, stylus}-mode | Major-mode for {Jade, sws, Stylus}.                                                                                      |
+| vue-mode                 | Emacs major mode for vue.js. Modified so It uses web-mode in templates and scripts instead of vue-mode-html and js-mode. |
+| graphql-mode             | Emacs mode to edit GraphQL schema and queries.                                                                           |
 
 #### Go
-|Package|What does it do ?|
-|---|---|
-|go-mode|Minor-mode for go.|
-|flycheck-gometalinter|Provides flycheck checker for golang.|
-|go-flymake|Provides flymake style syntax checking.|
-|go-flycheck|Provides flymake style syntax checking.|
 
-#### Yaml
-|Package|What does it do ?|
-|---|---|
-|yaml-mode|Minor-mode for yaml.|
+| Package               | What does it do ?                                    |
+|-----------------------|------------------------------------------------------|
+| go-mode               | Minor-mode for go.                                   |
+| flycheck-gometalinter | Provides flycheck checker for golang.                |
+| go-flymake            | Provides flymake style syntax checking.              |
+| go-flycheck           | Provides flymake style syntax checking.              |
+| go-guru               | A tool for answering questions about Go source code. |
 
+#### C/ C++
 
-#### Web (Html / CSS / PHP / JS / JSON / Node / NPM / React / Vue.js)
-|Package|What does it do ?|
-|---|---|
-|web-mode|Major-mode for editing web templates.|
-|php-mode|Major-mode for editing php files.|
-|nvm|Manage Node versions within Emacs.|
-|npm|Create and rule NPM packages from Emacs.|
-|{jade, sws, stylus}-mode|Major-mode for {Jade, sws, Stylus}.|
-|vue-mode|Emacs major mode for vue.js based on mmm-mode. Modified version so It uses web-mode in templates and scripts instead of vue-mode-html and js-mode.|
-|graphql-mode|Emacs mode to edit GraphQL schema and queries.|
+| Package                 | What does it do ?                                                                                                         |
+|-------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| irony-mode              | Minor-mode for improving C/C++/Objective-c editing experience.                                                            |
+| company-irony           | Provides a company-mode asynchronous completion backend for C/C++/Objective-C languages.                                  |
+| company-irony-c-headers | Company mode for C/C++ heards files that works with irony-mode. *Modified C/C++ hooks so that it doesn't break php-mode.* |
+| flycheck-irony          | Provides a flycheck checker for C/C++/Objective-C languages.                                                              |
 
-#### Lisp
-|Package|What does it do ?|
-|---|---|
-|slime|Mode for Common Lisp.|
-|slime-company|Company-mode completion backend for Slime.|
+#### Protobuf
 
-In lisp.el you can use either Slime with sbcl, Slime with allegro-express and Quicklisp or Slime with LispWorks (the last option need a paid license of LispWorks)
+| Package       | What does it do ?         |
+|---------------|---------------------------|
+| protobuf-mode | Major mode for protobuff. |
 
-##### For Slime with sbcl (by default) :
-Just install sbcl
+#### Others
 
-##### For Slime with allegro-express & Quicklisp :
-Install allegro-express (http://franz.com/downloads/clp/survey)
-Install quicklisp (https://astraybi.wordpress.com/2015/08/02/how-to-install-slimesbclquicklisp-into-emacs/)
-(Un)comment the needed code in lisp.el
+| Package   | What does it do ?                                         |
+|-----------|-----------------------------------------------------------|
+| yasnippet | For snippets. **WARNING** : Has to required before irony. |
 
-##### For Slime with LispWorks (must have paid license) :
-Follow :
-http://www.lispworks.com/documentation/lw51/LWUG/html/lwuser-16.htm
+# Credits
 
-#### Prolog
-|Package|What does it do ?|
-|---|---|
-|Prolog.el|Mode for Prolog.|
+Many thanks to every developpers that contributed to the awesomess of Emacs and it's packages.
 
-#### R
-|Package|What does it do ?|
-|---|---|
-|ess|Let Emacs speeks statistics !|
-|ess-R-data-view|Data viewer for GNU R.|
+## Donation
 
-#### Latex
-|Package|What does it do ?|
-|---|---|
-|auctex|Package for writing and formatting TeX files.|
-|latex-preview-pane|Integrated component for visualizing your work.|
-
-#### Python
-|Package|What does it do ?|
-|---|---|
-|company-jedi|Company-mode completion back-end for Python JEDI|
-|elpy|Python development environment|
-|py-autopep8|Automatically format and correct any PEP8 errors|
-
-Many thanks to every developpers that contributed to the awesomess of Emacs and it's packages
-
-*Note :* Packages are organized in levels, so they load in a coherent order.
-- Level 1 - Basic Emacs improvements
-- Level 2 - Company-mode
-- Level 3 - Packages adding a company-backend
-- Level 4 - Packages needing Irony
-- Level 5 - Ivy
-- Level 6 - Packages depending on Ivy [and Company]
-- Level 7 - All other packages
+This project helped you ? You can buy me a cup of coffee  
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EWHGT3M9899J6)

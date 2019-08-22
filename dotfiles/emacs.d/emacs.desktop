@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Emacs
+GenericName=Text Editor
+Comment=Edit text
+Exec=emacsclient -c %F
+Icon=emacs
+Type=Application
+Terminal=false
+Categories=Development;TextEditor;
+StartupWMClass=Emacs
+Keywords=Text;Editor;

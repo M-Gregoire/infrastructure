@@ -20,7 +20,7 @@
 
 ; Set to JSX mode by default
 (setq web-mode-content-types-alist
-  '(("jsx" . "\\.js[x]?\\'")))
+      '(("jsx" . "\\.js[x]?\\'")))
 
 (setq web-mode-markup-indent-offset 2
       web-mode-css-indent-offset 2
@@ -84,21 +84,6 @@ Intended for use in PROJECTILE-AFTER-SWITCH-PROJECT-HOOK."
 
 
 (ue-ensure-installed '(vue-mode))
-(ue-ensure-installed '(lsp-vue))
-
-(setq lsp-auto-guess-root t)  ;; if you have projectile ...
-
-(with-eval-after-load 'lsp-mode
-  (require 'lsp-ui))
-
-(defun vuejs-custom ()
-  (lsp)
-  (lsp-ui-mode)
-  (push 'company-lsp company-backends)
-  (flycheck-mode t)
-  (company-mode))
-
-(add-hook 'vue-mode-hook 'vuejs-custom)
 
 ; Remove ugly background in mmm-mode (used by vue-mode)
 (setq mmm-submode-decoration-level 0)

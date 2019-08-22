@@ -1,34 +1,12 @@
-; Depends on: [ Company ]
-
 (setq package-enable-at-startup nil)
 
 ; Install slime and slime-company
-(ue-ensure-installed '(slime))
-(ue-ensure-installed '(slime-company))
+(use-package slime)
+(use-package slime-company
+  :after (company))
 
 ; Ask before using slime server
 (setq slime-auto-connect 'ask)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;; Slime with allegro ;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-; Load quicklisp
-;(load (expand-file-name "~/quicklisp/slime-helper.el"))
-
-
-;(eval-after-load "slime"
-;  '(progn
-;    (add-to-list 'load-path "/usr/local/slime/contrib")
-;    (slime-setup '(slime-fancy slime-banner))
-;    (setq slime-complete-symbol*-fancy t)
-;    (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)))
-
-;(setq inferior-lisp-program "/usr/local/acl100express/allegro-express")
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;; Slime with sbcl ;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ; Define which lisp compiler to use
 (setq inferior-lisp-program "sbcl")
@@ -65,4 +43,4 @@ Modified to indent single semicolon comments like double semicolon comments"
       (if (> (- (point-max) pos) (point))
 	  (goto-char (- (point-max) pos))))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

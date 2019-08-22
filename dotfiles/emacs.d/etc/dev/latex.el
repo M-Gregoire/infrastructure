@@ -1,4 +1,4 @@
-(ue-ensure-installed '(auctex))
+(use-package auctex)
 
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
@@ -6,5 +6,5 @@
 (setq TeX-PDF-mode t)
 
 ; Preview move for latex
-(ue-ensure-installed '(latex-preview-pane))
+(use-package latex-preview-pane)
 (latex-preview-pane-enable)

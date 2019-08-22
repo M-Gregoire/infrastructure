@@ -1,14 +1,14 @@
-; Depends on: [ Ivy ]
+(use-package ag)
+(use-package projectile
+  :after ivy)
 
-(ue-ensure-installed '(ag))
-(ue-ensure-installed '(projectile))
 (projectile-mode +1)
 (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 (setq projectile-completion-system 'ivy)
 
-(ue-ensure-installed '(counsel-projectile))
+(use-package counsel-projectile)
 (setq counsel-projectile-mode t)
 
 ; Tramp and projectile

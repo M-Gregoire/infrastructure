@@ -1,2 +1,2 @@
-(ue-ensure-installed '(editorconfig))
+(use-package editorconfig)
 (editorconfig-mode 1)
