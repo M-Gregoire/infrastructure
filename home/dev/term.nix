@@ -27,7 +27,7 @@
         "git"
       ];
       oh-my-zsh.theme = "agnoster";
-      enableCompletion = "true";
+      enableCompletion = true;
 
       shellAliases = {
         tmux="tmux -2";
