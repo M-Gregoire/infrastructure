@@ -18,14 +18,5 @@
 
   system.stateVersion = "16.09";
 
-  networking.firewall.allowedTCPPorts = [
-    # slackircd
-    6666
-    # matterircd
-    6667
-    # taskd
-    53589
-    # mumble
-    64738
-  ];
+  networking.firewall.allowedTCPPorts = config.resources.hosts.eldir.openPorts;
 }

@@ -17,36 +17,11 @@
   networking.hosts = {
     "127.0.0.1" = [ "${config.resources.host.name}" ];
     "::1" = [ "${config.resources.host.name}" ];
-    "${config.resources.hosts.eldir}" = [ "Eldir" ];
-    "${config.resources.hosts.rind}" = [ "Rind" ];
+    "${config.resources.hosts.eldir.ip}" = [ "Eldir" ];
+    "${config.resources.hosts.rind.ip}" = [ "Rind" ];
   };
 
-  networking.firewall.allowedTCPPorts = [
-    # deconz REST API
-    80
-    # deconz websockets
-    443
-    # leon-ai
-    1337
-    # prometheus
-    9090
-    # blackbox exporter
-    9115
-    # grafana
-    3000
-    # home assistant
-    8123
-    # OpenVPN
-    1194
-    # Mosquitto MQTT broker
-    1883
-    9001
-    # Gitlab SSH
-    22
-    # Gitlab webUI
-    180
-    1443
-  ];
+  networking.firewall.allowedTCPPorts = config.resources.hosts.skuld.openPorts;
 
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.efiSupport = false;

@@ -52,50 +52,78 @@
       };
     };
     hosts = {
-      beyla = mkOption {
-        type = types.str;
-        example = "1.1.1.1";
-        description = "Ip of the host";
+      beyla = {
+        ip = mkOption {
+          type = types.str;
+          example = "1.1.1.1";
+          description = "Ip of the host";
+        };
       };
-      bur = mkOption {
-        type = types.str;
-        example = "1.1.1.1";
-        description = "Ip of the host";
+      bur = {
+        ip = mkOption {
+          type = types.str;
+          example = "1.1.1.1";
+          description = "Ip of the host";
+        };
       };
-      eldir = mkOption {
-        type = types.str;
-        example = "1.1.1.1";
-        description = "Ip of the host";
+      eldir = {
+        ip = mkOption {
+          type = types.str;
+          example = "1.1.1.1";
+          description = "Ip of the host";
+        };
+        openPorts = mkOption {
+          type = with types; listOf port;
+          example = [ "[ 22 ]" ];
+          description = "Specifies open ports.";
+        };
       };
-      mimir = mkOption {
-        type = types.str;
-        example = "1.1.1.1";
-        description = "Ip of the host";
+      mimir = {
+        ip = mkOption {
+          type = types.str;
+          example = "1.1.1.1";
+          description = "Ip of the host";
+        };
       };
-      skuld = mkOption {
-        type = types.str;
-        example = "1.1.1.1";
-        description = "Ip of the host";
+      skuld = {
+        ip = mkOption {
+          type = types.str;
+          example = "1.1.1.1";
+          description = "Ip of the host.";
+        };
+        openPorts = mkOption {
+          type = with types; listOf port;
+          example = [ "[ 22 ]" ];
+          description = "Specifies open ports.";
+        };
       };
-      rind = mkOption {
-        type = types.str;
-        example = "1.1.1.1";
-        description = "Ip of the host";
+      rind = {
+        ip = mkOption {
+          type = types.str;
+          example = "1.1.1.1";
+          description = "Ip of the host";
+        };
       };
-      octopi = mkOption {
-        type = types.str;
-        example = "1.1.1.1";
-        description = "Ip of the host";
+      octopi = {
+        ip = mkOption {
+          type = types.str;
+          example = "1.1.1.1";
+          description = "Ip of the host";
+        };
       };
-      idunnWifi = mkOption {
-        type = types.str;
-        example = "1.1.1.1";
-        description = "Ip of the host";
+      idunnWifi = {
+        ip = mkOption {
+          type = types.str;
+          example = "1.1.1.1";
+          description = "Ip of the host";
+        };
       };
-      idunnEth = mkOption {
-        type = types.str;
-        example = "1.1.1.1";
-        description = "Ip of the host";
+      idunnEth = {
+        ip = mkOption {
+          type = types.str;
+          example = "1.1.1.1";
+          description = "Ip of the host";
+        };
       };
     };
 
@@ -208,7 +236,7 @@
       ports = mkOption {
         type = with types; listOf port;
         example = [ "[ 22 ]" ];
-        description = "Specifies on which ports the SSH daemon listens. ";
+        description = "Specifies on which ports the SSH daemon listens.";
       };
       deploymentPort = mkOption {
         type = types.port;

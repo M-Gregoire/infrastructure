@@ -49,11 +49,11 @@
 
   # Non-PC hosts
   networking.hosts = {
-    "${config.resources.hosts.skuld}" = [ "Skuld" "backup.local" ];
-    "${config.resources.hosts.eldir}" = [ "Eldir" ];
-    "${config.resources.hosts.rind}" = [ "Rind" ];
-    "${config.resources.hosts.idunnWifi}" = [ "IdunnWifi" "Idunn" ];
-    "${config.resources.hosts.idunnEth}" = [ "IdunnEth" ];
+    "${config.resources.hosts.skuld.ip}" = [ "Skuld" "backup.local" ];
+    "${config.resources.hosts.eldir.ip}" = [ "Eldir" ];
+    "${config.resources.hosts.rind.ip}" = [ "Rind" ];
+    "${config.resources.hosts.idunnWifi.ip}" = [ "IdunnWifi" "Idunn" ];
+    "${config.resources.hosts.idunnEth.ip}" = [ "IdunnEth" ];
   };
 
   home-manager.users.${config.resources.host.username} = {...}: {

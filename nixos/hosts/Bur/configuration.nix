@@ -19,7 +19,7 @@
   networking.hosts = {
     "127.0.0.1" = [ "${config.resources.host.name}" ];
     "::1" = [ "${config.resources.host.name}" ];
-    "${config.resources.hosts.mimir}" = [ "Mimir" ];
+    "${config.resources.hosts.mimir.ip}" = [ "Mimir" ];
   };
 
   services.xserver.libinput = {

@@ -20,7 +20,7 @@
   networking.hosts = {
     "127.0.0.1" = [ "${config.resources.host.name}" ];
     "::1" = [ "${config.resources.host.name}" ];
-    "${config.resources.hosts.bur}" = [ "Bur" ];
+    "${config.resources.hosts.bur.ip}" = [ "Bur" ];
   };
 
   environment.systemPackages = with pkgs; [ numlockx glxinfo ];
