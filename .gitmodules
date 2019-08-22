@@ -14,3 +14,6 @@
 [submodule "scripts/polybar-spotify-controls"]
 	path = scripts/polybar-spotify-controls
 	url = https://github.com/dietervanhoof/polybar-spotify-controls.git
+[submodule "vendor/base16-shell"]
+	path = vendor/base16-shell
+	url = https://github.com/chriskempson/base16-shell.git
