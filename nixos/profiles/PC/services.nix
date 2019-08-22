@@ -66,9 +66,8 @@
       fi
     '';
     wantedBy = [ "default.target" ];
-    # https://github.com/NixOS/nixpkgs/issues/59603
-    #after = [ "NetworkManager-wait-online.service" ];
-    #requires = [ "NetworkManager-wait-online.service" ];
+    after = [ "network.target" ];
+    requires = [ "network.target" ];
   };
 
   systemd.services.nextcloud = {
@@ -83,6 +82,7 @@
       fi
     '';
     wantedBy = [ "default.target" ];
+    requires = [ "network.target" ];
   };
 
   # systemctl list-timers

@@ -4,16 +4,16 @@
   imports = [
     (import ../../../vendor/home-manager { inherit pkgs; }).nixos
     ../../../modules
-    ./mime.nix
-    ./network.nix
-    ./services.nix
+    ../../dev/3D.nix
     ../../dev/android.nix
     ../../dev/fwudp.nix
-    ../../dev/openvpn-client.nix
-    ../../dev/teamviewer.nix
     ../../dev/ipfs.nix
-    ../../dev/3D.nix
+    ../../dev/openvpn-client.nix
     ../../dev/pam.nix
+    ../../dev/teamviewer.nix
+    ../../dev/wireguard-client.nix
+    ./mime.nix
+    ./services.nix
   ];
 
   nix.nixPath = with builtins; [

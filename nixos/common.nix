@@ -4,6 +4,7 @@
   imports = [
     ../modules
     ./services.nix
+    ./systemd-network.nix
     ./dev/docker.nix
   ];
 

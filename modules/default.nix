@@ -226,17 +226,21 @@
           type = types.str;
           description = "Wireguard private key";
         };
-        endpoint = mkOption {
+        endpointIp = mkOption {
           type = types.str;
-          description = "Wireguard endpoint";
+          description = "Wireguard endpoint ip";
         };
-        ips = mkOption {
-          type = types.listOf types.str;
+        endpointPort = mkOption {
+          type = types.str;
+          description = "Wireguard endpoint port";
+        };
+        address = mkOption {
+          type = types.str;
           description = "The IP addresses of the interface";
         };
-        ip = mkOption {
+        dns = mkOption {
           type = types.str;
-          description = "The IP address used by iproute";
+          description = "The IP addresses of the DNS servers";
         };
       };
       server = {
