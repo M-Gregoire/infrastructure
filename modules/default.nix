@@ -2,6 +2,31 @@
 
 {
   options.resources = with lib; {
+    pcs = {
+      paths = {
+        home = mkOption {
+          type = types.str;
+          example = "/home/me";
+          description = "Home path";
+        };
+        publicConfig = mkOption {
+          type = types.str;
+          example = "/home/me/src/me/infrastracture";
+          description = "Public config path";
+        };
+        privateConfig = mkOption {
+          type = types.str;
+          example = "/home/me/src/me/infrastracture/vendor/infrastructure-private";
+          description = "Private config path";
+        };
+        scripts = mkOption {
+          type = types.str;
+          example = "/home/me/.scripts";
+          description = "Scripts folder path";
+        };
+      };
+    };
+
     host = {
       name = mkOption {
         type = types.str;
@@ -39,24 +64,17 @@
       };
     };
 
-    aliases = {
-      octopi = mkOption {
-        type = types.str;
-        example = "my.octopi";
-        description = "URL alias to local octopi";
-      };
-      router = mkOption {
-        type = types.str;
-        example = "my.router";
-        description = "URL alias to local router";
-      };
-    };
     hosts = {
       beyla = {
         ip = mkOption {
           type = types.str;
           example = "1.1.1.1";
           description = "Ip of the host";
+        };
+        alias = mkOption {
+          type = types.str;
+          example = "my.router";
+          description = "URL alias to local router";
         };
       };
       bur = {
@@ -109,6 +127,11 @@
           type = types.str;
           example = "1.1.1.1";
           description = "Ip of the host";
+        };
+        alias = mkOption {
+          type = types.str;
+          example = "my.octopi";
+          description = "URL alias to local octopi";
         };
       };
       idunn = {
