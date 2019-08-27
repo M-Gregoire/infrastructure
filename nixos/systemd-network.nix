@@ -20,7 +20,10 @@
     dhcpConfig.UseHostname = false;
     dhcpConfig.UseNTP = false;
     matchConfig.Name = "en* eth*";
-    linkConfig.RequiredForOnline = true;
+    # For some reasons, when ethernet is not plugged in, this interface is not skipped for systemd-networkd-wait-online.service
+    # contrary to what https://www.freedesktop.org/software/systemd/man/systemd.network.html says
+    # This fixes this behavior so that the wait online service can start.
+    linkConfig.RequiredForOnline = false;
     networkConfig.DHCP = "yes";
     networkConfig.IPv6AcceptRA = true;
   };
