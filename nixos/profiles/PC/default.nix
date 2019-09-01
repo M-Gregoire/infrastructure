@@ -50,11 +50,11 @@
 
   # Non-PC hosts
   networking.hosts = {
-    "${config.resources.hosts.skuld.ip}" = [ "Skuld" "backup.local" ];
+    "${config.resources.hosts.skuld.ip}" = [ "Skuld" ];
     "${config.resources.hosts.eldir.ip}" = [ "Eldir" ];
     "${config.resources.hosts.rind.ip}" = [ "Rind" ];
-    "${config.resources.hosts.idunn.wifi.ip}" = [ "IdunnWifi" "Idunn" ];
-    "${config.resources.hosts.idunn.eth.ip}" = [ "IdunnEth" ];
+    "${config.resources.hosts.idunn.wifi.ip}" = [ "IdunnWifi" ];
+    "${config.resources.hosts.idunn.eth.ip}" = [ "IdunnEth" "Idunn" ];
   };
 
   home-manager.users.${config.resources.host.username} = {...}: {
@@ -75,21 +75,11 @@
 
   # NTFS/exFat support
   environment.systemPackages = with pkgs; [ ntfs3g exfat ];
-  # KDEConnect
-  networking.firewall.allowedTCPPortRanges = [ { from = 1714; to = 1764; }];
-  networking.firewall.allowedUDPPortRanges = [ { from = 1714; to = 1764; }];
 
-  # Firewall (TCP)
-  networking.firewall.allowedTCPPorts = [
-    # Key servers
-    11371
-  ];
-
-  # Firewall (UDP)
-  networking.firewall.allowedUDPPorts = [
-    # Key servers
-    11371
-  ];
+  networking.firewall.allowedTCPPorts = config.resources.pcs.openTCPPorts;
+  networking.firewall.allowedUDPPorts = config.resources.pcs.openUDPPorts;
+  networking.firewall.allowedTCPPortRanges = config.resources.pcs.openTCPPortsRange;
+  networking.firewall.allowedUDPPortRanges = config.resources.pcs.openUDPPortsRange;
 
   environment.etc."wpa_supplicant.conf".source = "${config.resources.pcs.paths.privateConfig}/secrets/wpa_supplicant.conf";
 }

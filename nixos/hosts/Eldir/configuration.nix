@@ -19,5 +19,5 @@
 
   system.stateVersion = "16.09";
 
-  networking.firewall.allowedTCPPorts = config.resources.hosts.eldir.openPorts;
+  networking.firewall.allowedTCPPorts = config.resources.hosts.eldir.openTCPPorts;
 }

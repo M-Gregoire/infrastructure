@@ -25,6 +25,26 @@
           description = "Scripts folder path";
         };
       };
+      openTCPPorts = mkOption {
+        type = with types; listOf port;
+        example = [ "[ 22 ]" ];
+        description = "Specifies open TCP ports.";
+      };
+      openUDPPorts = mkOption {
+        type = with types; listOf port;
+        example = [ "[ 22 ]" ];
+        description = "Specifies open UDP ports.";
+      };
+      openTCPPortsRange = mkOption {
+        type = with types; listOf (attrsOf port);
+        example = [ "[ { from = 22; to = 25; } ]" ];
+        description = "Specifies open TCP ports range.";
+      };
+      openUDPPortsRange = mkOption {
+        type = with types; listOf (attrsOf port);
+        example = [ "[ { from = 22; to = 25; } ]" ];
+        description = "Specifies open UDP ports range.";
+      };
     };
 
     host = {
@@ -71,10 +91,9 @@
           example = "1.1.1.1";
           description = "Ip of the host";
         };
-        alias = mkOption {
-          type = types.str;
-          example = "my.router";
-          description = "URL alias to local router";
+        extraDomains = mkOption {
+          type = types.listOf types.str;
+          description = "Domain aliases";
         };
       };
       bur = {
@@ -83,6 +102,10 @@
           example = "1.1.1.1";
           description = "Ip of the host";
         };
+        extraDomains = mkOption {
+          type = types.listOf types.str;
+          description = "Domain aliases";
+        };
       };
       eldir = {
         ip = mkOption {
@@ -90,10 +113,14 @@
           example = "1.1.1.1";
           description = "Ip of the host";
         };
-        openPorts = mkOption {
+        openTCPPorts = mkOption {
           type = with types; listOf port;
           example = [ "[ 22 ]" ];
-          description = "Specifies open ports.";
+          description = "Specifies open TCP ports.";
+        };
+        extraDomains = mkOption {
+          type = types.listOf types.str;
+          description = "Domain aliases";
         };
       };
       mimir = {
@@ -102,6 +129,10 @@
           example = "1.1.1.1";
           description = "Ip of the host";
         };
+        extraDomains = mkOption {
+          type = types.listOf types.str;
+          description = "Domain aliases";
+        };
       };
       skuld = {
         ip = mkOption {
@@ -109,10 +140,19 @@
           example = "1.1.1.1";
           description = "Ip of the host.";
         };
-        openPorts = mkOption {
+        openTCPPorts = mkOption {
           type = with types; listOf port;
           example = [ "[ 22 ]" ];
-          description = "Specifies open ports.";
+          description = "Specifies open TCP ports.";
+        };
+        openUDPPorts = mkOption {
+          type = with types; listOf port;
+          example = [ "[ 22 ]" ];
+          description = "Specifies open UDP ports.";
+        };
+        extraDomains = mkOption {
+          type = types.listOf types.str;
+          description = "Domain aliases";
         };
       };
       rind = {
@@ -121,6 +161,10 @@
           example = "1.1.1.1";
           description = "Ip of the host";
         };
+        extraDomains = mkOption {
+          type = types.listOf types.str;
+          description = "Domain aliases";
+        };
       };
       octopi = {
         ip = mkOption {
@@ -128,10 +172,9 @@
           example = "1.1.1.1";
           description = "Ip of the host";
         };
-        alias = mkOption {
-          type = types.str;
-          example = "my.octopi";
-          description = "URL alias to local octopi";
+        extraDomains = mkOption {
+          type = types.listOf types.str;
+          description = "Domain aliases";
         };
       };
       idunn = {
@@ -145,10 +188,9 @@
           example = "1.1.1.1";
           description = "Ip of the host";
         };
-        vncPort = mkOption {
-          type = types.str;
-          example = "1234";
-          description = "Specifies vnc port.";
+        extraDomains = mkOption {
+          type = types.listOf types.str;
+          description = "Domain aliases";
         };
       };
     };
