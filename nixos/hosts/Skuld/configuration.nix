@@ -18,11 +18,11 @@
     "127.0.0.1" = [ "${config.resources.host.name}" ];
     "::1" = [ "${config.resources.host.name}" ];
     # This part is used to define custom DNS records by my Octopi
-    "${config.resources.hosts.eldir.ip}" = [ "Eldir" "${builtins.concatStringsSep " " config.resources.hosts.eldir.extraDomains}" ];
-    "${config.resources.hosts.rind.ip}" = [ "Rind" "${builtins.concatStringsSep " " config.resources.hosts.rind.extraDomains}" ];
-    "${config.resources.hosts.idunn.eth.ip}" = [ "Idunn" "${builtins.concatStringsSep " " config.resources.hosts.idunn.extraDomains}" ];
     "${config.resources.hosts.bur.ip}" = [ "Bur" "${builtins.concatStringsSep " " config.resources.hosts.bur.extraDomains}" ];
+    "${config.resources.hosts.eldir.ip}" = [ "Eldir" "${builtins.concatStringsSep " " config.resources.hosts.eldir.extraDomains}" ];
+    "${config.resources.hosts.idunn.eth.ip}" = [ "Idunn" "${builtins.concatStringsSep " " config.resources.hosts.idunn.extraDomains}" ];
     "${config.resources.hosts.mimir.ip}" = [ "Mimir" "${builtins.concatStringsSep " " config.resources.hosts.mimir.extraDomains}" ];
+    "${config.resources.hosts.rind.ip}" = [ "Rind" "${builtins.concatStringsSep " " config.resources.hosts.rind.extraDomains}" ];
     # Basic hostname already defined in the home profile
     "${config.resources.hosts.beyla.ip}" = [ "${builtins.concatStringsSep " " config.resources.hosts.beyla.extraDomains}" ];
     "${config.resources.hosts.octopi.ip}" = [ "${builtins.concatStringsSep " " config.resources.hosts.octopi.extraDomains}" ];
