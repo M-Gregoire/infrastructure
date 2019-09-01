@@ -1,17 +1,17 @@
 { config, pkgs, ... }:
 
 {
- imports = [
-    ./services.nix
-    ../../common.nix
-    ../../systemd-boot.nix
-    ./hardware-configuration.nix
-    ./mail-server.nix
-    #./../../dev/wireguard-server.nix
-    ../../networks/home
-    ../../profiles/Server
+  imports = [
     ../../../resources/hosts/Skuld
     ../../../vendor/infrastructure-private/resources/hosts/Skuld
+    ../../common.nix
+    ../../networks/home
+    ../../profiles/Server
+    ../../systemd-boot.nix
+    ../../systemd-networkd.nix
+    ./hardware-configuration.nix
+    ./mail-server.nix
+    ./services.nix
   ];
 
   networking.hosts = {
