@@ -3,9 +3,8 @@
 {
   imports = [
     ../modules
-    ./services.nix
-    ./systemd-network.nix
     ./dev/docker.nix
+    ./services.nix
   ];
 
   environment.systemPackages = with pkgs; [ file bc ];
@@ -47,7 +46,6 @@
     # TODO: Consider this option
     #consoleUseXkbConfig = true;
   };
-
 
   time.timeZone = "Europe/Paris";
 

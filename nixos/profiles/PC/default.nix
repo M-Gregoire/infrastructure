@@ -14,6 +14,7 @@
     ../../dev/wireguard-client.nix
     ./mime.nix
     ./services.nix
+    ../../systemd-network.nix
   ];
 
   nix.nixPath = with builtins; [
@@ -89,4 +90,6 @@
     # Key servers
     11371
   ];
+
+  environment.etc."wpa_supplicant.conf".source = "${config.resources.pcs.paths.privateConfig}/secrets/wpa_supplicant.conf";
 }
