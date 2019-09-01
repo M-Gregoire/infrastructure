@@ -9,6 +9,10 @@
   networking.wireless.enable = true;
 
   services.resolved.enable = true;
+  # https://unix.stackexchange.com/questions/304050/how-to-avoid-conflicts-between-dnsmasq-and-systemd-resolved
+  services.resolved.extraConfig = ''
+  DNSStubListener=false
+  '';
 
   systemd.network.enable = true;
 
