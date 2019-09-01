@@ -10,6 +10,7 @@
       ../../../resources/hosts/Rind
       ../../../vendor/infrastructure-private/resources/hosts/Rind
       ./nixos-in-place.nix
+      ../../networks/cloud
     ];
 
   networking.hosts = {

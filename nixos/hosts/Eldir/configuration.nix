@@ -7,6 +7,7 @@
       ./hardware-configuration.nix
       ../../profiles/Server
       ../../../resources/hosts/Eldir
+      ../../networks/cloud
       ../../../vendor/infrastructure-private/resources/hosts/Eldir
       ./nixos-in-place.nix
     ];
