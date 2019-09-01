@@ -46,7 +46,7 @@
   };
 
   systemd.network.networks."30-virtualisation" = {
-    matchConfig.Name = "virbr* veth* vboxnet* docker* br-*";
+    matchConfig.Name = "virbr* veth* vboxnet* docker* br-* hassio";
     linkConfig.Unmanaged = "yes";
     linkConfig.RequiredForOnline = false;
   };
