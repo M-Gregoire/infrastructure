@@ -14,7 +14,7 @@
     ../../dev/wireguard-client.nix
     ./mime.nix
     ./services.nix
-    ../../systemd-network.nix
+    ../../systemd-networkd.nix
   ];
 
   nix.nixPath = with builtins; [
