@@ -32,5 +32,7 @@
     gocr
     # Common file association (`mimeapps.list`)
     shared-mime-info
+    # DNS utils (dig)
+    dnsutils
   ];
 }
