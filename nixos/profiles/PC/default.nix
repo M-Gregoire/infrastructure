@@ -73,8 +73,14 @@
     nerdfonts
   ];
 
-  # NTFS/exFat support
-  environment.systemPackages = with pkgs; [ ntfs3g exfat ];
+  environment.systemPackages = with pkgs; [
+    # NTFS
+    ntfs3g
+    # exFat
+    exfat
+    # NFS
+    nfs-utils
+  ];
 
   networking.firewall.allowedTCPPorts = config.resources.pcs.openTCPPorts;
   networking.firewall.allowedUDPPorts = config.resources.pcs.openUDPPorts;
