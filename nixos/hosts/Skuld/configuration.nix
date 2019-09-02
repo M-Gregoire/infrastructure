@@ -8,7 +8,6 @@
     ../../networks/home
     ../../profiles/Server
     ../../systemd-boot.nix
-    ../../systemd-networkd.nix
     ./hardware-configuration.nix
     ./mail-server.nix
     ./services.nix
