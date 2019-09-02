@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+nix-channel --update
+
 cd home-manager
 git fetch --all
 git checkout master
@@ -13,8 +16,6 @@ git fetch --all
 git checkout channels/nixos-19.03
 
 cd ..
-
-nix-channel --update
 
 cd infrastructure-private
 git fetch --all
