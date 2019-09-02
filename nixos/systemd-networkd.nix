@@ -3,18 +3,16 @@
 {
   networking.dhcpcd.enable = false;
 
-  networking.nameservers = config.resources.network.dns;
+  networking.nameservers = config.resources.network.DNS;
   networking.useNetworkd = true;
 
   networking.wireless.enable = true;
 
   services.resolved.enable = true;
-  # https://unix.stackexchange.com/questions/304050/how-to-avoid-conflicts-between-dnsmasq-and-systemd-resolved
   services.resolved.extraConfig = ''
-  DNSStubListener=false
+  FallbackDNS=${builtins.concatStringsSep " " config.resources.network.fallbackDNS}
   '';
-
-  systemd.network.enable = true;
+  services.resolved.dnssec="false";
 
   systemd.network.networks."20-wired" = {
     dhcpConfig.RouteMetric = "10";

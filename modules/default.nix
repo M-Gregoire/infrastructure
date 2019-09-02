@@ -317,9 +317,15 @@
       description = "GPG key fingerprint";
     };
 
-    network.dns = mkOption {
-      type = types.listOf types.str;
-      description = "The list of nameservers.  It can be left empty if it is auto-detected.";
+    network = {
+      DNS = mkOption {
+        type = types.listOf types.str;
+        description = "The list of nameservers. It can be left empty if it is auto-detected.";
+      };
+      fallbackDNS = mkOption {
+        type = types.listOf types.str;
+        description = "The list of fallback nameservers. It can be left empty if it is auto-detected.";
+      };
     };
 
     wireguard = {
