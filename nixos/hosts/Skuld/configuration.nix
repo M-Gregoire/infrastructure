@@ -5,6 +5,7 @@
     ../../../resources/hosts/Skuld
     ../../../vendor/infrastructure-private/resources/hosts/Skuld
     ../../common.nix
+    ../../dev/nfs.nix
     ../../networks/home
     ../../profiles/Server
     ../../systemd-boot.nix
