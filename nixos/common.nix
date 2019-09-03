@@ -7,7 +7,7 @@
     ./services.nix
   ];
 
-  environment.systemPackages = with pkgs; [ file bc ];
+  environment.systemPackages = with pkgs; [ file bc parted ];
 
   # Boot with last kernel
   # https://github.com/NixOS/nixpkgs/issues/30335
