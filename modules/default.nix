@@ -118,6 +118,11 @@
           example = [ "[ 22 ]" ];
           description = "Specifies open TCP ports.";
         };
+        openUDPPorts = mkOption {
+          type = with types; listOf port;
+          example = [ "[ 22 ]" ];
+          description = "Specifies open UDP ports.";
+        };
         extraDomains = mkOption {
           type = types.listOf types.str;
           description = "Domain aliases";
