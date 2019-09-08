@@ -34,5 +34,7 @@
     shared-mime-info
     # DNS utils (dig)
     dnsutils
+    # OpenSSL
+    openssl
   ];
 }
