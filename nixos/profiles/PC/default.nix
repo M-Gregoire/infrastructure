@@ -48,13 +48,15 @@
     ];
   };
 
-  # Non-PC hosts
+  # Non-PC hosts and non-localhost descriptor (MimirEth but not Mimir)
   networking.hosts = {
     "${config.resources.hosts.skuld.ip}" = [ "Skuld" ];
     "${config.resources.hosts.eldir.ip}" = [ "Eldir" ];
     "${config.resources.hosts.rind.ip}" = [ "Rind" ];
-    "${config.resources.hosts.idunn.wifi.ip}" = [ "IdunnWifi" ];
-    "${config.resources.hosts.idunn.eth.ip}" = [ "IdunnEth" "Idunn" ];
+    "${config.resources.hosts.idunn.wifi.ip}" = [ "IdunnWifi" (if config.resources.hosts.idunn.wifi.ip == config.resources.hosts.idunn.ip then "Idunn" else "")];
+    "${config.resources.hosts.idunn.eth.ip}" = [ "IdunnEth" (if config.resources.hosts.idunn.eth.ip == config.resources.hosts.idunn.ip then "Idunn" else "")];
+    "${config.resources.hosts.mimir.wifi.ip}" = [ "MimirWifi" (if config.resources.hosts.mimir.wifi.ip == config.resources.hosts.mimir.ip then "Mimir" else "") ];
+    "${config.resources.hosts.mimir.eth.ip}" = [ "MimirEth" (if config.resources.hosts.mimir.eth.ip == config.resources.hosts.mimir.ip then "Mimir" else "")];
   };
 
   home-manager.users.${config.resources.host.username} = {...}: {
@@ -81,11 +83,6 @@
     # NFS
     nfs-utils
   ];
-
-  networking.firewall.allowedTCPPorts = config.resources.pcs.openTCPPorts;
-  networking.firewall.allowedUDPPorts = config.resources.pcs.openUDPPorts;
-  networking.firewall.allowedTCPPortRanges = config.resources.pcs.openTCPPortsRange;
-  networking.firewall.allowedUDPPortRanges = config.resources.pcs.openUDPPortsRange;
 
   environment.etc."wpa_supplicant.conf".source = "${config.resources.pcs.paths.privateConfig}/secrets/wpa_supplicant.conf";
 }

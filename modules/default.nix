@@ -25,6 +25,9 @@
           description = "Scripts folder path";
         };
       };
+    };
+
+    firewall = {
       openTCPPorts = mkOption {
         type = with types; listOf port;
         example = [ "[ 22 ]" ];
@@ -113,16 +116,6 @@
           example = "1.1.1.1";
           description = "Ip of the host";
         };
-        openTCPPorts = mkOption {
-          type = with types; listOf port;
-          example = [ "[ 22 ]" ];
-          description = "Specifies open TCP ports.";
-        };
-        openUDPPorts = mkOption {
-          type = with types; listOf port;
-          example = [ "[ 22 ]" ];
-          description = "Specifies open UDP ports.";
-        };
         extraDomains = mkOption {
           type = types.listOf types.str;
           description = "Domain aliases";
@@ -130,6 +123,16 @@
       };
       mimir = {
         ip = mkOption {
+          type = types.str;
+          example = "1.1.1.1";
+          description = "Ip of the host";
+        };
+        wifi.ip = mkOption {
+          type = types.str;
+          example = "1.1.1.1";
+          description = "Ip of the host";
+        };
+        eth.ip = mkOption {
           type = types.str;
           example = "1.1.1.1";
           description = "Ip of the host";
@@ -144,16 +147,6 @@
           type = types.str;
           example = "1.1.1.1";
           description = "Ip of the host.";
-        };
-        openTCPPorts = mkOption {
-          type = with types; listOf port;
-          example = [ "[ 22 ]" ];
-          description = "Specifies open TCP ports.";
-        };
-        openUDPPorts = mkOption {
-          type = with types; listOf port;
-          example = [ "[ 22 ]" ];
-          description = "Specifies open UDP ports.";
         };
         extraDomains = mkOption {
           type = types.listOf types.str;
@@ -183,6 +176,11 @@
         };
       };
       idunn = {
+        ip = mkOption {
+          type = types.str;
+          example = "1.1.1.1";
+          description = "Ip of the host";
+        };
         wifi.ip = mkOption {
           type = types.str;
           example = "1.1.1.1";

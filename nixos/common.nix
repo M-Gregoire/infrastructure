@@ -33,6 +33,16 @@
   networking.hostName = config.resources.host.name;
   networking.nameservers = config.resources.network.DNS;
 
+  networking.firewall.allowedTCPPorts = config.resources.firewall.openTCPPorts;
+  networking.firewall.allowedUDPPorts = config.resources.firewall.openUDPPorts;
+  networking.firewall.allowedTCPPortRanges = config.resources.firewall.openTCPPortsRange;
+  networking.firewall.allowedUDPPortRanges = config.resources.firewall.openUDPPortsRange;
+
+  networking.hosts = {
+    "127.0.0.1" = [ "${config.resources.host.name}" ];
+    "::1" = [ "${config.resources.host.name}" ];
+  };
+
   users.users.${config.resources.host.username} = {
     isNormalUser = true;
     home = "/home/${config.resources.host.username}";

@@ -12,13 +12,8 @@
       ./nixos-in-place.nix
     ];
 
-  networking.hosts = {
-    "127.0.0.1" = [ "${config.resources.host.name}" ];
-    "::1" = [ "${config.resources.host.name}" ];
-  };
-
   system.stateVersion = "16.09";
 
-  networking.firewall.allowedTCPPorts = config.resources.hosts.eldir.openTCPPorts;
-  networking.firewall.allowedUDPPorts = config.resources.hosts.eldir.openUDPPorts;
+  networking.firewall.allowedTCPPorts = config.resources.firewall.openTCPPorts;
+  networking.firewall.allowedUDPPorts = config.resources.firewall.openUDPPorts;
 }

@@ -15,13 +15,6 @@
       ../../../luks.nix
     ];
 
-  # Servers are defined in profile, only home network should be defined here
-  networking.hosts = {
-    "127.0.0.1" = [ "${config.resources.host.name}" ];
-    "::1" = [ "${config.resources.host.name}" ];
-    "${config.resources.hosts.mimir.ip}" = [ "Mimir" ];
-  };
-
   services.xserver.libinput = {
    # Enable tapping
     tapping = true;

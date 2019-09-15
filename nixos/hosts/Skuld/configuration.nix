@@ -15,8 +15,6 @@
   ];
 
   networking.hosts = {
-    "127.0.0.1" = [ "${config.resources.host.name}" ];
-    "::1" = [ "${config.resources.host.name}" ];
     # This part is used to define custom DNS records by my Octopi
     "${config.resources.hosts.bur.ip}" = [ "Bur" "${builtins.concatStringsSep " " config.resources.hosts.bur.extraDomains}" ];
     "${config.resources.hosts.eldir.ip}" = [ "Eldir" "${builtins.concatStringsSep " " config.resources.hosts.eldir.extraDomains}" ];
@@ -29,9 +27,6 @@
     # Basic hostname binded to localhost
     "${config.resources.hosts.skuld.ip}" = [ "${builtins.concatStringsSep " " config.resources.hosts.skuld.extraDomains}" ];
   };
-
-  networking.firewall.allowedTCPPorts = config.resources.hosts.skuld.openTCPPorts;
-  networking.firewall.allowedUDPPorts = config.resources.hosts.skuld.openUDPPorts;
 
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.efiSupport = false;
