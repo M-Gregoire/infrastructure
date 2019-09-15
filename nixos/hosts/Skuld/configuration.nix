@@ -18,7 +18,7 @@
     # This part is used to define custom DNS records by my Octopi
     "${config.resources.hosts.bur.ip}" = [ "Bur" "${builtins.concatStringsSep " " config.resources.hosts.bur.extraDomains}" ];
     "${config.resources.hosts.eldir.ip}" = [ "Eldir" "${builtins.concatStringsSep " " config.resources.hosts.eldir.extraDomains}" ];
-    "${config.resources.hosts.idunn.eth.ip}" = [ "Idunn" "${builtins.concatStringsSep " " config.resources.hosts.idunn.extraDomains}" ];
+    "${config.resources.hosts.idunn.ip}" = [ "Idunn" "${builtins.concatStringsSep " " config.resources.hosts.idunn.extraDomains}" ];
     "${config.resources.hosts.mimir.ip}" = [ "Mimir" "${builtins.concatStringsSep " " config.resources.hosts.mimir.extraDomains}" ];
     "${config.resources.hosts.rind.ip}" = [ "Rind" "${builtins.concatStringsSep " " config.resources.hosts.rind.extraDomains}" ];
     # Basic hostname already defined in the home profile
