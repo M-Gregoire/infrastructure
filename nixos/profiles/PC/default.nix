@@ -11,7 +11,7 @@
     ../../dev/openvpn-client.nix
     ../../dev/pam.nix
     ../../dev/teamviewer.nix
-    ../../dev/wireguard-client.nix
+    ../../dev/wireguard-tools.nix
     ./mime.nix
     ./services.nix
     ../../systemd-networkd.nix

@@ -7,7 +7,13 @@
     ./services.nix
   ];
 
-  environment.systemPackages = with pkgs; [ file bc parted ];
+  environment.systemPackages = with pkgs; [
+    file
+    bc
+    parted
+    # DNS utils (dig)
+    dnsutils
+  ];
 
   # Boot with last kernel
   # https://github.com/NixOS/nixpkgs/issues/30335
@@ -25,6 +31,7 @@
   nixpkgs.overlays = import ../nixpkgs/overlays.nix;
 
   networking.hostName = config.resources.host.name;
+  networking.nameservers = config.resources.network.DNS;
 
   users.users.${config.resources.host.username} = {
     isNormalUser = true;

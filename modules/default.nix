@@ -352,11 +352,11 @@
           description = "Wireguard endpoint port";
         };
         address = mkOption {
-          type = types.str;
+          type = types.listOf types.str;
           description = "The IP addresses of the interface";
         };
         dns = mkOption {
-          type = types.str;
+          type = types.listOf types.str;
           description = "The IP addresses of the DNS servers";
         };
       };

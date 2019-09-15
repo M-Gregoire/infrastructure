@@ -1,28 +1,35 @@
 { config, pkgs, ... }:
 
 {
-  boot.extraModulePackages = [ config.boot.kernelPackages.wireguard ];
-
-  environment.systemPackages = with pkgs; [ wireguard-tools ];
-
-  systemd.network.netdevs."35-wg0" = {
+  systemd.network.netdevs."30-wg0" = {
     netdevConfig.Kind = "wireguard";
     netdevConfig.Name = "wg0";
-    netdevConfig.MTUBytes = "1300";
     extraConfig = ''
           [WireGuard]
           PrivateKey=${config.resources.wireguard.client.privateKey}
-          ListenPort=auto
           [WireGuardPeer]
           PublicKey=${config.resources.wireguard.client.publicKey}
           AllowedIPs=0.0.0.0/0, ::/0
           Endpoint=${config.resources.wireguard.client.endpointIp}:${config.resources.wireguard.client.endpointPort}
-          PersistentKeepalive = 25
+          PersistentKeepalive=25
         '';
   };
 
-  systemd.network.networks."35-wg0" = {
+  systemd.network.networks."30-wg0" = {
     matchConfig.Name = "wg0";
-    networkConfig.Address = config.resources.wireguard.client.address;
+    address = config.resources.wireguard.client.address;
+    dns = config.resources.wireguard.client.dns;
+    routes = [
+      {
+        routeConfig.Destination = "0.0.0.0/0";
+        routeConfig.Gateway = "10.10.28.217";
+        routeConfig.GatewayOnlink = "true";
+       }
+    ];
+    extraConfig = ''
+          [RoutingPolicyRule]
+          To=10.10.28.217
+          Table=2468
+        '';
   };
 }
