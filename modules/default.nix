@@ -153,17 +153,6 @@
           description = "Domain aliases";
         };
       };
-      rind = {
-        ip = mkOption {
-          type = types.str;
-          example = "1.1.1.1";
-          description = "Ip of the host";
-        };
-        extraDomains = mkOption {
-          type = types.listOf types.str;
-          description = "Domain aliases";
-        };
-      };
       octopi = {
         ip = mkOption {
           type = types.str;
