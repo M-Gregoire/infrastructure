@@ -18,7 +18,7 @@ in
 
 home.packages = with pkgs; with xfce4-13; [
     # Browser & emails
-    unstable.firefox-bin
+    firefox-bin
     chromium
     thunderbird-bin
     # Video
