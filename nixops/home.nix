@@ -5,26 +5,26 @@
     { config, pkgs, ... }:
     {
       imports =
-      [
-        ../nixos/hosts/Bur/configuration.nix
-      ];
+        [
+          ../nixos/hosts/Bur/configuration.nix
+        ];
     };
 
   Mimir =
     { config, pkgs, ... }:
     {
       imports =
-      [
-        ../nixos/hosts/Mimir/configuration.nix
-      ];
+        [
+          ../nixos/hosts/Mimir/configuration.nix
+        ];
     };
 
   Skuld =
     { config, pkgs, ... }:
     {
       imports =
-      [
-        ../nixos/hosts/Skuld/configuration.nix
-      ];
+        [
+          ../nixos/hosts/Skuld/configuration.nix
+        ];
     };
 }
