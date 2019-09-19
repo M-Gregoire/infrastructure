@@ -16,6 +16,15 @@
 
   services.xserver.libinput.accelSpeed = null;
 
+  services.xserver.videoDrivers = [ "amdgpu" ];
+
+  boot.kernelParams = [
+    # Fix "Start save/load RF Kill switch" error on boot with amdgpu
+    "iommu=soft"
+    # Fix boot hanging on "Reached target local file"
+    "amdgpu.dc=0 radeon.si_support=0 radeon.cik_support=0 amdgpu.si_support=1 amdgpu.cik_support=1"
+  ];
+
   # Servers are defined in profile, only home network should be defined here
   networking.hosts = {
     "${config.resources.hosts.bur.ip}" = [ "Bur" ];
