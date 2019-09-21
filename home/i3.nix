@@ -261,6 +261,7 @@ in
     windowManager.i3.extraConfig = ''
       exec --no-startup-id i3-msg "workspace ${workspace2}; append_layout $HOME/.config/i3/layouts/kitty.json" && $TERMINAL
       exec --no-startup-id i3-msg "workspace ${workspace4}; append_layout $HOME/.config/i3/layouts/thunar.json" && thunar
+      exec gpg-connect-agent /bye
     '';
   };
 }
