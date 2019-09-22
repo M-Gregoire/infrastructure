@@ -25,7 +25,7 @@
     "${config.resources.hosts.octopi.ip}" = [ "${builtins.concatStringsSep " " config.resources.hosts.octopi.extraDomains}" ];
     # Basic hostname binded to localhost
     "${config.resources.hosts.skuld.ip}" = [ "${builtins.concatStringsSep " " config.resources.hosts.skuld.extraDomains}" ];
-  };
+  } // config.resources.hosts.extra;
 
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.efiSupport = false;

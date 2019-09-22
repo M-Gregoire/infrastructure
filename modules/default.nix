@@ -185,6 +185,15 @@
           description = "Domain aliases";
         };
       };
+      extra = mkOption {
+        type = types.attrsOf (types.listOf types.str);
+        example = literalExample ''
+        {
+          "127.0.0.1" = [ "foo.bar.baz" ];
+        };
+        '';
+        description = "Define extra hosts";
+      };
     };
 
     taskd = {
