@@ -6,6 +6,7 @@
     ../../../vendor/infrastructure-private/resources/hosts/Skuld
     ../../common.nix
     ../../dev/nfs.nix
+    ../../dev/wireguard-server.nix
     ../../networks/home
     ../../profiles/Server
     ../../systemd-boot.nix

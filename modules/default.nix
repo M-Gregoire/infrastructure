@@ -379,13 +379,15 @@
           description = "Private key";
         };
         peers = {
-          publicKey = mkOption {
-            type = types.str;
-            description = "Public key of the peer ";
-          };
-          allowedIPs = mkOption {
-            type = types.listOf types.str;
-            description = "List of IPs assigned to this peer within the tunnel subnet. Used to configure routing.";
+          lug = {
+            publicKey = mkOption {
+              type = types.str;
+              description = "Public key of the peer ";
+            };
+            allowedIPs = mkOption {
+              type = types.listOf types.str;
+              description = "List of IPs assigned to this peer within the tunnel subnet. Used to configure routing.";
+            };
           };
         };
       };
