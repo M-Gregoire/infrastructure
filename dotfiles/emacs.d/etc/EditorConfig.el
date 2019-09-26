@@ -1,2 +1,5 @@
-(use-package editorconfig)
-(editorconfig-mode 1)
+(use-package editorconfig
+  :delight
+  :config
+  (editorconfig-mode 1)
+  )

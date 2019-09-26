@@ -1,16 +1,19 @@
-; Depends on: [ Company ]
+;; Use jedi for completion
+(use-package company-jedi
+  :after compamy
+  :config
+  (defun my/python-mode-hook ()
+    (add-to-list 'company-backends 'company-jedi))
+  :hook (python-mode . my/python-mode-hook)
+  )
 
-; Use jedi for completion
-(ue-ensure-installed '(company-jedi))
-(defun my/python-mode-hook ()
-  (add-to-list 'company-backends 'company-jedi))
+;; Start Elpy
+(use-package elpy
+  :config
+  (elpy-enable)
+  )
 
-(add-hook 'python-mode-hook 'my/python-mode-hook)
-
-; Start Elpy
-;(ue-ensure-installed '(elpy))
-;(elpy-enable)
-
-; Py-autopep8
-(ue-ensure-installed '(py-autopep8))
-(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+;; Py-autopep8
+(use-package py-autopep8
+  :hook (elpy-mode . py-autopep8-enable-on-save)
+  )
