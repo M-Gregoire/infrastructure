@@ -57,5 +57,4 @@
   # For SSH
   # https://askubuntu.com/questions/54145/how-to-fix-strange-backspace-behaviour-with-urxvt-zsh
   environment.variables.TERM = "xterm";
-
 }

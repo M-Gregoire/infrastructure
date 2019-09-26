@@ -23,11 +23,11 @@
       python36Packages.yapf
   ];
 
-  home.file.".emacs.d/init.el".source = ../dotfiles/emacs.d/init.el;
-  home.file.".emacs.d/etc".source = ../dotfiles/emacs.d/etc;
-  home.file.".emacs.d/snippets".source = ../dotfiles/emacs.d/snippets;
-  home.file.".emacs.d/bookmarks".source = ../vendor/infrastructure-private/dotfiles/emacs/bookmarks;
-  home.file."/home/${config.resources.host.username}/.local/share/applications/emacs.desktop".source = ../dotfiles/emacs.d/emacs.desktop;
+  home.file.".emacs.d/init.el".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/emacs.d/init.el";
+  home.file.".emacs.d/etc".source =  builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/emacs.d/etc";
+  home.file.".emacs.d/snippets".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/emacs.d/snippets";
+  home.file.".emacs.d/bookmarks".source = builtins.toPath "${config.resources.pcs.paths.privateDotfiles}/emacs/bookmarks";
+  home.file.".local/share/applications/emacs.desktop".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/emacs.d/emacs.desktop";
 
   xresources.properties = {
     # Font backend settings

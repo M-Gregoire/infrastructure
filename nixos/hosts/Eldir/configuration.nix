@@ -3,17 +3,17 @@
 {
   imports =
     [
-      ../../common.nix
-      ./hardware-configuration.nix
-      ../../profiles/Server
       ../../../resources/hosts/Eldir
-      ../../networks/cloud
       ../../../vendor/infrastructure-private/resources/hosts/Eldir
+      ../../common.nix
+      ../../networks/cloud
+      ../../profiles/Server
+      ./hardware-configuration.nix
       ./nixos-in-place.nix
     ];
 
   system.stateVersion = "16.09";
 
-  networking.firewall.allowedTCPPorts = config.resources.firewall.openTCPPorts;
-  networking.firewall.allowedUDPPorts = config.resources.firewall.openUDPPorts;
+  networking.firewall.allowedTCPPorts = [ config.resources.hosts.eldir.ssh.port ];
+  services.openssh.ports = [ config.resources.hosts.eldir.ssh.port ];
 }

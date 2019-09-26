@@ -3,22 +3,25 @@
 {
   imports =
     [
-      ../../common.nix
-      ../../grub.nix
-      ../../profiles/PC
-      ../../dev/suspend.nix
-      ../../dev/bluetooth.nix
-      ./hardware-configuration.nix
-      ../../networks/home
+      ../../../luks.nix
       ../../../resources/hosts/Bur
       ../../../vendor/infrastructure-private/resources/hosts/Bur
-      ../../../luks.nix
+      ../../common.nix
+      ../../dev/bluetooth.nix
+      ../../dev/suspend.nix
+      ../../grub.nix
+      ../../networks/home
+      ../../profiles/PC
+      ./hardware-configuration.nix
     ];
 
   services.xserver.libinput = {
-   # Enable tapping
+    # Enable tapping
     tapping = true;
   };
+
+  networking.firewall.allowedTCPPorts = [ config.resources.hosts.bur.ssh.port ];
+  services.openssh.ports = [ config.resources.hosts.bur.ssh.port ];
 
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.efiSupport = true;

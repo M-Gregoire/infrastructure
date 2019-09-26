@@ -13,6 +13,8 @@
     parted
     # DNS utils (dig)
     dnsutils
+    # htop
+    htop
   ];
 
   # Boot with last kernel
@@ -22,36 +24,39 @@
   # uname -r
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  # Wifi
+  environment.etc."wpa_supplicant.conf".source = "${config.resources.pcs.paths.secrets}/wpa_supplicant.conf";
+
   nix.nixPath = with builtins; [
-    "nixpkgs=${toPath "/home/${config.resources.host.username}/src/github.com/${config.resources.git.username}/${config.resources.config.publicRepo}" + toPath /vendor/nixpkgs-release}"
-    "nixos-config=${toPath "/home/${config.resources.host.username}/src/github.com/${config.resources.git.username}/${config.resources.config.publicRepo}/nixos" + toPath "/hosts/${config.resources.host.name}/configuration.nix"}"
+    "nixpkgs=${toPath "${config.resources.pcs.paths.publicConfig}/vendor/nixpkgs-release"}"
+    "nixos-config=${toPath "${config.resources.pcs.paths.publicConfig}/nixos/hosts/${config.resources.hostname}/configuration.nix"}"
   ];
 
   nixpkgs.config = import ../nixpkgs/config.nix;
   nixpkgs.overlays = import ../nixpkgs/overlays.nix;
 
-  networking.hostName = config.resources.host.name;
-  networking.nameservers = config.resources.network.DNS;
+  networking.hostName = config.resources.hostname;
+  networking.nameservers = config.resources.networking.DNS;
 
-  networking.firewall.allowedTCPPorts = config.resources.firewall.openTCPPorts;
-  networking.firewall.allowedUDPPorts = config.resources.firewall.openUDPPorts;
-  networking.firewall.allowedTCPPortRanges = config.resources.firewall.openTCPPortsRange;
-  networking.firewall.allowedUDPPortRanges = config.resources.firewall.openUDPPortsRange;
+  networking.firewall.allowedTCPPorts = config.resources.networking.firewall.openTCPPorts;
+  networking.firewall.allowedUDPPorts = config.resources.networking.firewall.openUDPPorts;
+  networking.firewall.allowedTCPPortRanges = config.resources.networking.firewall.openTCPPortsRange;
+  networking.firewall.allowedUDPPortRanges = config.resources.networking.firewall.openUDPPortsRange;
 
   networking.hosts = {
-    "127.0.0.1" = [ "${config.resources.host.name}" ];
-    "::1" = [ "${config.resources.host.name}" ];
+    "127.0.0.1" = [ "${config.resources.hostname}" ];
+    "::1" = [ "${config.resources.hostname}" ];
   };
 
-  users.users.${config.resources.host.username} = {
+  users.users.${config.resources.username} = {
     isNormalUser = true;
-    home = "/home/${config.resources.host.username}";
+    home = "/home/${config.resources.username}";
     extraGroups = [
       "wheel"
       "docker"
     ];
     shell = pkgs.zsh;
-    openssh.authorizedKeys.keys = config.resources.ssh.publicKeys;
+    openssh.authorizedKeys.keys = config.resources.services.ssh.publicKeys;
   };
 
   i18n = {

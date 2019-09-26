@@ -4,7 +4,7 @@
     {
       deployment = {
         targetHost = "Skuld";
-        targetPort = config.resources.ssh.deploymentPort;
+        targetPort = config.resources.hosts.skuld.ssh.port;
       };
     };
 }

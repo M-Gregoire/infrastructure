@@ -6,7 +6,5 @@
     #nmap-graphical
     # MITM
     mitmproxy
-    # Base64 tools
-    libb64
   ];
 }

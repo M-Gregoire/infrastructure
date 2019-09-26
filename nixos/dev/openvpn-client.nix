@@ -1,5 +1,5 @@
 { config, pkgs, ... }:
 
 {
-  environment.systemPackages = with pkgs; [ openvpn networkmanager-openvpn ];
+  environment.systemPackages = with pkgs; [ openvpn ];
 }

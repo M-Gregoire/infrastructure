@@ -18,7 +18,7 @@ let
   workspace9 = "9";
   workspace10 = "10";
 
-  screenshot = "${config.home.sessionVariables.HOME}/Screenshots/";
+  screenshot = "${config.resources.pcs.paths.home}/Screenshots/";
 
   i3Theme = import ./theme/i3.nix {
     theme=config.resources.theme;
@@ -29,7 +29,6 @@ let
 in
 
 {
-
   imports = [
     ./i3-polybar.nix
   ];
@@ -53,25 +52,23 @@ in
     xautolock
   ];
 
-  xdg.configFile."i3/layouts".source = ../dotfiles/i3/layouts;
-
   xsession = {
     enable = true;
     windowManager.i3.enable = true;
     windowManager.i3.package = pkgs.i3-gaps;
 
-   windowManager.i3.config = {
-     fonts = [ "${config.resources.font.name} ${config.resources.font.size}" ];
-     colors = i3Theme;
-     assigns = {
-       # Use xprop
-       "${workspace1}" = [{class="Firefox";}];
-       "${workspace3}" = [{class="Emacs";}];
-       "${workspace8}" = [{class="rambox";}];
-       "${workspace9}" = [{class="Thunderbird";}];
-     };
+    windowManager.i3.config = {
+      fonts = [ "${config.resources.font.name} ${config.resources.font.size}" ];
+      colors = i3Theme;
+      assigns = {
+        # Use xprop
+        "${workspace1}" = [{class="Firefox";}];
+        "${workspace3}" = [{class="Emacs";}];
+        "${workspace8}" = [{class="rambox";}];
+        "${workspace9}" = [{class="Thunderbird";}];
+      };
 
-     keybindings = {
+      keybindings = {
         # Basic actions
         # https://faq.i3wm.org/question/118/mouse-cursor-remains-waiting-after-closing-last-tile.1.html
         "${modifier}+Return" = "exec --no-startup-id i3-sensible-terminal";
@@ -82,7 +79,7 @@ in
         "Group1+${modifier}+Shift+a" = "kill";
         "Group2+${modifier}+Shift+a" = "kill";
         "${modifier}+d" = "exec albert show";
-        "${modifier}+Shift+s" = "exec $SCRIPTS/shutdownMenu.sh";
+        "${modifier}+Shift+s" = "exec ${config.resources.pcs.paths.scripts}/shutdownMenu.sh";
         "${modifier}+Shift+x" = "exec dm-tool lock";
         # Basic movements/focus
         "${modifier}+j" = "focus left";
@@ -123,14 +120,14 @@ in
         "${modifier}+m" = " focus floating; mode \"moveit\"";
         # Functions
         "F1" = "exec --no-startup-id mono ${pkgs.keepass.out}/lib/dotnet/keepass/KeePass.exe --auto-type";
-        "F2" = "exec --no-startup-id $SCRIPTS/switchSoundCard.sh";
-        "F12" = "exec --no-startup-id $SCRIPTS/hidePolybar.sh";
+        "F2" = "exec --no-startup-id ${config.resources.pcs.paths.scripts}/switchSoundCard.sh";
+        "F12" = "exec --no-startup-id ${config.resources.pcs.paths.scripts}/hidePolybar.sh";
         "Scroll_Lock" = "exec --no-startup-id $SCRIPTS/kbdLayout.sh";
         "Print" = "exec --no-startup-id scrot -e 'mv $f ${screenshot}' && notify-send 'Screenshot taken'";
         "--release ${modifier}+Print" = "exec --no-startup-id scrot -s -e 'mv $f ${screenshot}' && notify-send 'Screenshot taken'";
         # Disable Control+q in Firefox
-        "Group1+${modifier}+Control+q" = "exec --no-startup-id $SCRIPTS/noCTRLqFirefox.sh";
-        "Group2+${modifier}+Control+q" = "exec --no-startup-id $SCRIPTS/noCTRLqFirefox.sh";
+        "Group1+${modifier}+Control+q" = "exec --no-startup-id ${config.resources.pcs.paths.scripts}/noCTRLqFirefox.sh";
+        "Group2+${modifier}+Control+q" = "exec --no-startup-id ${config.resources.pcs.paths.scripts}/noCTRLqFirefox.sh";
         # Change workspace
         "Group1+${modifier}+1" = "workspace ${workspace1}";
         "Group1+${modifier}+2" = "workspace ${workspace2}";
@@ -234,12 +231,12 @@ in
       };
 
       startup = [
-        { command = "${config.resources.browser}"; always = false; notification = false; }
-        { command = "${config.resources.mailer}"; always = false; notification = false; }
+        { command = "${config.resources.pcs.browser}"; always = false; notification = false; }
+        { command = "${config.resources.pcs.mailer}"; always = false; notification = false; }
         { command = "spotify"; always = false; notification = false; }
         { command = "compton"; always = false; notification = false; }
         # Same random wallpaper on two screens with different resolution
-        { command =  "$SCRIPTS/randWallpaper.sh"; always = true; notification = false; }
+        { command =  "${config.resources.pcs.paths.scripts}/randWallpaper.sh"; always = true; notification = false; }
         { command = "albert"; always = false; notification = false; }
         #{ command = "xautolock -time 4 -locker 'dm-tool lock' &"; always = false; notification = false; }
         # No screen saver
@@ -253,14 +250,14 @@ in
         # Remove all urgencies on startup
         { command = "sleep ${wait-for-urgency}; for win in $(wmctrl -l | awk -F' ' '{print $1}'); do wmctrl -i -r $win -b remove,demands_attention; done"; always = false; notification = false; }
         # Polybar
-        { command = "$SCRIPTS/polybar.sh"; always = true; notification = false; }
+        { command = "${config.resources.pcs.paths.scripts}/polybar.sh"; always = true; notification = false; }
         # Spotify in Polybar
-        { command = "/usr/bin/env python3 $SCRIPTS/polybar-spotify-controls/scripts/spotify/py_spotify_listener.py"; always = false; notification = false; }
+        { command = "/usr/bin/env python3 ${config.resources.pcs.paths.scripts}/polybar-spotify-controls/scripts/spotify/py_spotify_listener.py"; always = false; notification = false; }
       ];
     };
     windowManager.i3.extraConfig = ''
-      exec --no-startup-id i3-msg "workspace ${workspace2}; append_layout $HOME/.config/i3/layouts/kitty.json" && $TERMINAL
-      exec --no-startup-id i3-msg "workspace ${workspace4}; append_layout $HOME/.config/i3/layouts/thunar.json" && thunar
+      exec --no-startup-id i3-msg "workspace ${workspace2}; append_layout ${config.resources.pcs.paths.publicDotfiles}/i3/layouts/kitty.json" && $TERMINAL
+      exec --no-startup-id i3-msg "workspace ${workspace4}; append_layout ${config.resources.pcs.paths.publicDotfiles}/i3/layouts/thunar.json" && thunar
       exec gpg-connect-agent /bye
     '';
   };

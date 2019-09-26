@@ -4,7 +4,7 @@
     {
       deployment = {
         targetHost = "Eldir";
-        targetPort = config.resources.ssh.deploymentPort;
+        targetPort = config.resources.hosts.eldir.ssh.port;
       };
     };
 }

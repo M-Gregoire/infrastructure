@@ -16,7 +16,7 @@ in
 {
   programs.feh.enable = true;
 
-home.packages = with pkgs; with xfce4-13; [
+  home.packages = with pkgs; with xfce4-13; [
     # Browser & emails
     firefox-bin
     chromium
@@ -67,8 +67,8 @@ home.packages = with pkgs; with xfce4-13; [
     tightvnc
   ];
 
-  home.file.".mozilla/firefox/${config.resources.firefox.profile}/user.js".source = ../dotfiles/firefox/user.js;
-  xdg.configFile."albert/albert.conf".source = ../dotfiles/albert/albert.conf;
+  home.file.".mozilla/firefox/${config.resources.pcs.firefox.profile}/user.js".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/firefox/user.js";
+  xdg.configFile."albert/albert.conf".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/albert/albert.conf";
 
   programs.zathura = {
     enable = true;

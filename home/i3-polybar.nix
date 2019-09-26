@@ -89,7 +89,7 @@ in
       "module/spotify" = {
         type = "custom/ipc";
         hook-0 = "echo ";
-        hook-1 = "python3 $SCRIPTS/polybar-spotify-controls/scripts/spotify/spotify_status.py";
+        hook-1 = "python3 ${config.resources.pcs.paths.scripts}/polybar-spotify-controls/scripts/spotify/spotify_status.py";
         initial = "1";
         format-padding = "4";
         format-underline = "#1db954";
@@ -230,19 +230,6 @@ in
         ramp-3 = "";
         ramp-4 = "";
         ramp-foreground = "#f5f5f5";
-      };
-
-      "module/sysmenu" = {
-        type = "custom/text";
-        content = "";
-
-        content-background = "#E6E6E6";
-        content-foreground = "${i3BarTheme.background}";
-        content-padding = "2";
-
-        click-left = "~/.config/polybar/scripts/powermenu";
-        click-middle = "~/.config/polybar/scripts/powermenu";
-        click-right = "~/.config/polybar/scripts/powermenu-alt";
       };
 
       "global/wm" = {

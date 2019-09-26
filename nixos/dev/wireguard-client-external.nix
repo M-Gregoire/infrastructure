@@ -6,25 +6,25 @@
     netdevConfig.Name = "wg0";
     extraConfig = ''
           [WireGuard]
-          PrivateKey=${config.resources.wireguard.client.privateKey}
+          PrivateKey=${config.resources.networking.wireguard.clients.external.privateKey}
           [WireGuardPeer]
-          PublicKey=${config.resources.wireguard.client.publicKey}
+          PublicKey=${config.resources.networking.wireguard.clients.external.publicKey}
           AllowedIPs=0.0.0.0/0, ::/0
-          Endpoint=${config.resources.wireguard.client.endpointIp}:${config.resources.wireguard.client.endpointPort}
+          Endpoint=${config.resources.networking.wireguard.clients.external.endpointIp}:${config.resources.networking.wireguard.clients.external.endpointPort}
           PersistentKeepalive=25
         '';
   };
 
   systemd.network.networks."30-wg0" = {
     matchConfig.Name = "wg0";
-    address = config.resources.wireguard.client.address;
-    dns = config.resources.wireguard.client.dns;
+    address = config.resources.networking.wireguard.clients.external.address;
+    dns = config.resources.networking.wireguard.clients.external.dns;
     routes = [
       {
         routeConfig.Destination = "0.0.0.0/0";
         routeConfig.Gateway = "10.10.28.217";
         routeConfig.GatewayOnlink = "true";
-       }
+      }
     ];
     extraConfig = ''
           [RoutingPolicyRule]

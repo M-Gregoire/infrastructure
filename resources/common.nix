@@ -6,9 +6,7 @@
   ];
 
   config.resources = with lib; mapAttrs (_: v: mkDefault v) {
-    git.username = "M-Gregoire";
-    config.publicRepo = "infrastructure";
-    config.privateRepo = "infrastructure-private";
+    services.git.username = "M-Gregoire";
 
     font.name = "DejaVu Sans Mono Nerd Font";
     font.size = "12";

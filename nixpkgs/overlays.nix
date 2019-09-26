@@ -9,6 +9,7 @@
   in {
     inherit (unstable)
       docker
+      emacs
     ;
   })
 ]

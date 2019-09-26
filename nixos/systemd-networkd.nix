@@ -9,7 +9,7 @@
 
   services.resolved.enable = true;
   services.resolved.extraConfig = ''
-  FallbackDNS=${builtins.concatStringsSep " " config.resources.network.fallbackDNS}
+  FallbackDNS=${builtins.concatStringsSep " " config.resources.networking.fallbackDNS}
   '';
   services.resolved.dnssec="false";
 

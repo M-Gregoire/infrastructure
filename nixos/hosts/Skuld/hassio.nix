@@ -4,9 +4,10 @@
   ##########################################################
   #                                                        #
   #   This file explain how Hassio can be used on NixOS    #
-  #   by manually defining the services. However, I now    #
-  #   use hassio-compose which is easier to maintain. I    #
-  #   leave this file for documentation purposes.          #
+  #   by manually defining the services. However, I moved  #
+  #   to hassio-compose then home-assistant which are      #
+  #   easier to maintain. I leave this file for            #
+  #   documentation purposes.                              #
   #                                                        #
   ##########################################################
 
@@ -30,7 +31,7 @@
   # Network manager don't modify dns
   networking.networkmanager.dns = "none";
   networking.networkmanager.unmanaged = [ "docker0" ];
-  networking.nameservers = config.resources.network.dns;
+  networking.nameservers = config.resources.networking.DNS;
   # https://github.com/moby/moby/issues/32836
   # https://people.freedesktop.org/~lkundrak/nm-docs/NetworkManager.conf.html
   networking.networkmanager.extraConfig = ''

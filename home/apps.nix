@@ -48,20 +48,20 @@
     qrencode
   ];
 
-  xdg.configFile."khal/config".source = ../vendor + builtins.toPath "/${config.resources.config.privateRepo}" + /dotfiles/khal/config;
-  xdg.configFile."vdirsyncer/config".source = ../vendor + builtins.toPath "/${config.resources.config.privateRepo}" + /dotfiles/vdirsyncer/config;
+  xdg.configFile."khal/config".source = builtins.toPath "${config.resources.pcs.paths.privateDotfiles}/khal/config";
+  xdg.configFile."vdirsyncer/config".source = builtins.toPath "${config.resources.pcs.paths.privateDotfiles}/vdirsyncer/config";
 
-  home.file.".task".source = ../vendor + builtins.toPath "/${config.resources.config.privateRepo}" + /task;
+  home.file.".task".source = builtins.toPath "${config.resources.pcs.paths.secrets}/task";
   programs.taskwarrior = {
     enable = true;
     colorTheme = "dark-16";
     config = {
       taskd = {
-        certificate = "${config.resources.taskd.certificate}";
-        key = "${config.resources.taskd.key}";
-        ca = "${config.resources.taskd.ca}";
-        server = "${config.resources.taskd.server}:${config.resources.taskd.port}";
-        credentials = "${config.resources.taskd.credentials}";
+        certificate = "${config.resources.services.taskd.certificate}";
+        key = "${config.resources.services.taskd.key}";
+        ca = "${config.resources.services.taskd.ca}";
+        server = "${config.resources.services.taskd.server}:${config.resources.services.taskd.port}";
+        credentials = "${config.resources.services.taskd.credentials}";
       };
       # L is lower than nothing
       uda.priority.values="H,M,,L";

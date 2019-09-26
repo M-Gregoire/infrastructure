@@ -8,7 +8,7 @@
     background  = "#${theme.base0D}";
     border      = if withBorder then "#${theme.base05}" else "#${theme.base0D}";
     text        = "#${theme.base00}";
-   };
+  };
   activeWorkspace = {
     background  = "#${theme.base03}";
     border      = if withBorder then "#${theme.base05}" else "#${theme.base03}";

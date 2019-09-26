@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ config, lib, ... }:
 
 {
   options.resources = with lib; {
@@ -24,49 +24,58 @@
           example = "/home/me/.scripts";
           description = "Scripts folder path";
         };
+        publicDotfiles = mkOption {
+          type = types.str;
+          example = "/path/to/dotfiles/";
+          description = "Dotfiles folder path";
+        };
+        privateDotfiles = mkOption {
+          type = types.str;
+          example = "/path/to/dotfiles/";
+          description = "Dotfiles folder path";
+        };
+        secrets = mkOption {
+          type = types.str;
+          example = "/path/to/secrets/";
+          description = "Secrets folder path";
+        };
       };
-    };
 
-    firewall = {
-      openTCPPorts = mkOption {
-        type = with types; listOf port;
-        example = [ "[ 22 ]" ];
-        description = "Specifies open TCP ports.";
-      };
-      openUDPPorts = mkOption {
-        type = with types; listOf port;
-        example = [ "[ 22 ]" ];
-        description = "Specifies open UDP ports.";
-      };
-      openTCPPortsRange = mkOption {
-        type = with types; listOf (attrsOf port);
-        example = [ "[ { from = 22; to = 25; } ]" ];
-        description = "Specifies open TCP ports range.";
-      };
-      openUDPPortsRange = mkOption {
-        type = with types; listOf (attrsOf port);
-        example = [ "[ { from = 22; to = 25; } ]" ];
-        description = "Specifies open UDP ports range.";
-      };
-    };
-
-    host = {
-      name = mkOption {
+      firefox.profile = mkOption {
         type = types.str;
-        example = "foo";
-        description = "Hostname";
+        example = "abcdef12.default";
+        description = "Firefox profile name";
       };
-      username = mkOption {
+
+      terminal = mkOption {
         type = types.str;
-        example = "bar";
-        description = "Session username";
+        example = "kitty";
+        description = "Terminal emulator";
+      };
+
+      browser = mkOption {
+        type = types.str;
+        example = "firefox";
+        description = "Browser";
+      };
+
+      mailer = mkOption {
+        type = types.str;
+        example = "thunderbird";
+        description = "Email reader";
       };
     };
 
-    wifi.workSSID = mkOption {
+    hostname = mkOption {
       type = types.str;
-      example = "foobar";
-      description = "Work wifi SSID";
+      example = "foo";
+      description = "Hostname";
+    };
+
+    username = mkOption {
+      type = types.str;
+      example = "bar";
+      description = "Session username";
     };
 
     geo = {
@@ -89,10 +98,15 @@
 
     hosts = {
       beyla = {
-        ip = mkOption {
+        ip.default = mkOption {
           type = types.str;
           example = "1.1.1.1";
           description = "Ip of the host";
+        };
+        ssh.port = mkOption {
+          type = types.port;
+          example = [ "22" ];
+          description = "Specifies on which port the SSH daemon listens.";
         };
         extraDomains = mkOption {
           type = types.listOf types.str;
@@ -100,10 +114,15 @@
         };
       };
       bur = {
-        ip = mkOption {
+        ip.default = mkOption {
           type = types.str;
           example = "1.1.1.1";
           description = "Ip of the host";
+        };
+        ssh.port = mkOption {
+          type = types.port;
+          example = [ "22" ];
+          description = "Specifies on which port the SSH daemon listens.";
         };
         extraDomains = mkOption {
           type = types.listOf types.str;
@@ -111,10 +130,15 @@
         };
       };
       eldir = {
-        ip = mkOption {
+        ip.default = mkOption {
           type = types.str;
           example = "1.1.1.1";
           description = "Ip of the host";
+        };
+        ssh.port = mkOption {
+          type = types.port;
+          example = [ "22" ];
+          description = "Specifies on which port the SSH daemon listens.";
         };
         extraDomains = mkOption {
           type = types.listOf types.str;
@@ -122,20 +146,27 @@
         };
       };
       mimir = {
-        ip = mkOption {
-          type = types.str;
-          example = "1.1.1.1";
-          description = "Ip of the host";
+        ip = {
+          default = mkOption {
+            type = types.str;
+            example = "1.1.1.1";
+            description = "Ip of the host";
+          };
+          wifi = mkOption {
+            type = types.str;
+            example = "1.1.1.1";
+            description = "Ip of the host";
+          };
+          eth = mkOption {
+            type = types.str;
+            example = "1.1.1.1";
+            description = "Ip of the host";
+          };
         };
-        wifi.ip = mkOption {
-          type = types.str;
-          example = "1.1.1.1";
-          description = "Ip of the host";
-        };
-        eth.ip = mkOption {
-          type = types.str;
-          example = "1.1.1.1";
-          description = "Ip of the host";
+        ssh.port = mkOption {
+          type = types.port;
+          example = [ "22" ];
+          description = "Specifies on which port the SSH daemon listens.";
         };
         extraDomains = mkOption {
           type = types.listOf types.str;
@@ -143,7 +174,7 @@
         };
       };
       skuld = {
-        ip = mkOption {
+        ip.default = mkOption {
           type = types.str;
           example = "1.1.1.1";
           description = "Ip of the host.";
@@ -152,9 +183,14 @@
           type = types.listOf types.str;
           description = "Domain aliases";
         };
+        ssh.port = mkOption {
+          type = types.port;
+          example = [ "22" ];
+          description = "Specifies on which port the SSH daemon listens.";
+        };
       };
       octopi = {
-        ip = mkOption {
+        ip.default = mkOption {
           type = types.str;
           example = "1.1.1.1";
           description = "Ip of the host";
@@ -162,27 +198,39 @@
         extraDomains = mkOption {
           type = types.listOf types.str;
           description = "Domain aliases";
+        };
+        ssh.port = mkOption {
+          type = types.port;
+          example = [ "22" ];
+          description = "Specifies on which port the SSH daemon listens.";
         };
       };
       idunn = {
-        ip = mkOption {
-          type = types.str;
-          example = "1.1.1.1";
-          description = "Ip of the host";
-        };
-        wifi.ip = mkOption {
-          type = types.str;
-          example = "1.1.1.1";
-          description = "Ip of the host";
-        };
-        eth.ip = mkOption {
-          type = types.str;
-          example = "1.1.1.1";
-          description = "Ip of the host";
+        ip = {
+          default = mkOption {
+            type = types.str;
+            example = "1.1.1.1";
+            description = "Ip of the host";
+          };
+          wifi = mkOption {
+            type = types.str;
+            example = "1.1.1.1";
+            description = "Ip of the host";
+          };
+          eth = mkOption {
+            type = types.str;
+            example = "1.1.1.1";
+            description = "Ip of the host";
+          };
         };
         extraDomains = mkOption {
           type = types.listOf types.str;
           description = "Domain aliases";
+        };
+        ssh.port = mkOption {
+          type = types.port;
+          example = [ "22" ];
+          description = "Specifies on which port the SSH daemon listens.";
         };
       };
       extra = mkOption {
@@ -196,129 +244,129 @@
       };
     };
 
-    taskd = {
-      theme = mkOption {
-        type = types.str;
-        example = "dark-16";
-        description = "Taskd theme";
+    services = {
+      taskd = {
+        theme = mkOption {
+          type = types.str;
+          example = "dark-16";
+          description = "Taskd theme";
+        };
+        certificate = mkOption {
+          type = types.str;
+          example = "/path/to/certificate";
+          description = "Taskd certificate location";
+        };
+        key = mkOption {
+          type = types.str;
+          example = "/path/to/key";
+          description = "Taskd key location";
+        };
+        ca = mkOption {
+          type = types.str;
+          example = "/path/to/ca";
+          description = "Taskd ca location";
+        };
+        server = mkOption {
+          type = types.str;
+          example = "myserver.com";
+          description = "Taskd server";
+        };
+        port = mkOption {
+          type = types.str;
+          example = "53589";
+          description = "Taskd port";
+        };
+        credentials = mkOption {
+          type = types.str;
+          example = "foo/bar/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
+          description = "Taskd credentials";
+        };
       };
-      certificate = mkOption {
-        type = types.str;
-        example = "/path/to/certificate";
-        description = "Taskd certificate location";
+
+      nextcloud = {
+        username = mkOption {
+          type = types.str;
+          example = "John-Doe";
+          description = "Nextcloud username";
+        };
+        password = mkOption {
+          type = types.str;
+          example = "SomePassw0rdExample";
+          description = "Nextcloud password";
+        };
+        url = mkOption {
+          type = types.str;
+          example = "https://my.nextcloud.server/";
+          description = "Nextcloud url";
+        };
+        localFolder = mkOption {
+          type = types.str;
+          example = "/Nextcloud/folder/";
+          description = "Local folder path";
+        };
       };
-      key = mkOption {
-        type = types.str;
-        example = "/path/to/key";
-        description = "Taskd key location";
+
+      gotify = {
+        url = mkOption {
+          type = types.str;
+          example = "https://gotify.my.server";
+          description = "Gofity url";
+        };
+        token = mkOption {
+          type = types.str;
+          example = "T0k3n";
+          description = "Gofity app token";
+        };
       };
-      ca = mkOption {
-        type = types.str;
-        example = "/path/to/ca";
-        description = "Taskd ca location";
+
+      git = {
+        username = mkOption {
+          type = types.str;
+          example = "John-Doe";
+          description = "Git username";
+        };
+        email = mkOption {
+          type = types.str;
+          example = "john@doe.com";
+          description = "Git email";
+        };
+
+
       };
-      server = mkOption {
-        type = types.str;
-        example = "myserver.com";
-        description = "Taskd server";
+
+      ssh = {
+        publicKeys = mkOption {
+          type = with types; listOf str;
+          example = [ "ssh-ed25519 AAAABBBBCCCCDDDDEEEEFFFFGGGGHHHHIIIIJJJJKKKKLLLLMMMMNNNNOOOOPPPPQQQQ" ];
+          description = "Public SSH keys to allow access to";
+        };
       };
-      port = mkOption {
-        type = types.str;
-        example = "53589";
-        description = "Taskd port";
-      };
-      credentials = mkOption {
-        type = types.str;
-        example = "foo/bar/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
-        description = "Taskd credentials";
+
+      email.backup = {
+        fqdn = mkOption {
+          type = types.str;
+          example = "fqdn";
+          description = "fqdn";
+        };
+        account = mkOption {
+          type = types.str;
+          example = "account@me.com";
+          description = "Account";
+        };
+        hashedPassword = mkOption {
+          type = types.str;
+          example = "hash";
+          description = "Hashed password";
+        };
       };
     };
 
-    nextcloud = {
-      username = mkOption {
-        type = types.str;
-        example = "John-Doe";
-        description = "Nextcloud username";
-      };
-      password = mkOption {
-        type = types.str;
-        example = "SomePassw0rdExample";
-        description = "Nextcloud password";
-      };
-      url = mkOption {
-        type = types.str;
-        example = "https://my.nextcloud.server/";
-        description = "Nextcloud url";
-      };
-      localFolder = mkOption {
-        type = types.str;
-        example = "/Nextcloud/folder/";
-        description = "Local folder path";
-      };
-    };
-
-    gotify = {
-      url = mkOption {
-        type = types.str;
-        example = "https://gotify.my.server";
-        description = "Gofity url";
-      };
-      token = mkOption {
-        type = types.str;
-        example = "T0k3n";
-        description = "Gofity app token";
-      };
-    };
-
-    git = {
-      username = mkOption {
-        type = types.str;
-        example = "John-Doe";
-        description = "Git username";
-      };
-      email = mkOption {
-        type = types.str;
-        example = "john@doe.com";
-        description = "Git email";
-      };
-    };
-
-    config = {
-      publicRepo = mkOption {
-        type = types.str;
-        example = "infrastructure";
-        description = "Public repo containing config";
-      };
-      privateRepo = mkOption {
-        type = types.str;
-        example = "infrastructure-private";
-        description = "Private repo containing config";
-      };
-    };
-
-    ssh = {
-      publicKeys = mkOption {
-        type = with types; listOf str;
-        example = [ "ssh-ed25519 AAAABBBBCCCCDDDDEEEEFFFFGGGGHHHHIIIIJJJJKKKKLLLLMMMMNNNNOOOOPPPPQQQQ" ];
-        description = "Public SSH keys to allow access to";
-      };
-      ports = mkOption {
-        type = with types; listOf port;
-        example = [ "[ 22 ]" ];
-        description = "Specifies on which ports the SSH daemon listens.";
-      };
-      deploymentPort = mkOption {
-        type = types.port;
-        example = [ "22" ];
-        description = "Specifies on which port NixOps should deploy.";
-      };
-    };
     gpg.publicKey.fingerprint = mkOption {
       type = types.strMatching "[[:alnum:]]{40}";
       description = "GPG key fingerprint";
     };
 
-    network = {
+    networking = {
       DNS = mkOption {
         type = types.listOf types.str;
         description = "The list of nameservers. It can be left empty if it is auto-detected.";
@@ -327,76 +375,98 @@
         type = types.listOf types.str;
         description = "The list of fallback nameservers. It can be left empty if it is auto-detected.";
       };
-    };
+      wifi.workSSID = mkOption {
+        type = types.str;
+        example = "foobar";
+        description = "Work wifi SSID";
+      };
 
-    wireguard = {
-      client = {
-        publicKey = mkOption {
-          type = types.str;
-          description = "Wireguard public key";
+      firewall = {
+        openTCPPorts = mkOption {
+          type = with types; listOf port;
+          example = [ "[ 22 ]" ];
+          description = "Specifies open TCP ports.";
         };
-        privateKey = mkOption {
-          type = types.str;
-          description = "Wireguard private key";
+        openUDPPorts = mkOption {
+          type = with types; listOf port;
+          example = [ "[ 22 ]" ];
+          description = "Specifies open UDP ports.";
         };
-        endpointIp = mkOption {
-          type = types.str;
-          description = "Wireguard endpoint ip";
+        openTCPPortsRange = mkOption {
+          type = with types; listOf (attrsOf port);
+          example = [ "[ { from = 22; to = 25; } ]" ];
+          description = "Specifies open TCP ports range.";
         };
-        endpointPort = mkOption {
-          type = types.str;
-          description = "Wireguard endpoint port";
-        };
-        address = mkOption {
-          type = types.listOf types.str;
-          description = "The IP addresses of the interface";
-        };
-        dns = mkOption {
-          type = types.listOf types.str;
-          description = "The IP addresses of the DNS servers";
+        openUDPPortsRange = mkOption {
+          type = with types; listOf (attrsOf port);
+          example = [ "[ { from = 22; to = 25; } ]" ];
+          description = "Specifies open UDP ports range.";
         };
       };
-      server = {
-        externalInterface = mkOption {
-          type = types.str;
-          description = "External interface";
-        };
-        internalInterfaces = mkOption {
-          type = types.listOf types.str;
-          description = "Internal interfaces";
-        };
-        port = mkOption {
-          type = types.int;
-          example = 51820;
-          description = "Port Wireguard server listens to";
-        };
-        ips = mkOption {
-          type = types.listOf types.str;
-          description = "IP address and subnet of the server's end of the tunnel interface";
-        };
-        privateKey = mkOption {
-          type = types.str;
-          description = "Private key";
-        };
-        peers = {
-          lug = {
+
+      wireguard = {
+        clients = {
+          external = {
             publicKey = mkOption {
               type = types.str;
-              description = "Public key of the peer ";
+              description = "Wireguard public key";
             };
-            allowedIPs = mkOption {
+            privateKey = mkOption {
+              type = types.str;
+              description = "Wireguard private key";
+            };
+            endpointIp = mkOption {
+              type = types.str;
+              description = "Wireguard endpoint ip";
+            };
+            endpointPort = mkOption {
+              type = types.str;
+              description = "Wireguard endpoint port";
+            };
+            address = mkOption {
               type = types.listOf types.str;
-              description = "List of IPs assigned to this peer within the tunnel subnet. Used to configure routing.";
+              description = "The IP addresses of the interface";
+            };
+            dns = mkOption {
+              type = types.listOf types.str;
+              description = "The IP addresses of the DNS servers";
+            };
+          };
+          home = {
+            dns = mkOption {
+              type = types.listOf types.str;
+              description = "The IP addresses of the DNS servers";
             };
           };
         };
+        server = {
+          externalInterface = mkOption {
+            type = types.str;
+            description = "External interface";
+          };
+          internalInterfaces = mkOption {
+            type = types.listOf types.str;
+            description = "Internal interfaces";
+          };
+          port = mkOption {
+            type = types.int;
+            example = 51820;
+            description = "Port Wireguard server listens to";
+          };
+          ips = mkOption {
+            type = types.listOf types.str;
+            description = "IP address and subnet of the server's end of the tunnel interface";
+          };
+          privateKey = mkOption {
+            type = types.str;
+            description = "Private key";
+          };
+          peers = mkOption {
+            #type = with types; listOf (submodule peerOpts);
+            description = "Peers linked to the interface";
+          };
+        };
       };
-    };
-
-    firefox.profile = mkOption {
-      type = types.str;
-      example = "abcdef12.default";
-      description = "Firefox profile name";
     };
 
     font = {
@@ -423,42 +493,6 @@
         example = "12";
         description = "Font size in i3status";
       };
-    };
-
-    email.backup = {
-      fqdn = mkOption {
-        type = types.str;
-        example = "fqdn";
-        description = "fqdn";
-      };
-      account = mkOption {
-        type = types.str;
-        example = "account@me.com";
-        description = "Account";
-      };
-      hashedPassword = mkOption {
-        type = types.str;
-        example = "hash";
-        description = "Hashed password";
-      };
-    };
-
-    terminal = mkOption {
-      type = types.str;
-      example = "kitty";
-      description = "Terminal emulator";
-    };
-
-    browser = mkOption {
-      type = types.str;
-      example = "firefox";
-      description = "Browser";
-    };
-
-    mailer = mkOption {
-      type = types.str;
-      example = "thunderbird";
-      description = "Email reader";
     };
 
     theme = {

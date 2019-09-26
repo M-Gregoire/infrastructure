@@ -15,6 +15,7 @@
   # Smart card
   services.pcscd.enable = true;
 
+  # Use gpg agent instead of ssh agent
   programs.ssh.startAgent = false;
 
   # Kwallet was used for storing Nextcloud client identifiers
@@ -38,13 +39,13 @@
 
   systemd.services.tasks = {
     description = "Sync taskwarrior tasks";
-    serviceConfig.User = "${config.resources.host.username}";
+    serviceConfig.User = "${config.resources.username}";
     script = ''
       if ${pkgs.taskwarrior}/bin/task sync; then
         echo "Syncing success"
       else
         echo "Syncing fail: sending notification"
-        ${pkgs.curl}/bin/curl -X POST "${config.resources.gotify.url}/message?token=${config.resources.gotify.token}" -F "title=Taskwarrior sync failed" -F "message=An error occured while trying to sync local computer with taskd server" -F "priority=5"
+        ${pkgs.curl}/bin/curl -X POST "${config.resources.services.gotify.url}/message?token=${config.resources.services.gotify.token}" -F "title=Taskwarrior sync failed" -F "message=An error occured while trying to sync local computer with taskd server" -F "priority=5"
       fi
     '';
     wantedBy = [ "default.target" ];
@@ -52,14 +53,14 @@
 
   systemd.services.nixpkgs-update = {
     description = "Update nixpkgs release";
-    serviceConfig.User = "${config.resources.host.username}";
+    serviceConfig.User = "${config.resources.username}";
     script = ''
-      if [ -d '/home/${config.resources.host.username}/src/github.com/${config.resources.git.username}/${config.resources.config.publicRepo}' ]; then
-        if ${pkgs.git}/bin/git -C /home/${config.resources.host.username}/src/github.com/${config.resources.git.username}/${config.resources.config.publicRepo}/vendor/nixpkgs-release fetch --all && ${pkgs.git}/bin/git -C /home/${config.resources.host.username}/src/github.com/${config.resources.git.username}/${config.resources.config.publicRepo}/vendor/nixpkgs-release checkout channels/nixos-19.03; then
+      if [ -d '${config.resources.pcs.paths.publicConfig}' ]; then
+        if ${pkgs.git}/bin/git -C ${config.resources.pcs.paths.publicConfig}/vendor/nixpkgs-release fetch --all && ${pkgs.git}/bin/git -C ${config.resources.pcs.paths.publicConfig}/vendor/nixpkgs-release checkout channels/nixos-19.03; then
           echo "nixpkgs-release updated"
         else
           echo "nixpkgs-release update failed: sending notification"
-          ${pkgs.curl}/bin/curl -X POST "${config.resources.gotify.url}/message?token=${config.resources.gotify.token}" -F "title=Nixpkgs-release update failed" -F "message=Check systemctl for more information." -F "priority=5"
+          ${pkgs.curl}/bin/curl -X POST "${config.resources.services.gotify.url}/message?token=${config.resources.services.gotify.token}" -F "title=Nixpkgs-release update failed" -F "message=Check systemctl for more information." -F "priority=5"
         fi
       else
         echo "public repo does not exists"
@@ -72,13 +73,13 @@
 
   systemd.services.nextcloud = {
     description = "Sync nextcloud";
-    serviceConfig.User = "${config.resources.host.username}";
+    serviceConfig.User = "${config.resources.username}";
     script = ''
-      if ${pkgs.nextcloud-client}/bin/nextcloudcmd --non-interactive --silent --user ${config.resources.nextcloud.username} --password ${config.resources.nextcloud.password} ${config.resources.nextcloud.localFolder} ${config.resources.nextcloud.url}; then
+      if ${pkgs.nextcloud-client}/bin/nextcloudcmd --non-interactive --silent --user ${config.resources.services.nextcloud.username} --password ${config.resources.services.nextcloud.password} ${config.resources.services.nextcloud.localFolder} ${config.resources.services.nextcloud.url}; then
         echo "Nextcloud syncing is done"
       else
         echo "Syncing fail: sending notification"
-        ${pkgs.curl}/bin/curl -X POST "${config.resources.gotify.url}/message?token=${config.resources.gotify.token}" -F "title=Nextcloud sync failed" -F "message=An error occured while trying to sync local computer with Nextcloud server" -F "priority=5"
+        ${pkgs.curl}/bin/curl -X POST "${config.resources.services.gotify.url}/message?token=${config.resources.services.gotify.token}" -F "title=Nextcloud sync failed" -F "message=An error occured while trying to sync local computer with Nextcloud server" -F "priority=5"
       fi
     '';
     wantedBy = [ "default.target" ];

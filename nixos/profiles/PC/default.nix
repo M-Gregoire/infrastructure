@@ -11,6 +11,7 @@
     ../../dev/openvpn-client.nix
     ../../dev/pam.nix
     ../../dev/teamviewer.nix
+    ../../dev/wireguard-client-home.nix
     ../../dev/wireguard-tools.nix
     ./mime.nix
     ./services.nix
@@ -18,7 +19,7 @@
   ];
 
   nix.nixPath = with builtins; [
-    "home-manager=${toPath "/home/${config.resources.host.username}/src/github.com/${config.resources.git.username}/${config.resources.config.publicRepo}" + toPath /vendor/home-manager}"
+    "home-manager=${toPath "${config.resources.pcs.paths.publicConfig}" + toPath /vendor/home-manager}"
   ];
 
   sound.enable = true;
@@ -34,10 +35,9 @@
 
   hardware.u2f.enable = true;
 
-  users.users.${config.resources.host.username} = {
+  users.users.${config.resources.username} = {
     extraGroups = [
-      "networkmanager"
-      # go-mtfs non-root mounting
+      # go-mtfs nhoston-root mounting
       "plugdev"
       # Serial
       "dialout"
@@ -50,18 +50,18 @@
 
   # Non-PC hosts and non-localhost descriptor (MimirEth but not Mimir)
   networking.hosts = {
-    "${config.resources.hosts.skuld.ip}" = [ "Skuld" ];
-    "${config.resources.hosts.eldir.ip}" = [ "Eldir" ];
-    "${config.resources.hosts.idunn.wifi.ip}" = [ "IdunnWifi" (if config.resources.hosts.idunn.wifi.ip == config.resources.hosts.idunn.ip then "Idunn" else "") ];
-    "${config.resources.hosts.idunn.eth.ip}" = [ "IdunnEth" (if config.resources.hosts.idunn.eth.ip == config.resources.hosts.idunn.ip then "Idunn" else "") ];
-    "${config.resources.hosts.mimir.wifi.ip}" = [ "MimirWifi" (if config.resources.hosts.mimir.wifi.ip == config.resources.hosts.mimir.ip then "Mimir" else "") ];
-    "${config.resources.hosts.mimir.eth.ip}" = [ "MimirEth" (if config.resources.hosts.mimir.eth.ip == config.resources.hosts.mimir.ip then "Mimir" else "") ];
+    "${config.resources.hosts.skuld.ip.default}" = [ "Skuld" ];
+    "${config.resources.hosts.eldir.ip.default}" = [ "Eldir" ];
+    "${config.resources.hosts.idunn.ip.wifi}" = [ "IdunnWifi" (if config.resources.hosts.idunn.ip.wifi == config.resources.hosts.idunn.ip.default then "Idunn" else "") ];
+    "${config.resources.hosts.idunn.ip.eth}" = [ "IdunnEth" (if config.resources.hosts.idunn.ip.eth == config.resources.hosts.idunn.ip.default then "Idunn" else "") ];
+    "${config.resources.hosts.mimir.ip.wifi}" = [ "MimirWifi" (if config.resources.hosts.mimir.ip.wifi == config.resources.hosts.mimir.ip.default then "Mimir" else "") ];
+    "${config.resources.hosts.mimir.ip.eth}" = [ "MimirEth" (if config.resources.hosts.mimir.ip.eth == config.resources.hosts.mimir.ip.default then "Mimir" else "") ];
   };
 
-  home-manager.users.${config.resources.host.username} = {...}: {
+  home-manager.users.${config.resources.username} = {...}: {
     imports = [
       ../../../home
-      (../../../home/hosts + builtins.toPath "/${config.resources.host.name}")
+      (../../../home/hosts + builtins.toPath "/${config.resources.hostname}")
     ];
     # Pass to home-manager
     nixpkgs.overlays = config.nixpkgs.overlays;
@@ -82,6 +82,4 @@
     # NFS
     nfs-utils
   ];
-
-  environment.etc."wpa_supplicant.conf".source = "${config.resources.pcs.paths.privateConfig}/secrets/wpa_supplicant.conf";
 }

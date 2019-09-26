@@ -6,7 +6,7 @@
   ];
 
   home.packages = with pkgs; [
-    # Brightness control
+    # Backlight control
     xorg.xbacklight
   ];
 

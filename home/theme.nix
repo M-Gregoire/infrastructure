@@ -1,7 +1,6 @@
 { config, pkgs, ... }:
 
 {
-
   home.packages = with pkgs; [
     # Themes, icons and cursors
     arc-theme

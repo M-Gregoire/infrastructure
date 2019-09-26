@@ -5,6 +5,7 @@
     ./dev/LSP.nix
     ./dev/c.nix
     ./dev/compton.nix
+    ./dev/emacs.nix
     ./dev/encryption.nix
     ./dev/git.nix
     ./dev/go.nix
@@ -22,5 +23,5 @@
     ./dev/web.nix
   ];
 
-  home.file.".editorconfig".source = ../dotfiles/root.editorconfig;
+  home.file.".editorconfig".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/root.editorconfig";
 }

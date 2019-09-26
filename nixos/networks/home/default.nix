@@ -6,7 +6,7 @@
   ];
 
   networking.hosts = {
-    "${config.resources.hosts.beyla.ip}" = [ "Beyla" ];
-    "${config.resources.hosts.octopi.ip}" = [ "Octopi" ];
+    "${config.resources.hosts.beyla.ip.default}" = [ "Beyla" ];
+    "${config.resources.hosts.octopi.ip.default}" = [ "Octopi" ];
   };
 }

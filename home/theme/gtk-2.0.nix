@@ -70,8 +70,8 @@
       text[SELECTED]  = "#1d1f21"
       bg[SELECTED]    = "#b4b7b4"
       base[SELECTED]  = "#ffffff"
-      }
+    }
 
       class "GtkWidget" style "default"
     '';
-  }
+}

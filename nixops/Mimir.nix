@@ -4,7 +4,7 @@
     {
       deployment = {
         targetHost = "Mimir";
-        targetPort = config.resources.ssh.deploymentPort;
+        targetPort = config.resources.hosts.mimir.ssh.port;
       };
     };
 }

@@ -13,13 +13,13 @@
 
   mailserver = {
     enable = true;
-    fqdn = "${config.resources.email.backup.fqdn}";
+    fqdn = "${config.resources.services.email.backup.fqdn}";
     #domains = [ "example.com" "example2.com" ];
     loginAccounts = {
-        "${config.resources.email.backup.account}" = {
-            # Obtained using mkpasswd -m sha-512 "pass"
-            hashedPassword = "${config.resources.email.backup.hashedPassword}";
-        };
+      "${config.resources.services.email.backup.account}" = {
+        # Obtained using mkpasswd -m sha-512 "pass"
+        hashedPassword = "${config.resources.services.email.backup.hashedPassword}";
+      };
     };
     # Enable IMAP and POP3
     enableImap = true;

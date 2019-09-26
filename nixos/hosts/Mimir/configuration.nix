@@ -3,15 +3,16 @@
 {
   imports =
     [
-      ../../common.nix
-      ../../grub.nix
-      ./hardware-configuration.nix
-      ../../dev/steam.nix
-      ../../dev/bluetooth.nix
-      ../../profiles/PC
       ../../../resources/hosts/Mimir
-      ../../networks/home
       ../../../vendor/infrastructure-private/resources/hosts/Mimir
+      ../../common.nix
+      ../../dev/bluetooth.nix
+      ../../dev/steam.nix
+      ../../dev/virtualbox.nix
+      ../../grub.nix
+      ../../networks/home
+      ../../profiles/PC
+      ./hardware-configuration.nix
     ];
 
   services.xserver.libinput.accelSpeed = null;
@@ -27,16 +28,16 @@
 
   # Servers are defined in profile, only home network should be defined here
   networking.hosts = {
-    "${config.resources.hosts.bur.ip}" = [ "Bur" ];
+    "${config.resources.hosts.bur.ip.default}" = [ "Bur" ];
   };
+
+  networking.firewall.allowedTCPPorts = [ config.resources.hosts.mimir.ssh.port ];
+  services.openssh.ports = [ config.resources.hosts.mimir.ssh.port ];
 
   environment.systemPackages = with pkgs; [ numlockx glxinfo ];
   services.xserver.displayManager.lightdm.extraSeatDefaults = ''
     greeter-setup-script=${pkgs.numlockx}/bin/numlockx on
   '';
-
-  virtualisation.virtualbox.host.enable = true;
-  users.extraUsers."${config.resources.host.username}".extraGroups = ["vboxusers"];
 
   boot.loader.grub.useOSProber = true;
   boot.loader.efi.canTouchEfiVariables = false;

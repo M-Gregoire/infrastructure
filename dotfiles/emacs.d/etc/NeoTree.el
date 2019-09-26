@@ -12,8 +12,9 @@
   ;; Bind neotree to F8
   (global-set-key [f8] 'neotree-toggle)
 
-  ;; Show hidden files
-  (setq-default neo-show-hidden-files t)
+  ;; Hide some files
+  (setq neo-show-hidden-files nil)
+  (setq neo-hidden-regexp-list '("~$" "^#.*#$"))
 
   ;; Show current directory in NeoTree
   (setq neo-smart-open t)

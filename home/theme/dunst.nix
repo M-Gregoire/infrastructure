@@ -2,7 +2,7 @@
 
 {
   settings = {
-     global = {
+    global = {
       frame_color     = "#${theme.base05}";
       separator_color = "#${theme.base05}";
     };

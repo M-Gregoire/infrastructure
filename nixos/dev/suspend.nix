@@ -9,7 +9,7 @@
       ExecStart = "${pkgs.pamixer}/bin/pamixer --mute";
       RemainAfterExit = true;
       Type = "oneshot";
-      User = "${config.resources.host.username}";
+      User = "${config.resources.username}";
     };
   };
 }

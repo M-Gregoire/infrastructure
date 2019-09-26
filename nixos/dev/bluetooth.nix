@@ -1,8 +1,11 @@
 { config, pkgs, ... }:
 
 {
-# Bluetooth
-  hardware.bluetooth.enable = true;
+  # Bluetooth
+  hardware.bluetooth = {
+    enable = true;
+    package = pkgs.bluezFull;
+  };
   # A2DP Sink
   hardware.bluetooth.extraConfig = "
     [General]

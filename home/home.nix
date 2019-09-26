@@ -5,7 +5,6 @@
     ../modules
     ./apps.nix
     ./dev.nix
-    ./emacs.nix
     ./environment.nix
     ./gui.nix
     ./home.nix

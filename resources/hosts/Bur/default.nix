@@ -7,6 +7,6 @@
   ];
 
   config.resources = with lib; mapAttrs (_: v: mkDefault v) {
-    host.name = "Bur";
+    hostname = "Bur";
   };
 }

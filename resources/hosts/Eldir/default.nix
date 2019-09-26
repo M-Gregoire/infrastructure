@@ -6,6 +6,6 @@
   ];
 
   config.resources = with lib; mapAttrs (_: v: mkDefault v) {
-    host.name = "Eldir";
+    hostname = "Eldir";
   };
 }
