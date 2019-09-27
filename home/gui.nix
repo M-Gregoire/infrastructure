@@ -18,9 +18,9 @@ in
 
   home.packages = with pkgs; with xfce4-13; [
     # Browser & emails
-    firefox-bin
+    unstable.firefox
     chromium
-    thunderbird-bin
+    thunderbird
     # Video
     mpv
     # Torrent
@@ -63,8 +63,6 @@ in
     inkscape
     # Image viewer
     nomacs
-    # VNC
-    tightvnc
   ];
 
   home.file.".mozilla/firefox/${config.resources.pcs.firefox.profile}/user.js".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/firefox/user.js";
