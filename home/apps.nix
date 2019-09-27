@@ -46,6 +46,8 @@
     psmisc
     # Create QRCode
     qrencode
+    # Mount remote filesystems over SSH
+    sshfs
   ];
 
   xdg.configFile."khal/config".source = builtins.toPath "${config.resources.pcs.paths.privateDotfiles}/khal/config";
