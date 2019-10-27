@@ -8,13 +8,16 @@
   ];
 
   environment.systemPackages = with pkgs; [
+    # File type
     file
-    bc
+    # Disk management
     parted
     # DNS utils (dig)
     dnsutils
     # htop
     htop
+    # List hardware
+    lshw
   ];
 
   # Boot with last kernel
