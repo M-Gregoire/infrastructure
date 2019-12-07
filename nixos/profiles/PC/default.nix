@@ -45,6 +45,9 @@
       "disk"
       # Audio
       "audio"
+      # Scanners
+      "lp"
+      "scanner"
     ];
   };
 
@@ -71,7 +74,7 @@
   };
 
   fonts.fonts = with pkgs; [
-    nerdfonts
+    unstable.nerdfonts
   ];
 
   environment.systemPackages = with pkgs; [
