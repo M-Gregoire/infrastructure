@@ -4,7 +4,7 @@
   boot.initrd.luks.devices = [
     {
       name = "root";
-      device = "/dev/sda2";
+      device = config.resources.luks.drive;
       preLVM = true;
     }
   ];

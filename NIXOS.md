@@ -33,6 +33,10 @@ When first building, specify config using:
 sudo nixos-rebuild -I nixos-config=${PWD}/nixos/hosts/<Host>/configuration.nix -I nixpkgs=${PWD}/vendor/nixpkgs-release switch
 ```
 
+# Upgrade
+
+https://nixos.org/nixos/manual/#sec-upgrading
+
 # Clean
 
 ```sh

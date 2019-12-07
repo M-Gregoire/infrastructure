@@ -3,7 +3,7 @@
 {
   imports =
     [
-      ../../../luks.nix
+      ./../../dev/luks.nix
       ../../../resources/hosts/Bur
       ../../../vendor/infrastructure-private/resources/hosts/Bur
       ../../common.nix
@@ -26,5 +26,5 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.efiSupport = true;
 
-  system.stateVersion = "19.03";
+  system.stateVersion = "19.09";
 }

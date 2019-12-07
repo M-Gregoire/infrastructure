@@ -1,6 +1,6 @@
 # Install
 
-This documentation describes how to install NixOS with LVM and LUKS.  
+This documentation describes how to install NixOS with LVM and LUKS.
 This is heavily based on [https://qfpl.io/posts/installing-nixos/](https://qfpl.io/posts/installing-nixos/).
 
 ```
@@ -43,7 +43,7 @@ lvcreate -L 8G -n swap nixos-vg
 lvcreate -l 100%FREE -n root nixos-vg
 
 -- Create a FAT32 filesystem on our boot partition
-# mkfs.vfat -n boot $BOOT
+# mkfs.vfat -n boot /dev/sda1
 
 -- Create an ext4 filesystem for our root partition
 # mkfs.ext4 -L nixos /dev/nixos-vg/root
@@ -63,16 +63,35 @@ mount /dev/sda1 /mnt/boot
 nixos-generate-config --root /mnt
 
 # Copy initial-config.nix to /etc/nixos/configuration.nix
+# Also copy wpa_supplicant.conf in /etc if Wifi is needed
+# Edit initial-config.nix to uncomment LUKS section if needed
+# If so, set correct Luks drive
 # /!\ Save hardware-configuration.nix to this repo!
 
 # Install
 nixos-install
+reboot
 
-# Connect as user
-su <User>
+# Make sure you use the correct hardware-config and that LUKS drive variable is correctly set
+# For your host and deploy using nixops from another device.
+# If no other device is available, go to the next step directly.
+```
+
+Everything should now be installed on the host. However, local deployement will not work as the github repo will not have been cloned, channels are not set and some local files might be missing. To do so, on the newly installed device:
+
+```
+# On a TTY:
+passwd <user>
+# Connect <user> using the Display Manager
 
 # Add channels
 nix-channel --add https://nixos.org/channels/nixpkgs-unstable unstable; nix-channel --update
+# Add also for root so you can use nixos-rebuild and not only nixops
+sudo nix-channel --add https://nixos.org/channels/nixpkgs-unstable unstable; sudo nix-channel --update
+
+# Restore {.thunderbird, .mozilla, .gnupg} and clone both the public and private github repo
+
+sudo nixos-rebuild switch
 ```
 
 # Mount from live
@@ -83,5 +102,5 @@ vgchange -ay
 mount /dev/nixos-vg/root /mnt
 swapon /dev/nixos-vg/swap
 mount /dev/sda1 /mnt/boot
-nixos-enter / nixos-install
+nixos-enter
 ```

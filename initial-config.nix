@@ -4,8 +4,16 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./luks.nix
     ];
+
+  # LUKS
+  #boot.initrd.luks.devices = [
+  #  {
+  #    name = "root";
+  #    device = "/dev/sda2";
+  #    preLVM = true;
+  #  }
+  #];
 
   # UEFI
   boot.loader.systemd-boot.enable = true;

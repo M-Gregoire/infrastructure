@@ -9,22 +9,25 @@
     ];
 
   boot.initrd.availableKernelModules = [ "ahci" "ohci_pci" "ehci_pci" "xhci_pci" "usbhid" "usb_storage" "sd_mod" ];
+  boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/1ee8cda8-3a68-4d62-8152-6d709c4254bf";
+    { device = "/dev/disk/by-uuid/7541ee60-3075-487e-a5e6-260df0234044";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/4578-4D36";
+    { device = "/dev/disk/by-uuid/70D7-B885";
       fsType = "vfat";
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/b3e01883-68eb-4030-85d3-1c0e160d8743"; }
+    [ { device = "/dev/disk/by-uuid/81336105-ea33-485d-a468-5adc28809f50"; }
     ];
 
   nix.maxJobs = lib.mkDefault 8;
+  # High-DPI console
+  i18n.consoleFont = lib.mkDefault "${pkgs.terminus_font}/share/consolefonts/ter-u28n.psf.gz";
 }

@@ -96,6 +96,12 @@
       };
     };
 
+    luks.drive = mkOption {
+      type = types.str;
+      example = "/dev/disk/by-uuid/<uuid>";
+      description = "Path to LUKS drive";
+    };
+
     hosts = {
       beyla = {
         ip.default = mkOption {

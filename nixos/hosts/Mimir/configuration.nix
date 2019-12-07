@@ -3,6 +3,7 @@
 {
   imports =
     [
+      ./../../dev/luks.nix
       ../../../resources/hosts/Mimir
       ../../../vendor/infrastructure-private/resources/hosts/Mimir
       ../../common.nix
