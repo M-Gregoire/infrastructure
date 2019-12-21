@@ -151,6 +151,38 @@
           description = "Domain aliases";
         };
       };
+      fenrir = {
+        ip.default = mkOption {
+          type = types.str;
+          example = "1.1.1.1";
+          description = "Ip of the host";
+        };
+        ssh.port = mkOption {
+          type = types.port;
+          example = [ "22" ];
+          description = "Specifies on which port the SSH daemon listens.";
+        };
+        extraDomains = mkOption {
+          type = types.listOf types.str;
+          description = "Domain aliases";
+        };
+      };
+      fenrirDocker = {
+        ip.default = mkOption {
+          type = types.str;
+          example = "1.1.1.1";
+          description = "Ip of the host";
+        };
+        ssh.port = mkOption {
+          type = types.port;
+          example = [ "22" ];
+          description = "Specifies on which port the SSH daemon listens.";
+        };
+        extraDomains = mkOption {
+          type = types.listOf types.str;
+          description = "Domain aliases";
+        };
+      };
       mimir = {
         ip = {
           default = mkOption {

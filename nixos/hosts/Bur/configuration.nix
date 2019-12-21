@@ -3,15 +3,15 @@
 {
   imports =
     [
-      ./../../dev/luks.nix
       ../../../resources/hosts/Bur
       ../../../vendor/infrastructure-private/resources/hosts/Bur
       ../../common.nix
       ../../dev/bluetooth.nix
+      ../../dev/boot/grub-uefi.nix
       ../../dev/suspend.nix
-      ../../grub.nix
       ../../networks/home
       ../../profiles/PC
+      ./../../dev/luks.nix
       ./hardware-configuration.nix
     ];
 

@@ -7,7 +7,7 @@
     ../../dev/3D.nix
     ../../dev/android.nix
     ../../dev/fwudp.nix
-    ../../dev/ipfs.nix
+    #../../dev/ipfs.nix
     ../../dev/openvpn-client.nix
     ../../dev/pam.nix
     ../../dev/teamviewer.nix
@@ -54,6 +54,8 @@
   # Non-PC hosts and non-localhost descriptor (MimirEth but not Mimir)
   networking.hosts = {
     "${config.resources.hosts.skuld.ip.default}" = [ "Skuld" ];
+    "${config.resources.hosts.fenrir.ip.default}" = [ "Fenrir" ];
+    "${config.resources.hosts.fenrirDocker.ip.default}" = [ "FenrirDocker" ];
     "${config.resources.hosts.eldir.ip.default}" = [ "Eldir" ];
     "${config.resources.hosts.idunn.ip.wifi}" = [ "IdunnWifi" (if config.resources.hosts.idunn.ip.wifi == config.resources.hosts.idunn.ip.default then "Idunn" else "") ];
     "${config.resources.hosts.idunn.ip.eth}" = [ "IdunnEth" (if config.resources.hosts.idunn.ip.eth == config.resources.hosts.idunn.ip.default then "Idunn" else "") ];
