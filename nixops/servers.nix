@@ -18,4 +18,13 @@
           ../nixos/hosts/Skuld/configuration.nix
         ];
     };
+
+  FenrirDocker =
+    { config, pkgs, ... }:
+    {
+      imports =
+        [
+          ../nixos/hosts/FenrirDocker/configuration.nix
+        ];
+    };
 }

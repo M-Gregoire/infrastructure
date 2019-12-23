@@ -12,6 +12,9 @@
     };
   };
 
+  # Unifi
+  services.unifi.enable = true;
+
   # Smart card
   services.pcscd.enable = true;
 

@@ -39,7 +39,8 @@
   nixpkgs.overlays = import ../nixpkgs/overlays.nix;
 
   networking.hostName = config.resources.hostname;
-  networking.nameservers = config.resources.networking.DNS;
+  #
+
 
   networking.firewall.allowedTCPPorts = config.resources.networking.firewall.openTCPPorts;
   networking.firewall.allowedUDPPorts = config.resources.networking.firewall.openUDPPorts;

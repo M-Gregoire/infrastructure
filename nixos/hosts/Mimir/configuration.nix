@@ -3,16 +3,16 @@
 {
   imports =
     [
-      ./../../dev/luks.nix
       ../../../resources/hosts/Mimir
       ../../../vendor/infrastructure-private/resources/hosts/Mimir
       ../../common.nix
       ../../dev/bluetooth.nix
+      ../../dev/boot/grub-uefi.nix
       ../../dev/steam.nix
       ../../dev/virtualbox.nix
-      ../../grub.nix
       ../../networks/home
       ../../profiles/PC
+      ./../../dev/luks.nix
       ./hardware-configuration.nix
     ];
 

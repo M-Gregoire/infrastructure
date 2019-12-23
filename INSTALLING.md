@@ -1,5 +1,52 @@
 # Install
 
+## Standard install (BIOS)
+
+```
+parted /dev/sda -- mklabel msdos
+parted /dev/sda -- mkpart primary 1MiB -8GiB
+parted /dev/sda -- mkpart primary linux-swap -8GiB 100%
+mkfs.ext4 -L nixos /dev/sda1
+mkswap -L swap /dev/sda2
+mount /dev/disk/by-label/nixos /mnt
+swapon /dev/sda2
+nixos-generate-config --root /mnt
+
+# Copy initial-config.nix to /etc/nixos/configuration.nix
+# Uncomment BIOS section and comment the EFI section
+# Also copy wpa_supplicant.conf in /etc if Wifi is needed
+# /!\ Save hardware-configuration.nix to this repo!
+
+nixos-install
+reboot
+```
+
+## Standard install (UEFI)
+
+```
+parted /dev/sda -- mklabel gpt
+parted /dev/sda -- mkpart primary 512MiB -8GiB
+parted /dev/sda -- mkpart primary linux-swap -8GiB 100%
+parted /dev/sda -- mkpart ESP fat32 1MiB 512MiB
+parted /dev/sda -- set 3 boot on
+mkfs.ext4 -L nixos /dev/sda1
+mkswap -L swap /dev/sda2
+mkfs.fat -F 32 -n boot /dev/sda3
+mount /dev/disk/by-label/nixos /mnt
+mkdir -p /mnt/boot
+mount /dev/disk/by-label/boot /mnt/boot
+swapon /dev/sda2
+nixos-generate-config --root /mnt
+
+# Copy initial-config.nix to /etc/nixos/configuration.nix
+# Also copy wpa_supplicant.conf in /etc if Wifi is needed
+# /!\ Save hardware-configuration.nix to this repo!
+
+nixos-install
+reboot
+```
+
+## LVM/LUKS install
 This documentation describes how to install NixOS with LVM and LUKS.
 This is heavily based on [https://qfpl.io/posts/installing-nixos/](https://qfpl.io/posts/installing-nixos/).
 
@@ -64,8 +111,8 @@ nixos-generate-config --root /mnt
 
 # Copy initial-config.nix to /etc/nixos/configuration.nix
 # Also copy wpa_supplicant.conf in /etc if Wifi is needed
-# Edit initial-config.nix to uncomment LUKS section if needed
-# If so, set correct Luks drive
+# Edit initial-config.nix to uncomment LUKS section
+# And set correct Luks drive
 # /!\ Save hardware-configuration.nix to this repo!
 
 # Install
@@ -77,6 +124,7 @@ reboot
 # If no other device is available, go to the next step directly.
 ```
 
+## Post-install for PCs
 Everything should now be installed on the host. However, local deployement will not work as the github repo will not have been cloned, channels are not set and some local files might be missing. To do so, on the newly installed device:
 
 ```
@@ -94,7 +142,7 @@ sudo nix-channel --add https://nixos.org/channels/nixpkgs-unstable unstable; sud
 sudo nixos-rebuild switch
 ```
 
-# Mount from live
+## Mount from live with LUKS
 ```
 cryptsetup luksOpen /dev/sda2 nixos-enc
 lvscan

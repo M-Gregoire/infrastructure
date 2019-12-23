@@ -39,9 +39,10 @@
 (setq save-abbrevs 'silent)
 
 ;; Use use-package
-(package-install 'use-package)
-(eval-when-compile
-  (require 'use-package))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(require 'use-package)
 
 ;; Install all packages if not installed
 (require 'use-package-ensure

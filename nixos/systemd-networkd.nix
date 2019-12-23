@@ -8,6 +8,8 @@
   networking.wireless.enable = true;
 
   services.resolved.enable = true;
+  # /!\ DNS fallback is not a recovery DNS
+  # See https://github.com/systemd/systemd/issues/5771#issuecomment-296673115
   services.resolved.extraConfig = ''
   FallbackDNS=${builtins.concatStringsSep " " config.resources.networking.fallbackDNS}
   '';
@@ -41,7 +43,7 @@
     networkConfig.DHCP = "yes";
     networkConfig.IPv6AcceptRA = true;
     dhcpConfig.Anonymize = true;
-    dhcpConfig.UseDNS = false;
+    dhcpConfig.UseDNS = true;
     dhcpConfig.UseHostname = false;
     dhcpConfig.UseNTP = false;
   };
@@ -56,7 +58,7 @@
     networkConfig.DHCP = "yes";
     networkConfig.IPv6AcceptRA = true;
     dhcpConfig.Anonymize = true;
-    dhcpConfig.UseDNS = false;
+    dhcpConfig.UseDNS = true;
     dhcpConfig.UseHostname = false;
     dhcpConfig.UseNTP = false;
   };
