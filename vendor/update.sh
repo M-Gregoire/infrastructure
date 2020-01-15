@@ -4,7 +4,7 @@ nix-channel --update
 
 cd home-manager
 git fetch --all
-git checkout master
+git checkout release-19.09
 git pull
 
 cd ..
@@ -13,7 +13,7 @@ cd nixpkgs-release
 git remote add channels https://github.com/NixOS/nixpkgs-channels.git
 git remote update channels
 git fetch --all
-git checkout channels/nixos-19.03
+git checkout channels/nixos-19.09
 
 cd ..
 

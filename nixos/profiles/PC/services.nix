@@ -12,8 +12,20 @@
     };
   };
 
-  # Unifi
-  services.unifi.enable = true;
+  services.gvfs.enable = true;
+
+  # https://github.com/NixOS/nixpkgs/issues/22064
+#  nixpkgs.config.packageOverrides = pkgs: {
+#    xfce = pkgs.xfce // {
+#      gvfs = pkgs.gvfs;
+#    };
+#  };
+  # Network share
+#  environment.systemPackages = with pkgs; [
+#    lxqt.lxqt-policykit
+#    pkgs.xfce.gvfs
+#  ]; # provides a default authentification client for policykit
+
 
   # Smart card
   services.pcscd.enable = true;
@@ -59,7 +71,7 @@
     serviceConfig.User = "${config.resources.username}";
     script = ''
       if [ -d '${config.resources.pcs.paths.publicConfig}' ]; then
-        if ${pkgs.git}/bin/git -C ${config.resources.pcs.paths.publicConfig}/vendor/nixpkgs-release fetch --all && ${pkgs.git}/bin/git -C ${config.resources.pcs.paths.publicConfig}/vendor/nixpkgs-release checkout channels/nixos-19.03; then
+        if ${pkgs.git}/bin/git -C ${config.resources.pcs.paths.publicConfig}/vendor/nixpkgs-release fetch --all && ${pkgs.git}/bin/git -C ${config.resources.pcs.paths.publicConfig}/vendor/nixpkgs-release checkout channels/nixos-19.09; then
           echo "nixpkgs-release updated"
         else
           echo "nixpkgs-release update failed: sending notification"

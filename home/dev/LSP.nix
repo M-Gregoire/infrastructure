@@ -19,7 +19,7 @@ in
     # C / C++
     ccls
     # Bash
-    unstable.nodePackages.bash-language-server
+    #nodePackages.bash-language-server
     # Python
     #python27Packages.python-language-server
     python37Packages.python-language-server

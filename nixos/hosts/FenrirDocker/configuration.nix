@@ -17,6 +17,15 @@
   networking.firewall.allowedTCPPorts = [ config.resources.hosts.fenrirDocker.ssh.port ];
   services.openssh.ports = [ config.resources.hosts.fenrirDocker.ssh.port ];
 
+  # Unifi
+  services.unifi.enable = true;
+
+  fileSystems."/nfs/Sharkoon" = {
+    device = "fenrirNas.martinache.net:/mnt/Sharkoon";
+    fsType = "nfs";
+    options = [ "defaults" "uid=1000" "gid=1000" "umask=002" ];
+  };
+
   networking.hosts = {
     # This part is used to define custom DNS records by my PiHole
     "${config.resources.hosts.bur.ip.default}" = [ "Bur" "${builtins.concatStringsSep " " config.resources.hosts.bur.extraDomains}" ];
@@ -24,7 +33,6 @@
     "${config.resources.hosts.idunn.ip.default}" = [ "Idunn" "${builtins.concatStringsSep " " config.resources.hosts.idunn.extraDomains}" ];
     "${config.resources.hosts.mimir.ip.default}" = [ "Mimir" "${builtins.concatStringsSep " " config.resources.hosts.mimir.extraDomains}" ];
     "${config.resources.hosts.skuld.ip.default}" = [ "Skuld" "${builtins.concatStringsSep " " config.resources.hosts.skuld.extraDomains}" ];
-    "${config.resources.hosts.fenrir.ip.default}" = [ "Fenrir" "${builtins.concatStringsSep " " config.resources.hosts.fenrir.extraDomains}" ];
     # Basic hostname already defined in the home profile
     "${config.resources.hosts.beyla.ip.default}" = [ "${builtins.concatStringsSep " " config.resources.hosts.beyla.extraDomains}" ];
     "${config.resources.hosts.octopi.ip.default}" = [ "${builtins.concatStringsSep " " config.resources.hosts.octopi.extraDomains}" ];
@@ -32,5 +40,5 @@
     "${config.resources.hosts.fenrirDocker.ip.default}" = [ "${builtins.concatStringsSep " " config.resources.hosts.fenrirDocker.extraDomains}" ];
   } // config.resources.hosts.extra;
 
-  system.stateVersion = "19.09";
+  system.stateVersion = "19.03";
 }

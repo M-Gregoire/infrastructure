@@ -46,4 +46,7 @@ in
       };
     };
   }dunstTheme;
+
+  # Automount for removable device
+  services.udiskie.enable = true;
 }

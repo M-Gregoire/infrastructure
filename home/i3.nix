@@ -65,7 +65,7 @@ in
         "${workspace1}" = [{class="Firefox";}];
         "${workspace3}" = [{class="Emacs";}];
         "${workspace8}" = [{class="rambox";}];
-        "${workspace9}" = [{class="Thunderbird";}];
+        "${workspace9}" = [{class="Thunderbird";} {class="Daily";}];
       };
 
       keybindings = {

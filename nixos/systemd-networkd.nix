@@ -7,6 +7,8 @@
 
   networking.wireless.enable = true;
 
+  networking.useDHCP = false;
+
   services.resolved.enable = true;
   # /!\ DNS fallback is not a recovery DNS
   # See https://github.com/systemd/systemd/issues/5771#issuecomment-296673115

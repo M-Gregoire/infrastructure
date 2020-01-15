@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ./dev/LSP.nix
+    #./dev/LSP.nix
     ./dev/c.nix
     ./dev/compton.nix
     ./dev/emacs.nix

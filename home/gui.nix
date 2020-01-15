@@ -1,11 +1,11 @@
 { config, lib, pkgs, ... }:
 
 let
-  thunar-with-plugins = with pkgs; with xfce; thunar.override {
-    thunarPlugins = [
-      thunar-archive-plugin
-    ];
-  };
+ # thunar-with-plugins = with pkgs; with xfce4-14; thunar.override {
+ #   thunarPlugins = [
+ #     thunar-archive-plugin
+ #   ];
+ # };
 
   rofiTheme = import ./theme/rofi.nix {
     theme=config.resources.theme;
@@ -16,9 +16,9 @@ in
 {
   programs.feh.enable = true;
 
-  home.packages = with pkgs; with xfce4-13; [
+  home.packages = with pkgs; [
     # Browser & emails
-    unstable.firefox
+    firefox
     chromium
     thunderbird
     # Video
@@ -33,20 +33,21 @@ in
     leafpad
     # Mumble
     mumble
-    mumble_overlay
+    #mumble_overlay
     # Music
     spotify
     # Chats
     unstable.signal-desktop
-    unstable.rambox
+    #rambox
     # Thunar with archive plugin
-    thunar-with-plugins
+    xfce4-14.thunar
     # Volume manager
-    thunar-volman
+    xfce4-14.thunar-volman
+    xfce.thunar-archive-plugin
     # Thumbnail
     ffmpegthumbnailer
     # D-bus thumbnailer service
-    tumbler
+    xfce4-14.tumbler
     # Disk managment
     gparted
     # Sound control
@@ -63,6 +64,8 @@ in
     inkscape
     # Image viewer
     nomacs
+    # Veracrypt
+    veracrypt
   ];
 
   home.file.".mozilla/firefox/${config.resources.pcs.firefox.profile}/user.js".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/firefox/user.js";

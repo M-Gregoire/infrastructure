@@ -16,6 +16,9 @@
       ./hardware-configuration.nix
     ];
 
+  # Unifi
+  services.unifi.enable = true;
+
   services.xserver.libinput.accelSpeed = null;
 
   services.xserver.videoDrivers = [ "amdgpu" ];

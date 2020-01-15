@@ -4,6 +4,7 @@
   imports = [
     ../modules
     ./dev/docker.nix
+    ./dev/nfs.nix
     ./services.nix
   ];
 
@@ -39,8 +40,6 @@
   nixpkgs.overlays = import ../nixpkgs/overlays.nix;
 
   networking.hostName = config.resources.hostname;
-  #
-
 
   networking.firewall.allowedTCPPorts = config.resources.networking.firewall.openTCPPorts;
   networking.firewall.allowedUDPPorts = config.resources.networking.firewall.openUDPPorts;
@@ -52,10 +51,19 @@
     "::1" = [ "${config.resources.hostname}" ];
   };
 
+  users.groups.${config.resources.username} = {
+    name = "${config.resources.username}";
+    members = [ "${config.resources.username}" ];
+    gid = 1000;
+  };
+
   users.users.${config.resources.username} = {
     isNormalUser = true;
     home = "/home/${config.resources.username}";
+    uid = 1000;
+    group = "${config.resources.username}";
     extraGroups = [
+      "users"
       "wheel"
       "docker"
     ];

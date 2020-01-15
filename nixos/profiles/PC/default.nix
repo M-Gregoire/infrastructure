@@ -3,14 +3,14 @@
 {
   imports = [
     (import ../../../vendor/home-manager { inherit pkgs; }).nixos
+    #../../dev/ipfs.nix
     ../../../modules
     ../../dev/3D.nix
     ../../dev/android.nix
     ../../dev/fwudp.nix
-    #../../dev/ipfs.nix
     ../../dev/openvpn-client.nix
     ../../dev/pam.nix
-    ../../dev/teamviewer.nix
+    #../../dev/teamviewer.nix
     ../../dev/wireguard-client-home.nix
     ../../dev/wireguard-tools.nix
     ./mime.nix
@@ -76,6 +76,8 @@
   };
 
   fonts.fonts = with pkgs; [
+    # https://github.com/NixOS/nixpkgs/issues/47921#issuecomment-435310057
+    # nix-prefetch-url --type sha256 --unpack --name source file:///home/gregoire/Downloads/nerd-fonts-2.0.0.tar.gz 09i467hyskvzj2wn5sj6shvc9pb0a0rx5iknjkkkbg1ng3bla7nm
     unstable.nerdfonts
   ];
 
@@ -84,7 +86,5 @@
     ntfs3g
     # exFat
     exfat
-    # NFS
-    nfs-utils
   ];
 }

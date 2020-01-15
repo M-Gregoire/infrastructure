@@ -48,6 +48,8 @@
     qrencode
     # Mount remote filesystems over SSH
     sshfs
+    # Run appImage
+    appimage-run
   ];
 
   xdg.configFile."khal/config".source = builtins.toPath "${config.resources.pcs.paths.privateDotfiles}/khal/config";

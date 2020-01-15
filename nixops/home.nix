@@ -19,15 +19,6 @@
         ];
     };
 
-  Skuld =
-    { config, pkgs, ... }:
-    {
-      imports =
-        [
-          ../nixos/hosts/Skuld/configuration.nix
-        ];
-    };
-
   FenrirDocker =
     { config, pkgs, ... }:
     {
