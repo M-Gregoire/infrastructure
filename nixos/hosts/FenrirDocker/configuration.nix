@@ -23,7 +23,7 @@
   fileSystems."/nfs/Sharkoon" = {
     device = "fenrirNas.martinache.net:/mnt/Sharkoon";
     fsType = "nfs";
-    options = [ "defaults" "uid=1000" "gid=1000" "umask=002" ];
+    options = [ "defaults" ];#"uid=1000" "gid=1000" "umask=002" ];
   };
 
   networking.hosts = {
