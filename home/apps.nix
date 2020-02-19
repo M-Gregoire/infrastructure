@@ -50,6 +50,8 @@
     sshfs
     # Run appImage
     appimage-run
+    # Wireshark
+    wireshark
   ];
 
   xdg.configFile."khal/config".source = builtins.toPath "${config.resources.pcs.paths.privateDotfiles}/khal/config";
