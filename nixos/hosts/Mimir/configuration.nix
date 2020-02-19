@@ -35,11 +35,6 @@
     "amdgpu.cik_support=1"
   ];
 
-  # Servers are defined in profile, only home network should be defined here
-  networking.hosts = {
-    "${config.resources.hosts.bur.ip.default}" = [ "Bur" ];
-  };
-
   networking.firewall.allowedTCPPorts = [ config.resources.hosts.mimir.ssh.port ];
   services.openssh.ports = [ config.resources.hosts.mimir.ssh.port ];
 

@@ -44,7 +44,7 @@
     #
     networkConfig.DHCP = "yes";
     networkConfig.IPv6AcceptRA = true;
-    dhcpConfig.Anonymize = true;
+    dhcpConfig.Anonymize = false;
     dhcpConfig.UseDNS = true;
     dhcpConfig.UseHostname = false;
     dhcpConfig.UseNTP = false;
@@ -59,7 +59,7 @@
     #
     networkConfig.DHCP = "yes";
     networkConfig.IPv6AcceptRA = true;
-    dhcpConfig.Anonymize = true;
+    dhcpConfig.Anonymize = false;
     dhcpConfig.UseDNS = true;
     dhcpConfig.UseHostname = false;
     dhcpConfig.UseNTP = false;
