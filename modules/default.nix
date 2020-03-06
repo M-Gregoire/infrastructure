@@ -134,7 +134,7 @@
         };
       };
       eldir = {
-        ip.default = mkOption {
+        ip = mkOption {
           type = types.str;
           example = "1.1.1.1";
           description = "Ip of the host";

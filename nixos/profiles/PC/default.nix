@@ -51,6 +51,10 @@
     ];
   };
 
+  networking.hosts = {
+    "${config.resources.hosts.eldir.ip}" = [ "Eldir" ];
+  };
+
   home-manager.users.${config.resources.username} = {...}: {
     imports = [
       ../../../home
