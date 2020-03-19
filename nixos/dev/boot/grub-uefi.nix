@@ -10,7 +10,7 @@
   boot.loader.grub = {
     enable = true;
     configurationLimit = 100;
-    device = "nodev";
+    devices = [ "nodev" ];
     # Install in UEFI mode from device booted in legacy
     #efiInstallAsRemovable = true;
   };

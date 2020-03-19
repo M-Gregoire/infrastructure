@@ -6,6 +6,6 @@
   ];
 
   config.resources = with lib; mapAttrs (_: v: mkDefault v) {
-    hostname = "Skuld";
+    hostname = "${config.resources.hosts.skuld.hostname}";
   };
 }

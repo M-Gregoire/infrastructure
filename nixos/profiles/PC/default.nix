@@ -51,16 +51,8 @@
     ];
   };
 
-  # Non-PC hosts and non-localhost descriptor (MimirEth but not Mimir)
   networking.hosts = {
-    "${config.resources.hosts.skuld.ip.default}" = [ "Skuld" ];
-    "${config.resources.hosts.fenrir.ip.default}" = [ "Fenrir" ];
-    "${config.resources.hosts.fenrirDocker.ip.default}" = [ "FenrirDocker" ];
-    "${config.resources.hosts.eldir.ip.default}" = [ "Eldir" ];
-    "${config.resources.hosts.idunn.ip.wifi}" = [ "IdunnWifi" (if config.resources.hosts.idunn.ip.wifi == config.resources.hosts.idunn.ip.default then "Idunn" else "") ];
-    "${config.resources.hosts.idunn.ip.eth}" = [ "IdunnEth" (if config.resources.hosts.idunn.ip.eth == config.resources.hosts.idunn.ip.default then "Idunn" else "") ];
-    "${config.resources.hosts.mimir.ip.wifi}" = [ "MimirWifi" (if config.resources.hosts.mimir.ip.wifi == config.resources.hosts.mimir.ip.default then "Mimir" else "") ];
-    "${config.resources.hosts.mimir.ip.eth}" = [ "MimirEth" (if config.resources.hosts.mimir.ip.eth == config.resources.hosts.mimir.ip.default then "Mimir" else "") ];
+    "${config.resources.hosts.eldir.ip}" = [ "Eldir" "Eldir.${config.resources.domain}"];
   };
 
   home-manager.users.${config.resources.username} = {...}: {
@@ -77,7 +69,7 @@
 
   fonts.fonts = with pkgs; [
     # https://github.com/NixOS/nixpkgs/issues/47921#issuecomment-435310057
-    # nix-prefetch-url --type sha256 --unpack --name source file:///home/gregoire/Downloads/nerd-fonts-2.0.0.tar.gz 09i467hyskvzj2wn5sj6shvc9pb0a0rx5iknjkkkbg1ng3bla7nm
+    # nix-prefetch-url --type sha256 --unpack --name source file:///home/gregoire/Downloads/nerd-fonts-2.1.0.tar.gz 1la79y16k9rwcl2zsxk73c0kgdms2ma43kpjfqnq5jlbfdj0niwg
     unstable.nerdfonts
   ];
 

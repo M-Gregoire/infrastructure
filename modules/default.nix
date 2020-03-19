@@ -72,6 +72,12 @@
       description = "Hostname";
     };
 
+    domain = mkOption {
+      type = types.str;
+      example = "foo";
+      description = "local.domain";
+    };
+
     username = mkOption {
       type = types.str;
       example = "bar";
@@ -104,39 +110,36 @@
 
     hosts = {
       beyla = {
-        ip.default = mkOption {
+        hostname = mkOption {
           type = types.str;
-          example = "1.1.1.1";
-          description = "Ip of the host";
+          example = "Beyla";
+          description = "Hostname of the host";
         };
         ssh.port = mkOption {
           type = types.port;
           example = [ "22" ];
           description = "Specifies on which port the SSH daemon listens.";
-        };
-        extraDomains = mkOption {
-          type = types.listOf types.str;
-          description = "Domain aliases";
         };
       };
       bur = {
-        ip.default = mkOption {
+        hostname = mkOption {
           type = types.str;
-          example = "1.1.1.1";
-          description = "Ip of the host";
+          example = "bur";
+          description = "Hostname of the host";
         };
         ssh.port = mkOption {
           type = types.port;
           example = [ "22" ];
           description = "Specifies on which port the SSH daemon listens.";
-        };
-        extraDomains = mkOption {
-          type = types.listOf types.str;
-          description = "Domain aliases";
         };
       };
       eldir = {
-        ip.default = mkOption {
+        hostname = mkOption {
+          type = types.str;
+          example = "eldir";
+          description = "Hostname of the host";
+        };
+        ip = mkOption {
           type = types.str;
           example = "1.1.1.1";
           description = "Ip of the host";
@@ -145,81 +148,49 @@
           type = types.port;
           example = [ "22" ];
           description = "Specifies on which port the SSH daemon listens.";
-        };
-        extraDomains = mkOption {
-          type = types.listOf types.str;
-          description = "Domain aliases";
         };
       };
       fenrir = {
-        ip.default = mkOption {
+        hostname = mkOption {
           type = types.str;
-          example = "1.1.1.1";
-          description = "Ip of the host";
+          example = "fenrir";
+          description = "Hostname of the host";
         };
         ssh.port = mkOption {
           type = types.port;
           example = [ "22" ];
           description = "Specifies on which port the SSH daemon listens.";
-        };
-        extraDomains = mkOption {
-          type = types.listOf types.str;
-          description = "Domain aliases";
         };
       };
       fenrirDocker = {
-        ip.default = mkOption {
+        hostname = mkOption {
           type = types.str;
-          example = "1.1.1.1";
-          description = "Ip of the host";
+          example = "fenrirDocker";
+          description = "Hostname of the host";
         };
         ssh.port = mkOption {
           type = types.port;
           example = [ "22" ];
           description = "Specifies on which port the SSH daemon listens.";
-        };
-        extraDomains = mkOption {
-          type = types.listOf types.str;
-          description = "Domain aliases";
         };
       };
       mimir = {
-        ip = {
-          default = mkOption {
-            type = types.str;
-            example = "1.1.1.1";
-            description = "Ip of the host";
-          };
-          wifi = mkOption {
-            type = types.str;
-            example = "1.1.1.1";
-            description = "Ip of the host";
-          };
-          eth = mkOption {
-            type = types.str;
-            example = "1.1.1.1";
-            description = "Ip of the host";
-          };
+        hostname = mkOption {
+          type = types.str;
+          example = "mimir";
+          description = "Hostname of the host";
         };
         ssh.port = mkOption {
           type = types.port;
           example = [ "22" ];
           description = "Specifies on which port the SSH daemon listens.";
         };
-        extraDomains = mkOption {
-          type = types.listOf types.str;
-          description = "Domain aliases";
-        };
       };
       skuld = {
-        ip.default = mkOption {
+        hostname = mkOption {
           type = types.str;
-          example = "1.1.1.1";
-          description = "Ip of the host.";
-        };
-        extraDomains = mkOption {
-          type = types.listOf types.str;
-          description = "Domain aliases";
+          example = "skuld";
+          description = "Hostname of the host.";
         };
         ssh.port = mkOption {
           type = types.port;
@@ -228,14 +199,10 @@
         };
       };
       octopi = {
-        ip.default = mkOption {
+        hostname = mkOption {
           type = types.str;
-          example = "1.1.1.1";
-          description = "Ip of the host";
-        };
-        extraDomains = mkOption {
-          type = types.listOf types.str;
-          description = "Domain aliases";
+          example = "octopi";
+          description = "Hostname of the host";
         };
         ssh.port = mkOption {
           type = types.port;
@@ -244,41 +211,16 @@
         };
       };
       idunn = {
-        ip = {
-          default = mkOption {
-            type = types.str;
-            example = "1.1.1.1";
-            description = "Ip of the host";
-          };
-          wifi = mkOption {
-            type = types.str;
-            example = "1.1.1.1";
-            description = "Ip of the host";
-          };
-          eth = mkOption {
-            type = types.str;
-            example = "1.1.1.1";
-            description = "Ip of the host";
-          };
-        };
-        extraDomains = mkOption {
-          type = types.listOf types.str;
-          description = "Domain aliases";
+        hostname = mkOption {
+          type = types.str;
+          example = "idunn";
+          description = "Hostname of the host";
         };
         ssh.port = mkOption {
           type = types.port;
           example = [ "22" ];
           description = "Specifies on which port the SSH daemon listens.";
         };
-      };
-      extra = mkOption {
-        type = types.attrsOf (types.listOf types.str);
-        example = literalExample ''
-        {
-          "127.0.0.1" = [ "foo.bar.baz" ];
-        };
-        '';
-        description = "Define extra hosts";
       };
     };
 

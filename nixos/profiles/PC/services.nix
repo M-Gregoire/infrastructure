@@ -9,6 +9,10 @@
     enable = true;
     displayManager.lightdm = {
       enable = true;
+      autoLogin = {
+        enable = true;
+        user = config.resources.username;
+      };
     };
   };
 

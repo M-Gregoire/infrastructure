@@ -6,6 +6,6 @@
   ];
 
   config.resources = with lib; mapAttrs (_: v: mkDefault v) {
-    hostname = "FenrirDocker";
+    hostname = "${config.resources.hosts.fenrirDocker.hostname}";
   };
 }

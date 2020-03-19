@@ -3,7 +3,7 @@
     { config, pkgs, ... }:
     {
       deployment = {
-        targetHost = "Mimir";
+        targetHost = "${config.resources.hosts.mimir.hostname}.${config.resources.domain}";
         targetPort = config.resources.hosts.mimir.ssh.port;
       };
     };
