@@ -54,6 +54,9 @@
 
   xdg.configFile."khal/config".source = builtins.toPath "${config.resources.pcs.paths.privateDotfiles}/khal/config";
   xdg.configFile."vdirsyncer/config".source = builtins.toPath "${config.resources.pcs.paths.privateDotfiles}/vdirsyncer/config";
+  # https://unix.stackexchange.com/a/562158
+  # If encountering other sound issues, try deleting ~/.config/pulse
+  home.file.".alsoftrc".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/.alsoftrc";
 
   home.file.".task".source = builtins.toPath "${config.resources.pcs.paths.secrets}/task";
   programs.taskwarrior = {
