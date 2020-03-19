@@ -3,7 +3,7 @@
     { config, pkgs, ... }:
     {
       deployment = {
-        targetHost = "Bur";
+        targetHost = "${config.resources.hosts.bur.hostname}.${config.resources.domain}";
         targetPort = config.resources.hosts.bur.ssh.port;
       };
     };

@@ -52,7 +52,7 @@
   };
 
   networking.hosts = {
-    "${config.resources.hosts.eldir.ip}" = [ "Eldir" ];
+    "${config.resources.hosts.eldir.ip}" = [ "Eldir" "Eldir.${config.resources.domain}"];
   };
 
   home-manager.users.${config.resources.username} = {...}: {

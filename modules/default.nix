@@ -134,6 +134,11 @@
         };
       };
       eldir = {
+        hostname = mkOption {
+          type = types.str;
+          example = "eldir";
+          description = "Hostname of the host";
+        };
         ip = mkOption {
           type = types.str;
           example = "1.1.1.1";
