@@ -66,6 +66,8 @@ in
     nomacs
     # Veracrypt
     veracrypt
+    # Wireshark
+    wireshark
   ];
 
   home.file.".mozilla/firefox/${config.resources.pcs.firefox.profile}/user.js".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/firefox/user.js";
