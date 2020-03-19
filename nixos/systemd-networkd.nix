@@ -5,8 +5,6 @@
 
   networking.useNetworkd = true;
 
-  networking.wireless.enable = true;
-
   networking.useDHCP = false;
 
   services.resolved.enable = true;

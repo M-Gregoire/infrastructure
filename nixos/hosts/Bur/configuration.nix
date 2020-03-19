@@ -20,6 +20,8 @@
     tapping = true;
   };
 
+  networking.wireless.enable = true;
+
   networking.firewall.allowedTCPPorts = [ config.resources.hosts.bur.ssh.port ];
   services.openssh.ports = [ config.resources.hosts.bur.ssh.port ];
 
