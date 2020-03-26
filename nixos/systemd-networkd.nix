@@ -68,4 +68,13 @@
     linkConfig.Unmanaged = "yes";
     linkConfig.RequiredForOnline = false;
   };
+
+  # There's currently a bug where networkd breaks the ip of the lo interface (127.0.0.1)
+  # Preventing some bindings to happens.
+  # Seems to be fixed in next release
+  systemd.network.networks."40-localhost" = {
+    matchConfig.Name = "lo";
+    linkConfig.Unmanaged = "yes";
+    linkConfig.RequiredForOnline = false;
+  };
 }
