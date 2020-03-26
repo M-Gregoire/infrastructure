@@ -21,19 +21,19 @@
 
   services.xserver.libinput.accelSpeed = null;
 
-  services.xserver.videoDrivers = [ "amdgpu" ];
+  #services.xserver.videoDrivers = [ "amdgpu" ];
 
-  boot.kernelParams = [
-    # Fix "Start save/load RF Kill switch" error on boot with amdgpu
-    "iommu=soft"
-    # Fix boot hanging on "Reached target local file"
-    #"amdgpu.dc=0"
-    "radeon.si_support=0"
-    "radeon.cik_support=0"
-    # https://wiki.gentoo.org/wiki/AMDGPU
-    "amdgpu.si_support=0"
-    "amdgpu.cik_support=1"
-  ];
+  #boot.kernelParams = [
+  #  # Fix "Start save/load RF Kill switch" error on boot with amdgpu
+  #  "iommu=soft"
+  #  # Fix boot hanging on "Reached target local file"
+  #  #"amdgpu.dc=0"
+  #  "radeon.si_support=0"
+  #  "radeon.cik_support=0"
+  #  # https://wiki.gentoo.org/wiki/AMDGPU
+  #  "amdgpu.si_support=0"
+  #  "amdgpu.cik_support=1"
+  #];
 
   networking.firewall.allowedTCPPorts = [ config.resources.hosts.mimir.ssh.port ];
   services.openssh.ports = [ config.resources.hosts.mimir.ssh.port ];
