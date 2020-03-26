@@ -310,8 +310,14 @@
           example = "john@doe.com";
           description = "Git email";
         };
+      };
 
-
+      pki = {
+        acrs = mkOption {
+          type = with types; listOf str;
+          example = [ "-----BEGIN CERTIFICATE-----..." ];
+          description = "Trusted ACRs to add to cert store";
+        };
       };
 
       ssh = {

@@ -83,6 +83,8 @@
 
   time.timeZone = "Europe/Paris";
 
+  security.pki.certificates = config.resources.pki.acrs;
+
   # Needed for LightDM to remember the user
   # See https://github.com/NixOS/nixpkgs/issues/10349#issuecomment-341810990
   programs.zsh.enable = true;
