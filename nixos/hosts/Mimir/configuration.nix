@@ -22,8 +22,9 @@
 
   services.xserver.libinput.accelSpeed = null;
 
-  #services.xserver.videoDrivers = [ "amdgpu" ];
+  networking.wireless.enable = true;
 
+  #services.xserver.videoDrivers = [ "amdgpu" ];
   #boot.kernelParams = [
   #  # Fix "Start save/load RF Kill switch" error on boot with amdgpu
   #  "iommu=soft"
