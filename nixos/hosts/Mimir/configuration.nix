@@ -8,6 +8,7 @@
       ../../common.nix
       ../../dev/bluetooth.nix
       ../../dev/boot/grub-uefi.nix
+      ../../dev/boot/grub-multi.nix
       ../../dev/steam.nix
       ../../dev/virtualbox.nix
       ../../networks/home
@@ -42,10 +43,6 @@
   services.xserver.displayManager.lightdm.extraSeatDefaults = ''
     greeter-setup-script=${pkgs.numlockx}/bin/numlockx on
   '';
-
-  boot.loader.grub.useOSProber = true;
-  boot.loader.efi.canTouchEfiVariables = false;
-  boot.loader.grub.efiSupport = true;
 
   system.stateVersion = "19.09";
 }
