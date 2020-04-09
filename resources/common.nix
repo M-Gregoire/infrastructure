@@ -9,10 +9,10 @@
     services.git.username = "M-Gregoire";
 
     font.name = "DejaVu Sans Mono Nerd Font";
-    font.size = "12";
+    font.size = "13";
 
     bar.font.name = "DejaVu Sans Mono Nerd Font";
-    bar.font.size = "12";
+    bar.font.size = "13";
 
     theme = {
       name  = "tomorrow-night";
