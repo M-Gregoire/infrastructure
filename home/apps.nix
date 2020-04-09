@@ -19,26 +19,20 @@
     # Screenshots
     scrot
     # LaTeX
-    #texlive.combined.scheme-basic
     texlive.combined.scheme-full
     # Used by noCTRLqFirefox script
     xvkbd
     xdotool
-    # Fuzzy finder
-    fzf
     # Needed for Trash in Thunar
     # See https://github.com/NixOS/nixpkgs/issues/29137#issuecomment-354229533
     gvfs
     # Archive manager for thunar-archive-plugin
     gnome3.file-roller
-    # Wireless tools like iwgetid
-    wirelesstools
     # Hide pointer when not in use
     xbanish
     # Bootable iso
     wimlib
     woeusb
-    # xdo
     # Hide polybar script
     xdo
     # fuser, killall and pstree
@@ -74,8 +68,6 @@
       };
       # L is lower than nothing
       uda.priority.values="H,M,,L";
-      # Age doesn't change urgency
-      urgency.age.coefficient="0";
     };
   };
 

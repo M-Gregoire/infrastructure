@@ -2,7 +2,7 @@
 
 {
   imports = [
-    #./dev/LSP.nix
+    ./dev/LSP.nix
     ./dev/c.nix
     ./dev/compton.nix
     ./dev/emacs.nix
@@ -15,7 +15,7 @@
     ./dev/network.nix
     ./dev/nix.nix
     ./dev/python.nix
-    ./dev/saas.nix
+    #./dev/saas.nix
     ./dev/sec.nix
     ./dev/ssh.nix
     ./dev/sys.nix

@@ -243,7 +243,6 @@ in
         { command = "xset s off"; always = false; notification = false; }
         { command = "mkdir -p ${screenshot}"; always = false; notification = false; }
         { command = "emacs --daemon && emacsclient -c"; always = false; notification = false; }
-        #{ command = "udiskie"; always = false; notification = false; }
         # Allow accents using ralt
         # Compose key list available at http://duncanlock.net/blog/2013/05/03/how-to-set-your-compose-key-on-xfce-xubuntu-lxde-linux/
         { command = "setxkbmap -layout us -option compose:ralt"; always = false; notification = false; }

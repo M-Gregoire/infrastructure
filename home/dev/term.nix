@@ -30,13 +30,12 @@
       enableCompletion = true;
 
       initExtra = ''
-        khal && ${config.resources.pcs.paths.scripts}/showTodo.sh
+        ${config.resources.pcs.paths.scripts}/showTodo.sh
         # https://github.com/gopasspw/gopass/issues/585#issuecomment-355339632
         source <(gopass completion zsh | head -n -1 | tail -n +2)
         compdef _gopass gopass
       '';
     };
-
     fzf = {
       enable = true;
       enableZshIntegration = true;

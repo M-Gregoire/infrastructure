@@ -271,29 +271,6 @@
         };
       };
 
-      nextcloud = {
-        username = mkOption {
-          type = types.str;
-          example = "John-Doe";
-          description = "Nextcloud username";
-        };
-        password = mkOption {
-          type = types.str;
-          example = "SomePassw0rdExample";
-          description = "Nextcloud password";
-        };
-        url = mkOption {
-          type = types.str;
-          example = "https://my.nextcloud.server/";
-          description = "Nextcloud url";
-        };
-        localFolder = mkOption {
-          type = types.str;
-          example = "/Nextcloud/folder/";
-          description = "Local folder path";
-        };
-      };
-
       gotify = {
         url = mkOption {
           type = types.str;

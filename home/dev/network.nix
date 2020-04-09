@@ -6,6 +6,10 @@
     openssl
     telnet
     tcpdump
+    # Wireless tools like iwgetid
+    wirelesstools
+    # Wireshark
+    wireshark
   ];
 
 }

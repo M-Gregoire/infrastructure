@@ -1,12 +1,6 @@
 { config, lib, pkgs, ... }:
 
 let
- # thunar-with-plugins = with pkgs; with xfce4-14; thunar.override {
- #   thunarPlugins = [
- #     thunar-archive-plugin
- #   ];
- # };
-
   rofiTheme = import ./theme/rofi.nix {
     theme=config.resources.theme;
   };
@@ -33,12 +27,10 @@ in
     leafpad
     # Mumble
     mumble
-    #mumble_overlay
     # Music
     spotify
     # Chats
     unstable.signal-desktop
-    #rambox
     # Thunar with archive plugin
     xfce4-14.thunar
     # Volume manager
@@ -66,8 +58,8 @@ in
     nomacs
     # Veracrypt
     veracrypt
-    # Wireshark
-    wireshark
+    # VNC Viewer
+    gnome3.vinagre
   ];
 
   home.file.".mozilla/firefox/${config.resources.pcs.firefox.profile}/user.js".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/firefox/user.js";

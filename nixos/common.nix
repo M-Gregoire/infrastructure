@@ -85,11 +85,8 @@
 
   security.pki.certificates = config.resources.pki.acrs;
 
-  # Needed for LightDM to remember the user
-  # See https://github.com/NixOS/nixpkgs/issues/10349#issuecomment-341810990
-  programs.zsh.enable = true;
   # For SSH
   # https://askubuntu.com/questions/54145/how-to-fix-strange-backspace-behaviour-with-urxvt-zsh
   # Proper way is to use terminfo
-  #environment.variables.TERM = "xterm";
+  environment.variables.TERM = "xterm";
 }
