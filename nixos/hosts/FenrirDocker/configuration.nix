@@ -8,7 +8,6 @@
     ../../dev/bluetooth.nix
     ../../dev/boot/grub-bios.nix
     ../../dev/nfs.nix
-    ../../dev/wireguard-server.nix
     ../../networks/home
     ../../profiles/Server
     ./hardware-configuration.nix
