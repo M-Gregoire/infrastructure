@@ -10,7 +10,7 @@
 
   systemd.services.cleanup = {
     description = "Cleanup nix store";
-    serviceConfig.User = "root";
+    serviceConfig.User = "${config.resources.username}";
     script = ''
       nix-collect-garbage --delete-older-than 7d
     '';
