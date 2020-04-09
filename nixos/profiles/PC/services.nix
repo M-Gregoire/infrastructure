@@ -37,11 +37,6 @@
   # Use gpg agent instead of ssh agent
   programs.ssh.startAgent = false;
 
-  # Kwallet was used for storing Nextcloud client identifiers
-  # I now only use nextcloud through CLI so It's not needed
-  #environment.systemPackages = with pkgs; [ libsForQt5.kwallet kwallet-pam kdeApplications.kwalletmanager ];
-  #security.pam.services.lightdm.enableKwallet = true;
-
   # Ergodox
   services.udev.extraRules = ''
     ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789B]?", ENV{ID_MM_DEVICE_IGNORE}="1"
@@ -90,21 +85,6 @@
     requires = [ "network.target" ];
   };
 
-  systemd.services.nextcloud = {
-    description = "Sync nextcloud";
-    serviceConfig.User = "${config.resources.username}";
-    script = ''
-      if ${pkgs.nextcloud-client}/bin/nextcloudcmd --non-interactive --silent --user ${config.resources.services.nextcloud.username} --password ${config.resources.services.nextcloud.password} ${config.resources.services.nextcloud.localFolder} ${config.resources.services.nextcloud.url}; then
-        echo "Nextcloud syncing is done"
-      else
-        echo "Syncing fail: sending notification"
-        ${pkgs.curl}/bin/curl -X POST "${config.resources.services.gotify.url}/message?token=${config.resources.services.gotify.token}" -F "title=Nextcloud sync failed" -F "message=An error occured while trying to sync local computer with Nextcloud server" -F "priority=5"
-      fi
-    '';
-    wantedBy = [ "default.target" ];
-    requires = [ "network.target" ];
-  };
-
   # systemctl list-timers
 
   systemd.timers.tasks = {
@@ -121,15 +101,6 @@
     timerConfig = {
       OnBootSec = "15m";
       OnUnitInactiveSec = "3h";
-    };
-  };
-
-  systemd.timers.nextcloud = {
-    description = "Sync nextcloud every minutes";
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnBootSec = "1m";
-      OnUnitInactiveSec = "1m";
     };
   };
 }
