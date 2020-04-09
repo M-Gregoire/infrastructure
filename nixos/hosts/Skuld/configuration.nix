@@ -12,7 +12,6 @@
     ../../networks/home
     ../../profiles/Server
     ./hardware-configuration.nix
-    ./mail-server.nix
   ];
 
   networking.firewall.allowedTCPPorts = [ config.resources.hosts.skuld.ssh.port ];
