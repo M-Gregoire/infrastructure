@@ -11,7 +11,8 @@
     enable = true;
     configurationLimit = 100;
     devices = [ "nodev" ];
-    # Install in UEFI mode from device booted in legacy
-    #efiInstallAsRemovable = true;
+    # Install the EFI entry in /EFI/BOOT/BOOTX64.EFI instead of /EFI/NixOS-boot/
+    # This is to prevent unacessible NixOS in case of UEFI reset
+    efiInstallAsRemovable = true;
   };
 }
