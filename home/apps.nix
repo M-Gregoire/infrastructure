@@ -4,6 +4,7 @@
   home.packages = with pkgs; [
     # Utilities
     wget
+    zip
     unzip
     # Auto mount Thunar
     udisks udiskie
