@@ -136,7 +136,13 @@ The build guide is very detailled.
 
 # Firmware changes
 
-In order to customize the firmware on the motherboard, I used [marlin](http://marlinfw.org/). If the original Anet A8 motherboard is used, then [SkyNet3D](https://github.com/SkyNet3D/anet-board) board definition is required. The modified files (`Configration.h` and `Configuration_adv.h`) are included in this folder.
+In order to customize the firmware on the motherboard, I used [marlin](http://marlinfw.org/). If the original Anet A8 motherboard is used, then [SkyNet3D](https://github.com/SkyNet3D/anet-board) board definition is required. The modified files (`Configuration.h` and `Configuration_adv.h`) are included in this folder.
+
+
+# Original Anet A8 screen on RAMPS
+
+/!\ GND and 5V needs to be inverted
+https://www.thingiverse.com/groups/anet-a6/forums/general/topic:27555#comment-1759843
 
 ## General configuration
 ```
