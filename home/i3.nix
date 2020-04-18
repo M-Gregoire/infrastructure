@@ -243,9 +243,6 @@ in
         { command = "xset s off"; always = false; notification = false; }
         { command = "mkdir -p ${screenshot}"; always = false; notification = false; }
         { command = "emacs --daemon && emacsclient -c"; always = false; notification = false; }
-        # Allow accents using ralt
-        # Compose key list available at http://duncanlock.net/blog/2013/05/03/how-to-set-your-compose-key-on-xfce-xubuntu-lxde-linux/
-        { command = "setxkbmap -layout us -option compose:ralt"; always = false; notification = false; }
         # Remove all urgencies on startup
         { command = "sleep ${wait-for-urgency}; for win in $(wmctrl -l | awk -F' ' '{print $1}'); do wmctrl -i -r $win -b remove,demands_attention; done"; always = false; notification = false; }
         # Polybar

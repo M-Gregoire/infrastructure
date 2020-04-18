@@ -73,12 +73,18 @@
 
   i18n = {
     consoleFont = "Lat2-Terminus16";
-    consoleKeyMap = "us";
     defaultLocale = "en_US.UTF-8";
     extraLocaleSettings = { LC_MESSAGES = "en_US.UTF-8"; LC_TIME = "fr_FR.UTF-8"; };
     supportedLocales = [ "all" ];
-    # TODO: Consider this option
-    #consoleUseXkbConfig = true;
+    consoleUseXkbConfig = true;
+  };
+
+  services.xserver = {
+    layout = "us";
+    xkbVariant = "";
+    xkbModel = "pc104";
+    # Compose key list available at http://duncanlock.net/blog/2013/05/03/how-to-set-your-compose-key-on-xfce-xubuntu-lxde-linux/
+    xkbOptions = "compose:ralt";
   };
 
   time.timeZone = "Europe/Paris";
