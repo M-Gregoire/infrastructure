@@ -15,52 +15,31 @@
   '';
   services.resolved.dnssec="false";
 
-  # TODO: Fix required for online
+  # Based on https://github.com/NixOS/nixpkgs/issues/30904#issuecomment-445073924
+  # If two ethernet ports are present but only one is plugged in, wait-online would fail
+  # Any allows for wait-online service to be running as soon as one LAN interface is configured
+  systemd.services.systemd-networkd-wait-online.serviceConfig.ExecStart = [
+    "" # clear old command
+    "${config.systemd.package}/lib/systemd/systemd-networkd-wait-online --any"
+  ];
+
   # TODO: Investigate routing table
-  # TODO: See wether a physical "group" makes sense
-  #systemd.network.networks."10-physical" = {
-  #  linkConfig.RequiredForOnline = false;
-  #  dhcpConfig.Anonymize = true;
-  #  dhcpConfig.RouteTable = 2468;
-  #  dhcpConfig.UseDNS = false;
-  #  dhcpConfig.UseHostname = false;
-  #  dhcpConfig.UseNTP = false;
-  #  matchConfig.Name = "en* eth* wl*";
-  #  networkConfig.DHCP = "yes";
-  #  networkConfig.IPv6AcceptRA = true;
-  #};
+  systemd.network.networks."10-physical" = {
+    linkConfig.RequiredForOnline = true;
+    #dhcpConfig.RouteTable = 2468;
+    dhcpConfig.UseDNS = true;
+    matchConfig.Name = "en* eth* wl*";
+    networkConfig.DHCP = "yes";
+  };
 
   systemd.network.networks."20-wired" = {
     dhcpConfig.RouteMetric = "10";
     matchConfig.Name = "en* eth*";
-    # For some reasons, when ethernet is not plugged in, this interface is not skipped for systemd-networkd-wait-online.service
-    # contrary to what https://www.freedesktop.org/software/systemd/man/systemd.network.html says
-    # This fixes this behavior so that the wait online service can start.
-    linkConfig.RequiredForOnline = false;
-    #
-    # COMMON
-    #
-    networkConfig.DHCP = "yes";
-    networkConfig.IPv6AcceptRA = true;
-    dhcpConfig.Anonymize = false;
-    dhcpConfig.UseDNS = true;
-    dhcpConfig.UseHostname = false;
-    dhcpConfig.UseNTP = false;
   };
 
   systemd.network.networks."25-wireless" = {
     dhcpConfig.RouteMetric = "20";
     matchConfig.Name = "wl*";
-    linkConfig.RequiredForOnline = true;
-    #
-    # COMMON
-    #
-    networkConfig.DHCP = "yes";
-    networkConfig.IPv6AcceptRA = true;
-    dhcpConfig.Anonymize = false;
-    dhcpConfig.UseDNS = true;
-    dhcpConfig.UseHostname = false;
-    dhcpConfig.UseNTP = false;
   };
 
   systemd.network.networks."30-virtualisation" = {
@@ -73,7 +52,7 @@
   # Preventing some bindings to happens.
   # Seems to be fixed in next release
   systemd.network.networks."40-localhost" = {
-    matchConfig.Name = "lo";
+    matchConfig.Name = "lo ";
     linkConfig.Unmanaged = "yes";
     linkConfig.RequiredForOnline = false;
   };
