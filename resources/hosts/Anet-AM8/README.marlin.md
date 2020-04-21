@@ -31,7 +31,7 @@ Configuration.h - Basics
 // Set extruder rate for pancake motor (42BYGH22 (1.8 degree))
 #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 400, 418.5 }
 // Correct extrusion direction
-#define INVERT_E0_DIR true
+#define INVERT_E0_DIR false
 ```
 
 Configuration.h - BLTouch
