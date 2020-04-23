@@ -82,4 +82,14 @@ Configuration_adv.h
 // Enable M43 command
 // Very useful for pin debugging
 #define PINS_DEBUGGING
+
+// My steppers motor are rated for 0.9A
+// To get the RMS value, we divide by 1.41
+// So we should setup marlin to use 0.600A (To keep some margin)
+// Note: Value is in mA
+#define X_CURRENT       600
+#define Y_CURRENT       600
+#define Z_CURRENT       600
+#define E0_CURRENT       600
+
 ```
