@@ -17,8 +17,5 @@
   networking.firewall.allowedTCPPorts = [ config.resources.hosts.fenrirDocker.ssh.port ];
   services.openssh.ports = [ config.resources.hosts.fenrirDocker.ssh.port ];
 
-  # Unifi
-  services.unifi.enable = true;
-
   system.stateVersion = "20.03";
 }
