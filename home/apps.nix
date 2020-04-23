@@ -20,7 +20,7 @@
     # Screenshots
     scrot
     # LaTeX
-    texlive.combined.scheme-full
+    #texlive.combined.scheme-full
     # Used by noCTRLqFirefox script
     xvkbd
     xdotool

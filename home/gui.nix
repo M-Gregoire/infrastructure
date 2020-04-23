@@ -30,7 +30,7 @@ in
     # Music
     spotify
     # Chats
-    unstable.signal-desktop
+    signal-desktop
     # Thunar with archive plugin
     xfce4-14.thunar
     # Volume manager
