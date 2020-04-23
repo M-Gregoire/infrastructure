@@ -19,5 +19,5 @@
   # Unifi
   services.unifi.enable = true;
 
-  system.stateVersion = "19.03";
+  system.stateVersion = "20.03";
 }

@@ -7,7 +7,6 @@
     ./dev.nix
     ./environment.nix
     ./gui.nix
-    ./home.nix
     ./i3.nix
     ./password-management.nix
     ./theme.nix
@@ -19,6 +18,7 @@
   nixpkgs.overlays = import ../nixpkgs/overlays.nix;
   xdg.configFile."nixpkgs".source = ../nixpkgs;
 
+  xsession.scriptPath = ".hm-xsession";
+
   programs.home-manager.enable = true;
-  programs.home-manager.path = "${builtins.toPath ../vendor/home-manager}";
 }

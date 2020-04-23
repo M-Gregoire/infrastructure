@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, options, ... }:
 
 {
   imports = [
@@ -31,8 +31,7 @@
   # Wifi
   environment.etc."wpa_supplicant.conf".source = "${config.resources.pcs.paths.secrets}/wpa_supplicant.conf";
 
-  nix.nixPath = with builtins; [
-    "nixpkgs=${toPath "${config.resources.pcs.paths.publicConfig}/vendor/nixpkgs-release"}"
+  nix.nixPath = with builtins; options.nix.nixPath.default ++ [
     "nixos-config=${toPath "${config.resources.pcs.paths.publicConfig}/nixos/hosts/${config.resources.hostname}/configuration.nix"}"
   ];
 
@@ -71,12 +70,15 @@
     openssh.authorizedKeys.keys = config.resources.services.ssh.publicKeys;
   };
 
+  console = {
+    font = "Lat2-Terminus16";
+    useXkbConfig = true;
+  };
+
   i18n = {
-    consoleFont = "Lat2-Terminus16";
     defaultLocale = "en_US.UTF-8";
     extraLocaleSettings = { LC_MESSAGES = "en_US.UTF-8"; LC_TIME = "fr_FR.UTF-8"; };
     supportedLocales = [ "all" ];
-    consoleUseXkbConfig = true;
   };
 
   services.xserver = {

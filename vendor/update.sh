@@ -1,21 +1,8 @@
 #!/usr/bin/env bash
 
+nix-channel --add https://nixos.org/channels/nixos-20.03 nixos
+nix-channel --add https://github.com/rycee/home-manager/archive/release-20.03.tar.gz home-manager
 nix-channel --update
-
-cd home-manager
-git fetch --all
-git checkout release-19.09
-git pull
-
-cd ..
-
-cd nixpkgs-release
-git remote add channels https://github.com/NixOS/nixpkgs-channels.git
-git remote update channels
-git fetch --all
-git checkout channels/nixos-19.09
-
-cd ..
 
 cd infrastructure-private
 git fetch --all

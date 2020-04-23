@@ -64,27 +64,6 @@
     '';
     wantedBy = [ "default.target" ];
   };
-
-  systemd.services.nixpkgs-update = {
-    description = "Update nixpkgs release";
-    serviceConfig.User = "${config.resources.username}";
-    script = ''
-      if [ -d '${config.resources.pcs.paths.publicConfig}' ]; then
-        if ${pkgs.git}/bin/git -C ${config.resources.pcs.paths.publicConfig}/vendor/nixpkgs-release fetch --all && ${pkgs.git}/bin/git -C ${config.resources.pcs.paths.publicConfig}/vendor/nixpkgs-release checkout channels/nixos-19.09; then
-          echo "nixpkgs-release updated"
-        else
-          echo "nixpkgs-release update failed: sending notification"
-          ${pkgs.curl}/bin/curl -X POST "${config.resources.services.gotify.url}/message?token=${config.resources.services.gotify.token}" -F "title=Nixpkgs-release update failed" -F "message=Check systemctl for more information." -F "priority=5"
-        fi
-      else
-        echo "public repo does not exists"
-      fi
-    '';
-    wantedBy = [ "default.target" ];
-    after = [ "network.target" ];
-    requires = [ "network.target" ];
-  };
-
   # systemctl list-timers
 
   systemd.timers.tasks = {
@@ -92,15 +71,6 @@
     wantedBy = [ "timers.target" ];
     timerConfig = {
       OnUnitInactiveSec = "5m";
-    };
-  };
-
-  systemd.timers.nixpkgs-update = {
-    description = "Update nixpkgs release every 3h";
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnBootSec = "15m";
-      OnUnitInactiveSec = "3h";
     };
   };
 }

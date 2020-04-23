@@ -9,6 +9,7 @@
     ./dev/encryption.nix
     ./dev/git.nix
     ./dev/go.nix
+    ./dev/gpg.nix
     ./dev/hardware.nix
     ./dev/kdeconnect.nix
     ./dev/misc.nix
