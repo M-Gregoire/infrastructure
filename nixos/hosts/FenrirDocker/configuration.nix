@@ -7,7 +7,8 @@
     ../../common.nix
     ../../dev/bluetooth.nix
     ../../dev/boot/grub-bios.nix
-    ../../dev/nfs.nix
+    ../../../vendor/infrastructure-private/resources/networks/home/nfs-sharkoon.nix
+    ../../../vendor/infrastructure-private/resources/networks/home/nfs-backup.nix
     ../../networks/home
     ../../profiles/Server
     ./hardware-configuration.nix

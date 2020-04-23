@@ -5,7 +5,7 @@
     [
       ../../../resources/hosts/Mimir
       ../../../vendor/infrastructure-private/resources/hosts/Mimir
-      ../../../vendor/infrastructure-private/resources/networks/home/sharkoon.nix
+      ../../../vendor/infrastructure-private/resources/networks/home/nfs-sharkoon.nix
       ../../common.nix
       ../../dev/bluetooth.nix
       ../../dev/boot/grub-uefi.nix
