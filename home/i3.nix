@@ -249,6 +249,8 @@ in
         { command = "${config.resources.pcs.paths.scripts}/polybar.sh"; always = true; notification = false; }
         # Spotify in Polybar
         { command = "/usr/bin/env python3 ${config.resources.pcs.paths.scripts}/polybar-spotify-controls/scripts/spotify/py_spotify_listener.py"; always = false; notification = false; }
+        # Xbanish to hide mouse if unused
+        { command = "xbanish"; always = false; notification = false; }
       ];
     };
     windowManager.i3.extraConfig = ''
