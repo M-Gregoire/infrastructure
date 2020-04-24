@@ -9,7 +9,6 @@
     ../../dev/fwudp.nix
     ../../dev/openvpn-client.nix
     ../../dev/pam.nix
-    #../../dev/teamviewer.nix
     ../../dev/wireguard-tools.nix
     ./mime.nix
     ./services.nix
