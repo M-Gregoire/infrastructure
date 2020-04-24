@@ -24,9 +24,6 @@
     # Used by noCTRLqFirefox script
     xvkbd
     xdotool
-    # Needed for Trash in Thunar
-    # See https://github.com/NixOS/nixpkgs/issues/29137#issuecomment-354229533
-    gvfs
     # Archive manager for thunar-archive-plugin
     gnome3.file-roller
     # Hide pointer when not in use

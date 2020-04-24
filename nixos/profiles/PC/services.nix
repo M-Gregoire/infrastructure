@@ -16,21 +16,6 @@
     };
   };
 
-  services.gvfs.enable = true;
-
-  # https://github.com/NixOS/nixpkgs/issues/22064
-#  nixpkgs.config.packageOverrides = pkgs: {
-#    xfce = pkgs.xfce // {
-#      gvfs = pkgs.gvfs;
-#    };
-#  };
-  # Network share
-#  environment.systemPackages = with pkgs; [
-#    lxqt.lxqt-policykit
-#    pkgs.xfce.gvfs
-#  ]; # provides a default authentification client for policykit
-
-
   # Smart card
   services.pcscd.enable = true;
 

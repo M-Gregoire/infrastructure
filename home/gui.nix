@@ -31,15 +31,19 @@ in
     spotify
     # Chats
     signal-desktop
-    # Thunar with archive plugin
-    xfce4-14.thunar
-    # Volume manager
-    xfce4-14.thunar-volman
-    xfce.thunar-archive-plugin
+    # Thunar with plugins
+    (pkgs.xfce.thunar.override { thunarPlugins = [ pkgs.xfce.thunar-archive-plugin xfce.thunar-volman ]; })
+    # Network share &
+    # Needed for Trash in Thunar
+    # See https://github.com/NixOS/nixpkgs/issues/29137#issuecomment-354229533
+    # https://github.com/NixOS/nixpkgs/issues/22064
+    xfce.gvfs
+    samba
+    fuse
     # Thumbnail
     ffmpegthumbnailer
     # D-bus thumbnailer service
-    xfce4-14.tumbler
+    xfce.tumbler
     # Disk managment
     gparted
     # Sound control
