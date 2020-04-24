@@ -3,7 +3,6 @@
 {
   imports = [
     <home-manager/nixos>
-    #../../dev/ipfs.nix
     ../../../modules
     ../../dev/3D.nix
     ../../dev/android.nix
