@@ -11,9 +11,9 @@
     GOPATH = "${config.resources.pcs.paths.home}";
     # Config
     BROWSER = "${config.resources.pcs.browser}";
-    EDITOR = "emacsclient -c -n";
+    EDITOR = "emacsclient -nw";
     ALTERNATE_EDITOR = "nano";
-    VISUAL = "emacsclient -c -n";
+    VISUAL = "${config.home.sessionVariables.EDITOR}";
     TERM = "${config.resources.pcs.terminal}";
     # Take personal .desktop files into account for XDG
     XDG_DATA_DIRS="${config.resources.pcs.paths.home}/.local/share/applications/emacs.desktop:$XDG_DATA_DIRS";
