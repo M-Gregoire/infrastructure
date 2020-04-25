@@ -7,7 +7,6 @@
     ../../dev/3D.nix
     ../../dev/android.nix
     ../../dev/fwudp.nix
-    ../../dev/openvpn-client.nix
     ../../dev/pam.nix
     ../../dev/wireguard-tools.nix
     ./mime.nix

@@ -5,6 +5,7 @@
     ../modules
     ./dev/docker.nix
     ./dev/nfs.nix
+    ./dev/openvpn-client.nix
     ./services.nix
   ];
 
