@@ -26,6 +26,8 @@
       ];
       ohMyZsh.theme = "agnoster";
       enableCompletion = true;
+      # Fix Tramp (Emacs) with ZSH https://www.emacswiki.org/emacs/TrampMode#toc9
+      loginShellInit = "[[ $TERM == 'dumb' ]] && unsetopt zle && PS1='$ ' && return";
     };
   };
 }
