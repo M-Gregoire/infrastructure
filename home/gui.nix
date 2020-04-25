@@ -40,6 +40,9 @@ in
     xfce.gvfs
     samba
     fuse
+    # Exo is used for thunar to select prefered application
+    # Open in terminal doesn't work otherwise
+    xfce.exo
     # Thumbnail
     ffmpegthumbnailer
     # D-bus thumbnailer service
