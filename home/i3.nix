@@ -48,8 +48,17 @@ in
     albert
     # Remove urgency
     wmctrl
-    # Auto lock
-    xautolock
+    # Lock screen
+    i3lock-fancy
+    # Auto lock after inactivity
+    xidlehook
+    # Change brightness of screen
+    xorg.xbacklight
+    # redshift
+    # Not running as a service as there is no command available to change the brightness of the screen
+    redshift
+    # xidlehook script
+    bc
   ];
 
   xsession = {
@@ -238,7 +247,7 @@ in
         # Same random wallpaper on two screens with different resolution
         { command =  "${config.resources.pcs.paths.scripts}/randWallpaper.sh"; always = true; notification = false; }
         { command = "albert"; always = false; notification = false; }
-        #{ command = "xautolock -time 4 -locker 'dm-tool lock' &"; always = false; notification = false; }
+        { command = "${config.resources.pcs.paths.scripts}/xidlehook.sh"; always = false; notification = false; }
         # No screen saver
         { command = "xset s off"; always = false; notification = false; }
         { command = "mkdir -p ${screenshot}"; always = false; notification = false; }

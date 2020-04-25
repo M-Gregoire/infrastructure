@@ -36,5 +36,11 @@
     MOZ_LEGACY_PROFILES = "1";
     # Use gpg-agent for ssh
     SSH_AUTH_SOCK = "$(gpgconf --list-dirs agent-ssh-socket)";
+    # Expose GPS coordinate in env for xidlehook script
+    LATITUDE = "${builtins.toString config.resources.geo.latitude}";
+    LONGITUDE = "${builtins.toString config.resources.geo.longitude}";
+    # Redshift temperature
+    REDSHIFT_TEMP_DAY = "${builtins.toString config.resources.services.redshift.temperature.day}";
+    REDSHIFT_TEMP_NIGHT = "${builtins.toString config.resources.services.redshift.temperature.day}";
   };
 }

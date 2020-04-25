@@ -233,6 +233,26 @@
     };
 
     services = {
+      redshift = {
+        temperature = {
+          day = mkOption {
+            type = types.int;
+            default = 5500;
+            description = ''
+          Colour temperature to use during the day, between
+          <literal>1000</literal> and <literal>25000</literal> K.
+        '';
+          };
+          night = mkOption {
+            type = types.int;
+            default = 3700;
+            description = ''
+          Colour temperature to use at night, between
+          <literal>1000</literal> and <literal>25000</literal> K.
+        '';
+          };
+        };
+      };
       taskd = {
         theme = mkOption {
           type = types.str;
