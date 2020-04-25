@@ -11,7 +11,7 @@
     "percent": 1,
     "swallows": [
        {
-         "class": "^Thunar$"
+         "class": "^.thunar-wrapped_$"
        }
     ],
     "type": "con"
