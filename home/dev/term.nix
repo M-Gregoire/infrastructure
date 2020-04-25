@@ -8,6 +8,12 @@
   home.packages = with pkgs; [
     kitty
     bat
+    # Allow the use of tic command
+    # Which allow sending kitty terminfo to remote servers
+    # To do so, use
+    # kitty +kitten ssh fenrirHome
+    # See https://sw.kovidgoyal.net/kitty/faq.html#id4
+    ncurses
   ];
 
   xdg.configFile."kitty/kitty.conf".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/kitty/kitty.conf";

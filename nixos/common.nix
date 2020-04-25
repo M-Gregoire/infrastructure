@@ -92,9 +92,4 @@
   time.timeZone = "Europe/Paris";
 
   security.pki.certificates = config.resources.pki.acrs;
-
-  # For SSH
-  # https://askubuntu.com/questions/54145/how-to-fix-strange-backspace-behaviour-with-urxvt-zsh
-  # Proper way is to use terminfo
-  environment.variables.TERM = "xterm";
 }
