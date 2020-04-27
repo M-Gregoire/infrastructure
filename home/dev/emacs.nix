@@ -27,7 +27,7 @@
   home.file.".emacs.d/etc".source =  builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/emacs.d/etc";
   home.file.".emacs.d/snippets".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/emacs.d/snippets";
   home.file.".emacs.d/bookmarks".source = builtins.toPath "${config.resources.pcs.paths.privateDotfiles}/emacs/bookmarks";
-  home.file.".local/share/applications/emacs.desktop".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/emacs.d/emacs.desktop";
+  home.file.".local/share/applications/emacs-client.desktop".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/emacs.d/emacs-client.desktop";
 
   xresources.properties = {
     # Font backend settings

@@ -12,6 +12,7 @@
     ./dev/gpg.nix
     ./dev/hardware.nix
     ./dev/kdeconnect.nix
+    ./dev/mimeapps.nix
     ./dev/misc.nix
     ./dev/network.nix
     ./dev/nix.nix
