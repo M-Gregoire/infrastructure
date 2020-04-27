@@ -9,7 +9,6 @@
     ../../dev/fwudp.nix
     ../../dev/pam.nix
     ../../dev/wireguard-tools.nix
-    ./mime.nix
     ./services.nix
     ../../systemd-networkd.nix
   ];
