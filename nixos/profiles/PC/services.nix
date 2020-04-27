@@ -36,6 +36,10 @@
   # See https://github.com/rycee/home-manager/pull/510
   services.dbus.packages = with pkgs; [ gnome3.dconf gnome2.GConf ];
 
+  # dconf needed for wpgtk
+  # https://nixos.wiki/wiki/Wpgtk
+  programs.dconf.enable = true;
+
   systemd.services.tasks = {
     description = "Sync taskwarrior tasks";
     serviceConfig.User = "${config.resources.username}";
