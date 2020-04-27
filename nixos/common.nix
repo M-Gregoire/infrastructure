@@ -20,6 +20,8 @@
     htop
     # List hardware
     lshw
+    # Backup
+    borgbackup
   ];
 
   # Boot with last kernel
