@@ -20,18 +20,15 @@ let
 
   screenshot = "${config.resources.pcs.paths.home}/Screenshots/";
 
-  i3Theme = import ./theme/i3.nix {
-    theme=config.resources.theme;
-    withBorder=false;
-    overrideIndicator="00FF00";
-  };
-
 in
 
 {
   imports = [
     ./i3-polybar.nix
   ];
+
+  # Import pywal config in xresources
+  xresources.extraConfig = ''#include "${config.resources.pcs.paths.home}/.cache/wal/colors.Xresources"'';
 
   home.packages = with pkgs; [
     # Manage acpi events
@@ -59,6 +56,14 @@ in
     redshift
     # xidlehook script
     bc
+    # Theme based on wallpaper
+    pywal
+    # Create GTK Theme with pywal
+    wpgtk
+    # Live GTK+ reload
+    xsettingsd
+    # Notifications
+    dunst
   ];
 
   xsession = {
@@ -68,7 +73,45 @@ in
 
     windowManager.i3.config = {
       fonts = [ "${config.resources.font.name} ${config.resources.font.size}" ];
-      colors = i3Theme;
+      # Use pywal
+      colors = {
+        focused = {
+          background   = "$bg";
+          border       = "$bg";
+          indicator    = "$bg";
+          text         = "$fg";
+          childBorder  = "$bg";
+        };
+        unfocused = {
+          background   = "$bg";
+          border       = "$bg";
+          indicator    = "$bg";
+          text         = "$fg";
+          childBorder  = "$bg";
+        };
+        focusedInactive = {
+          background   = "$bg";
+          border       = "$bg";
+          indicator    = "$bg";
+          text         = "$fg";
+          childBorder  = "$bg";
+        };
+        urgent = {
+          background   = "$bg";
+          border       = "$bg";
+          indicator    = "$bg";
+          text         = "$fg";
+          childBorder  = "$bg";
+        };
+        placeholder = {
+          background   = "$bg";
+          border       = "$bg";
+          indicator    = "$bg";
+          text         = "$fg";
+          childBorder  = "$bg";
+        };
+        background     = "$bg";
+      };
       assigns = {
         # Use xprop
         "${workspace1}" = [{class="Firefox";}];
@@ -244,8 +287,8 @@ in
         { command = "${config.resources.pcs.mailer}"; always = false; notification = false; }
         { command = "spotify"; always = false; notification = false; }
         { command = "compton"; always = false; notification = false; }
-        # Same random wallpaper on two screens with different resolution
-        { command =  "${config.resources.pcs.paths.scripts}/randWallpaper.sh"; always = true; notification = false; }
+        # Set random wallpaper and generate theme based on it
+        { command =  "${config.resources.pcs.paths.scripts}/theme.sh ${config.resources.pcs.paths.privateConfig}/images/backgrounds"; always = true; notification = false; }
         { command = "albert"; always = false; notification = false; }
         { command = "${config.resources.pcs.paths.scripts}/xidlehook.sh"; always = false; notification = false; }
         # No screen saver
@@ -260,6 +303,8 @@ in
         { command = "/usr/bin/env python3 ${config.resources.pcs.paths.scripts}/polybar-spotify-controls/scripts/spotify/py_spotify_listener.py"; always = false; notification = false; }
         # Xbanish to hide mouse if unused
         { command = "xbanish"; always = false; notification = false; }
+        # Dunst
+        { command = "${config.resources.pcs.paths.scripts}/dunst.sh"; always = true; notification = false; }
       ];
     };
     windowManager.i3.extraConfig = ''

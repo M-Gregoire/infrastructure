@@ -1,13 +1,5 @@
 { config, pkgs, lib, ... }:
 
-let
-
-  i3BarTheme = import ./theme/i3bar.nix {
-    theme=config.resources.theme;
-  };
-
-in
-
 {
   services.polybar = {
     enable = true;
@@ -20,12 +12,21 @@ in
         screenchange-reload = "true";
       };
 
+      "colors" = {
+        background = "\${xrdb:color0:#222}";
+        foreground = "\${xrdb:color7:#222}";
+        foreground-alt = "\${xrdb:color7:#222}";
+        primary = "\${xrdb:color1:#222}";
+        secondary = "\${xrdb:color2:#222}";
+        alert = "\${xrdb:color3:#222}";
+      };
+
       "bar/top-main" = {
         width = "100%";
         height = "20";
         fixed-center = "false";
-        background = "${i3BarTheme.background}";
-        foreground = "#E6E6E6";
+        background = "\${xrdb:color0:#222}";
+        foreground = "\${xrdb:color7:#222}";
         line-size = "3";
         line-color = "#f00";
         padding-left = "1";
@@ -40,7 +41,7 @@ in
         tray-detached = "false";
         tray-padding = "2";
         tray-transparent = "false";
-        tray-background = "${i3BarTheme.background}";
+        tray-background = "\${xrdb:color0:#222}";
         wm-restack = "i3";
         cursor-click = "pointer";
         cursor-scroll = "ns-resize";

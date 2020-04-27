@@ -1,15 +1,6 @@
 { config, lib, pkgs, ... }:
 
-let
-  rofiTheme = import ./theme/rofi.nix {
-    theme=config.resources.theme;
-  };
-
-in
-
 {
-  programs.feh.enable = true;
-
   home.packages = with pkgs; [
     # Browser & emails
     firefox
@@ -84,9 +75,10 @@ in
   };
 
   # Shutdown menu
-  programs.rofi = lib.recursiveUpdate{
+  programs.rofi = {
     enable = true;
     font = "${config.resources.font.name} ${config.resources.font.size}";
-  }rofiTheme;
+    extraConfig = "rofi.theme: ~/.cache/wal/colors-rofi-dark";
+  };
 
 }
