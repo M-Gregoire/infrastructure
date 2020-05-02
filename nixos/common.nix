@@ -22,6 +22,8 @@
     lshw
     # Backup
     borgbackup
+    # tmux
+    tmux
   ];
 
   # Boot with last kernel
