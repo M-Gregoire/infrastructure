@@ -88,12 +88,15 @@
   system.activationScripts = {
     grub = {
       text = ''
-        cp -R /home/gregoire/src/github.com/M-Gregoire/infrastructure/vendor/grub2-themes/common/* /boot/grub/themes/Vimix/
-cp -R /home/gregoire/src/github.com/M-Gregoire/infrastructure/vendor/grub2-themes/config/theme-1080p.txt /boot/grub/themes/Vimix/theme.txt
-cp -R /home/gregoire/src/github.com/M-Gregoire/infrastructure/vendor/infrastructure-private/images/grub-backgrounds/background-mimir.png /boot/grub/themes/Vimix/background.png
-cp -R /home/gregoire/src/github.com/M-Gregoire/infrastructure/vendor/grub2-themes/assets/assets-color/icons-1080p /boot/grub/themes/Vimix/icons
-cp -R /home/gregoire/src/github.com/M-Gregoire/infrastructure/vendor/grub2-themes/assets/assets-color/select-1080p/*.png /boot/grub/themes/Vimix
-       ${pkgs.gnused}/bin/sed -i 's/desktop-image: "background.jpg"/desktop-image: "background.png"/g' /boot/grub/themes/Vimix/theme.txt
+        if [ -d "/boot/grub" ]; then
+          mkdir -p /boot/grub/themes/Vimix
+          cp -R ${config.resources.pcs.paths.publicConfig}/vendor/grub2-themes/common/* /boot/grub/themes/Vimix/
+          cp -R ${config.resources.pcs.paths.publicConfig}/vendor/grub2-themes/config/theme-1080p.txt /boot/grub/themes/Vimix/theme.txt
+          cp -R ${config.resources.pcs.paths.publicConfig}/vendor/grub2-themes/assets/assets-color/icons-1080p /boot/grub/themes/Vimix/icons
+          cp -R ${config.resources.pcs.paths.publicConfig}/vendor/grub2-themes/assets/assets-color/select-1080p/*.png /boot/grub/themes/Vimix
+          #cp -R ${config.resources.pcs.paths.publicConfig}/vendor/infrastructure-private/images/grub-backgrounds/background-mimir.png /boot/grub/themes/Vimix/background.png
+          #${pkgs.gnused}/bin/sed -i 's/desktop-image: "background.jpg"/desktop-image: "background.png"/g' /boot/grub/themes/Vimix/theme.txt
+        fi
       '';
       deps = [];
     };
@@ -118,5 +121,5 @@ cp -R /home/gregoire/src/github.com/M-Gregoire/infrastructure/vendor/grub2-theme
   #  splashImage = null;
   #};
   # https://github.com/NixOS/nixpkgs/issues/26722
-  #boot.plymouth.enable = true;
+  boot.plymouth.enable = true;
 }
