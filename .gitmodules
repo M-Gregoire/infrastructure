@@ -9,7 +9,7 @@
 	url = https://github.com/vinceliuice/grub2-themes.git
 [submodule "vendor/polybar-pulseaudio-control"]
 	path = vendor/polybar-pulseaudio-control
-	url = https://github.com/marioortizmanero/polybar-pulseaudio-control.git
+	url = git@github.com:M-Gregoire/polybar-pulseaudio-control.git
 [submodule "vendor/polybar-spotify-controls"]
 	path = vendor/polybar-spotify-controls
 	url = https://github.com/dietervanhoof/polybar-spotify-controls.git
