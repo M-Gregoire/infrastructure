@@ -75,9 +75,48 @@
   ];
 
   environment.systemPackages = with pkgs; [
+    # Grub theming
+    # https://askubuntu.com/questions/206967/why-isnt-grub2-using-custom-resolution
+    hwinfo
     # NTFS
     ntfs3g
     # exFat
     exfat
   ];
+
+  # We need to copy the theme as root is encrypted
+  system.activationScripts = {
+    grub = {
+      text = ''
+        cp -R /home/gregoire/src/github.com/M-Gregoire/infrastructure/vendor/grub2-themes/common/* /boot/grub/themes/Vimix/
+cp -R /home/gregoire/src/github.com/M-Gregoire/infrastructure/vendor/grub2-themes/config/theme-1080p.txt /boot/grub/themes/Vimix/theme.txt
+cp -R /home/gregoire/src/github.com/M-Gregoire/infrastructure/vendor/infrastructure-private/images/grub-backgrounds/background-mimir.png /boot/grub/themes/Vimix/background.png
+cp -R /home/gregoire/src/github.com/M-Gregoire/infrastructure/vendor/grub2-themes/assets/assets-color/icons-1080p /boot/grub/themes/Vimix/icons
+cp -R /home/gregoire/src/github.com/M-Gregoire/infrastructure/vendor/grub2-themes/assets/assets-color/select-1080p/*.png /boot/grub/themes/Vimix
+       ${pkgs.gnused}/bin/sed -i 's/desktop-image: "background.jpg"/desktop-image: "background.png"/g' /boot/grub/themes/Vimix/theme.txt
+      '';
+      deps = [];
+    };
+  };
+
+  # Get available resolutions using `videoinfo` in grub shell
+
+  #boot.loader.grub.gfxmodeBios = "1920x1440,1280x1024,1024x768,auto";
+  #boot.loader.grub.gfxmodeEfi = "1920x1440,1280x1024,1024x768,auto";
+  #boot.loader.grub.gfxpayloadBios = "keep";
+  #boot.loader.grub.gfxpayloadEfi = "keep";
+
+  # Use grub theme
+  # convert background.png -resize 1024x768! -depth 32 background-mimir.png
+  #       set theme="($drive1)//grub/themes/Vimix/theme.txt"
+
+  #boot.loader.grub = {
+  #  extraConfig = ''
+  #    set gfxmode=1920x1440,1280x1024,1024x768,auto
+  #    set gfxpayload=keep
+  #  '';
+  #  splashImage = null;
+  #};
+  # https://github.com/NixOS/nixpkgs/issues/26722
+  #boot.plymouth.enable = true;
 }
