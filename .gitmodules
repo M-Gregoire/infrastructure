@@ -1,9 +1,15 @@
 [submodule "vendor/infrastructure-private"]
 	path = vendor/infrastructure-private
 	url = git@gitlab.martinache.net:M-Gregoire/infrastructure-private.git
-[submodule "scripts/polybar-spotify-controls"]
-	path = scripts/polybar-spotify-controls
+[submodule "vendor/rofi"]
+	path = vendor/rofi
+	url = git@github.com:M-Gregoire/rofi.git
+[submodule "vendor/grub2-themes"]
+	path = vendor/grub2-themes
+	url = https://github.com/vinceliuice/grub2-themes.git
+[submodule "vendor/polybar-pulseaudio-control"]
+	path = vendor/polybar-pulseaudio-control
+	url = https://github.com/marioortizmanero/polybar-pulseaudio-control.git
+[submodule "vendor/polybar-spotify-controls"]
+	path = vendor/polybar-spotify-controls
 	url = https://github.com/dietervanhoof/polybar-spotify-controls.git
-[submodule "vendor/base16-shell"]
-	path = vendor/base16-shell
-	url = https://github.com/chriskempson/base16-shell.git
