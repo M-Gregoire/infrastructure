@@ -71,7 +71,7 @@
   };
   services.polybar.config."module/network-wireless" = {
     type = "internal/network";
-    interface = "enp0s18f2u3u1i5";
+    interface = "wlp1s0";
     interval = "5.0";
     format-connected = "<ramp-signal> <label-connected>";
     format-disconnected = "<label-disconnected>";
