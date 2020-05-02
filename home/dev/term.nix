@@ -21,12 +21,6 @@
   programs = {
     zsh = {
       enable = true;
-      plugins = [
-        {
-          name = "base16-shell";
-          src =  ./../../vendor/base16-shell;
-        }
-      ];
       oh-my-zsh.enable = true;
       oh-my-zsh.plugins = [
         "sudo"
