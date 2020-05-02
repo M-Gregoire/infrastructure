@@ -42,7 +42,7 @@ in
     # Notification (notify-send)
     libnotify
     # D-menu replacement
-    albert
+    rofi
     # Remove urgency
     wmctrl
     # Lock screen
@@ -115,7 +115,6 @@ in
       assigns = {
         # Use xprop
         "${workspace1}" = [{class="Firefox";}];
-        "${workspace3}" = [{class="Emacs";}];
         "${workspace8}" = [{class="rambox";}];
         "${workspace9}" = [{class="Thunderbird";} {class="Daily";}];
       };
@@ -130,9 +129,9 @@ in
         "${modifier}+Shift+e" = "exec i3-nagbar -t warning -m 'Do you want to exit i3?' -b 'Yes' 'i3-msg exit'";
         "Group1+${modifier}+Shift+a" = "kill";
         "Group2+${modifier}+Shift+a" = "kill";
-        "${modifier}+d" = "exec albert show";
-        "${modifier}+Shift+s" = "exec ${config.resources.pcs.paths.scripts}/shutdownMenu.sh";
-        "${modifier}+Shift+x" = "exec dm-tool lock";
+        "${modifier}+d" = "exec /home/${config.resources.username}/.config/rofi/launchers/launcher.sh";
+        "${modifier}+Shift+s" = "exec /home/${config.resources.username}/.config/rofi/scripts/menu_powermenu.sh";
+        "${modifier}+Shift+x" = "exec i3lock-fancy";
         # Basic movements/focus
         "${modifier}+j" = "focus left";
         "${modifier}+k" = "focus down";
@@ -229,7 +228,7 @@ in
 
       gaps = {
         inner=5;
-        outer=0;
+        outer=1;
         smartBorders="on";
         smartGaps=true;
       };
@@ -286,15 +285,11 @@ in
         { command = "${config.resources.pcs.browser}"; always = false; notification = false; }
         { command = "${config.resources.pcs.mailer}"; always = false; notification = false; }
         { command = "spotify"; always = false; notification = false; }
-        { command = "compton"; always = false; notification = false; }
         # Set random wallpaper and generate theme based on it
         { command =  "${config.resources.pcs.paths.scripts}/theme.sh ${config.resources.pcs.paths.privateConfig}/images/backgrounds"; always = true; notification = false; }
-        { command = "albert"; always = false; notification = false; }
         { command = "${config.resources.pcs.paths.scripts}/xidlehook.sh"; always = false; notification = false; }
         # No screen saver
         { command = "xset s off"; always = false; notification = false; }
-        { command = "mkdir -p ${screenshot}"; always = false; notification = false; }
-        { command = "emacs --daemon && emacsclient -c"; always = false; notification = false; }
         # Remove all urgencies on startup
         { command = "sleep ${wait-for-urgency}; for win in $(wmctrl -l | awk -F' ' '{print $1}'); do wmctrl -i -r $win -b remove,demands_attention; done"; always = false; notification = false; }
         # Polybar
@@ -308,7 +303,8 @@ in
       ];
     };
     windowManager.i3.extraConfig = ''
-      exec --no-startup-id i3-msg "workspace ${workspace2}; append_layout ${config.resources.pcs.paths.publicDotfiles}/i3/layouts/kitty.json" && $TERMINAL
+      exec --no-startup-id i3-msg "workspace ${workspace2}; append_layout ${config.resources.pcs.paths.publicDotfiles}/i3/layouts/kitty.json" && kitty
+      exec --no-startup-id i3-msg "workspace ${workspace3}; append_layout ${config.resources.pcs.paths.publicDotfiles}/i3/layouts/emacs.json" &&  while ! emacsclient --socket-name=/tmp/emacs1000/server -ca false; do sleep 2; done;
       exec --no-startup-id i3-msg "workspace ${workspace4}; append_layout ${config.resources.pcs.paths.publicDotfiles}/i3/layouts/thunar.json" && thunar
       exec gpg-connect-agent /bye
     '';

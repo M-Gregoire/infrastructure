@@ -64,21 +64,4 @@
 
   home.file.".mozilla/firefox/${config.resources.pcs.firefox.profile}/user.js".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/firefox/user.js";
   xdg.configFile."albert/albert.conf".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/albert/albert.conf";
-
-  programs.zathura = {
-    enable = true;
-    options = {
-      "recolor"="true";
-      "recolor-keephue"="true";
-      "selection-clipboard"="clipboard";
-    };
-  };
-
-  # Shutdown menu
-  programs.rofi = {
-    enable = true;
-    font = "${config.resources.font.name} ${config.resources.font.size}";
-    extraConfig = "rofi.theme: ~/.cache/wal/colors-rofi-dark";
-  };
-
 }
