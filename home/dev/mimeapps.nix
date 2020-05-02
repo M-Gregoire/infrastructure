@@ -5,8 +5,8 @@
     enable = true;
     defaultApplications = {
       # PDF
-      "application/pdf" = [ "evince.desktop" ];
-      "image/vnd.djvu" = [ "evince.desktop" ];
+      "application/pdf" = [ "org.gnome.Evince.desktop" ];
+      "image/vnd.djvu" = [ "org.gnome.Evince.desktop" ];
 
       # Text
       "application/x-shellscript" = [ "emacs-client.desktop" ];
@@ -54,6 +54,9 @@
       "audio/x-flac" = [ "mpv.desktop" ];
       "audio/mp4" = [ "mpv.desktop" ];
       "application/ogg" = [ "mpv.desktop" ];
+
+      # Virt-viewer
+      "application/x-virt-viewer" = [ "remote-viewer.desktop" ];
     };
   };
 }
