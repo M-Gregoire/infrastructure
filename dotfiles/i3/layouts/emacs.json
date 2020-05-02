@@ -1,0 +1,18 @@
+{
+    "border": "pixel",
+    "current_border_width": 2,
+    "floating": "auto_off",
+    "geometry": {
+       "height": 781,
+       "width": 832,
+       "x": 0,
+       "y": 0
+    },
+    "percent": 1,
+    "swallows": [
+       {
+         "class": "^Emacs$"
+       }
+    ],
+    "type": "con"
+}
