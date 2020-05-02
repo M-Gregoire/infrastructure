@@ -51,8 +51,8 @@
   networking.firewall.allowedUDPPortRanges = config.resources.networking.firewall.openUDPPortsRange;
 
   networking.hosts = {
-    "127.0.0.1" = [ "${config.resources.hostname}" ];
-    "::1" = [ "${config.resources.hostname}" ];
+    "127.0.0.1" = [ "${config.resources.hostname}" "${config.resources.hostname}.${config.resources.domain}" ];
+    "::1" = [ "${config.resources.hostname}" "${config.resources.hostname}.${config.resources.domain}" ];
   };
 
   users.groups.${config.resources.username} = {
