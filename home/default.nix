@@ -7,7 +7,8 @@
 
   home.activation = {
     rofi = ''
-         if [ -d "${config.resources.pcs.paths.home}/.config/rofi" ]; then
+         if [ -d "${config.resources.pcs.paths.home}/.config" ]; then
+           mkdir -p ${config.resources.pcs.paths.home}/.config/rofi
            cd ${config.resources.pcs.paths.home}/.config/rofi
            for d in bin scripts themes launchers config.rasi; do
              if [[ ! -L "$d" ]]; then
