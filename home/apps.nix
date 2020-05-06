@@ -44,6 +44,8 @@
     appimage-run
     # Subtitles downloader
     python37Packages.subliminal
+    # uptime -p
+    procps
   ];
 
   xdg.configFile."khal/config".source = builtins.toPath "${config.resources.pcs.paths.privateDotfiles}/khal/config";
