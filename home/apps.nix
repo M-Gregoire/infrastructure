@@ -70,10 +70,4 @@
       uda.priority.values="H,M,,L";
     };
   };
-
-  programs.direnv = {
-    enable = true;
-    enableBashIntegration = true;
-    enableZshIntegration = true;
-  };
 }

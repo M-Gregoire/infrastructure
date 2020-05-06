@@ -60,8 +60,11 @@
     gnome3.vinagre
     # Matrix client
     riot-desktop
+    # Terminal emulator
+    kitty
   ];
 
+  xdg.configFile."kitty/kitty.conf".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/kitty/kitty.conf";
   home.file.".mozilla/firefox/${config.resources.pcs.firefox.profile}/user.js".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/firefox/user.js";
   xdg.configFile."albert/albert.conf".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/albert/albert.conf";
 }

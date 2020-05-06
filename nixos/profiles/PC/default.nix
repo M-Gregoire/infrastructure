@@ -11,6 +11,7 @@
     ../../dev/wireguard-tools.nix
     ./services.nix
     ../../systemd-networkd.nix
+    ../../../vendor/infrastructure-private/resources/profiles/PC/aliases.nix
   ];
 
   sound.enable = true;
@@ -22,6 +23,19 @@
     enable = true;
     # Disable acceleration
     accelProfile = "flat";
+  };
+
+  programs = {
+    zsh = {
+      # Fix Tramp (Emacs) with ZSH https://www.emacswiki.org/emacs/TrampMode#toc9
+      interactiveShellInit = ''
+        [[ $TERM == 'dumb' ]] && unsetopt zle && PS1='$ ' && return
+        ${config.resources.pcs.paths.scripts}/showTodo.sh
+        # https://github.com/gopasspw/gopass/issues/585#issuecomment-355339632
+        source <(gopass completion zsh | head -n -1 | tail -n +2)
+        compdef _gopass gopass
+      '';
+    };
   };
 
   services.xserver.desktopManager.session = [

@@ -21,7 +21,6 @@
     ./dev/sec.nix
     ./dev/ssh.nix
     ./dev/sys.nix
-    ./dev/term.nix
     ./dev/web.nix
   ];
 
