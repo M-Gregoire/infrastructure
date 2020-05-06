@@ -133,9 +133,16 @@ passwd <user>
 # Connect <user> using the Display Manager
 
 # Add channels
-nix-channel --add https://nixos.org/channels/nixpkgs-unstable unstable; nix-channel --update
+nix-channel --add https://nixos.org/channels/nixpkgs-unstable unstable &&\
+nix-channel --add https://nixos.org/channels/nixos-20.03 nixos &&\
+nix-channel --add https://github.com/rycee/home-manager/archive/release-20.03.tar.gz home-manager &&\
+nix-channel --update
+
 # Add also for root so you can use nixos-rebuild and not only nixops
-sudo nix-channel --add https://nixos.org/channels/nixpkgs-unstable unstable; sudo nix-channel --update
+sudo bash -c "nix-channel --add https://nixos.org/channels/nixpkgs-unstable unstable &&\
+nix-channel --add https://nixos.org/channels/nixos-20.03 nixos &&\
+nix-channel --add https://github.com/rycee/home-manager/archive/release-20.03.tar.gz home-manager &&\
+nix-channel --update"
 
 # Restore {.thunderbird, .mozilla, .gnupg} and clone both the public and private github repo
 
