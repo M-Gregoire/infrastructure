@@ -26,3 +26,19 @@ Recv: echo:  M851 X... Y... Z<Value>
 You can also modify `#define Z_PROBE_OFFSET_FROM_EXTRUDER <offset>` accordingly. This way, If you reset your EEPROM with `M502` this setting is kept (Info on `EEPROM` can be found [here](https://github.com/MarlinFirmware/Marlin/wiki/EEPROM)).
 
 You can now level the bed following [this](http://marlinfw.org/docs/features/auto_bed_leveling.html). You can modify your slicer config to run `G28` then `G29` to auto-level on every print.
+
+# E calibration
+
+```
+G92 E0
+# Output 100mm of filament
+G1 E100
+
+# Until you actually have exactly 100mm of filament, newSteps = (currentSteps*100)/distanceExtruder
+# Try settings by storing them in EEPROM with:
+M92 E<Steps>
+M500
+
+# When correct setting is found, put it in
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 400, <Steps> }
+```
