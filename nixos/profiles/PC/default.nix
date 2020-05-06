@@ -34,6 +34,9 @@
     }
   ];
 
+  # Move garbage collection for 3:15 to 14:00
+  nix.gc.dates = "14:00";
+
   hardware.u2f.enable = true;
 
   users.users.${config.resources.username} = {

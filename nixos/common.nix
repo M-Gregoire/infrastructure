@@ -97,4 +97,9 @@
   time.timeZone = "Europe/Paris";
 
   security.pki.certificates = config.resources.pki.acrs;
+
+  nix.autoOptimiseStore = true;
+  nix.gc = {
+    automatic = true;
+  };
 }
