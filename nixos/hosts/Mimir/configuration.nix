@@ -10,7 +10,6 @@
       ../../dev/bluetooth.nix
       ../../dev/boot/grub-uefi.nix
       ../../dev/boot/grub-multi.nix
-      ../../dev/steam.nix
       ../../dev/virtualbox.nix
       ../../networks/home
       ../../profiles/PC
