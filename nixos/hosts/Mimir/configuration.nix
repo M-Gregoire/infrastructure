@@ -17,9 +17,6 @@
       ./hardware-configuration.nix
     ];
 
-  # Unifi
-  services.unifi.enable = true;
-
   services.xserver.libinput.accelSpeed = null;
 
   networking.wireless.enable = true;
