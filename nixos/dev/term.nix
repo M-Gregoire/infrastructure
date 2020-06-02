@@ -38,6 +38,13 @@
         "taskwarrior"
         "tmux"
       ];
+      # Make sure to start gpg-agent
+      # And create socket dir for gpg forwarding
+      # https://wiki.gnupg.org/AgentForwarding
+      interactiveShellInit = ''
+        gpgconf --create-socketdir
+        gpg-connect-agent /bye
+      '';
       ohMyZsh.theme = "agnoster";
       enableCompletion = true;
     };

@@ -6,5 +6,7 @@
     enable = true;
     enableSshSupport = true;
     pinentryFlavor = "gtk2";
+    # For gpg forwarding
+    enableExtraSocket = true;
   };
 }

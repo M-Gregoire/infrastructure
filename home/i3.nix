@@ -306,7 +306,6 @@ in
       exec --no-startup-id i3-msg "workspace ${workspace2}; append_layout ${config.resources.pcs.paths.publicDotfiles}/i3/layouts/kitty.json" && kitty
       exec --no-startup-id i3-msg "workspace ${workspace3}; append_layout ${config.resources.pcs.paths.publicDotfiles}/i3/layouts/emacs.json" &&  while ! emacsclient --socket-name=/tmp/emacs1000/server -ca false; do sleep 2; done;
       exec --no-startup-id i3-msg "workspace ${workspace4}; append_layout ${config.resources.pcs.paths.publicDotfiles}/i3/layouts/thunar.json" && thunar
-      exec gpg-connect-agent /bye
     '';
   };
 }
