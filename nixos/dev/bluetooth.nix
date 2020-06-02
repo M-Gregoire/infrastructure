@@ -15,5 +15,5 @@
     extraModules = [ pkgs.pulseaudio-modules-bt ];
   };
   # Applet
-  environment.systemPackages = with pkgs; [ blueman ];
+  services.blueman.enable = true;
 }
