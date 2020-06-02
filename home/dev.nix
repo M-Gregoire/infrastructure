@@ -3,6 +3,7 @@
 {
   imports = [
     ./dev/LSP.nix
+    ./dev/bluetooth.nix
     ./dev/c.nix
     ./dev/compton.nix
     ./dev/emacs.nix
