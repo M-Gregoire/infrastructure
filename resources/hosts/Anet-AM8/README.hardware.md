@@ -11,7 +11,7 @@ I replaced the stock hotend + extruder by an E3D V6 clone and a Titan extruder. 
 
 I later moved to this carriage:
 https://www.thingiverse.com/thing:2748650
-which has the benefit of having the BLTouch at a fixed height.
+which has the benefit of having the BLTouch at a fixed height (with [this](https://www.thingiverse.com/thing:3060055) arm because the original hit the fan fuct).
 
 I also followed this [General guide](https://www.thingiverse.com/thing:2268994).
 

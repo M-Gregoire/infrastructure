@@ -14,7 +14,22 @@ Unfortunately not native on Linux but allows to create awesome support, using le
 
 # BLTouch and Z offset calibration
 
-The Z offet needs to be configured as the BLTouch is not (and should not) be installed to stop at exactly Z=0. To do so, see [here](https://3dprinting.stackexchange.com/questions/5857/z-offset-on-autoleveling-sensor-setup).
+The Z offet needs to be configured as the BLTouch is not (and should not) be installed to stop at exactly Z=0. To do so, see [here](https://3dprinting.stackexchange.com/questions/5857/z-offset-on-autoleveling-sensor-setup):
+
+```
+M851 Z0; // Set the Z offset to zero height
+G28;     // Home Z in the middle of the bed
+G1 Z0;   // This will move the head to zero height;
+M211 S0; // This will disable the end stops so that you
+         // will be able to proceed lower than Z=0
+
+Now adjust Z height to fit a piece of paper and note the negative Z height (either through the LCD or through an application over USB)
+
+M851 Z-1.23; // Define the Z offset
+M500;        // Store the settings
+M211 S1;     // Enable the end stops again
+
+```
 
 *Note:* M114 gives your current position.
 *Note:* M503 can give your current Z offet

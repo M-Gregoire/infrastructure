@@ -21,7 +21,7 @@ Configuration.h - Basics
 #define INVERT_Z_DIR false
 
 #define X_MIN_POS -10
-#define Y_MIN_POS -10
+#define Y_MIN_POS -5
 #define Z_MIN_POS 0
 #define X_MAX_POS X_BED_SIZE
 #define Y_MAX_POS Y_BED_SIZE
@@ -39,8 +39,8 @@ Configuration.h - BLTouch
 #define BLTOUCH
 #define NUM_SERVOS 1 // Servo index starts with 0 for M280 command
 #define Z_SAFE_HOMING
-#define NOZZLE_TO_PROBE_OFFSET { 50, 0, 0 }
-
+#define NOZZLE_TO_PROBE_OFFSET { 50, -10, 0 }
+#define MIN_PROBE_EDGE 20
 #define AUTO_BED_LEVELING_BILINEAR
 
 ```
