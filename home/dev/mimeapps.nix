@@ -1,6 +1,7 @@
 { pkgs, ... }:
 
 {
+  xdg.configFile."mimeapps.list".force = true;
   xdg.mimeApps = {
     enable = true;
     defaultApplications = {
@@ -20,6 +21,9 @@
       "text/rhtml" = [ "emacs-client.desktop" ];
       "text/plain" = [ "emacs-client.desktop" ];
       "text/x-markdown" = [ "emacs-client.desktop" ];
+
+      # Documents
+      "application/vnd.oasis.opendocument.text" = [ "writer.desktop" ];
 
       # Web
       "text/html" = [ "firefox.desktop" ];
