@@ -25,6 +25,10 @@
     borgbackup
     # tmux
     tmux
+    # tree
+    tree
+    # mount folder through SSH
+    sshfs
   ];
 
   # Boot with last kernel
