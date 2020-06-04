@@ -42,16 +42,14 @@
     gparted
     # Sound control
     pavucontrol
-    # Image edition
-    gimp
+    # Photo management
+    digikam
     # Nextcloud-client
     nextcloud-client
     # PDF reader which supports forms
     evince
     # PDF notetaking
     xournal
-    # Vector graphics
-    inkscape
     # Image viewer
     nomacs
     # Veracrypt
@@ -62,6 +60,8 @@
     riot-desktop
     # Terminal emulator
     kitty
+    # Manga downloader
+    hakuneko
   ];
 
   xdg.configFile."kitty/kitty.conf".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/kitty/kitty.conf";
