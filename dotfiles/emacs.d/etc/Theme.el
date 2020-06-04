@@ -4,8 +4,14 @@
   (nyan-mode)
   )
 
-(load (expand-file-name "xresources-theme.el" pkg-dir) nil t)
-(load-theme 'xresources t)
+(if (file-exists-p "~/.Xresources")
+    ((load (expand-file-name "xresources-theme.el" pkg-dir) nil t)
+     (load-theme 'xresources t)
+     )
+  (use-package zenburn-theme
+    :config
+    (load-theme 'zenburn t)
+    ))
 
 ;; https://emacs.stackexchange.com/a/53021
 ;; SIGUSR1 to reload config files

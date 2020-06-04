@@ -38,9 +38,12 @@
 (setq abbrev-file-name (expand-file-name "abbrev_defs" ue-dir))
 (setq save-abbrevs 'silent)
 
+;; Refresh packages on startup (Take some time...)
+;; This is acceptable as Emacs run as daemon
+(package-refresh-contents)
+
 ;; Use use-package
 (unless (package-installed-p 'use-package)
-  (package-refresh-contents)
   (package-install 'use-package))
 (require 'use-package)
 

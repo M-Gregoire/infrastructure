@@ -1,6 +1,6 @@
 ;; Install and use company
 (use-package  company
-  :hook (after-init-hook . global-company-mode)
+  :init (global-company-mode)
   :config
   ;; https://emacs.stackexchange.com/questions/10837/how-to-make-company-mode-be-case-sensitive-on-plain-text
   ;; Make auto completion case sensitive
