@@ -3,7 +3,7 @@
 {
   virtualisation.virtualbox.host = {
     enable = true;
-    enableExtensionPack = true;
+    #enableExtensionPack = true;
     addNetworkInterface = true;
   };
   users.extraUsers."${config.resources.username}".extraGroups = ["vboxusers"];
