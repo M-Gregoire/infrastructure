@@ -21,18 +21,12 @@
 
   networking.wireless.enable = true;
 
-  #services.xserver.videoDrivers = [ "amdgpu" ];
-  #boot.kernelParams = [
-  #  # Fix "Start save/load RF Kill switch" error on boot with amdgpu
-  #  "iommu=soft"
-  #  # Fix boot hanging on "Reached target local file"
-  #  #"amdgpu.dc=0"
-  #  "radeon.si_support=0"
-  #  "radeon.cik_support=0"
-  #  # https://wiki.gentoo.org/wiki/AMDGPU
-  #  "amdgpu.si_support=0"
-  #  "amdgpu.cik_support=1"
-  #];
+  # https://github.com/NixOS/nixpkgs/issues/86212#issuecomment-640232588
+  hardware.opengl.package = (import (pkgs.fetchzip {
+    name = "old-nixpkgs";
+    url = "https://github.com/NixOS/nixpkgs/archive/0a11634a29c1c9ffe7bfa08fc234fef2ee978dbb.tar.gz";
+    sha256 = "0vj5k3djn1wlwabzff1kiiy3vs60qzzqgzjbaiwqxacbvlrci10y";
+  }) {}).mesa.drivers;
 
   networking.firewall.allowedTCPPorts = [ config.resources.hosts.mimir.ssh.port ];
   services.openssh.ports = [ config.resources.hosts.mimir.ssh.port ];
