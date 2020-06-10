@@ -4,6 +4,7 @@
   in {
     inherit (unstable)
       oh-my-zsh
+      nerd-fonts
     ;
   })
 ]
