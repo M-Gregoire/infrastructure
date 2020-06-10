@@ -24,6 +24,7 @@
 
       # Documents
       "application/vnd.oasis.opendocument.text" = [ "writer.desktop" ];
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document" = [ "writer.desktop" ];
 
       # Web
       "text/html" = [ "firefox.desktop" ];
@@ -52,12 +53,15 @@
       "video/x-flv" = [ "mpv.desktop" ];
       "video/mp4" = [ "mpv.desktop" ];
       "application/x-flash-video" = [ "mpv.desktop" ];
+      "video/MP2T" = [ "mpv.desktop" ];
+      "image/x-tga" = [ "mpv.desktop" ];
 
       # Audio
       "audio/mpeg" = [ "mpv.desktop" ];
       "audio/x-flac" = [ "mpv.desktop" ];
       "audio/mp4" = [ "mpv.desktop" ];
       "application/ogg" = [ "mpv.desktop" ];
+      "audio/x-mod" = [ "mpv.desktop" ];
 
       # Virt-viewer
       "application/x-virt-viewer" = [ "remote-viewer.desktop" ];
