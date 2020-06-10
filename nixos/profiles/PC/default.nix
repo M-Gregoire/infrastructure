@@ -63,9 +63,6 @@
       "disk"
       # Audio
       "audio"
-      # Scanners
-      "lp"
-      "scanner"
     ];
   };
 
@@ -80,7 +77,6 @@
     ];
     # Pass to home-manager
     nixpkgs.overlays = config.nixpkgs.overlays;
-    #nixpkgs.config = config.nixpkgs.config;
     nixpkgs.config = import ../../../nixpkgs/config.nix;
     resources = config.resources;
   };
