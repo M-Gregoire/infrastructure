@@ -29,6 +29,8 @@
     tree
     # mount folder through SSH
     sshfs
+    # dhclient
+    dhcp
   ];
 
   # Boot with last kernel
