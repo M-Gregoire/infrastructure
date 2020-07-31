@@ -3,6 +3,7 @@
 {
   imports = [
     <home-manager/nixos>
+    ../../dev/prometheus-node-exporter.nix
   ];
 
   environment.systemPackages = with pkgs; [
