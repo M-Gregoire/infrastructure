@@ -6,6 +6,7 @@
     ./dev/bluetooth.nix
     ./dev/c.nix
     ./dev/compton.nix
+    ./dev/doom.nix
     ./dev/emacs.nix
     ./dev/encryption.nix
     ./dev/git.nix
