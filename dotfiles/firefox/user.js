@@ -16,3 +16,5 @@ user_pref("app.update.auto", false);
 user_pref("app.update.silent", false);
 // Dark about:config
 user_pref("browser.in-content.dark-mode", true);
+// Insert tab after current
+user_pref("browser.tabs.insertAfterCurrent", true);
