@@ -12,6 +12,16 @@ let
     };
   };
 
+  pywalfox = pkgs.python36.pkgs.buildPythonPackage rec {
+    pname = "pywalfox";
+    version = "2.4";
+    doCheck = false;
+    src = pkgs.python36.pkgs.fetchPypi {
+      inherit pname version;
+      sha256 = "0w2spm3y9zx5cxarn5ynk8kyxxn8lnv48rs854qvvf650vrxxvpk";
+    };
+  };
+
 in
 
 {
@@ -29,6 +39,8 @@ in
       pygobject3
       # Preview base16 colorschemes
       base16-shell-preview-current
+      # Pywall for Firefox
+      pywalfox
     ]))
     # pipenv
     pipenv
