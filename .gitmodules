@@ -16,6 +16,3 @@
 [submodule "vendor/Pywalfox"]
         path = vendor/Pywalfox
         url = https://github.com/Frewacom/Pywalfox.git
-[submodule "vendor/doom-emacs"]
-	path = vendor/doom-emacs
-	url = https://github.com/hlissner/doom-emacs.git
