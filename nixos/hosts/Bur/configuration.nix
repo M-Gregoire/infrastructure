@@ -5,6 +5,7 @@
     [
       ../../../resources/hosts/Bur
       ../../../vendor/infrastructure-private/resources/hosts/Bur
+      ../../../vendor/infrastructure-private/resources/networks/home/nfs-sharkoon.nix
       ../../common.nix
       ../../dev/bluetooth.nix
       ../../dev/boot/grub-uefi.nix
