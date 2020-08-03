@@ -1,5 +1,6 @@
-# Android-config
-Android app list and configs
+# Android
+
+Android phone
 
 ### Custom ROM
 
