@@ -39,6 +39,18 @@
           example = "/path/to/secrets/";
           description = "Secrets folder path";
         };
+        wallpaper = {
+          current = mkOption {
+            type = types.str;
+            example = "wallpaper.jpg";
+            description = "Wallpaper name";
+          };
+          folder = mkOption {
+            type = types.str;
+            example = "/path/to/wallpapers/";
+            description = "Folder containing wallpapers";
+          };
+        };
       };
 
       firefox.profile = mkOption {

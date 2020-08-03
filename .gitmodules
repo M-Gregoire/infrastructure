@@ -13,6 +13,3 @@
 [submodule "vendor/polybar-spotify-controls"]
 	path = vendor/polybar-spotify-controls
 	url = https://github.com/dietervanhoof/polybar-spotify-controls.git
-[submodule "vendor/Pywalfox"]
-        path = vendor/Pywalfox
-        url = https://github.com/Frewacom/Pywalfox.git

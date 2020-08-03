@@ -286,7 +286,7 @@ in
         { command = "${config.resources.pcs.mailer}"; always = false; notification = false; }
         { command = "spotify"; always = false; notification = false; }
         # Set random wallpaper and generate theme based on it
-        { command =  "${config.resources.pcs.paths.scripts}/theme.sh ${config.resources.pcs.paths.privateConfig}/images/backgrounds"; always = true; notification = false; }
+        { command =  "${config.resources.pcs.paths.scripts}/theme.sh ${config.resources.pcs.paths.wallpaper.folder} ${config.resources.pcs.paths.wallpaper.current}"; always = true; notification = false; }
         { command = "${config.resources.pcs.paths.scripts}/xidlehook.sh"; always = false; notification = false; }
         # No screen saver
         { command = "xset s off"; always = false; notification = false; }
