@@ -1,4 +1,4 @@
-{ config, pkgs, options, ... }:
+{ config, pkgs, ... }:
 
 {
   imports = [
@@ -39,13 +39,6 @@
   # file -L /run/current-system/kernel
   # uname -r
   boot.kernelPackages = pkgs.linuxPackages_latest;
-
-  # Wifi
-  environment.etc."wpa_supplicant.conf".source = "${config.resources.pcs.paths.secrets}/wpa_supplicant.conf";
-
-  nix.nixPath = with builtins; options.nix.nixPath.default ++ [
-    "nixos-config=${toPath "${config.resources.pcs.paths.publicConfig}/nixos/hosts/${config.resources.hostname}/configuration.nix"}"
-  ];
 
   nixpkgs.config = import ../nixpkgs/config.nix;
   nixpkgs.overlays = import ../nixpkgs/overlays.nix;

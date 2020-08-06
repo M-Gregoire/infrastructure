@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, options, ... }:
 
 {
   imports = [
@@ -17,6 +17,13 @@
   sound.enable = true;
   hardware.pulseaudio.enable = true;
   hardware.pulseaudio.support32Bit = true;
+
+  # Wifi
+  environment.etc."wpa_supplicant.conf".source = "${config.resources.pcs.paths.secrets}/wpa_supplicant.conf";
+
+  nix.nixPath = with builtins; options.nix.nixPath.default ++ [
+    "nixos-config=${toPath "${config.resources.pcs.paths.publicConfig}/nixos/hosts/${config.resources.hostname}/configuration.nix"}"
+  ];
 
   services.xserver.libinput = {
     # Enable libinput
