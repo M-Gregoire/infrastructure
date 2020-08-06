@@ -22,25 +22,26 @@ then
     ln -s ~/.config/wpg/templates/gtk3.0 ~/.config/gtk-3.0/settings.ini
 fi
 
-# Start pywalfox daemon
-pywalfox daemon&
-
 # Generate schemes for all wallpaper
-wpg -a $1/* > /dev/null
+wpg -a $1/* > /dev/null 2>&1
 
 # If no second argument, take a random wallapper
-if [ $2 -eq 0 ]; then
-  wpg -m
+if [ -z "$2" ]; then
+  wpg -m > /dev/null
 else
-  wpg -s $2
+  wpg -s $2 > /dev/null
 fi
 
 # Update Emacs
 kill -USR1 $(pgrep emacs)
 
 # Restart dunst
-pkill dunst
-dunst&
+pkill dunst > /dev/null 2>&1
+dunst& > /dev/null 2>&1
+
+# Start pywalfox daemon
+pkill pywalfox
+pywalfox daemon&
 
 # Update Firefox theme
 while ! pgrep "firefox";
