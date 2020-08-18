@@ -3,8 +3,9 @@
 {
   home.packages = with pkgs; [
     #emacs
-    # ag search (Projectile)
-    #ag
+    # Search
+    ag
+    ripgrep
     # Elpy dependencies
     #  # Rope
     #  python27Packages.rope
@@ -28,7 +29,6 @@
   #home.file.".emacs.d/init.el".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/emacs.d/init.el";
   #home.file.".emacs.d/etc".source =  builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/emacs.d/etc";
   #home.file.".emacs.d/snippets".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/emacs.d/snippets";
-  home.file.".local/doom/bookmarks".source = builtins.toPath "${config.resources.pcs.paths.privateDotfiles}/emacs/bookmarks";
   #home.file.".local/share/applications/emacs-client.desktop".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/emacs.d/emacs-client.desktop";
 
   xresources.properties = {
