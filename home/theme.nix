@@ -19,5 +19,5 @@
   ];
 
   xdg.configFile."wpg/templates/dunstrc.base".force = true;
-  xdg.configFile."wpg/templates/dunstrc.base".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/wpg/templates/dunstrc.base";
+  xdg.configFile."wpg/templates/dunstrc.base".source = builtins.toPath "${config.resources.paths.publicDotfiles}/wpg/templates/dunstrc.base";
 }

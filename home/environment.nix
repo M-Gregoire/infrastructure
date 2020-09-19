@@ -3,12 +3,12 @@
 {
   home.sessionVariables = {
     # Folders env
-    HOME = "${config.resources.pcs.paths.home}";
-    CONFIGROOT = "${config.resources.pcs.paths.publicConfig}";
-    PRIVATEROOT = "${config.resources.pcs.paths.privateConfig}";
+    HOME = "${config.resources.paths.home}";
+    CONFIGROOT = "${config.resources.paths.publicConfig}";
+    PRIVATEROOT = "${config.resources.paths.privateConfig}";
     # Go
     GOROOT = "${pkgs.go.out}/share/go";
-    GOPATH = "${config.resources.pcs.paths.home}";
+    GOPATH = "${config.resources.paths.home}";
     # Config
     BROWSER = "${config.resources.pcs.browser}";
     EDITOR = "emacsclient -nw";
@@ -16,7 +16,7 @@
     VISUAL = "${config.home.sessionVariables.EDITOR}";
     TERM = "${config.resources.pcs.terminal}";
     # Take personal .desktop files into account for XDG
-    XDG_DATA_DIRS="${config.resources.pcs.paths.home}/.local/share/applications/emacs.desktop:$XDG_DATA_DIRS";
+    XDG_DATA_DIRS="${config.resources.paths.home}/.local/share/applications/emacs.desktop:$XDG_DATA_DIRS";
     # Transparency percentage to use
     TRANSPARENCY = "${config.resources.theme.alphaPercent}";
     # Used by i3 sensible-terminal https://build.i3wm.org/docs/i3-sensible-terminal.htmlhttps://build.i3wm.org/docs/i3-sensible-terminal.html

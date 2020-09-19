@@ -24,12 +24,12 @@
     #  python36Packages.yapf
   ];
 
-  #home.file.".emacs.d/".source = builtins.toPath "${config.resources.pcs.paths.publicConfig}/vendor/doom-emacs/";
+  #home.file.".emacs.d/".source = builtins.toPath "${config.resources.paths.publicConfig}/vendor/doom-emacs/";
 
-  #home.file.".emacs.d/init.el".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/emacs.d/init.el";
-  #home.file.".emacs.d/etc".source =  builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/emacs.d/etc";
-  #home.file.".emacs.d/snippets".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/emacs.d/snippets";
-  #home.file.".local/share/applications/emacs-client.desktop".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/emacs.d/emacs-client.desktop";
+  #home.file.".emacs.d/init.el".source = builtins.toPath "${config.resources.paths.publicDotfiles}/emacs.d/init.el";
+  #home.file.".emacs.d/etc".source =  builtins.toPath "${config.resources.paths.publicDotfiles}/emacs.d/etc";
+  #home.file.".emacs.d/snippets".source = builtins.toPath "${config.resources.paths.publicDotfiles}/emacs.d/snippets";
+  #home.file.".local/share/applications/emacs-client.desktop".source = builtins.toPath "${config.resources.paths.publicDotfiles}/emacs.d/emacs-client.desktop";
 
   xresources.properties = {
     # Font backend settings

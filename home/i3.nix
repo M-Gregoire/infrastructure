@@ -18,7 +18,7 @@ let
   workspace9 = "9";
   workspace10 = "10";
 
-  screenshot = "${config.resources.pcs.paths.home}/Screenshots/";
+  screenshot = "${config.resources.paths.home}/Screenshots/";
 
 in
 
@@ -28,7 +28,7 @@ in
   ];
 
   # Import pywal config in xresources
-  xresources.extraConfig = ''#include "${config.resources.pcs.paths.home}/.cache/wal/colors.Xresources"'';
+  xresources.extraConfig = ''#include "${config.resources.paths.home}/.cache/wal/colors.Xresources"'';
 
   home.packages = with pkgs; [
     # Manage acpi events
@@ -171,14 +171,14 @@ in
         "${modifier}+m" = " focus floating; mode \"moveit\"";
         # Functions
         "F1" = "exec --no-startup-id mono ${pkgs.keepass.out}/lib/dotnet/keepass/KeePass.exe --auto-type";
-        "F2" = "exec --no-startup-id ${config.resources.pcs.paths.scripts}/switchSoundCard.sh";
-        "F12" = "exec --no-startup-id ${config.resources.pcs.paths.scripts}/hidePolybar.sh";
+        "F2" = "exec --no-startup-id ${config.resources.paths.scripts}/switchSoundCard.sh";
+        "F12" = "exec --no-startup-id ${config.resources.paths.scripts}/hidePolybar.sh";
         "Scroll_Lock" = "exec --no-startup-id $SCRIPTS/kbdLayout.sh";
         "Print" = "exec --no-startup-id scrot -e 'mv $f ${screenshot}' && notify-send 'Screenshot taken'";
         "--release ${modifier}+Print" = "exec --no-startup-id scrot -s -e 'mv $f ${screenshot}' && notify-send 'Screenshot taken'";
         # Disable Control+q in Firefox
-        "Group1+${modifier}+Control+q" = "exec --no-startup-id ${config.resources.pcs.paths.scripts}/noCTRLqFirefox.sh";
-        "Group2+${modifier}+Control+q" = "exec --no-startup-id ${config.resources.pcs.paths.scripts}/noCTRLqFirefox.sh";
+        "Group1+${modifier}+Control+q" = "exec --no-startup-id ${config.resources.paths.scripts}/noCTRLqFirefox.sh";
+        "Group2+${modifier}+Control+q" = "exec --no-startup-id ${config.resources.paths.scripts}/noCTRLqFirefox.sh";
         # Change workspace
         "Group1+${modifier}+1" = "workspace ${workspace1}";
         "Group1+${modifier}+2" = "workspace ${workspace2}";
@@ -286,26 +286,26 @@ in
         { command = "${config.resources.pcs.mailer}"; always = false; notification = false; }
         { command = "spotify"; always = false; notification = false; }
         # Set random wallpaper and generate theme based on it
-        { command =  "${config.resources.pcs.paths.scripts}/theme.sh ${config.resources.pcs.paths.wallpaper.folder} ${config.resources.pcs.paths.wallpaper.current}"; always = true; notification = false; }
-        { command = "${config.resources.pcs.paths.scripts}/xidlehook.sh"; always = false; notification = false; }
+        { command =  "${config.resources.paths.scripts}/theme.sh ${config.resources.paths.wallpaper.folder} ${config.resources.paths.wallpaper.current}"; always = true; notification = false; }
+        { command = "${config.resources.paths.scripts}/xidlehook.sh"; always = false; notification = false; }
         # No screen saver
         { command = "xset s off"; always = false; notification = false; }
         # Remove all urgencies on startup
         { command = "sleep ${wait-for-urgency}; for win in $(wmctrl -l | awk -F' ' '{print $1}'); do wmctrl -i -r $win -b remove,demands_attention; done"; always = false; notification = false; }
         # Polybar
-        { command = "${config.resources.pcs.paths.scripts}/polybar.sh"; always = true; notification = false; }
+        { command = "${config.resources.paths.scripts}/polybar.sh"; always = true; notification = false; }
         # Spotify in Polybar
-        { command = "/usr/bin/env python3 ${config.resources.pcs.paths.publicConfig}/vendor/polybar-spotify-controls/scripts/spotify/py_spotify_listener.py"; always = false; notification = false; }
+        { command = "/usr/bin/env python3 ${config.resources.paths.publicConfig}/vendor/polybar-spotify-controls/scripts/spotify/py_spotify_listener.py"; always = false; notification = false; }
         # Xbanish to hide mouse if unused
         { command = "xbanish"; always = false; notification = false; }
         # Dunst
-        { command = "${config.resources.pcs.paths.scripts}/dunst.sh"; always = true; notification = false; }
+        { command = "${config.resources.paths.scripts}/dunst.sh"; always = true; notification = false; }
       ];
     };
     windowManager.i3.extraConfig = ''
-      exec --no-startup-id i3-msg "workspace ${workspace2}; append_layout ${config.resources.pcs.paths.publicDotfiles}/i3/layouts/kitty.json" && kitty
-      exec --no-startup-id i3-msg "workspace ${workspace3}; append_layout ${config.resources.pcs.paths.publicDotfiles}/i3/layouts/emacs.json" &&  while ! emacsclient --socket-name=/tmp/emacs1000/server -ca false; do sleep 2; done;
-      exec --no-startup-id i3-msg "workspace ${workspace4}; append_layout ${config.resources.pcs.paths.publicDotfiles}/i3/layouts/thunar.json" && thunar
+      exec --no-startup-id i3-msg "workspace ${workspace2}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/kitty.json" && kitty
+      exec --no-startup-id i3-msg "workspace ${workspace3}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/emacs.json" &&  while ! emacsclient --socket-name=/tmp/emacs1000/server -ca false; do sleep 2; done;
+      exec --no-startup-id i3-msg "workspace ${workspace4}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/thunar.json" && thunar
     '';
   };
 }

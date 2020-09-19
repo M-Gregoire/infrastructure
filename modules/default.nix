@@ -2,57 +2,56 @@
 
 {
   options.resources = with lib; {
-    pcs = {
-      paths = {
-        home = mkOption {
+    paths = {
+      home = mkOption {
+        type = types.str;
+        example = "/home/me";
+        description = "Home path";
+      };
+      publicConfig = mkOption {
+        type = types.str;
+        example = "/home/me/src/me/infrastracture";
+        description = "Public config path";
+      };
+      privateConfig = mkOption {
+        type = types.str;
+        example = "/home/me/src/me/infrastracture/vendor/infrastructure-private";
+        description = "Private config path";
+      };
+      scripts = mkOption {
+        type = types.str;
+        example = "/home/me/.scripts";
+        description = "Scripts folder path";
+      };
+      publicDotfiles = mkOption {
+        type = types.str;
+        example = "/path/to/dotfiles/";
+        description = "Dotfiles folder path";
+      };
+      privateDotfiles = mkOption {
+        type = types.str;
+        example = "/path/to/dotfiles/";
+        description = "Dotfiles folder path";
+      };
+      secrets = mkOption {
+        type = types.str;
+        example = "/path/to/secrets/";
+        description = "Secrets folder path";
+      };
+      wallpaper = {
+        current = mkOption {
           type = types.str;
-          example = "/home/me";
-          description = "Home path";
+          example = "wallpaper.jpg";
+          description = "Wallpaper name";
         };
-        publicConfig = mkOption {
+        folder = mkOption {
           type = types.str;
-          example = "/home/me/src/me/infrastracture";
-          description = "Public config path";
-        };
-        privateConfig = mkOption {
-          type = types.str;
-          example = "/home/me/src/me/infrastracture/vendor/infrastructure-private";
-          description = "Private config path";
-        };
-        scripts = mkOption {
-          type = types.str;
-          example = "/home/me/.scripts";
-          description = "Scripts folder path";
-        };
-        publicDotfiles = mkOption {
-          type = types.str;
-          example = "/path/to/dotfiles/";
-          description = "Dotfiles folder path";
-        };
-        privateDotfiles = mkOption {
-          type = types.str;
-          example = "/path/to/dotfiles/";
-          description = "Dotfiles folder path";
-        };
-        secrets = mkOption {
-          type = types.str;
-          example = "/path/to/secrets/";
-          description = "Secrets folder path";
-        };
-        wallpaper = {
-          current = mkOption {
-            type = types.str;
-            example = "wallpaper.jpg";
-            description = "Wallpaper name";
-          };
-          folder = mkOption {
-            type = types.str;
-            example = "/path/to/wallpapers/";
-            description = "Folder containing wallpapers";
-          };
+          example = "/path/to/wallpapers/";
+          description = "Folder containing wallpapers";
         };
       };
-
+    };
+    pcs = {
       firefox.profile = mkOption {
         type = types.str;
         example = "abcdef12.default";
@@ -160,6 +159,28 @@
           type = types.port;
           example = [ "22" ];
           description = "Specifies on which port the SSH daemon listens.";
+        };
+        networking = {
+          defaultGateway = mkOption {
+            type = types.str;
+            example = "1.2.3.4";
+            description = "Default gateway";
+          };
+          nameservers = mkOption {
+            type = with types; listOf str;
+            example = [ "1.2.3.4" "4.3.2.1" ];
+            description = "Nameservers";
+          };
+          ipv6 = mkOption {
+            type = types.str;
+            example = "::01";
+            description = "ipv6 address";
+          };
+          initrd.ssh.port = mkOption {
+            type = types.port;
+            example = 22;
+            description = "Initrd port";
+          };
         };
       };
       fenrir = {

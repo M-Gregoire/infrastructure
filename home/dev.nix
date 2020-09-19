@@ -26,5 +26,5 @@
     ./dev/web.nix
   ];
 
-  home.file.".editorconfig".source = builtins.toPath "${config.resources.pcs.paths.publicDotfiles}/root.editorconfig";
+  home.file.".editorconfig".source = builtins.toPath "${config.resources.paths.publicDotfiles}/root.editorconfig";
 }

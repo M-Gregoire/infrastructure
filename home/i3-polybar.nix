@@ -73,7 +73,7 @@
       "module/spotify" = {
         type = "custom/ipc";
         hook-0 = "echo ";
-        hook-1 = "python3 ${config.resources.pcs.paths.publicConfig}/vendor/polybar-spotify-controls/scripts/spotify/spotify_status.py";
+        hook-1 = "python3 ${config.resources.paths.publicConfig}/vendor/polybar-spotify-controls/scripts/spotify/spotify_status.py";
         initial = "1";
         format-padding = "2";
       };

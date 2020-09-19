@@ -5,15 +5,38 @@
 
 {
   imports =
-    [ <nixpkgs/nixos/modules/profiles/qemu-guest.nix>
+    [ <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
     ];
 
-  boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "virtio_pci" ];
+  boot.initrd.availableKernelModules = [ "ahci" "e1000e" ];
+  boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
+  boot.initrd.luks.devices = {
+    crypt = {
+      device = "/dev/disk/by-uuid/960822f0-6772-43b0-90c2-17d9f8d11592";
+      preLVM = true;
+    } ;
+  };
 
-  swapDevices = [ ];
+  fileSystems."/" =
+  { device = "/dev/mapper/nixos-root";
+    fsType = "ext4";
+  };
 
-  nix.maxJobs = lib.mkDefault 1;
+  fileSystems."/home" =
+  { device = "/dev/mapper/nixos-home";
+    fsType = "ext4";
+  };
+
+  fileSystems."/boot" =
+  { device = "/dev/disk/by-uuid/9D2C-ECD9";
+    fsType = "vfat";
+  };
+
+  swapDevices = [ { label = "swap"; } ];
+
+  nix.maxJobs = lib.mkDefault 4;
+  powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
 }
