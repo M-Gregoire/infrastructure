@@ -12,18 +12,14 @@
     ./dev/git.nix
     ./dev/go.nix
     ./dev/gpg.nix
-    ./dev/hardware.nix
     ./dev/kdeconnect.nix
     ./dev/mimeapps.nix
     ./dev/misc.nix
     ./dev/network.nix
     ./dev/nix.nix
     ./dev/python.nix
-    #./dev/saas.nix
-    ./dev/sec.nix
     ./dev/ssh.nix
     ./dev/sys.nix
-    ./dev/web.nix
   ];
 
   home.file.".editorconfig".source = builtins.toPath "${config.resources.paths.publicDotfiles}/root.editorconfig";
