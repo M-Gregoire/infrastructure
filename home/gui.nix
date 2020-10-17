@@ -13,7 +13,6 @@
     # Ebooks
     calibre
     # Editors
-    texstudio
     libreoffice
     leafpad
     # Mumble
@@ -44,8 +43,6 @@
     pavucontrol
     # Photo management
     digikam
-    # Nextcloud-client
-    nextcloud-client
     # PDF reader which supports forms
     evince
     # PDF notetaking
