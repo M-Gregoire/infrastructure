@@ -170,7 +170,6 @@ in
         "${modifier}+r" = "mode \"resize\"";
         "${modifier}+m" = " focus floating; mode \"moveit\"";
         # Functions
-        "F1" = "exec --no-startup-id mono ${pkgs.keepass.out}/lib/dotnet/keepass/KeePass.exe --auto-type";
         "F2" = "exec --no-startup-id ${config.resources.paths.scripts}/switchSoundCard.sh";
         "F12" = "exec --no-startup-id ${config.resources.paths.scripts}/hidePolybar.sh";
         "Scroll_Lock" = "exec --no-startup-id $SCRIPTS/kbdLayout.sh";
