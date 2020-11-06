@@ -32,7 +32,8 @@ in
     ]))
 
     (python36.withPackages (ps: with ps; [
-      # General use
+      # Virtualenv
+      pip
       virtualenv
       # Polybar spotify controls
       dbus-python
@@ -42,7 +43,5 @@ in
       # Pywall for Firefox
       pywalfox
     ]))
-    # pipenv
-    pipenv
   ];
 }

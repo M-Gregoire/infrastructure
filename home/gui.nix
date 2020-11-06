@@ -51,14 +51,10 @@
     nomacs
     # Veracrypt
     veracrypt
-    # VNC Viewer
-    gnome3.vinagre
     # Matrix client
-    riot-desktop
+    element-desktop
     # Terminal emulator
     kitty
-    # Manga downloader
-    hakuneko
   ];
 
   xdg.configFile."kitty/kitty.conf".source = builtins.toPath "${config.resources.paths.publicDotfiles}/kitty/kitty.conf";
