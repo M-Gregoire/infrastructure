@@ -10,6 +10,20 @@ let
   #  sha256 = "09vasf7kkbag1d1hd2v8wf7amglwbj3xq2qqinh1pv9hb8bdcsg2";
   #});
 
+  doom-emacs = pkgs.callPackage (builtins.fetchTarball {
+    url = https://github.com/vlaci/nix-doom-emacs/archive/master.tar.gz;
+  }) {
+
+  doomPrivateDir = ../../dotfiles/doom.d;  # Directory containing your config.el init.el
+                               # and packages.el files
+  };
+
+  emacsPackagesOverlay = self: super: {
+     magit = super.magit.overrideAttrs (esuper: {
+       buildInputs = esuper.buildInputs ++ [ pkgs.git ];
+     });
+  };
+
 in
 
 {
@@ -27,31 +41,20 @@ in
     nodePackages.javascript-typescript-langserver
     # Nix
     #hnix-lsp
+    # Doom emacs
+    doom-emacs
   ];
 
- doom-emacs = pkgs.callPackage (builtins.fetchTarball {
-   url = https://github.com/vlaci/nix-doom-emacs/archive/master.tar.gz;
- }) {
-   doomPrivateDir = ../../dotfiles/doom.d;  # Directory containing your config.el init.el
-                               # and packages.el files
+  home.file.".local/doom/bookmarks".source = builtins.toPath "${config.resources.paths.privateDotfiles}/emacs/bookmarks";
+  #home.file.".local/doom/init.el".source = builtins.toPath "${config.resources.paths.publicDotfiles}/doom.d/init.el";
+  #home.file.".local/doom/config.el".source = builtins.toPath "${config.resources.paths.publicDotfiles}/doom.d/config.el";
+  #home.file.".local/doom/packages.el".source = builtins.toPath "${config.resources.paths.publicDotfiles}/doom.d/packages.el";
 
-  emacsPackagesOverlay = self: super: {
-     magit = super.magit.overrideAttrs (esuper: {
-       buildInputs = esuper.buildInputs ++ [ pkgs.git ];
-     });
-  };
- };
-in {
- home.file.".local/doom/bookmarks".source = builtins.toPath "${config.resources.paths.privateDotfiles}/emacs/bookmarks";
- #home.file.".local/doom/init.el".source = builtins.toPath "${config.resources.paths.publicDotfiles}/doom.d/init.el";
- #home.file.".local/doom/config.el".source = builtins.toPath "${config.resources.paths.publicDotfiles}/doom.d/config.el";
- #home.file.".local/doom/packages.el".source = builtins.toPath "${config.resources.paths.publicDotfiles}/doom.d/packages.el";
-
- home.packages = [ doom-emacs ];
- home.sessionVariables = {
+  home.sessionVariables = {
     DOOM = "${doom-emacs}";
- };
- home.file.".emacs.d/init.el".text = ''
+  };
+
+  home.file.".emacs.d/init.el".text = ''
      (load "default.el")
  '';
 
