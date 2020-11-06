@@ -19,22 +19,6 @@
   # for 10 sec before locking
   systemd.user.services.redshift.Service.RestartSec = lib.mkForce 15;
 
-  #systemd.user.services.emacs = {
-  #  Unit = {
-  #    Description = "Emacs text editor";
-  #  };
-  #  Service = {
-  #    Type = "forking";
-  #    ExecStart = "${pkgs.emacs}/bin/emacs --daemon";
-  #    ExecStop = "${pkgs.emacs}/bin/emacsclient --eval \"(kill-emacs)\"";
-  #    Restart = "on-failure";
-  #  };
-  #  Install = {
-  #    WantedBy = [ "default.target" ];
-  #    after = [ "network-online.target" ];
-  #  };
-  #};
-
   # Automount for removable device
   services.udiskie.enable = true;
 }
