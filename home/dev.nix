@@ -2,15 +2,12 @@
 
 {
   imports = [
-    ./dev/LSP.nix
     ./dev/bluetooth.nix
-    ./dev/c.nix
     ./dev/compton.nix
     ./dev/doom.nix
     ./dev/emacs.nix
     ./dev/encryption.nix
     ./dev/git.nix
-    ./dev/go.nix
     ./dev/gpg.nix
     ./dev/kdeconnect.nix
     ./dev/mimeapps.nix
