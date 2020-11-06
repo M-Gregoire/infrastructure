@@ -17,4 +17,11 @@
   services.openssh.ports = [ config.resources.hosts.fenrirDocker.ssh.port ];
 
   system.stateVersion = "20.03";
+
+  # Allow access to mail server volume (Docker) from outside
+  users.groups.mail = {
+    name = "mail";
+    members = [ "${config.resources.username}" ];
+    gid = 5000;
+  };
 }
