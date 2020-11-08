@@ -15,6 +15,9 @@
   '';
   services.resolved.dnssec="false";
 
+  # Add search domain
+  services.resolved.domains = config.resources.networking.searchDomains;
+
   # Based on https://github.com/NixOS/nixpkgs/issues/30904#issuecomment-445073924
   # If two ethernet ports are present but only one is plugged in, wait-online would fail
   # Any allows for wait-online service to be running as soon as one LAN interface is configured

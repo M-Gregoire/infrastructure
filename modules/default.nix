@@ -391,6 +391,11 @@
         type = types.listOf types.str;
         description = "The list of fallback nameservers. It can be left empty if it is auto-detected.";
       };
+      searchDomains = mkOption {
+        type = types.listOf types.str;
+        description = "list of domains. These domains are used as search suffixes when resolving single-label host names (domain names which contain no dot), in order to qualify them into fully-qualified domain names (FQDNs).";
+      };
+
       wifi.workSSID = mkOption {
         type = types.str;
         example = "foobar";
