@@ -337,19 +337,6 @@
         };
       };
 
-      firefly = {
-        domain = mkOption {
-          type = types.str;
-          example = "firefly.domain.com";
-          description = "FireflyIII domain";
-        };
-        token = mkOption {
-          type = types.str;
-          example = "T0k3n";
-          description = "FireflyIII app token";
-        };
-      };
-
       git = {
         username = mkOption {
           type = types.str;
