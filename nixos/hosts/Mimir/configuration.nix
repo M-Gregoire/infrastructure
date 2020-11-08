@@ -19,6 +19,9 @@
 
   services.xserver.libinput.accelSpeed = null;
 
+  boot.initrd.kernelModules = [ "amdgpu" ];
+  services.xserver.videoDrivers = [ "amdgpu" ];
+
   networking.wireless.enable = true;
 
   networking.firewall.allowedTCPPorts = [ config.resources.hosts.mimir.ssh.port ];
