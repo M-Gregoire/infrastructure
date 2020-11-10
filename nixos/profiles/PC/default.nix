@@ -28,8 +28,6 @@
   services.xserver.libinput = {
     # Enable libinput
     enable = true;
-    # Disable acceleration
-    accelProfile = "flat";
   };
 
   programs = {

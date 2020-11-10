@@ -17,7 +17,11 @@
       ./hardware-configuration.nix
     ];
 
-  services.xserver.libinput.accelSpeed = null;
+  services.xserver.libinput = {
+    # Disable acceleration
+    accelProfile = "flat";
+    accelSpeed = null;
+  };
 
   boot.initrd.kernelModules = [ "amdgpu" ];
   services.xserver.videoDrivers = [ "amdgpu" ];

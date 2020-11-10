@@ -18,7 +18,10 @@
 
   services.xserver.libinput = {
     # Enable tapping
+    enable = true;
     tapping = true;
+    accelProfile = "adaptive";
+    accelSpeed = "2";
   };
 
   networking.wireless.enable = true;
