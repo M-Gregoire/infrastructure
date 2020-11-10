@@ -41,8 +41,6 @@
     gparted
     # Sound control
     pavucontrol
-    # Photo management
-    digikam
     # PDF reader which supports forms
     evince
     # PDF notetaking
