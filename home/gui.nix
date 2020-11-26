@@ -53,6 +53,8 @@
     element-desktop
     # Terminal emulator
     kitty
+    # Ledger
+    ledger-live-desktop
   ];
 
   xdg.configFile."kitty/kitty.conf".source = builtins.toPath "${config.resources.paths.publicDotfiles}/kitty/kitty.conf";
