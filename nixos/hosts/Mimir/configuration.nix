@@ -14,17 +14,18 @@
       ../../networks/home
       ../../profiles/PC
       ./../../dev/luks.nix
+      ./../../dev/steam.nix
       ./hardware-configuration.nix
     ];
 
   services.xserver.libinput = {
     # Disable acceleration
-    accelProfile = "flat";
-    accelSpeed = null;
+    accelProfile = "adaptive";
+    accelSpeed = "2";
   };
 
-  boot.initrd.kernelModules = [ "amdgpu" ];
-  services.xserver.videoDrivers = [ "amdgpu" ];
+  #boot.initrd.kernelModules = [ "radeon" ];
+  services.xserver.videoDrivers = [ "radeon" ];
 
   networking.wireless.enable = true;
 
