@@ -31,7 +31,8 @@
   boot.initrd.network.enable = true;
   boot.initrd.network.ssh.enable = true;
   boot.initrd.network.ssh.port = config.resources.hosts.eldir.networking.initrd.ssh.port;
-  boot.initrd.network.ssh.hostRSAKey = /. + builtins.toPath "${config.resources.paths.secrets}/eldir/dropbear_rsa_host_key";
+  boot.initrd.network.ssh.hostKeys = [ "${config.resources.paths.secrets}/eldir/ssh_host_rsa_key" ];
+  #boot.initrd.network.ssh.hostKeys = [ (builtins.readFile (builtins.toPath "${config.resources.paths.secrets}/eldir/ssh_host_rsa_key")) ];
   boot.initrd.network.ssh.authorizedKeys = config.resources.services.ssh.publicKeys;
   boot.kernelParams = ["ip=:::::eth0:dhcp"];
 
