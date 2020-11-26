@@ -41,8 +41,8 @@
     "Xft.hinting"="true";
     "Xft.hintstyle"="hintsmedium";
     # Font settings in Emacs
-    "Emacs*.FontBackend"="xft,x";
-    "Emacs*.font"="${config.resources.font.name}-${config.resources.font.size}";
+    #"Emacs*.FontBackend"="xft,x";
+    #"Emacs*.font"="${config.resources.font.name}";
   };
 
   programs.git.ignores = [
