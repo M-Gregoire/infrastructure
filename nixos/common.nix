@@ -31,6 +31,8 @@
     sshfs
     # dhclient
     dhcp
+    # lsof
+    lsof
   ];
 
   # Boot with last kernel
