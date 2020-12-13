@@ -4,6 +4,7 @@
   imports = [
     ./dev/bluetooth.nix
     ./dev/compton.nix
+    ./dev/crypto.nix
     ./dev/doom.nix
     ./dev/emacs.nix
     ./dev/encryption.nix
