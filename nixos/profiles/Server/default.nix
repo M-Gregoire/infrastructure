@@ -4,6 +4,7 @@
   imports = [
     <home-manager/nixos>
     ../../dev/prometheus-node-exporter.nix
+    ../../dev/monero.nix
   ];
 
   environment.systemPackages = with pkgs; [

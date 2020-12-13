@@ -7,6 +7,7 @@
     ../../dev/3D.nix
     ../../dev/android.nix
     ../../dev/fwudp.nix
+    ../../dev/ledger.nix
     ../../dev/pam.nix
     ../../dev/wireguard-tools.nix
     ./services.nix
@@ -56,6 +57,7 @@
   # Move garbage collection for 3:15 to 14:00
   nix.gc.dates = "14:00";
 
+  users.extraGroups.plugdev = { };
   users.users.${config.resources.username} = {
     extraGroups = [
       # go-mtfs nhoston-root mounting
