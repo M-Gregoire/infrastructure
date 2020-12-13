@@ -33,6 +33,8 @@
     dhcp
     # lsof
     lsof
+    # Network top
+    ntopng
   ];
 
   # Boot with last kernel
