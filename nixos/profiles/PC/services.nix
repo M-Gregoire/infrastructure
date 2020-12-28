@@ -46,6 +46,10 @@
     description = "Sync taskwarrior tasks";
     serviceConfig.User = "${config.resources.username}";
     script = ''
+      if ! ${pkgs.inetutils}/bin/ping -c 1 ${config.resources.services.gotify.url} &> /dev/null
+      then
+        exit 0
+      fi
       if ${pkgs.taskwarrior}/bin/task sync; then
         echo "Syncing success"
       else
