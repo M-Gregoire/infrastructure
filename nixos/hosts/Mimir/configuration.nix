@@ -10,11 +10,11 @@
       ../../dev/bluetooth.nix
       ../../dev/boot/grub-uefi.nix
       ../../dev/boot/grub-multi.nix
-      ../../dev/virtualbox.nix
+      #../../dev/virtualbox.nix
       ../../networks/home
       ../../profiles/PC
       ./../../dev/luks.nix
-      ./../../dev/steam.nix
+      #./../../dev/steam.nix
       ./hardware-configuration.nix
     ];
 

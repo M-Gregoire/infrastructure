@@ -8,6 +8,7 @@
     ../../dev/bluetooth.nix
     ../../dev/boot/grub-bios.nix
     ../../../vendor/infrastructure-private/resources/networks/home/nfs-sharkoon.nix
+    ../../../vendor/infrastructure-private/resources/networks/home/nfs-western.nix
     ../../networks/home
     ../../profiles/Server
     ./hardware-configuration.nix
@@ -17,6 +18,8 @@
   services.openssh.ports = [ config.resources.hosts.fenrirDocker.ssh.port ];
 
   system.stateVersion = "20.03";
+  networking.firewall.enable = false;
+  boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
 
   # Allow access to mail server volume (Docker) from outside
   users.groups.mail = {
