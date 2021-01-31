@@ -27,7 +27,7 @@
   boot.initrd.kernelModules = [ "amdgpu" ];
   services.xserver.videoDrivers = [ "amdgpu" ];
 
-  networking.wireless.enable = true;
+  networking.wireless.enable = false;
 
   networking.firewall.allowedTCPPorts = [ config.resources.hosts.mimir.ssh.port ];
   services.openssh.ports = [ config.resources.hosts.mimir.ssh.port ];
