@@ -1,15 +1,6 @@
 {
   network.description = "Home network";
 
-  Bur =
-    { config, pkgs, ... }:
-    {
-      imports =
-        [
-          ../nixos/hosts/Bur/configuration.nix
-        ];
-    };
-
   Mimir =
     { config, pkgs, ... }:
     {
