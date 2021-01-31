@@ -7,11 +7,15 @@
     ../../common.nix
     ../../dev/bluetooth.nix
     ../../dev/boot/grub-bios.nix
-    ../../../vendor/infrastructure-private/resources/networks/home/nfs-sharkoon.nix
+    ../../../vendor/infrastructure-private/resources/networks/home/nfs-safe.nix
     ../../../vendor/infrastructure-private/resources/networks/home/nfs-western.nix
     ../../networks/home
     ../../profiles/Server
     ./hardware-configuration.nix
+  ];
+
+  environment.systemPackages = with pkgs; [
+    gammu
   ];
 
   networking.firewall.allowedTCPPorts = [ config.resources.hosts.fenrirDocker.ssh.port ];
