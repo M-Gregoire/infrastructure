@@ -3,8 +3,8 @@
 {
   imports =
     [
-      ../../../resources/hosts/Mimir
-      ../../../vendor/infrastructure-private/resources/hosts/Mimir
+      ../../../resources/hosts/mimir
+      ../../../vendor/infrastructure-private/resources/hosts/mimir
       ../../../vendor/infrastructure-private/resources/networks/home/nfs-safe.nix
       ../../common.nix
       ../../dev/bluetooth.nix

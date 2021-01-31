@@ -6,7 +6,7 @@
     {
       imports =
         [
-          ../nixos/hosts/Eldir/configuration.nix
+          ../nixos/hosts/eldir/configuration.nix
         ];
     };
 }

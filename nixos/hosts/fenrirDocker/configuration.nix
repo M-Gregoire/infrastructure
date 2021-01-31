@@ -2,8 +2,8 @@
 
 {
   imports = [
-    ../../../resources/hosts/FenrirDocker
-    ../../../vendor/infrastructure-private/resources/hosts/FenrirDocker
+    ../../../resources/hosts/fenrirDocker
+    ../../../vendor/infrastructure-private/resources/hosts/fenrirDocker
     ../../common.nix
     ../../dev/bluetooth.nix
     ../../dev/boot/grub-bios.nix

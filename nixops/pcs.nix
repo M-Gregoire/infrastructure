@@ -6,7 +6,7 @@
     {
       imports =
         [
-          ../nixos/hosts/Mimir/configuration.nix
+          ../nixos/hosts/mimir/configuration.nix
         ];
     };
 

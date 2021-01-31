@@ -6,7 +6,7 @@
     {
       imports =
         [
-          ../nixos/hosts/Eldir/configuration.nix
+          ../nixos/hosts/eldir/configuration.nix
         ];
     };
 
@@ -15,7 +15,7 @@
     {
       imports =
         [
-          ../nixos/hosts/FenrirDocker/configuration.nix
+          ../nixos/hosts/fenrirDocker/configuration.nix
         ];
     };
 }

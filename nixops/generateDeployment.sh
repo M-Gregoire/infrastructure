@@ -9,10 +9,10 @@ nixops delete -d cloud 2> /dev/null
 nixops delete -d pcs 2> /dev/null
 nixops delete -d servers 2> /dev/null
 
-nixops create home.nix vali.nix Bur.nix Mimir.nix Fenrir.nix -d home
-nixops create cloud.nix Eldir.nix -d cloud
-nixops create pcs.nix vali.nix Bur.nix Mimir.nix -d pcs
-nixops create servers.nix Eldir.nix Fenrir.nix -d servers
+nixops create home.nix vali.nix mimir.nix fenrir.nix -d home
+nixops create cloud.nix eldir.nix -d cloud
+nixops create pcs.nix vali.nix mimir.nix -d pcs
+nixops create servers.nix eldir.nix fenrir.nix -d servers
 
 #nixops deploy -d home
 #nixops deploy -d cloud
