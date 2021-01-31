@@ -5,7 +5,7 @@
     [
       ../../../resources/hosts/Mimir
       ../../../vendor/infrastructure-private/resources/hosts/Mimir
-      ../../../vendor/infrastructure-private/resources/networks/home/nfs-sharkoon.nix
+      ../../../vendor/infrastructure-private/resources/networks/home/nfs-safe.nix
       ../../common.nix
       ../../dev/bluetooth.nix
       ../../dev/boot/grub-uefi.nix
@@ -24,8 +24,8 @@
     accelSpeed = "2";
   };
 
-  #boot.initrd.kernelModules = [ "radeon" ];
-  services.xserver.videoDrivers = [ "radeon" ];
+  boot.initrd.kernelModules = [ "amdgpu" ];
+  services.xserver.videoDrivers = [ "amdgpu" ];
 
   networking.wireless.enable = true;
 
