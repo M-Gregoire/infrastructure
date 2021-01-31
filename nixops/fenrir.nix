@@ -1,5 +1,5 @@
 {
-  FenrirDocker =
+  fenrirDocker =
     { config, pkgs, ... }:
     {
       deployment = {

@@ -1,5 +1,5 @@
 {
-  Eldir =
+  eldir =
     { config, pkgs, ... }:
     {
       deployment = {

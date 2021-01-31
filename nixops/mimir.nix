@@ -1,5 +1,5 @@
 {
-  Mimir =
+  mimir =
     { config, pkgs, ... }:
     {
       deployment = {

@@ -3,8 +3,8 @@
 {
   imports =
     [
-      ../../../resources/hosts/Eldir
-      ../../../vendor/infrastructure-private/resources/hosts/Eldir
+      ../../../resources/hosts/eldir
+      ../../../vendor/infrastructure-private/resources/hosts/eldir
       ../../common.nix
       ../../systemd-networkd.nix
       ../../networks/cloud
