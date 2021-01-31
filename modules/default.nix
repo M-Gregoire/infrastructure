@@ -144,6 +144,18 @@
           description = "Specifies on which port the SSH daemon listens.";
         };
       };
+      vali = {
+        hostname = mkOption {
+          type = types.str;
+          example = "vali";
+          description = "Hostname of the host";
+        };
+        ssh.port = mkOption {
+          type = types.port;
+          example = [ "22" ];
+          description = "Specifies on which port the SSH daemon listens.";
+        };
+      };
       eldir = {
         hostname = mkOption {
           type = types.str;

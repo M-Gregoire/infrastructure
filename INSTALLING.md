@@ -89,17 +89,17 @@ lvcreate -L 8G -n swap nixos-vg
 # Create a logical volume for our root filesystem from all remaining free space. Volume is labeled "root".
 lvcreate -l 100%FREE -n root nixos-vg
 
--- Create a FAT32 filesystem on our boot partition
-# mkfs.vfat -n boot /dev/sda1
+# Create a FAT32 filesystem on our boot partition
+mkfs.vfat -n boot /dev/sda1
 
--- Create an ext4 filesystem for our root partition
-# mkfs.ext4 -L nixos /dev/nixos-vg/root
+# Create an ext4 filesystem for our root partition
+mkfs.ext4 -L nixos /dev/nixos-vg/root
 
--- Tell our swap partition to be a swap
-# mkswap -L swap /dev/nixos-vg/swap
+# Tell our swap partition to be a swap
+mkswap -L swap /dev/nixos-vg/swap
 
--- Turn the swap on before install
-# swapon /dev/nixos-vg/swap
+# Turn the swap on before install
+swapon /dev/nixos-vg/swap
 
 # Mount partitions
 mount /dev/nixos-vg/root /mnt
@@ -134,14 +134,14 @@ passwd <user>
 
 # Add channels
 nix-channel --add https://nixos.org/channels/nixpkgs-unstable unstable &&\
-nix-channel --add https://nixos.org/channels/nixos-20.03 nixos &&\
-nix-channel --add https://github.com/rycee/home-manager/archive/release-20.03.tar.gz home-manager &&\
+nix-channel --add https://nixos.org/channels/nixos-20.09 nixos &&\
+nix-channel --add https://github.com/rycee/home-manager/archive/release-20.09.tar.gz home-manager &&\
 nix-channel --update
 
 # Add also for root so you can use nixos-rebuild and not only nixops
 sudo bash -c "nix-channel --add https://nixos.org/channels/nixpkgs-unstable unstable &&\
-nix-channel --add https://nixos.org/channels/nixos-20.03 nixos &&\
-nix-channel --add https://github.com/rycee/home-manager/archive/release-20.03.tar.gz home-manager &&\
+nix-channel --add https://nixos.org/channels/nixos-20.09 nixos &&\
+nix-channel --add https://github.com/rycee/home-manager/archive/release-20.09.tar.gz home-manager &&\
 nix-channel --update"
 
 # Restore {.thunderbird, .mozilla, .gnupg} and clone both the public and private github repo

@@ -7,13 +7,12 @@
     ];
 
   # LUKS
-  #boot.initrd.luks.devices = [
-  #  {
-  #    name = "root";
+  #boot.initrd.luks.devices = {
+  #  root = {
   #    device = "/dev/sda2";
   #    preLVM = true;
-  #  }
-  #];
+  #  };
+  #};
 
   # BIOS
   #boot.loader.grub = {

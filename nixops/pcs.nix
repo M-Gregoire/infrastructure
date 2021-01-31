@@ -19,5 +19,12 @@
         ];
     };
 
-
+  vali =
+    { config, pkgs, ... }:
+    {
+      imports =
+        [
+          ../nixos/hosts/vali/configuration.nix
+        ];
+    };
 }
