@@ -61,16 +61,16 @@ in
  systemd.user.services.emacs = {
     Unit = {
      Description = "Emacs text editor";
+     After = [ "network-online.target" ];
    };
    Service = {
      Type = "forking";
-     ExecStart = "${doom-emacs}/bin/emacs --daemon";
+     ExecStart = "${doom-emacs}/bin/emacs --daemon=main";
      ExecStop = "${doom-emacs}/bin/emacsclient --eval \"(kill-emacs)\"";
      Restart = "on-failure";
    };
    Install = {
      WantedBy = [ "default.target" ];
-     after = [ "network-online.target" ];
    };
  };
 
