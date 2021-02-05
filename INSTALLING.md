@@ -4,8 +4,8 @@
 
 ```
 parted /dev/sda -- mklabel msdos
-parted /dev/sda -- mkpart primary 1MiB -8GiB
-parted /dev/sda -- mkpart primary linux-swap -8GiB 100%
+parted -a optimal /dev/sda -- mkpart primary 1MiB -8GiB
+parted -a optimal /dev/sda -- mkpart primary linux-swap -8GiB 100%
 mkfs.ext4 -L nixos /dev/sda1
 mkswap -L swap /dev/sda2
 mount /dev/disk/by-label/nixos /mnt
@@ -25,9 +25,9 @@ reboot
 
 ```
 parted /dev/sda -- mklabel gpt
-parted /dev/sda -- mkpart primary 512MiB -8GiB
-parted /dev/sda -- mkpart primary linux-swap -8GiB 100%
-parted /dev/sda -- mkpart ESP fat32 1MiB 512MiB
+parted -a optimal /dev/sda -- mkpart primary 512MiB -8GiB
+parted -a optimal /dev/sda -- mkpart primary linux-swap -8GiB 100%
+parted -a optimal /dev/sda -- mkpart ESP fat32 1MiB 512MiB
 parted /dev/sda -- set 3 boot on
 mkfs.ext4 -L nixos /dev/sda1
 mkswap -L swap /dev/sda2
