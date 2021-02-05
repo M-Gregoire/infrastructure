@@ -38,8 +38,6 @@ in
       # Polybar spotify controls
       dbus-python
       pygobject3
-      # Preview base16 colorschemes
-      base16-shell-preview-current
       # Pywall for Firefox
       pywalfox
     ]))

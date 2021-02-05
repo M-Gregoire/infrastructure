@@ -1,6 +1,11 @@
 { pkgs, ... }:
 
 {
+  home.packages = with pkgs;[
+    # Common file association (`mimeapps.list`)
+    shared-mime-info
+  ];
+
   xdg.configFile."mimeapps.list".force = true;
   xdg.mimeApps = {
     enable = true;

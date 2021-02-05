@@ -8,8 +8,9 @@
       ../../../vendor/infrastructure-private/resources/networks/home/nfs-safe.nix
       ../../common.nix
       ../../dev/bluetooth.nix
-      ../../dev/boot/grub-uefi.nix
       ../../dev/suspend.nix
+      ../../dev/boot/grub-uefi.nix
+      ../../dev/displaylink.nix
       ../../networks/home
       ../../profiles/PC
       ./../../dev/luks.nix

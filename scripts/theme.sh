@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# Update Firefox theme
+while ! pgrep "firefox";
+do
+  sleep 5
+done
+
 # Setup pywall for Firefox if not already
 if [ ! -f ~/.mozilla/native-messaging-hosts/pywalfox.json ]; then
   pywalfox setup
@@ -42,11 +48,5 @@ dunst& > /dev/null 2>&1
 # Start pywalfox daemon
 pkill pywalfox
 pywalfox daemon&
-
-# Update Firefox theme
-while ! pgrep "firefox";
-do
-  sleep 5
-done
 
 pywalfox update

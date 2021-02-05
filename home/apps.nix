@@ -6,7 +6,7 @@
     wget
     zip
     unzip
-    # Auto mount Thunar
+    # Auto mount
     udisks udiskie
     # mtp mount
     jmtpfs
@@ -19,31 +19,20 @@
     pulseaudio-ctl
     # Screenshots
     scrot
-    # LaTeX
-    #texlive.combined.scheme-full
     # Used by noCTRLqFirefox script
     xvkbd
     xdotool
-    # Archive manager for thunar-archive-plugin
-    gnome3.file-roller
     # Hide pointer when not in use
     xbanish
-    # Bootable iso
-    wimlib
-    woeusb
     # Hide polybar script
     xdo
     # fuser, killall and pstree
     # Needed by polybar theme
     psmisc
-    # Create QRCode
-    qrencode
     # Mount remote filesystems over SSH
     sshfs
     # Run appImage
     appimage-run
-    # Subtitles downloader
-    python37Packages.subliminal
     # uptime -p
     procps
   ];

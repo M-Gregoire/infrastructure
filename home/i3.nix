@@ -53,7 +53,7 @@ in
     xorg.xbacklight
     # redshift
     # Not running as a service as there is no command available to change the brightness of the screen
-    redshift
+    # redshift
     # xidlehook script
     bc
     # Theme based on wallpaper
