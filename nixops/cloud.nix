@@ -1,7 +1,7 @@
 {
   network.description = "Cloud";
 
-  Eldir =
+  eldir =
     { config, pkgs, ... }:
     {
       imports =

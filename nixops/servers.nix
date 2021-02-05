@@ -1,7 +1,7 @@
 {
   network.description = "Servers";
 
-  Eldir =
+  eldir =
     { config, pkgs, ... }:
     {
       imports =
@@ -10,7 +10,7 @@
         ];
     };
 
-  FenrirDocker =
+  fenrirDocker =
     { config, pkgs, ... }:
     {
       imports =

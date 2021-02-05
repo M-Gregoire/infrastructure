@@ -1,7 +1,7 @@
 {
   network.description = "PCs";
 
-  Mimir =
+  mimir =
     { config, pkgs, ... }:
     {
       imports =
