@@ -303,8 +303,8 @@ in
     };
     windowManager.i3.extraConfig = ''
       exec --no-startup-id i3-msg "workspace ${workspace2}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/kitty.json" && kitty
-      exec --no-startup-id i3-msg "workspace ${workspace3}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/emacs.json" &&  while ! $DOOM/bin/emacsclient -s /run/user/1000/emacs/main -ca false; do sleep 2; done;
-      exec --no-startup-id i3-msg "workspace ${workspace4}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/thunar.json" && thunar
+      exec --no-startup-id i3-msg "workspace ${workspace3}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/emacs.json" &&  while ! ${pkgs.emacs}/bin/emacsclient -s /run/user/1000/emacs/main -ca false; do sleep 2; done;
+      exec --no-startup-id i3-msg "workspace ${workspace4}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/pcmanfm.json" && pcmanfm
     '';
   };
 }

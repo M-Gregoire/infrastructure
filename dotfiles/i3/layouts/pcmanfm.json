@@ -3,17 +3,16 @@
     "current_border_width": 2,
     "floating": "auto_off",
     "geometry": {
-       "height": 480,
-       "width": 640,
+       "height": 1406,
+       "width": 416,
        "x": 0,
        "y": 0
     },
     "percent": 1,
     "swallows": [
        {
-         "class": "^.thunar-wrapped_$"
+        "class": "^Pcmanfm$"
        }
     ],
     "type": "con"
 }
-
