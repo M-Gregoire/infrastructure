@@ -1,19 +1,19 @@
 { config, ... }:
 
 {
-  networking.dhcpcd.enable = false;
-
   networking.useNetworkd = true;
-
+  networking.dhcpcd.enable = false;
   networking.useDHCP = false;
 
   services.resolved.enable = true;
+  services.resolved.dnssec="false";
+  networking.resolvconf.dnsExtensionMechanism = false;
+
   # /!\ DNS fallback is not a recovery DNS
   # See https://github.com/systemd/systemd/issues/5771#issuecomment-296673115
   services.resolved.extraConfig = ''
   FallbackDNS=${builtins.concatStringsSep " " config.resources.networking.fallbackDNS}
   '';
-  services.resolved.dnssec="false";
 
   # Add search domain
   services.resolved.domains = config.resources.networking.searchDomains;
@@ -47,15 +47,6 @@
 
   systemd.network.networks."30-virtualisation" = {
     matchConfig.Name = "virbr* veth* vboxnet* docker* br-* hassio";
-    linkConfig.Unmanaged = "yes";
-    linkConfig.RequiredForOnline = false;
-  };
-
-  # There's currently a bug where networkd breaks the ip of the lo interface (127.0.0.1)
-  # Preventing some bindings to happens.
-  # Seems to be fixed in next release
-  systemd.network.networks."40-localhost" = {
-    matchConfig.Name = "lo ";
     linkConfig.Unmanaged = "yes";
     linkConfig.RequiredForOnline = false;
   };
