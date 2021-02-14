@@ -25,6 +25,10 @@
     accelSpeed = "2";
   };
 
+  services.xserver.monitorSection = ''
+      DisplaySize 162 91
+    '';
+
   networking.wireless.enable = true;
 
   networking.firewall.allowedTCPPorts = [ config.resources.hosts.vali.ssh.port ];
@@ -33,13 +37,4 @@
   boot.loader.grub.efiSupport = true;
 
   system.stateVersion = "20.03";
-
-  #console.font = "${pkgs.terminus_font}/share/consolefonts/ter-u28n.psf.gz";
-  services.xserver.dpi = 180;
-  environment.variables = {
-    GDK_SCALE = "2";
-    GDK_DPI_SCALE = "0.5";
-    _JAVA_OPTIONS = "-Dsun.java2d.uiScale=2";
-  };
-
 }

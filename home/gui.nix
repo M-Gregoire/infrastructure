@@ -1,6 +1,10 @@
 { config, lib, pkgs, ... }:
 
 {
+  xresources.properties = {
+    "Xft.dpi" = config.resources.screen.dpi;
+  };
+
   home.packages = with pkgs; [
     # Browser & emails
     firefox

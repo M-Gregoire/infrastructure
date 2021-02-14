@@ -76,6 +76,19 @@
         description = "Email reader";
       };
     };
+    screen = {
+      dpi = mkOption {
+        type = types.str;
+        example = "96";
+        description = "Dot per inch";
+      };
+
+      scaleFactor = mkOption {
+        type = types.str;
+        example = "1";
+        description = "Scale factor for Electron app";
+      };
+    };
 
     hostname = mkOption {
       type = types.str;
@@ -512,6 +525,14 @@
         type = types.str;
         example = "11";
         description = "Font size";
+      };
+    };
+
+    console.font = {
+      name = mkOption {
+        type = types.str;
+        example = "DejaVu Sans Mono Nerd Font";
+        description = "Console Font";
       };
     };
 

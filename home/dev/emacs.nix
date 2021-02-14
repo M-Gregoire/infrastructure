@@ -70,7 +70,6 @@
     # Font backend settings
     "Xft.autohint"="0";
     "Xft.lcdfilter"="lcddefault";
-    "Xft.dpi"="96";
     "Xft.antialias"="true";
     "Xft.rgba"="rgb";
     "Xft.hinting"="true";

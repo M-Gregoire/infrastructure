@@ -8,6 +8,8 @@
   config.resources = with lib; mapAttrs (_: v: mkDefault v) {
     services.git.username = "M-Gregoire";
 
+    console.font.name = "Lat2-Terminus16";
+
     font.name = "DejaVu Sans Mono Nerd Font";
     font.size = "13";
 

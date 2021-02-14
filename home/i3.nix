@@ -283,7 +283,7 @@ in
       startup = [
         { command = "${config.resources.pcs.browser}"; always = false; notification = false; }
         { command = "${config.resources.pcs.mailer}"; always = false; notification = false; }
-        { command = "spotify"; always = false; notification = false; }
+        { command = "spotify --force-device-scale-factor=${config.resources.screen.scaleFactor}"; always = false; notification = false; }
         # Set random wallpaper and generate theme based on it
         { command =  "${config.resources.paths.scripts}/theme.sh ${config.resources.paths.wallpaper.folder} ${config.resources.paths.wallpaper.current}"; always = true; notification = false; }
         { command = "${config.resources.paths.scripts}/xidlehook.sh"; always = false; notification = false; }

@@ -78,7 +78,7 @@
   };
 
   console = {
-    font = "Lat2-Terminus16";
+    font = config.resources.console.font.name;
     useXkbConfig = true;
   };
 
