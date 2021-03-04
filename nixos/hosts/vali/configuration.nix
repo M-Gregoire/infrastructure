@@ -10,7 +10,7 @@
       ../../dev/bluetooth.nix
       ../../dev/suspend.nix
       ../../dev/boot/grub-uefi.nix
-      ../../dev/displaylink.nix
+      #../../dev/displaylink.nix
       ../../networks/home
       ../../profiles/PC
       ./../../dev/luks.nix
