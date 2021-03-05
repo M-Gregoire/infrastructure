@@ -33,6 +33,7 @@
     dhcpConfig.UseDNS = true;
     matchConfig.Name = "en* eth* wl*";
     networkConfig.DHCP = "yes";
+    networkConfig.MulticastDNS= "resolve";
   };
 
   systemd.network.networks."20-wired" = {
