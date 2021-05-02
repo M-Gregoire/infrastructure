@@ -4,7 +4,6 @@
   imports = [
     <home-manager/nixos>
     ../../../modules
-    ../../dev/3D.nix
     ../../dev/android.nix
     ../../dev/fwudp.nix
     ../../dev/ledger.nix
