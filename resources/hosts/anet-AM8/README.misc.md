@@ -57,3 +57,4 @@ M500
 # When correct setting is found, put it in
 #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 400, <Steps> }
 ```
+Note: You can read current value for "Setps per unit" with `M503`.
