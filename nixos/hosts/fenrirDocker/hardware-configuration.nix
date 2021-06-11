@@ -18,6 +18,12 @@
       fsType = "ext4";
     };
 
+  fileSystems."/home/${config.resources.username}" =
+    { device = "/dev/disk/by-uuid/20985d66-0fd7-4b11-9246-221259b7f82b";
+      fsType = "ext4";
+    };
+
+
   swapDevices = [ ];
 
   nix.maxJobs = lib.mkDefault 1;
