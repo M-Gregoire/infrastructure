@@ -14,7 +14,7 @@
       ../../networks/home
       ../../profiles/PC
       ./../../dev/luks.nix
-      #./../../dev/steam.nix
+      ./../../dev/steam.nix
       ./hardware-configuration.nix
     ];
 
