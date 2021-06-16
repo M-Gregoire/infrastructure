@@ -72,7 +72,10 @@ in
     windowManager.i3.package = pkgs.i3-gaps;
 
     windowManager.i3.config = {
-      fonts = [ "${config.resources.font.name} ${config.resources.font.size}" ];
+      fonts = {
+        names = [ "${config.resources.font.name}" ];
+        size = config.resources.font.size;
+      };
       # Use pywal
       colors = {
         focused = {
@@ -259,8 +262,8 @@ in
       };
 
       startup = [
-        { command = "${config.resources.pcs.browser}"; always = false; notification = false; }
-        { command = "${config.resources.pcs.mailer}"; always = false; notification = false; }
+        #{ command = "${config.resources.pcs.browser}"; always = false; notification = false; }
+        #{ command = "${config.resources.pcs.mailer}"; always = false; notification = false; }
         { command = "spotify --force-device-scale-factor=${config.resources.screen.scaleFactor}"; always = false; notification = false; }
         # Set random wallpaper and generate theme based on it
         { command =  "${config.resources.paths.scripts}/theme.sh ${config.resources.paths.wallpaper.folder} ${config.resources.paths.wallpaper.current}"; always = true; notification = false; }

@@ -30,7 +30,7 @@
     WORKWIFI = "${config.resources.networking.wifi.workSSID}";
     # Recover font and font size for Emacs
     EMACS_FONT = "${config.resources.font.name}";
-    EMACS_FONT_SIZE = "${config.resources.font.size}";
+    EMACS_FONT_SIZE = "${lib.strings.floatToString config.resources.font.size}";
     # Avoid Firefox profile change
     # https://github.com/NixOS/nixpkgs/issues/58923
     MOZ_LEGACY_PROFILES = "1";

@@ -25,7 +25,7 @@
         padding-right = "1";
         module-margin-left = "1";
         module-margin-right = "1";
-        font-0 = "${config.resources.font.name}:pixelsize=${config.resources.font.size}:antialias=true;2";
+        font-0 = "${config.resources.font.name}:pixelsize=${lib.strings.floatToString config.resources.font.size}:antialias=true;2";
         modules-left = "i3";
         modules-center = "spotify previous playpause next sep date";
         modules-right = "vpn screenshot temperature cpu memory network-wired network-wireless pulseaudio backlight battery powermenu";

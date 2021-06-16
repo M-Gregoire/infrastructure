@@ -14,11 +14,11 @@ let
 
   pywalfox = pkgs.python36.pkgs.buildPythonPackage rec {
     pname = "pywalfox";
-    version = "2.4";
+    version = "2.7.3";
     doCheck = false;
     src = pkgs.python36.pkgs.fetchPypi {
       inherit pname version;
-      sha256 = "0w2spm3y9zx5cxarn5ynk8kyxxn8lnv48rs854qvvf650vrxxvpk";
+      sha256 = "1gkxcnysygvcpfhinaxaa6lf7b7194x7vi928i0qpdw962ck1zsi";
     };
   };
 

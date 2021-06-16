@@ -11,10 +11,10 @@
     console.font.name = "Lat2-Terminus16";
 
     font.name = "DejaVu Sans Mono Nerd Font";
-    font.size = "13";
+    font.size = 13.0;
 
     bar.font.name = "DejaVu Sans Mono Nerd Font";
-    bar.font.size = "13";
+    bar.font.size = 13.0;
 
     theme = {
       name  = "tomorrow-night";

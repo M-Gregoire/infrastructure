@@ -458,8 +458,8 @@
         description = "Font";
       };
       size = mkOption {
-        type = types.str;
-        example = "11";
+        type = types.float;
+        example = 11.0;
         description = "Font size";
       };
     };
@@ -479,8 +479,8 @@
         description = "Font in i3status";
       };
       size = mkOption {
-        type = types.str;
-        example = "12";
+        type = types.float;
+        example = 12.0;
         description = "Font size in i3status";
       };
     };
