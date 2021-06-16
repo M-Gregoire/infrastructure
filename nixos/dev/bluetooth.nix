@@ -6,7 +6,7 @@
     enable = true;
     package = pkgs.bluezFull;
     # A2DP Sink
-    config = 	{ General = { Enable = "Source,Sink,Media,Socket"; }; };
+    settings = 	{ General = { Enable = "Source,Sink,Media,Socket"; }; };
   };
   hardware.pulseaudio = {
     # Allow Bluetooth audio devices to be used with PulseAudio,

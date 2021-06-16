@@ -20,8 +20,10 @@
 
   services.xserver.libinput = {
     # Disable acceleration
-    accelProfile = "adaptive";
-    accelSpeed = "2";
+    touchpad = {
+      accelProfile = "adaptive";
+      accelSpeed = "2";
+    };
   };
 
   boot.initrd.kernelModules = [ "amdgpu" ];

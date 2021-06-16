@@ -14,23 +14,28 @@
       ../../networks/home
       ../../profiles/PC
       ./../../dev/luks.nix
+      ./../../dev/steam.nix
       ./hardware-configuration.nix
     ];
 
   services.xserver.libinput = {
     # Enable tapping
     enable = true;
-    tapping = true;
-    accelProfile = "adaptive";
-    accelSpeed = "2";
+    touchpad = {
+      tapping = true;
+      accelProfile = "adaptive";
+      accelSpeed = "2";
+    };
   };
 
   services.xserver.monitorSection = ''
       DisplaySize 162 91
     '';
 
-  networking.wireless.enable = true;
-
+  networking.wireless = {
+    enable = true;
+    interfaces = ["wlp58s0"];
+  };
   networking.firewall.allowedTCPPorts = [ config.resources.hosts.vali.ssh.port ];
   services.openssh.ports = [ config.resources.hosts.vali.ssh.port ];
 
