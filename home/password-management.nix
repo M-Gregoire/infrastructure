@@ -10,5 +10,6 @@
     kbfs
     # gopass
     gopass
+    gopass-jsonapi
   ];
 }
