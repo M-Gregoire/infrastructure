@@ -311,43 +311,6 @@
           };
         };
       };
-      taskd = {
-        theme = mkOption {
-          type = types.str;
-          example = "dark-16";
-          description = "Taskd theme";
-        };
-        certificate = mkOption {
-          type = types.str;
-          example = "/path/to/certificate";
-          description = "Taskd certificate location";
-        };
-        key = mkOption {
-          type = types.str;
-          example = "/path/to/key";
-          description = "Taskd key location";
-        };
-        ca = mkOption {
-          type = types.str;
-          example = "/path/to/ca";
-          description = "Taskd ca location";
-        };
-        server = mkOption {
-          type = types.str;
-          example = "myserver.com";
-          description = "Taskd server";
-        };
-        port = mkOption {
-          type = types.str;
-          example = "53589";
-          description = "Taskd port";
-        };
-        credentials = mkOption {
-          type = types.str;
-          example = "foo/bar/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
-          description = "Taskd credentials";
-        };
-      };
 
       gotify = {
         url = mkOption {

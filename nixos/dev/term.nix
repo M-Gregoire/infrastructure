@@ -35,7 +35,6 @@
         "safe-paste"
         "sudo"
         "systemd"
-        "taskwarrior"
         "tmux"
       ];
       # Make sure to start gpg-agent
