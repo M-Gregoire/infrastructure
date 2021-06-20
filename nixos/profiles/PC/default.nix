@@ -35,7 +35,6 @@
       # Fix Tramp (Emacs) with ZSH https://www.emacswiki.org/emacs/TrampMode#toc9
       interactiveShellInit = ''
         [[ $TERM == 'dumb' ]] && unsetopt zle && PS1='$ ' && return
-        ${config.resources.paths.scripts}/showTodo.sh
         # https://github.com/gopasspw/gopass/issues/585#issuecomment-355339632
         source <(gopass completion zsh | head -n -1 | tail -n +2)
         compdef _gopass gopass
