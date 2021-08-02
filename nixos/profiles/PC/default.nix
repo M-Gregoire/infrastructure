@@ -18,6 +18,8 @@
   hardware.pulseaudio.enable = true;
   hardware.pulseaudio.support32Bit = true;
 
+  powerManagement.cpuFreqGovernor = "performance";
+
   # Wifi
   environment.etc."wpa_supplicant.conf".source = "${config.resources.paths.secrets}/wpa_supplicant.conf";
 
