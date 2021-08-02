@@ -11,5 +11,9 @@
     # gopass
     gopass
     gopass-jsonapi
+    # Bitwarden
+    bitwarden
+    bitwarden-cli
   ];
+
 }
