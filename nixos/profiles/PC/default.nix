@@ -20,6 +20,9 @@
 
   powerManagement.cpuFreqGovernor = "performance";
 
+  # https://nixos.wiki/wiki/Bluetooth#No_audio_when_using_headset_in_HSP.2FHFP_mode
+  hardware.enableAllFirmware = true;
+
   # Wifi
   environment.etc."wpa_supplicant.conf".source = "${config.resources.paths.secrets}/wpa_supplicant.conf";
 
@@ -37,7 +40,6 @@
       # Fix Tramp (Emacs) with ZSH https://www.emacswiki.org/emacs/TrampMode#toc9
       interactiveShellInit = ''
         [[ $TERM == 'dumb' ]] && unsetopt zle && PS1='$ ' && return
-        ${config.resources.paths.scripts}/showTodo.sh
         # https://github.com/gopasspw/gopass/issues/585#issuecomment-355339632
         source <(gopass completion zsh | head -n -1 | tail -n +2)
         compdef _gopass gopass

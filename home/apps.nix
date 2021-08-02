@@ -42,21 +42,4 @@
   # https://unix.stackexchange.com/a/562158
   # If encountering other sound issues, try deleting ~/.config/pulse
   home.file.".alsoftrc".source = builtins.toPath "${config.resources.paths.publicDotfiles}/.alsoftrc";
-
-  home.file.".task".source = builtins.toPath "${config.resources.paths.secrets}/task";
-  programs.taskwarrior = {
-    enable = true;
-    colorTheme = "dark-16";
-    config = {
-      taskd = {
-        certificate = "${config.resources.services.taskd.certificate}";
-        key = "${config.resources.services.taskd.key}";
-        ca = "${config.resources.services.taskd.ca}";
-        server = "${config.resources.services.taskd.server}:${config.resources.services.taskd.port}";
-        credentials = "${config.resources.services.taskd.credentials}";
-      };
-      # L is lower than nothing
-      uda.priority.values="H,M,,L";
-    };
-  };
 }

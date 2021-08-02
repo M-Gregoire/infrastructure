@@ -42,25 +42,6 @@
   # https://nixos.wiki/wiki/Wpgtk
   programs.dconf.enable = true;
 
-  systemd.services.tasks = {
-    description = "Sync taskwarrior tasks";
-    serviceConfig.User = "${config.resources.username}";
-    script = ''
-      if ! ${pkgs.inetutils}/bin/ping -c 1 ${config.resources.services.gotify.url} &> /dev/null
-      then
-        exit 0
-      fi
-      if ${pkgs.taskwarrior}/bin/task sync; then
-        echo "Syncing success"
-      else
-        echo "Syncing fail: sending notification"
-        ${pkgs.curl}/bin/curl -X POST "${config.resources.services.gotify.url}/message?token=${config.resources.services.gotify.token}" -F "title=Taskwarrior sync failed" -F "message=An error occured while trying to sync local computer with taskd server" -F "priority=5"
-      fi
-    '';
-    wantedBy = [ "default.target" ];
-    wants = [ "network-online.target" ];
-    after = [ "network-online.target" ];
-  };
   # systemctl list-timers
 
   systemd.timers.tasks = {
