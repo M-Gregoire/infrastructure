@@ -6,37 +6,32 @@
     # Search
     ag
     ripgrep
-    # Elpy dependencies
-    #  # Rope
-    #  python27Packages.rope
-    #  python36Packages.rope
-    #  # Jedi
-    #  python27Packages.jedi
-    #  python36Packages.jedi
-    #  # Flake8
-    #  python27Packages.flake8
-    #  python36Packages.flake8
-    # Autopep8
-    #  python27Packages.autopep8
-    #  python36Packages.autopep8
-    # Yapf
-    #  python27Packages.yapf
-    #  python36Packages.yapf
+    fd
 
-    #  Go
-    go-langserver
-    # C / C++
+    # Spell check
+    aspell
+    aspellDicts.fr
+    aspellDicts.en
+
+    # Langs
+    ##  Go
+    go
+    gopls
+    gocode
+    gomodifytags
+    gotests
+    gore
+    godef
+
+    ## C / C++
     ccls
-    # Bash
-    #nodePackages.bash-language-server
-    # Python
-    #python27Packages.python-language-server
+    gcc # go-vet
+    ## Python
     python37Packages.python-language-server
-    # Javascript
+    ## Javascript
     nodePackages.javascript-typescript-langserver
-    # Nix
-    #hnix-lsp
-
+    ## Nix
+    nixfmt
   ];
 
   #home.file.".emacs.d/".source = builtins.toPath "${config.resources.paths.publicConfig}/vendor/doom-emacs/";

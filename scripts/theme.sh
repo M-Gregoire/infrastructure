@@ -14,13 +14,13 @@ fi
 
 if ! [[ -L ~/.gtkrc-2.0 || "$(readlink ~/.gtkrc-2.0)" = "~/.config/wpg/templates/gtk2" ]]
 then
-    rm -rf ~/.gtkrc-2.0
+    rm -rf ~/.gtkrc-2.0 ~/.config/wpg/templates/gtk2
     ln -s ~/.config/wpg/templates/gtk2 ~/.gtkrc-2.0
 fi
 
 if ! [[ -L ~/.config/gtk-3.0/settings.ini || "$(readlink ~/.config/gtk-3.0/settings.ini)" = "~/.config/wpg/templates/gtk3.0" ]]
 then
-    rm -rf ~/.config/gtk-3.0/settings.ini
+    rm -rf ~/.config/gtk-3.0/settings.ini ~/.config/wpg/templates/gtk3.0
     ln -s ~/.config/wpg/templates/gtk3.0 ~/.config/gtk-3.0/settings.ini
 fi
 
@@ -29,6 +29,7 @@ wpg -a $1/* > /dev/null
 
 if ! [[ -L ~/.config/dunst/dunstrc || "$(readlink ~/.config/dunst/dunstrc)" = "~/.config/wpg/templates/dunstrc" ]]
 then
+    rm -rf ~/.config/dunst/dunstrc ~/.config/wpg/templates/dunstrc
     ln -s ~/.config/wpg/templates/dunstrc ~/.config/dunst/dunstrc
 fi
 
@@ -51,5 +52,12 @@ pkill pywalfox
 pywalfox update
 pywalfox start&
 
-firefox&
-thunderbird&
+if ! pgrep firefox > /dev/null
+then
+  firefox&
+fi
+
+if ! pgrep thunderbird > /dev/null
+then
+  thunderbird&
+fi
