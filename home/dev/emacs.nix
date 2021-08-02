@@ -1,8 +1,18 @@
 { pkgs, config, ... }:
 
-{
+let
+
+  emacsDesktopItem = pkgs.makeDesktopItem {
+    name = "EmacsClient";
+    desktopName = "Emacs client";
+    exec = "${pkgs.emacs}/bin/emacsclient -c %F";
+    terminal = "false";
+  };
+
+in {
   home.packages = with pkgs; [
     emacs
+    emacsDesktopItem
     # Search
     ag
     ripgrep
@@ -40,10 +50,14 @@
   #home.file.".emacs.d/snippets".source = builtins.toPath "${config.resources.paths.publicDotfiles}/emacs.d/snippets";
   #home.file.".local/share/applications/emacs-client.desktop".source = builtins.toPath "${config.resources.paths.publicDotfiles}/emacs.d/emacs-client.desktop";
 
-  home.file.".emacs.d/.local/etc/bookmarks".source = builtins.toPath "${config.resources.paths.privateDotfiles}/emacs/bookmarks";
-  home.file.".doom.d/init.el".source = builtins.toPath "${config.resources.paths.publicDotfiles}/doom.d/init.el";
-  home.file.".doom.d/config.el".source = builtins.toPath "${config.resources.paths.publicDotfiles}/doom.d/config.el";
-  home.file.".doom.d/packages.el".source = builtins.toPath "${config.resources.paths.publicDotfiles}/doom.d/packages.el";
+  home.file.".emacs.d/.local/etc/bookmarks".source =
+    builtins.toPath "${config.resources.paths.privateDotfiles}/emacs/bookmarks";
+  home.file.".doom.d/init.el".source =
+    builtins.toPath "${config.resources.paths.publicDotfiles}/doom.d/init.el";
+  home.file.".doom.d/config.el".source =
+    builtins.toPath "${config.resources.paths.publicDotfiles}/doom.d/config.el";
+  home.file.".doom.d/packages.el".source = builtins.toPath
+    "${config.resources.paths.publicDotfiles}/doom.d/packages.el";
 
   systemd.user.services.emacs = {
     Unit = {
@@ -53,22 +67,20 @@
     Service = {
       Type = "forking";
       ExecStart = "${pkgs.emacs}/bin/emacs --daemon=main";
-      ExecStop = "${pkgs.emacs}/bin/emacsclient --eval \"(kill-emacs)\"";
+      ExecStop = ''${pkgs.emacs}/bin/emacsclient --eval "(kill-emacs)"'';
       Restart = "on-failure";
     };
-    Install = {
-      WantedBy = [ "default.target" ];
-    };
+    Install = { WantedBy = [ "default.target" ]; };
   };
 
   xresources.properties = {
     # Font backend settings
-    "Xft.autohint"="0";
-    "Xft.lcdfilter"="lcddefault";
-    "Xft.antialias"="true";
-    "Xft.rgba"="rgb";
-    "Xft.hinting"="true";
-    "Xft.hintstyle"="hintsmedium";
+    "Xft.autohint" = "0";
+    "Xft.lcdfilter" = "lcddefault";
+    "Xft.antialias" = "true";
+    "Xft.rgba" = "rgb";
+    "Xft.hinting" = "true";
+    "Xft.hintstyle" = "hintsmedium";
     # Font settings in Emacs
     #"Emacs*.FontBackend"="xft,x";
     #"Emacs*.font"="${config.resources.font.name}";
@@ -78,11 +90,11 @@
     "#*"
     "*#"
     "*~"
-    "\#*\#"
+    "#*#"
     "*.elc"
     "auto-save-list"
     "tramp"
-    ".\#*"
+    ".#*"
     ".org-id-locations"
     "*_archive"
     "*_flymake.*"
