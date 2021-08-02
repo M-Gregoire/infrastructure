@@ -13,6 +13,10 @@
     package = pkgs.pulseaudioFull;
     # More audio codecs
     extraModules = [ pkgs.pulseaudio-modules-bt ];
+    # Switch to bluetooth speaker on connect
+    extraConfig = "
+      load-module module-switch-on-connect
+    ";
   };
   # Applet
   services.blueman.enable = true;

@@ -18,6 +18,9 @@
   hardware.pulseaudio.enable = true;
   hardware.pulseaudio.support32Bit = true;
 
+  # https://nixos.wiki/wiki/Bluetooth#No_audio_when_using_headset_in_HSP.2FHFP_mode
+  hardware.enableAllFirmware = true;
+
   # Wifi
   environment.etc."wpa_supplicant.conf".source = "${config.resources.paths.secrets}/wpa_supplicant.conf";
 
