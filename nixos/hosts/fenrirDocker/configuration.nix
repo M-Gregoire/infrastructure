@@ -14,9 +14,7 @@
     ./hardware-configuration.nix
   ];
 
-  environment.systemPackages = with pkgs; [
-    gammu
-  ];
+  environment.systemPackages = with pkgs; [ gammu restic ];
 
   networking.firewall.allowedTCPPorts = [ config.resources.hosts.fenrirDocker.ssh.port ];
   services.openssh.ports = [ config.resources.hosts.fenrirDocker.ssh.port ];
