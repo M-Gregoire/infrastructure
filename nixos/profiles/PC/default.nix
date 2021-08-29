@@ -5,6 +5,7 @@
     <home-manager/nixos>
     ../../../modules
     ../../dev/android.nix
+    ../../dev/mounting.nix
     ../../dev/fwudp.nix
     ../../dev/ledger.nix
     ../../dev/pam.nix
