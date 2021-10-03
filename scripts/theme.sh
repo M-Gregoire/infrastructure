@@ -6,51 +6,38 @@ if [ ! -f ~/.mozilla/native-messaging-hosts/pywalfox.json ]; then
 fi
 
 # Wpg install
-if [[ ! -e ~/.config/wpg/templates/gtk2 ]] || [[ ! -e ~/.config/wpg/templates/gtk3.0 ]]
+if [[ ! -L ~/.config/wpg/templates/gtk2 ]] || [[ ! -L ~/.config/wpg/templates/gtk3.0 ]] || [[ ! -L ~/.config/wpg/templates/dunstrc ]]
 then
   mkdir -p ~/.themes
-  wpg-install.sh -g -i
-fi
-
-if ! [[ -L ~/.gtkrc-2.0 || "$(readlink ~/.gtkrc-2.0)" = "~/.config/wpg/templates/gtk2" ]]
-then
-    rm -rf ~/.gtkrc-2.0 ~/.config/wpg/templates/gtk2
-    ln -s ~/.config/wpg/templates/gtk2 ~/.gtkrc-2.0
-fi
-
-if ! [[ -L ~/.config/gtk-3.0/settings.ini || "$(readlink ~/.config/gtk-3.0/settings.ini)" = "~/.config/wpg/templates/gtk3.0" ]]
-then
-    rm -rf ~/.config/gtk-3.0/settings.ini ~/.config/wpg/templates/gtk3.0
-    ln -s ~/.config/wpg/templates/gtk3.0 ~/.config/gtk-3.0/settings.ini
+  wpg-install.sh -g -i #-d
+  # Manually link dunstrc so install.sh doesn't replace symlink for dunstrc.base
+  rm -rf ~/.config/wpg/templates/dunstrc ~/.config/dunst/dunstrc
+  ln -sf ~/.config/dunst/dunstrc ~/.config/wpg/templates/dunstrc
 fi
 
 # Generate schemes for all wallpaper
-wpg -a $1/* > /dev/null
-
-if ! [[ -L ~/.config/dunst/dunstrc || "$(readlink ~/.config/dunst/dunstrc)" = "~/.config/wpg/templates/dunstrc" ]]
-then
-    rm -rf ~/.config/dunst/dunstrc ~/.config/wpg/templates/dunstrc
-    ln -s ~/.config/wpg/templates/dunstrc ~/.config/dunst/dunstrc
-fi
+wpg -a $1/*
 
 # If no second argument, take a random wallapper
 if [ -z "$2" ]; then
-  wpg -m > /dev/null
+  wpg -m
 else
-  wpg -s $2 > /dev/null
+  wpg -s $2
 fi
 
 # Update Emacs
 kill -USR1 $(pgrep emacs)
 
 # Restart dunst
-pkill dunst > /dev/null
-dunst& > /dev/null
+pkill dunst > /dev/null 2>&1
+# Dunst starts automatically
+# https://github.com/dunst-project/dunst/issues/63#issuecomment-586764246
+#dunst& > /dev/null
 
 # Start pywalfox daemon
 pkill pywalfox
-pywalfox update
 pywalfox start&
+#pywalfox update
 
 if ! pgrep firefox > /dev/null
 then

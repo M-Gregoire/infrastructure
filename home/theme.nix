@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
 {
+  imports = [ ./theme/dunst.nix ];
+
   home.packages = with pkgs; [
     # Themes, icons and cursors
     arc-icon-theme
@@ -17,7 +19,4 @@
     # Debug configuration of themes
     lxappearance
   ];
-
-  xdg.configFile."wpg/templates/dunstrc.base".force = true;
-  xdg.configFile."wpg/templates/dunstrc.base".source = builtins.toPath "${config.resources.paths.publicDotfiles}/wpg/templates/dunstrc.base";
 }
