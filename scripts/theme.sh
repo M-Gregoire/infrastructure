@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# Args (WIP)
+# 1 -> Path to wallpapers folder
+# 2 -> Specific wallpaper file to use in wallpaper folder
+# 3 -> Preset theme
+# 4 -> If not null, use light theme
+#
 # Setup pywall for Firefox if not already
 if [ ! -f ~/.mozilla/native-messaging-hosts/pywalfox.json ]; then
   pywalfox install
@@ -19,10 +25,23 @@ fi
 wpg -a $1/*
 
 # If no second argument, take a random wallapper
-if [ -z "$2" ]; then
+  if [ -z "$2" ]; then
+  echo "[+] Using random wallpaper"
   wpg -m
-else
+  else
+    echo "[+] Using wallpaper $2"
   wpg -s $2
+fi
+# If third argument, use a preset color scheme, otherwise, generate from wallpaper
+if [ ! -z "$3" ]; then
+  if [ -z "$4" ]; then
+  echo "[+] Using preset theme: $3"
+  wpg --theme $3
+  else
+  echo "[+] Using light theme"
+  wpg -L --theme $3
+  fi
+
 fi
 
 # Update Emacs

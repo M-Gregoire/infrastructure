@@ -20,15 +20,12 @@ let
 
   screenshot = "${config.resources.paths.home}/Screenshots/";
 
-in
-
-{
-  imports = [
-    ./i3-polybar.nix
-  ];
+in {
+  imports = [ ./i3-polybar.nix ];
 
   # Import pywal config in xresources
-  xresources.extraConfig = ''#include "${config.resources.paths.home}/.cache/wal/colors.Xresources"'';
+  xresources.extraConfig =
+    ''#include "${config.resources.paths.home}/.cache/wal/colors.Xresources"'';
 
   home.packages = with pkgs; [
     # Manage acpi events
@@ -79,47 +76,47 @@ in
       # Use pywal
       colors = {
         focused = {
-          background   = "$bg";
-          border       = "$bg";
-          indicator    = "$bg";
-          text         = "$fg";
-          childBorder  = "$bg";
+          background = "$bg";
+          border = "$bg";
+          indicator = "$bg";
+          text = "$fg";
+          childBorder = "$bg";
         };
         unfocused = {
-          background   = "$bg";
-          border       = "$bg";
-          indicator    = "$bg";
-          text         = "$fg";
-          childBorder  = "$bg";
+          background = "$bg";
+          border = "$bg";
+          indicator = "$bg";
+          text = "$fg";
+          childBorder = "$bg";
         };
         focusedInactive = {
-          background   = "$bg";
-          border       = "$bg";
-          indicator    = "$bg";
-          text         = "$fg";
-          childBorder  = "$bg";
+          background = "$bg";
+          border = "$bg";
+          indicator = "$bg";
+          text = "$fg";
+          childBorder = "$bg";
         };
         urgent = {
-          background   = "$bg";
-          border       = "$bg";
-          indicator    = "$bg";
-          text         = "$fg";
-          childBorder  = "$bg";
+          background = "$bg";
+          border = "$bg";
+          indicator = "$bg";
+          text = "$fg";
+          childBorder = "$bg";
         };
         placeholder = {
-          background   = "$bg";
-          border       = "$bg";
-          indicator    = "$bg";
-          text         = "$fg";
-          childBorder  = "$bg";
+          background = "$bg";
+          border = "$bg";
+          indicator = "$bg";
+          text = "$fg";
+          childBorder = "$bg";
         };
-        background     = "$bg";
+        background = "$bg";
       };
       assigns = {
         # Use xprop
-        "${workspace1}" = [{class="Firefox";}];
-        "${workspace8}" = [{class="rambox";}];
-        "${workspace9}" = [{class="Thunderbird";} {class="Daily";}];
+        "${workspace1}" = [{ class = "Firefox"; }];
+        "${workspace8}" = [{ class = "rambox"; }];
+        "${workspace9}" = [ { class = "Thunderbird"; } { class = "Daily"; } ];
       };
 
       keybindings = {
@@ -129,10 +126,13 @@ in
         "${modifier}+Shift+f" = " exec --no-startup-id firefox";
         "${modifier}+Shift+c" = " reload";
         "${modifier}+Shift+r" = " restart";
-        "${modifier}+Shift+e" = "exec i3-nagbar -t warning -m 'Do you want to exit i3?' -b 'Yes' 'i3-msg exit'";
+        "${modifier}+Shift+e" =
+          "exec i3-nagbar -t warning -m 'Do you want to exit i3?' -b 'Yes' 'i3-msg exit'";
         "${modifier}+Shift+a" = "kill";
-        "${modifier}+d" = "exec /home/${config.resources.username}/.config/rofi/launchers/launcher.sh";
-        "${modifier}+Shift+s" = "exec /home/${config.resources.username}/.config/rofi/scripts/menu_powermenu.sh";
+        "${modifier}+d" =
+          "exec /home/${config.resources.username}/.config/rofi/launchers/launcher.sh";
+        "${modifier}+Shift+s" =
+          "exec /home/${config.resources.username}/.config/rofi/scripts/menu_powermenu.sh";
         "${modifier}+Shift+x" = "exec i3lock-fancy";
         # Basic movements/focus
         "${modifier}+j" = "focus left";
@@ -164,21 +164,30 @@ in
         "XF86AudioRaiseVolume" = "exec --no-startup-id pulseaudio-ctl up";
         "XF86AudioLowerVolume" = "exec --no-startup-id pulseaudio-ctl down";
         "XF86AudioMute" = "exec --no-startup-id pulseaudio-ctl mute";
-        "XF86AudioPlay" = "exec --no-startup-id dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause";
-        "XF86AudioPause" = "exec --no-startup-id dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause";
-        "XF86AudioNext" = "exec --no-startup-id dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next";
-        "XF86AudioPrev" = "exec --no-startup-id dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous";
+        "XF86AudioPlay" =
+          "exec --no-startup-id dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause";
+        "XF86AudioPause" =
+          "exec --no-startup-id dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause";
+        "XF86AudioNext" =
+          "exec --no-startup-id dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next";
+        "XF86AudioPrev" =
+          "exec --no-startup-id dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous";
         # Modes
-        "${modifier}+r" = "mode \"resize\"";
+        "${modifier}+r" = ''mode "resize"'';
         "${modifier}+m" = " focus floating; mode \"moveit\"";
         # Functions
-        "F2" = "exec --no-startup-id ${config.resources.paths.scripts}/switchSoundCard.sh";
-        "F12" = "exec --no-startup-id ${config.resources.paths.scripts}/hidePolybar.sh";
+        "F2" =
+          "exec --no-startup-id ${config.resources.paths.scripts}/switchSoundCard.sh";
+        "F12" =
+          "exec --no-startup-id ${config.resources.paths.scripts}/hidePolybar.sh";
         "Scroll_Lock" = "exec --no-startup-id $SCRIPTS/kbdLayout.sh";
-        "Print" = "exec --no-startup-id scrot -e 'mv $f ${screenshot}' && notify-send 'Screenshot taken'";
-        "--release ${modifier}+Print" = "exec --no-startup-id scrot -s -e 'mv $f ${screenshot}' && notify-send 'Screenshot taken'";
+        "Print" =
+          "exec --no-startup-id scrot -e 'mv $f ${screenshot}' && notify-send 'Screenshot taken'";
+        "--release ${modifier}+Print" =
+          "exec --no-startup-id scrot -s -e 'mv $f ${screenshot}' && notify-send 'Screenshot taken'";
         # Disable Control+q in Firefox
-        "${modifier}+Control+q" = "exec --no-startup-id ${config.resources.paths.scripts}/noCTRLqFirefox.sh";
+        "${modifier}+Control+q" =
+          "exec --no-startup-id ${config.resources.paths.scripts}/noCTRLqFirefox.sh";
         # Change workspace
         "${modifier}+1" = "workspace ${workspace1}";
         "${modifier}+2" = "workspace ${workspace2}";
@@ -203,14 +212,13 @@ in
         "${modifier}+Shift+0" = "move container to workspace ${workspace10}";
       };
 
-      bars = [
-      ];
+      bars = [ ];
 
       gaps = {
-        inner=5;
-        outer=1;
-        smartBorders="on";
-        smartGaps=true;
+        inner = 5;
+        outer = 1;
+        smartBorders = "on";
+        smartGaps = true;
       };
 
       floating = {
@@ -225,9 +233,10 @@ in
         hideEdgeBorders = "both";
         titlebar = false;
 
-        commands =  [
-          { command = "move to workspace ${workspace10}"; criteria = { class = "Spotify"; } ; }
-        ];
+        commands = [{
+          command = "move to workspace ${workspace10}";
+          criteria = { class = "Spotify"; };
+        }];
       };
 
       modes = {
@@ -248,8 +257,8 @@ in
           "Right" = "resize grow width 10 px or 10 ppt";
 
           # Back to normal: Enter or Escape
-          "Return" = "mode \"default\"";
-          "Escape" = "mode \"default\"";
+          "Return" = ''mode "default"'';
+          "Escape" = ''mode "default"'';
         };
 
         "moveit" = {
@@ -257,29 +266,68 @@ in
           "Left" = "move left 20px";
           "Down" = "move down 20px";
           "Right" = "move right 20px";
-          "${modifier}+m" ="mode \"default\"";
+          "${modifier}+m" = ''mode "default"'';
         };
       };
 
       startup = [
         #{ command = "${config.resources.pcs.browser}"; always = false; notification = false; }
         #{ command = "${config.resources.pcs.mailer}"; always = false; notification = false; }
-        { command = "spotify --force-device-scale-factor=${config.resources.screen.scaleFactor}"; always = false; notification = false; }
-        # Set random wallpaper and generate theme based on it
-        { command =  "${config.resources.paths.scripts}/theme.sh ${config.resources.paths.wallpaper.folder} ${config.resources.paths.wallpaper.current}"; always = true; notification = false; }
-        { command = "${config.resources.paths.scripts}/xidlehook.sh"; always = false; notification = false; }
+        {
+          command =
+            "spotify --force-device-scale-factor=${config.resources.screen.scaleFactor}";
+          always = false;
+          notification = false;
+        }
+        {
+          command =
+            "${config.resources.paths.scripts}/theme.sh ${config.resources.paths.wallpaper.folder} ${config.resources.paths.wallpaper.current}";
+          always = true;
+          notification = false;
+        }
+        {
+          command = "${config.resources.paths.scripts}/xidlehook.sh";
+          always = false;
+          notification = false;
+        }
         # No screen saver
-        { command = "xset s off"; always = false; notification = false; }
+        {
+          command = "xset s off";
+          always = false;
+          notification = false;
+        }
         # Remove all urgencies on startup
-        { command = "sleep ${wait-for-urgency}; for win in $(wmctrl -l | awk -F' ' '{print $1}'); do wmctrl -i -r $win -b remove,demands_attention; done"; always = false; notification = false; }
+        {
+          command =
+            "sleep ${wait-for-urgency}; for win in $(wmctrl -l | awk -F' ' '{print $1}'); do wmctrl -i -r $win -b remove,demands_attention; done";
+          always = false;
+          notification = false;
+        }
         # Polybar
-        { command = "${config.resources.paths.scripts}/polybar.sh"; always = true; notification = false; }
+        {
+          command = "${config.resources.paths.scripts}/polybar.sh";
+          always = true;
+          notification = false;
+        }
         # Spotify in Polybar
-        { command = "/usr/bin/env python3 ${config.resources.paths.publicConfig}/vendor/polybar-spotify-controls/scripts/spotify/py_spotify_listener.py"; always = false; notification = false; }
+        {
+          command =
+            "/usr/bin/env python3 ${config.resources.paths.publicConfig}/vendor/polybar-spotify-controls/scripts/spotify/py_spotify_listener.py";
+          always = false;
+          notification = false;
+        }
         # Xbanish to hide mouse if unused
-        { command = "xbanish"; always = false; notification = false; }
+        {
+          command = "xbanish";
+          always = false;
+          notification = false;
+        }
         # Dunst
-        { command = "${config.resources.paths.scripts}/dunst.sh"; always = true; notification = false; }
+        {
+          command = "${config.resources.paths.scripts}/dunst.sh";
+          always = true;
+          notification = false;
+        }
       ];
     };
     windowManager.i3.extraConfig = ''

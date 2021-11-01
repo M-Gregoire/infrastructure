@@ -90,7 +90,7 @@
         timeout = 5
 
     [urgency_critical]
-        background = colors.background
+        background = "{color1}"
         foreground = colors.foreground
         frame_color = "{color9}"
         timeout = 0
