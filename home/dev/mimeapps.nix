@@ -1,10 +1,11 @@
 { pkgs, ... }:
 
 {
-  home.packages = with pkgs;[
-    # Common file association (`mimeapps.list`)
-    shared-mime-info
-  ];
+  home.packages = with pkgs;
+    [
+      # Common file association (`mimeapps.list`)
+      shared-mime-info
+    ];
 
   xdg.configFile."mimeapps.list".force = true;
   xdg.mimeApps = {
@@ -29,7 +30,8 @@
 
       # Documents
       "application/vnd.oasis.opendocument.text" = [ "writer.desktop" ];
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document" = [ "writer.desktop" ];
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document" =
+        [ "writer.desktop" ];
 
       # Web
       "text/html" = [ "firefox.desktop" ];

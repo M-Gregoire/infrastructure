@@ -7,7 +7,8 @@
     zip
     unzip
     # Auto mount
-    udisks udiskie
+    udisks
+    udiskie
     # mtp mount
     jmtpfs
     # Terminal apps
@@ -37,9 +38,12 @@
     procps
   ];
 
-  xdg.configFile."khal/config".source = builtins.toPath "${config.resources.paths.privateDotfiles}/khal/config";
-  xdg.configFile."vdirsyncer/config".source = builtins.toPath "${config.resources.paths.privateDotfiles}/vdirsyncer/config";
+  xdg.configFile."khal/config".source =
+    builtins.toPath "${config.resources.paths.privateDotfiles}/khal/config";
+  xdg.configFile."vdirsyncer/config".source = builtins.toPath
+    "${config.resources.paths.privateDotfiles}/vdirsyncer/config";
   # https://unix.stackexchange.com/a/562158
   # If encountering other sound issues, try deleting ~/.config/pulse
-  home.file.".alsoftrc".source = builtins.toPath "${config.resources.paths.publicDotfiles}/.alsoftrc";
+  home.file.".alsoftrc".source =
+    builtins.toPath "${config.resources.paths.publicDotfiles}/.alsoftrc";
 }
