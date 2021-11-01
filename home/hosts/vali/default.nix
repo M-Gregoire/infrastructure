@@ -1,14 +1,13 @@
 { pkgs, ... }:
 
 {
-  imports = [
-    ./i3-polybar.nix
-  ];
+  imports = [ ./i3-polybar.nix ./battery.nix ];
 
-  home.packages = with pkgs; [
-    # Backlight control
-    xorg.xbacklight
-  ];
+  home.packages = with pkgs;
+    [
+      # Backlight control
+      xorg.xbacklight
+    ];
 
   xsession.windowManager.i3.config.keybindings = {
     "XF86MonBrightnessUp" = "exec xbacklight -inc 5";
