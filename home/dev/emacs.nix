@@ -3,10 +3,20 @@
 let
 
   emacsDesktopItem = pkgs.makeDesktopItem {
-    name = "EmacsClient";
+    name = "emacs-client";
     desktopName = "Emacs client";
-    exec = "${pkgs.emacs}/bin/emacsclient -c %F";
+    exec = "${pkgs.emacs}/bin/emacsclient -s /run/user/1000/emacs/main -c %F";
     terminal = "false";
+    icon = "emacs";
+    comment = "Edit text";
+    genericName = "Text editor";
+    categories = "Development;TextEditor;";
+    mimeType =
+      "text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;";
+    extraEntries = ''
+      Keywords=Text;Editor;
+      StartupWMClass=Emacs;
+    '';
   };
 
 in {

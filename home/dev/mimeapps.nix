@@ -16,17 +16,18 @@
       "image/vnd.djvu" = [ "org.gnome.Evince.desktop" ];
 
       # Text
-      "application/x-shellscript" = [ "emacs-client.desktop" ];
-      "text/x-java" = [ "emacs-client.desktop" ];
-      "inode/x-empty" = [ "emacs-client.desktop" ];
-      "text/x-tex" = [ "emacs-client.desktop" ];
-      "text/x-ruby" = [ "emacs-client.desktop" ];
-      "text/x-python" = [ "emacs-client.desktop" ];
-      "text/x-readme" = [ "emacs-client.desktop" ];
-      "application/x-ruby" = [ "emacs-client.desktop" ];
-      "text/rhtml" = [ "emacs-client.desktop" ];
-      "text/plain" = [ "emacs-client.desktop" ];
-      "text/x-markdown" = [ "emacs-client.desktop" ];
+      "application/x-shellscript" =
+        [ "emacs-client.desktop" "leafpad.desktop" ];
+      "text/x-java" = [ "emacs-client.desktop" "leafpad.desktop" ];
+      "inode/x-empty" = [ "emacs-client.desktop" "leafpad.desktop" ];
+      "text/x-tex" = [ "emacs-client.desktop" "leafpad.desktop" ];
+      "text/x-ruby" = [ "emacs-client.desktop" "leafpad.desktop" ];
+      "text/x-python" = [ "emacs-client.desktop" "leafpad.desktop" ];
+      "text/x-readme" = [ "emacs-client.desktop" "leafpad.desktop" ];
+      "application/x-ruby" = [ "emacs-client.desktop" "leafpad.desktop" ];
+      "text/rhtml" = [ "emacs-client.desktop" "leafpad.desktop" ];
+      "text/plain" = [ "emacs-client.desktop" "leafpad.desktop" ];
+      "text/x-markdown" = [ "emacs-client.desktop" "leafpad.desktop" ];
 
       # Documents
       "application/vnd.oasis.opendocument.text" = [ "writer.desktop" ];
@@ -47,10 +48,10 @@
       "application/x-extension-xht" = [ "firefox.desktop" ];
 
       # Image
-      "image/png" = [ "nomacs.desktop" ];
-      "image/jpeg" = [ "nomacs.desktop" ];
+      "image/png" = [ "org.nomacs.ImageLounge.desktop" ];
+      "image/jpeg" = [ "org.nomacs.ImageLounge.desktop" ];
       # bmp
-      "application/octet-stream" = [ "nomacs.desktop" ];
+      "application/octet-stream" = [ "org.nomacs.ImageLounge.desktop" ];
 
       # Video
       "video/ogg" = [ "mpv.desktop" ];
