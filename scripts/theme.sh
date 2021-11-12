@@ -58,7 +58,7 @@ pkill pywalfox
 pywalfox start&
 #pywalfox update
 
-if ! pgrep firefox > /dev/null
+if ! ps -aux | grep "[.]firefox">/dev/null
 then
   firefox&
 fi
