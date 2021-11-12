@@ -124,7 +124,7 @@
 (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
 
 ;; Projectile
-(setq projectile-project-search-path '("~/src"))
+(setq projectile-project-search-path '("~/src" "~/org"))
 (setq projectile-globally-ignored-directories '("node_modules"))
 
 ;; Word-wrap
