@@ -37,7 +37,8 @@
       diff = { tool = "ediff"; };
       color = { ui = true; };
       branch = { autosetupmerge = "always"; };
-      push = { default = "upstream"; };
+      # https://stackoverflow.com/a/21866819/4187028
+      push = { default = "current"; };
       credential = { helper = "cache --timeout=3600"; };
     };
   };
