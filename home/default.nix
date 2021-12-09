@@ -11,14 +11,14 @@
         for d in bin scripts themes launchers config.rasi; do
           # If link broken, delete
           if [ ! -e "$d" ] ; then
-            rm $d
+            rm -f $d
           fi
           if [[ ! -L "$d" ]]; then
              ln -s ${config.resources.paths.publicConfig}/vendor/rofi/$d $d
           fi
         done
         if [ ! -e "$d" ] ; then
-           rm $d
+           rm -f $d
         fi
         if [[ ! -L "pywal.rasi" ]]; then
             ln -s ${config.resources.paths.home}/.cache/wal/colors-rofi-dark.rasi pywal.rasi
@@ -31,7 +31,7 @@
         cd ${config.resources.paths.home}/.config/polybar
         for d in pulseaudio-control.bash; do
           if [ ! -e "$d" ] ; then
-            rm $d
+            rm -f $d
           fi
           if [[ ! -L "$d" ]]; then
             ln -s ${config.resources.paths.publicConfig}/vendor/polybar-pulseaudio-control/$d $d
