@@ -14,7 +14,7 @@ nixops create cloud.nix eldir.nix -d cloud
 nixops create pcs.nix vali.nix mimir.nix -d pcs
 nixops create servers.nix eldir.nix fenrirDocker.nix -d servers
 
-#nixops deploy -d home
-#nixops deploy -d cloud
-#nixops deploy -d pcs
-#nixops deploy -d servers
+nixops deploy -d home --create-only
+nixops deploy -d cloud --create-only
+nixops deploy -d pcs --create-only
+nixops deploy -d servers --create-only
