@@ -30,7 +30,7 @@ sudo ln -s ${PWD}/nixos/hosts/<Host>/hardware-configuration.nix /etc/nixos
 When first building, specify config using:
 
 ```sh
-sudo nixos-rebuild -I nixos-config=${PWD}/nixos/hosts/<Host>/configuration.nix -I nixpkgs=${PWD}/vendor/nixpkgs-release switch
+sudo nixos-rebuild -I nixos-config=${PWD}/nixos/hosts/<Host>/configuration.nix -I nixpkgs=${HOME}/.nix-defexpr/channels/nixos/nixpkgs switch
 ```
 
 # Upgrade

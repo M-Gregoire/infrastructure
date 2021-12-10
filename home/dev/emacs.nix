@@ -47,7 +47,8 @@ in {
     ccls
     gcc # go-vet
     ## Python
-    python37Packages.python-language-server
+    # Broken in 21.11
+    #python37Packages.python-language-server
     ## Javascript
     nodePackages.javascript-typescript-langserver
     ## Nix
