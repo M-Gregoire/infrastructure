@@ -7,8 +7,8 @@
     zip
     unzip
     # Auto mount
-    udisks
-    udiskie
+    #udisks
+    #udiskie
     # mtp mount
     jmtpfs
     # Terminal apps
