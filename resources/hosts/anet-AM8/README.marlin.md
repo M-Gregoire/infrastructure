@@ -9,19 +9,66 @@ Configuration.h - Basics
 // MKS Gen 1.4
 #define MOTHERBOARD BOARD_MKS_GEN_13
 
+// Baudrate
+#define BAUDRATE 115200
+
+// Name
+#define CUSTOM_MACHINE_NAME "Anet A8"
+
+// Filament
+#define DEFAULT_NOMINAL_FILAMENT_DIA 1.75
+
+// Temp
+#define TEMP_SENSOR_0 5
+#define TEMP_SENSOR_BED 5
+#define BED_MAXTEMP      130
+
+// Pid
+// ANET A8 Standard Extruder at 210 Degree Celsius and 100% Fan
+//(measured after M106 S255 with M303 E0 S210 C8)
+#define DEFAULT_Kp 21.0
+#define DEFAULT_Ki 1.25
+#define DEFAULT_Kd 86.0
+
+#define PIDTEMPBED
+// ANET A8
+// original Bed + 0.3mm Heat conducting into 4mm borosilicate (PID-Autotune: M303 E-1 S60 C5):
+#define DEFAULT_bedKp 295.00
+#define DEFAULT_bedKi 35.65
+#define DEFAULT_bedKd 610.21
+
+// Pos
+#define X_MIN_ENDSTOP_INVERTING true  // Set to true to invert the logic of the endstop.
+#define Y_MIN_ENDSTOP_INVERTING true  // Set to true to invert the logic of the endstop.
+// Needed for BLTOUCH
+#define Z_MIN_ENDSTOP_INVERTING false  // Set to true to invert the logic of the endstop.
+#define Z_MIN_PROBE_ENDSTOP_INVERTING false  // Set to true to invert the logic of the probe.
+
 // TMC2130 config ("TMCStepper by teemuatlut" Library must be installed)
 #define X_DRIVER_TYPE  TMC2130
 #define Y_DRIVER_TYPE  TMC2130
 #define Z_DRIVER_TYPE  TMC2130
 #define E0_DRIVER_TYPE TMC2130
-//#define ENDSTOP_INTERRUPTS_FEATURE
+
+// Octoprint
+#define HOST_ACTION_COMMANDS
+
+// Anet Config
+#define DEFAULT_MAX_FEEDRATE          { 400, 400, 8, 50 }
+#define DEFAULT_MAX_ACCELERATION      { 2000, 2000, 100, 10000 }
+#define DEFAULT_ACCELERATION          400     // X, Y, Z and E acceleration for printing moves
+#define DEFAULT_RETRACT_ACCELERATION  1000    // E acceleration for retracts
+#define DEFAULT_TRAVEL_ACCELERATION   1000    // X, Y, Z acceleration for travel (non printing) moves
+
 
 #define INVERT_X_DIR true
 #define INVERT_Y_DIR true
 #define INVERT_Z_DIR false
 
-#define X_MIN_POS -10
-#define Y_MIN_POS -5
+#define X_BED_SIZE 220
+#define Y_BED_SIZE 220
+#define X_MIN_POS 0
+#define Y_MIN_POS 0
 #define Z_MIN_POS 0
 #define X_MAX_POS X_BED_SIZE
 #define Y_MAX_POS Y_BED_SIZE
@@ -32,15 +79,19 @@ Configuration.h - Basics
 #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 400, 429 }
 // Correct extrusion direction
 #define INVERT_E0_DIR true
+
+// Persistent EEPROM
+#define EEPROM_SETTINGS       // Persistent storage with M500 and M501
+
 ```
 
 Configuration.h - BLTouch
 ```
 #define BLTOUCH
-#define NUM_SERVOS 1 // Servo index starts with 0 for M280 command
+//#define NUM_SERVOS 1 // Servo index starts with 0 for M280 command
 #define Z_SAFE_HOMING
-#define NOZZLE_TO_PROBE_OFFSET { 50, -10, 0 }
-#define MIN_PROBE_EDGE 20
+// Z Offset manually configured
+#define NOZZLE_TO_PROBE_OFFSET { 40, 0, 0 }
 #define AUTO_BED_LEVELING_BILINEAR
 
 ```
