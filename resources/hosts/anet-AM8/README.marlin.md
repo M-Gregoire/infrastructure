@@ -33,6 +33,19 @@ Configuration.h - Basics
 // Persistent EEPROM
 #define EEPROM_SETTINGS       // Persistent storage with M500 and M501
 
+// #error "TMCStepper includes SoftwareSerial.h which is incompatible with ENDSTOP_INTERRUPTS_FEATURE. Disable ENDSTOP_INTERRUPTS_FEATURE to continue."
+//#define ENDSTOP_INTERRUPTS_FEATURE
+
+// Disable screen
+//#define ZONESTAR_LCD
+
+// I modified the endstops, set offset accordingly:
+#define X_MIN_POS 0
+#define Y_MIN_POS 4
+#define Z_MIN_POS 0
+#define X_MAX_POS X_BED_SIZE
+#define Y_MAX_POS Y_BED_SIZE
+#define Z_MAX_POS 240
 ```
 
 Configuration.h - BLTouch
