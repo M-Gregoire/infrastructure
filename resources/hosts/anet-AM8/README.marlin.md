@@ -84,15 +84,18 @@ Configuration_adv.h
 // Octoprint
 #define HOST_ACTION_COMMANDS
 
- #define X_CS_PIN          63
- #define Y_CS_PIN          40
- #define Z_CS_PIN          42
- #define E0_CS_PIN         65
+// TMC2130
+#define MONITOR_DRIVER_STATUS
 
- #define TMC_USE_SW_SPI
- #define TMC_SW_MOSI       51
- #define TMC_SW_MISO       50
- #define TMC_SW_SCK        52
+#define X_CS_PIN          63
+#define Y_CS_PIN          40
+#define Z_CS_PIN          42
+#define E0_CS_PIN         65
+
+#define TMC_USE_SW_SPI
+#define TMC_SW_MOSI       51
+#define TMC_SW_MISO       50
+#define TMC_SW_SCK        52
 
 // Use HE01 for E0 fan
 #define E0_AUTO_FAN_PIN 7
