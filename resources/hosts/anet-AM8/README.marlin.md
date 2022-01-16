@@ -40,7 +40,7 @@ Configuration.h - Basics
 //#define ZONESTAR_LCD
 
 // I modified the endstops, set offset accordingly:
-#define X_MIN_POS 0
+#define X_MIN_POS -1
 #define Y_MIN_POS -4
 #define Z_MIN_POS 0
 #define X_MAX_POS X_BED_SIZE
