@@ -1,7 +1,8 @@
 # Marlin configuration
 
-For easier update, I use a local Marlin repo I rebase on the remote one.
-I start from the default configuration for Anet A8 and make the following changes:
+Starting from https://github.com/MarlinFirmware/Configurations/tree/import-2.0.x/config/examples/Anet/A8
+
+I apply the following changes:
 
 Configuration.h - Basics
 ```
@@ -9,38 +10,50 @@ Configuration.h - Basics
 // MKS Gen 1.4
 #define MOTHERBOARD BOARD_MKS_GEN_13
 
+// Needed for BLTOUCH
+#define Z_MIN_ENDSTOP_INVERTING false  // Set to true to invert the logic of the endstop.
+#define Z_MIN_PROBE_ENDSTOP_INVERTING false  // Set to true to invert the logic of the probe.
+
 // TMC2130 config ("TMCStepper by teemuatlut" Library must be installed)
 #define X_DRIVER_TYPE  TMC2130
 #define Y_DRIVER_TYPE  TMC2130
 #define Z_DRIVER_TYPE  TMC2130
 #define E0_DRIVER_TYPE TMC2130
-//#define ENDSTOP_INTERRUPTS_FEATURE
 
 #define INVERT_X_DIR true
 #define INVERT_Y_DIR true
 #define INVERT_Z_DIR false
-
-#define X_MIN_POS -10
-#define Y_MIN_POS -5
-#define Z_MIN_POS 0
-#define X_MAX_POS X_BED_SIZE
-#define Y_MAX_POS Y_BED_SIZE
-#define Z_MAX_POS 240
 
 // Titan Extruder config
 // Set extruder rate for pancake motor (42BYGH22 (1.8 degree))
 #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 400, 429 }
 // Correct extrusion direction
 #define INVERT_E0_DIR true
+
+// Persistent EEPROM
+#define EEPROM_SETTINGS       // Persistent storage with M500 and M501
+
+// #error "TMCStepper includes SoftwareSerial.h which is incompatible with ENDSTOP_INTERRUPTS_FEATURE. Disable ENDSTOP_INTERRUPTS_FEATURE to continue."
+//#define ENDSTOP_INTERRUPTS_FEATURE
+
+// Disable screen
+//#define ZONESTAR_LCD
+
+// I modified the endstops, set offset accordingly:
+#define X_MIN_POS -1
+#define Y_MIN_POS -4
+#define Z_MIN_POS 0
+#define X_MAX_POS X_BED_SIZE
+#define Y_MAX_POS Y_BED_SIZE + Y_MIN_POS
+#define Z_MAX_POS 240
 ```
 
 Configuration.h - BLTouch
 ```
 #define BLTOUCH
-#define NUM_SERVOS 1 // Servo index starts with 0 for M280 command
 #define Z_SAFE_HOMING
-#define NOZZLE_TO_PROBE_OFFSET { 50, -10, 0 }
-#define MIN_PROBE_EDGE 20
+// Z Offset manually configured
+#define NOZZLE_TO_PROBE_OFFSET { 40, 0, 0 }
 #define AUTO_BED_LEVELING_BILINEAR
 
 ```
@@ -68,10 +81,21 @@ Configuration.h - PID
 
 Configuration_adv.h
 ```
-#define X_CS_PIN          2
-#define Y_CS_PIN          1
-#define Z_CS_PIN          57
-#define E0_CS_PIN         58
+// Octoprint
+#define HOST_ACTION_COMMANDS
+
+// TMC2130
+#define MONITOR_DRIVER_STATUS
+
+#define X_CS_PIN          63
+#define Y_CS_PIN          40
+#define Z_CS_PIN          42
+#define E0_CS_PIN         65
+
+#define TMC_USE_SW_SPI
+#define TMC_SW_MOSI       51
+#define TMC_SW_MISO       50
+#define TMC_SW_SCK        52
 
 // Use HE01 for E0 fan
 #define E0_AUTO_FAN_PIN 7
