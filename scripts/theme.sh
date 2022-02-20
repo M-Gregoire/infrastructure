@@ -22,7 +22,7 @@ then
 fi
 
 # Generate schemes for all wallpaper
-wpg -a $1/*
+wpg -a $1/* > /dev/null
 
 # If no second argument, take a random wallapper
   if [ -z "$2" ]; then
