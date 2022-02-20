@@ -1,16 +1,12 @@
 { config, pkgs, ... }:
 
 {
-  imports = [
-    ../../dev/printing.nix
-  ];
+  imports = [ ../../dev/printing.nix ../../dev/yubikey.nix ];
 
   services.xserver = {
     enable = true;
     displayManager = {
-      lightdm = {
-        enable = true;
-      };
+      lightdm = { enable = true; };
       autoLogin = {
         enable = true;
         user = config.resources.username;
@@ -47,8 +43,6 @@
   systemd.timers.tasks = {
     description = "Sync tasks every 5 minutes";
     wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnUnitInactiveSec = "5m";
-    };
+    timerConfig = { OnUnitInactiveSec = "5m"; };
   };
 }
