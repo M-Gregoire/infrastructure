@@ -43,7 +43,7 @@ Configuration.h - Basics
 #define X_MIN_POS -1
 #define Y_MIN_POS -4
 #define Z_MIN_POS 0
-#define X_MAX_POS X_BED_SIZE
+#define X_MAX_POS X_BED_SIZE + X_MIN_POS
 #define Y_MAX_POS Y_BED_SIZE + Y_MIN_POS
 #define Z_MAX_POS 240
 ```
@@ -53,7 +53,8 @@ Configuration.h - BLTouch
 #define BLTOUCH
 #define Z_SAFE_HOMING
 // Z Offset manually configured
-#define NOZZLE_TO_PROBE_OFFSET { 40, 0, 0 }
+#define NOZZLE_TO_PROBE_OFFSET { 40, 7.5, 0 }
+#define PROBING_MARGIN 20
 #define AUTO_BED_LEVELING_BILINEAR
 
 ```
