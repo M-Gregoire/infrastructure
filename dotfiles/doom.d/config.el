@@ -131,3 +131,10 @@
 (global-visual-line-mode t)
 ; Make horizontal movement cross lines
 (setq-default evil-cross-lines t)
+
+;; Fonts
+(setq doom-font (font-spec :size 18)
+      ;doom-variable-pitch-font (font-spec :family "Fira Sans") ; inherits `doom-font''s :size
+      doom-unicode-font (font-spec :size 18)
+      doom-big-font (font-spec :size 25)
+)
