@@ -15,7 +15,8 @@
       };
       privateConfig = mkOption {
         type = types.str;
-        example = "/home/me/src/me/infrastracture/vendor/infrastructure-private";
+        example =
+          "/home/me/src/me/infrastracture/vendor/infrastructure-private";
         description = "Private config path";
       };
       scripts = mkOption {
@@ -220,6 +221,18 @@
           description = "Specifies on which port the SSH daemon listens.";
         };
       };
+      kvasir = {
+        hostname = mkOption {
+          type = types.str;
+          example = "kvasir";
+          description = "Hostname of the host";
+        };
+        ssh.port = mkOption {
+          type = types.port;
+          example = [ "22" ];
+          description = "Specifies on which port the SSH daemon listens.";
+        };
+      };
       fenrirDocker = {
         hostname = mkOption {
           type = types.str;
@@ -297,17 +310,17 @@
             type = types.int;
             default = 5500;
             description = ''
-          Colour temperature to use during the day, between
-          <literal>1000</literal> and <literal>25000</literal> K.
-        '';
+              Colour temperature to use during the day, between
+              <literal>1000</literal> and <literal>25000</literal> K.
+            '';
           };
           night = mkOption {
             type = types.int;
             default = 3700;
             description = ''
-          Colour temperature to use at night, between
-          <literal>1000</literal> and <literal>25000</literal> K.
-        '';
+              Colour temperature to use at night, between
+              <literal>1000</literal> and <literal>25000</literal> K.
+            '';
           };
         };
       };
@@ -341,7 +354,9 @@
       ssh = {
         publicKeys = mkOption {
           type = with types; listOf str;
-          example = [ "ssh-ed25519 AAAABBBBCCCCDDDDEEEEFFFFGGGGHHHHIIIIJJJJKKKKLLLLMMMMNNNNOOOOPPPPQQQQ" ];
+          example = [
+            "ssh-ed25519 AAAABBBBCCCCDDDDEEEEFFFFGGGGHHHHIIIIJJJJKKKKLLLLMMMMNNNNOOOOPPPPQQQQ"
+          ];
           description = "Public SSH keys to allow access to";
         };
       };
@@ -373,15 +388,18 @@
     networking = {
       DNS = mkOption {
         type = types.listOf types.str;
-        description = "The list of nameservers. It can be left empty if it is auto-detected.";
+        description =
+          "The list of nameservers. It can be left empty if it is auto-detected.";
       };
       fallbackDNS = mkOption {
         type = types.listOf types.str;
-        description = "The list of fallback nameservers. It can be left empty if it is auto-detected.";
+        description =
+          "The list of fallback nameservers. It can be left empty if it is auto-detected.";
       };
       searchDomains = mkOption {
         type = types.listOf types.str;
-        description = "list of domains. These domains are used as search suffixes when resolving single-label host names (domain names which contain no dot), in order to qualify them into fully-qualified domain names (FQDNs).";
+        description =
+          "list of domains. These domains are used as search suffixes when resolving single-label host names (domain names which contain no dot), in order to qualify them into fully-qualified domain names (FQDNs).";
       };
 
       wifi.workSSID = mkOption {

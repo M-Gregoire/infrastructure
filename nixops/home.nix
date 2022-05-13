@@ -19,6 +19,15 @@
         ];
     };
 
+  kvasir =
+    { config, pkgs, ... }:
+    {
+      imports =
+        [
+          ../nixos/hosts/kvasir/configuration.nix
+        ];
+    };
+
   vali =
     { config, pkgs, ... }:
     {

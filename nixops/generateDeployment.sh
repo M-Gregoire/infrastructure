@@ -9,10 +9,10 @@ nixops delete -d cloud 2> /dev/null
 nixops delete -d pcs 2> /dev/null
 nixops delete -d servers 2> /dev/null
 
-nixops create home.nix vali.nix mimir.nix fenrirDocker.nix -d home
+nixops create home.nix vali.nix mimir.nix fenrirDocker.nix kvasir.nix -d home
 nixops create cloud.nix eldir.nix -d cloud
 nixops create pcs.nix vali.nix mimir.nix -d pcs
-nixops create servers.nix eldir.nix fenrirDocker.nix -d servers
+nixops create servers.nix eldir.nix fenrirDocker.nix kvasir.nix -d servers
 
 nixops deploy -d home --create-only
 nixops deploy -d cloud --create-only

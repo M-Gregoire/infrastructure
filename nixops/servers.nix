@@ -10,6 +10,15 @@
         ];
     };
 
+  kvasir =
+    { config, pkgs, ... }:
+    {
+      imports =
+        [
+          ../nixos/hosts/kvasir/configuration.nix
+        ];
+    };
+
   fenrirDocker =
     { config, pkgs, ... }:
     {
