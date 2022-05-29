@@ -130,7 +130,7 @@ in {
           "exec i3-nagbar -t warning -m 'Do you want to exit i3?' -b 'Yes' 'i3-msg exit'";
         "${modifier}+Shift+a" = "kill";
         "${modifier}+d" =
-          "exec rofi -no-lazy-grab -show drun -modi drun -theme /home/${config.resources.username}/.config/rofi/launchers/ribbon/ribbon_left_round.rasi";
+          "exec color='nordic' theme='ribbon_left_round' /home/${config.resources.username}/.config/rofi/launchers/ribbon/launcher.sh";
         "${modifier}+Shift+s" =
           "exec theme='row_rounded' color='nordic' shutdown='襤' reboot='ﰇ' lock='' suspend='⏾' logout='' /home/${config.resources.username}/.config/rofi/powermenu/powermenu.sh";
         "${modifier}+Shift+x" = "exec i3lock-fancy";
