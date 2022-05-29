@@ -129,10 +129,10 @@ in {
         "${modifier}+Shift+e" =
           "exec i3-nagbar -t warning -m 'Do you want to exit i3?' -b 'Yes' 'i3-msg exit'";
         "${modifier}+Shift+a" = "kill";
-        "${modifier}+d" =
-          "exec rofi -no-lazy-grab -show drun -modi drun -theme /home/${config.resources.username}/.config/rofi/launchers/ribbon/ribbon_left_round.rasi";
+        "${modifier}+d" = 
+          "exec rofi -no-lazy-grab -show drun -modi drun -theme /home/${config.resources.username}/.config/rofi/launchers/ribbon/ribbon_left_round.rasi"
         "${modifier}+Shift+s" =
-          "exec theme='row_rounded' color='nordic' shutdown='襤' reboot='ﰇ' lock='' suspend='⏾' logout='' /home/${config.resources.username}/.config/rofi/powermenu/powermenu.sh";
+          "exec styles= color= themes= theme= shutdown= reboot= lock= suspend= logout= /home/${config.resources.username}/.config/rofi/scripts/menu_powermenu.sh";
         "${modifier}+Shift+x" = "exec i3lock-fancy";
         # Basic movements/focus
         "${modifier}+j" = "focus left";

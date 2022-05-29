@@ -3,7 +3,7 @@
 	url = git@gitlab.martinache.net:M-Gregoire/infrastructure-private.git
 [submodule "vendor/rofi"]
 	path = vendor/rofi
-	url = git@github.com:M-Gregoire/rofi.git
+	url = https://github.com/adi1090x/rofi.git
 [submodule "vendor/grub2-themes"]
 	path = vendor/grub2-themes
 	url = https://github.com/vinceliuice/grub2-themes.git
