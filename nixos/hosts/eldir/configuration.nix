@@ -9,6 +9,7 @@
     ../../networks/cloud
     ../../profiles/Server
     ./hardware-configuration.nix
+    ../../dev/k3s.nix
   ];
 
   system.stateVersion = "20.03";

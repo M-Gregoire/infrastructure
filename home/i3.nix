@@ -114,9 +114,8 @@ in {
       };
       assigns = {
         # Use xprop
-        "${workspace1}" = [{ class = "Firefox"; }];
-        "${workspace8}" = [{ class = "rambox"; }];
-        "${workspace9}" = [ { class = "Thunderbird"; } { class = "Daily"; } ];
+        "${workspace1}" = [{ class = "firefox"; }];
+        "${workspace9}" = [{ class = "Thunderbird"; }];
       };
 
       keybindings = {
