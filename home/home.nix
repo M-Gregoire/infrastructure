@@ -4,6 +4,7 @@
   imports = [
     ../modules
     ./apps.nix
+    ./cursor.nix
     ./dev.nix
     ./environment.nix
     ./gui.nix

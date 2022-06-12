@@ -4,10 +4,9 @@
   imports = [ ./theme/dunst.nix ];
 
   home.packages = with pkgs; [
-    # Themes, icons and cursors
+    # Themes, icons
     arc-icon-theme
     hicolor-icon-theme
-    capitaine-cursors
     # Needed for rofi
     comfortaa
     papirus-icon-theme
