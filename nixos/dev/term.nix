@@ -15,7 +15,7 @@
     direnv
   ];
 
-  environment.variables."FZF_BASE" = "$(fzf-share)";
+  environment.variables."FZF_BASE" = "${pkgs.fzf}/share/fzf";
 
   programs = {
     # Needed for LightDM to remember the user
