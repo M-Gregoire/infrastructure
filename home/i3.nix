@@ -280,7 +280,7 @@ in {
         }
         {
           command =
-            "${config.resources.paths.scripts}/theme.sh ${config.resources.paths.wallpaper.folder} ${config.resources.paths.wallpaper.current}";
+            "${config.resources.paths.scripts}/theme.sh ${config.resources.paths.wallpaper.folder} ${config.resources.paths.wallpaper.current} > /tmp/theme.sh.log 2>&1";
           always = true;
           notification = false;
         }
@@ -319,12 +319,6 @@ in {
         {
           command = "xbanish";
           always = false;
-          notification = false;
-        }
-        # Dunst
-        {
-          command = "${config.resources.paths.scripts}/dunst.sh";
-          always = true;
           notification = false;
         }
       ];

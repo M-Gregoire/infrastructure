@@ -5,7 +5,22 @@
 # 2 -> Specific wallpaper file to use in wallpaper folder
 # 3 -> Preset theme
 # 4 -> If not null, use light theme
-#
+
+reload_dunst() {
+  . "${HOME}/.cache/wal/colors.sh"
+  pkill dunst
+
+  dunst \
+    -frame_width 0 \
+    -lb "${color0}" \
+    -nb "${color0}" \
+    -cb "${color0}" \
+    -lf "${color7}" \
+    -bf "${color7}" \
+    -cf "${color7}" \
+    -nf "${color7}" &
+}
+
 # Setup pywall for Firefox if not already
 if [ ! -f ~/.mozilla/native-messaging-hosts/pywalfox.json ]; then
   pywalfox install
@@ -45,13 +60,11 @@ if [ ! -z "$3" ]; then
 fi
 
 # Update Emacs
-kill -USR1 $(pgrep emacs)
+# TODO: Check this
+# kill -USR1 $(pgrep emacs)
 
 # Restart dunst
-pkill dunst > /dev/null 2>&1
-# Dunst starts automatically
-# https://github.com/dunst-project/dunst/issues/63#issuecomment-586764246
-#dunst& > /dev/null
+reload_dunst
 
 # Start pywalfox daemon
 pkill pywalfox
@@ -62,12 +75,16 @@ pywalfox start&
 while ! systemctl is-active --quiet network-online.target; do sleep 3; done;
 
 # pgrep might be missing, prefer ps
+# Need [.] to not return ps process as result
+# https://stackoverflow.com/a/8965530
 if ! ps -aux | grep "[.]firefox">/dev/null
 then
+  echo "[+] Firefox not running. Starting..."
   firefox&
 fi
 
-if ! ps -aux | grep "thunderbird" > /dev/null
+if ! ps -aux | grep "[.]thunderbird" > /dev/null
 then
+  echo "[+] Thunderbird not running. Starting..."
   thunderbird&
 fi
