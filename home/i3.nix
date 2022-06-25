@@ -274,7 +274,7 @@ in {
         #{ command = "${config.resources.pcs.mailer}"; always = false; notification = false; }
         {
           command =
-            "spotify --force-device-scale-factor=${config.resources.screen.scaleFactor}";
+            "while ! systemctl is-active --quiet network-online.target; do sleep 3; done; spotify --force-device-scale-factor=${config.resources.screen.scaleFactor}";
           always = false;
           notification = false;
         }
@@ -311,7 +311,7 @@ in {
         # Spotify in Polybar
         {
           command =
-            "/usr/bin/env python3 ${config.resources.paths.publicConfig}/vendor/polybar-spotify-controls/scripts/spotify/py_spotify_listener.py";
+            "while ! ps -aux | grep 'spotify'; do sleep 3; done; /usr/bin/env python3 ${config.resources.paths.publicConfig}/vendor/polybar-spotify-controls/scripts/spotify/py_spotify_listener.py";
           always = false;
           notification = false;
         }
