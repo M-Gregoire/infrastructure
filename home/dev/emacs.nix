@@ -63,12 +63,6 @@ in {
 
   home.file.".emacs.d/.local/etc/bookmarks".source =
     builtins.toPath "${config.resources.paths.privateDotfiles}/emacs/bookmarks";
-  home.file.".doom.d/init.el".source =
-    builtins.toPath "${config.resources.paths.publicDotfiles}/doom.d/init.el";
-  home.file.".doom.d/config.el".source =
-    builtins.toPath "${config.resources.paths.publicDotfiles}/doom.d/config.el";
-  home.file.".doom.d/packages.el".source = builtins.toPath
-    "${config.resources.paths.publicDotfiles}/doom.d/packages.el";
 
   systemd.user.services.emacs = {
     Unit = {
