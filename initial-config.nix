@@ -1,10 +1,9 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [ # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # LUKS
   #boot.initrd.luks.devices = {
@@ -41,16 +40,10 @@
     # wpa_passphrase $SSID $PASSPHRASE > /etc/wpa_supplicant.conf
     wireless.enable = true;
     # This is used to be able to deploy locally with nixops from temporary system.
-    hosts = {
-      "127.0.0.1" = [ "Bur" "Mimir" ];
-    };
+    hosts = { "127.0.0.1" = [ "Bur" "Mimir" ]; };
   };
 
-  i18n = {
-    consoleFont = "Lat2-Terminus16";
-    consoleKeyMap = "us";
-    defaultLocale = "en_US.UTF-8";
-  };
+  i18n.defaultLocale = "en_US.UTF-8";
 
   time.timeZone = "Europe/Paris";
 

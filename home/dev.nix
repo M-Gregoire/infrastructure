@@ -1,4 +1,4 @@
-{ pkgs, config, substituteAll,... }:
+{ pkgs, config, substituteAll, ... }:
 
 {
   imports = [
@@ -8,6 +8,7 @@
     ./dev/encryption.nix
     ./dev/git.nix
     ./dev/gpg.nix
+    ./dev/keyboard.nix
     ./dev/mimeapps.nix
     ./dev/network.nix
     ./dev/nix.nix
@@ -15,5 +16,6 @@
     ./dev/ssh.nix
   ];
 
-  home.file.".editorconfig".source = builtins.toPath "${config.resources.paths.publicDotfiles}/root.editorconfig";
+  home.file.".editorconfig".source = builtins.toPath
+    "${config.resources.paths.publicDotfiles}/root.editorconfig";
 }

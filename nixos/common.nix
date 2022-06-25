@@ -47,14 +47,24 @@
 
   networking.hostName = config.resources.hostname;
 
-  networking.firewall.allowedTCPPorts = config.resources.networking.firewall.openTCPPorts;
-  networking.firewall.allowedUDPPorts = config.resources.networking.firewall.openUDPPorts;
-  networking.firewall.allowedTCPPortRanges = config.resources.networking.firewall.openTCPPortsRange;
-  networking.firewall.allowedUDPPortRanges = config.resources.networking.firewall.openUDPPortsRange;
+  networking.firewall.allowedTCPPorts =
+    config.resources.networking.firewall.openTCPPorts;
+  networking.firewall.allowedUDPPorts =
+    config.resources.networking.firewall.openUDPPorts;
+  networking.firewall.allowedTCPPortRanges =
+    config.resources.networking.firewall.openTCPPortsRange;
+  networking.firewall.allowedUDPPortRanges =
+    config.resources.networking.firewall.openUDPPortsRange;
 
   networking.hosts = {
-    "127.0.0.1" = [ "${config.resources.hostname}" "${config.resources.hostname}.${config.resources.domain}" ];
-    "::1" = [ "${config.resources.hostname}" "${config.resources.hostname}.${config.resources.domain}" ];
+    "127.0.0.1" = [
+      "${config.resources.hostname}"
+      "${config.resources.hostname}.${config.resources.domain}"
+    ];
+    "::1" = [
+      "${config.resources.hostname}"
+      "${config.resources.hostname}.${config.resources.domain}"
+    ];
   };
 
   users.groups.${config.resources.username} = {
@@ -68,11 +78,7 @@
     home = "/home/${config.resources.username}";
     uid = 1000;
     group = "${config.resources.username}";
-    extraGroups = [
-      "users"
-      "wheel"
-      "docker"
-    ];
+    extraGroups = [ "users" "wheel" "docker" ];
     shell = pkgs.zsh;
     openssh.authorizedKeys.keys = config.resources.services.ssh.publicKeys;
   };
@@ -84,16 +90,17 @@
 
   i18n = {
     defaultLocale = "en_US.UTF-8";
-    extraLocaleSettings = { LC_MESSAGES = "en_US.UTF-8"; LC_TIME = "fr_FR.UTF-8"; };
+    extraLocaleSettings = {
+      LC_MESSAGES = "en_US.UTF-8";
+      LC_TIME = "fr_FR.UTF-8";
+    };
     supportedLocales = [ "all" ];
   };
 
   services.xserver = {
-    layout = "us";
-    xkbVariant = "";
-    xkbModel = "pc104";
+    layout = config.resources.keyboard.layout;
     # Compose key list available at http://duncanlock.net/blog/2013/05/03/how-to-set-your-compose-key-on-xfce-xubuntu-lxde-linux/
-    xkbOptions = "compose:ralt";
+    xkbOptions = config.resources.keyboard.xkbOptions;
   };
 
   time.timeZone = "Europe/Paris";
@@ -101,7 +108,5 @@
   security.pki.certificates = config.resources.pki.acrs;
 
   nix.autoOptimiseStore = true;
-  nix.gc = {
-    automatic = true;
-  };
+  nix.gc = { automatic = true; };
 }

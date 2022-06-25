@@ -445,6 +445,19 @@
       };
     };
 
+    keyboard = {
+      layout = mkOption {
+        type = types.str;
+        example = "us";
+        description = "Keyboard layout";
+      };
+      xkbOptions = mkOption {
+        type = types.str;
+        example = "compose:ralt";
+        description = "Keyboard layout options";
+      };
+    };
+
     console.font = {
       name = mkOption {
         type = types.str;
