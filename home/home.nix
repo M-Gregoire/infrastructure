@@ -17,6 +17,9 @@
 
   nixpkgs.config = import ../nixpkgs/config.nix;
   nixpkgs.overlays = import ../nixpkgs/overlays.nix;
+
+  # Manage XDG base directories (Set XDG_ variables)
+  xdg.enable = true;
   xdg.configFile."nixpkgs".source = ../nixpkgs;
 
   xsession.scriptPath = ".hm-xsession";

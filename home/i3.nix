@@ -74,49 +74,53 @@ in {
         size = config.resources.font.size;
       };
       # Use pywal
+      # Based on https://github.com/dylanaraps/pywal/wiki/Customization#i3
+      # + my interpretation of https://github.com/base16-project/base16/blob/main/styling.md
       colors = {
         focused = {
-          background = "$bg";
-          border = "$bg";
-          indicator = "$bg";
-          text = "$fg";
-          childBorder = "$bg";
+          background = "$color0";
+          border = "$color2";
+          indicator = "$color0";
+          text = "$color7";
+          childBorder = "$color2";
         };
         unfocused = {
-          background = "$bg";
-          border = "$bg";
-          indicator = "$bg";
-          text = "$fg";
-          childBorder = "$bg";
+          background = "$color0";
+          border = "$color0";
+          indicator = "$color0";
+          text = "$color7";
+          childBorder = "$color0";
         };
         focusedInactive = {
-          background = "$bg";
-          border = "$bg";
-          indicator = "$bg";
-          text = "$fg";
-          childBorder = "$bg";
+          background = "$color0";
+          border = "$color0";
+          indicator = "$color0";
+          text = "$color7";
+          childBorder = "$color0";
         };
         urgent = {
-          background = "$bg";
-          border = "$bg";
-          indicator = "$bg";
-          text = "$fg";
-          childBorder = "$bg";
+          background = "$color0";
+          border = "$color1";
+          indicator = "$color0";
+          text = "$color7";
+          childBorder = "$color1";
         };
         placeholder = {
-          background = "$bg";
-          border = "$bg";
-          indicator = "$bg";
-          text = "$fg";
-          childBorder = "$bg";
+          background = "$color0";
+          border = "$color0";
+          indicator = "$color0";
+          text = "$color7";
+          childBorder = "$color0";
         };
-        background = "$bg";
+        background = "$color0";
       };
       assigns = {
         # Use xprop
         "${workspace1}" = [{ class = "firefox"; }];
         "${workspace9}" = [{ class = "Thunderbird"; }];
       };
+
+      defaultWorkspace = "workspace ${workspace1}";
 
       keybindings = {
         # Basic actions
@@ -159,6 +163,9 @@ in {
         "${modifier}+Shift+space" = "floating toggle";
         "${modifier}+space" = "focus mode_toggle";
         "${modifier}+q" = "focus parent";
+        # Dunst
+        "Control+space" = "exec ${pkgs.dunst}/bin/dunstctl close";
+        "Control+shift+space" = "exec ${pkgs.dunst}/bin/dunstctl close-all";
         # Media bindings
         "XF86AudioRaiseVolume" = "exec --no-startup-id pulseaudio-ctl up";
         "XF86AudioLowerVolume" = "exec --no-startup-id pulseaudio-ctl down";
@@ -327,6 +334,33 @@ in {
       exec --no-startup-id i3-msg "workspace ${workspace2}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/kitty.json" && kitty
       exec --no-startup-id i3-msg "workspace ${workspace3}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/emacs.json" &&  while ! ${pkgs.emacs}/bin/emacsclient -s /run/user/1000/emacs/main -ca false; do sleep 2; done;
       exec --no-startup-id i3-msg "workspace ${workspace4}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/pcmanfm.json" && pcmanfm
+
+      # Get color from Xresources
+      # https://i3wm.org/docs/userguide.html#xresources
+      # Defaults to ugly red so I can immediatelyly see there is an issue
+      set_from_resource $color0 i3wm.color0 #FF0000
+      set_from_resource $color1 i3wm.color1 #FF0000
+      set_from_resource $color2 i3wm.color2 #FF0000
+      set_from_resource $color3 i3wm.color3 #FF0000
+      set_from_resource $color4 i3wm.color4 #FF0000
+      set_from_resource $color5 i3wm.color5 #FF0000
+      set_from_resource $color6 i3wm.color6 #FF0000
+      set_from_resource $color7 i3wm.color7 #FF0000
+      set_from_resource $color8 i3wm.color8 #FF0000
+      set_from_resource $color9 i3wm.color9 #FF0000
+      set_from_resource $color10 i3wm.color10 #FF0000
+      set_from_resource $color11 i3wm.color11 #FF0000
+      set_from_resource $color12 i3wm.color12 #FF0000
+      set_from_resource $color13 i3wm.color13 #FF0000
+      set_from_resource $color14 i3wm.color14 #FF0000
+      set_from_resource $color15 i3wm.color15 #FF0000
+
+      # Make sure all windows have border, to show they are focused
+      # https://gist.github.com/lirenlin/9892945
+      default_border pixel 1
+      default_floating_border pixel 1
+      # Above does not work with Kitty
+      for_window [class="^kitty$"] border pixel 1
     '';
   };
 }

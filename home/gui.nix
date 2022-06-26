@@ -62,8 +62,8 @@ in {
     kitty
   ];
 
-  xdg.configFile."kitty/kitty.conf".source =
-    builtins.toPath "${config.resources.paths.publicDotfiles}/kitty/kitty.conf";
+  xdg.configFile."kitty/kitty.conf".source = /.
+    + "${config.resources.paths.publicDotfiles}" + /kitty/kitty.conf;
   home.file.".mozilla/firefox/${config.resources.pcs.firefox.profile}/user.js".source =
-    builtins.toPath "${config.resources.paths.publicDotfiles}/firefox/user.js";
+    /. + "${config.resources.paths.publicDotfiles}" + /firefox/user.js;
 }
