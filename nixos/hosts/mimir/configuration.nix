@@ -1,22 +1,21 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [
-      ../../../resources/hosts/mimir
-      ../../../vendor/infrastructure-private/resources/hosts/mimir
-      ../../../vendor/infrastructure-private/resources/networks/home/nfs-safe.nix
-      ../../common.nix
-      ../../dev/bluetooth.nix
-      ../../dev/boot/grub-uefi.nix
-      ../../dev/boot/grub-multi.nix
-      #../../dev/virtualbox.nix
-      ../../networks/home
-      ../../profiles/PC
-      ./../../dev/luks.nix
-      ./../../dev/steam.nix
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    ../../../resources/hosts/mimir
+    ../../../vendor/infrastructure-private/resources/hosts/mimir
+    ../../../vendor/infrastructure-private/resources/networks/home/nfs-safe.nix
+    ../../common.nix
+    ../../dev/bluetooth.nix
+    ../../dev/boot/grub-uefi.nix
+    ../../dev/boot/grub-multi.nix
+    # ../../dev/virtualbox.nix
+    ../../networks/home
+    ../../profiles/PC
+    ./../../dev/luks.nix
+    ./../../dev/steam.nix
+    ./hardware-configuration.nix
+  ];
 
   services.xserver.libinput = {
     # Disable acceleration
@@ -31,7 +30,8 @@
 
   networking.wireless.enable = false;
 
-  networking.firewall.allowedTCPPorts = [ config.resources.hosts.mimir.ssh.port ];
+  networking.firewall.allowedTCPPorts =
+    [ config.resources.hosts.mimir.ssh.port ];
   services.openssh.ports = [ config.resources.hosts.mimir.ssh.port ];
 
   environment.systemPackages = with pkgs; [ numlockx glxinfo ];

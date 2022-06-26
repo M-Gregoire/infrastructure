@@ -3,7 +3,12 @@
 {
   # Printing
   services.printing.enable = true;
-  services.printing.drivers = with pkgs; [ gutenprint samsungUnifiedLinuxDriver hplip hplipWithPlugin ];
+  services.printing.drivers = with pkgs; [
+    gutenprint
+    samsung-unified-linux-driver
+    hplip
+    hplipWithPlugin
+  ];
 
   # Scanning
   hardware.sane.enable = true;
@@ -11,9 +16,6 @@
 
   environment.systemPackages = with pkgs; [ gnome3.simple-scan ];
   users.users.${config.resources.username} = {
-    extraGroups = [
-      "lp"
-      "scanner"
-    ];
+    extraGroups = [ "lp" "scanner" ];
   };
 }

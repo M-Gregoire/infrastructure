@@ -1,8 +1,6 @@
 { config, ... }:
 
 {
-  # UEFI
-  boot.loader.systemd-boot.enable = true;
   # General settings
   #boot.loader.efi.canTouchEfiVariables = false;
   boot.loader.timeout = 2;

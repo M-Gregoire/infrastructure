@@ -9,8 +9,8 @@ let
     icon = "kitty";
     comment = "Fast, feature-rich, GPU based terminal";
     genericName = "Terminal emulator";
-    categories = "System;TerminalEmulator;";
-    terminal = "false";
+    categories = [ "System" "TerminalEmulator" ];
+    terminal = false;
   };
 
 in {

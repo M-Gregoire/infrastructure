@@ -1,7 +1,8 @@
 { config, pkgs, ... }:
 
 {
-  xsession = {
+
+  home = {
     pointerCursor = {
       size = 40;
       package = pkgs.nur.repos.ambroisie.vimix-cursors;
