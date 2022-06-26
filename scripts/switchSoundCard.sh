@@ -1,49 +1,51 @@
-#!/usr/bin/env bash
-# paswitch 2011-02-02 by Ng Oon-Ee <ngoonee@gmail.com>
-# I can't remember where I found this script, can't locate the original author.
-# Please inform me if you know, so that I can give proper attribution.
-# CHANGES: Added auto-move all inputs to new default sound card.
-# WAS: Pulse Audio Sound Card Switcher v1.0 2010-01-13
-#   Switches between soundcards when run. All streams are moved to the new default sound-card.
+#! /usr/bin/env sh
 
-# $totalsc: Number of sound cards available
-totalsc=$(pacmd "list-sinks" | grep card: | wc -l) # total of sound cards: $totalsc
-if [ $totalsc -le 1 ]; then # Check whether there are actually multiple cards available
-    notify-send -u critical -t 5000 "Nothing to switch, system only has one sound card."
-    exit
-fi
-# $scindex: The Pulseaudio index of the current default sound card
-scindex=$(pacmd list-sinks | awk '$1 == "*" && $2 == "index:" {print $3}')
-# $cards: A list of card Pulseaudio indexes
-cards=$(pacmd list-sinks | sed 's|*||' | awk '$1 == "index:" {print $2}')
-PICKNEXTCARD=1 # Is true when the previous card is default
-count=0 # count of number of iterations
-for CARD in $cards; do
-    if [ $PICKNEXTCARD == 1 ]; then
-	# $nextsc: The pulseaudio index of the next sound card (to be switched to)
-	nextsc=$CARD
-	PICKNEXTCARD=0
-	# $nextind: The numerical index (1 to totalsc) of the next card
-	nextind=$count
-    fi
-    if [ $CARD == $scindex ]; then # Choose the next card as default
-	PICKNEXTCARD=1
-    fi
-    count=$((count+1))
-done
-pacmd "set-default-sink $nextsc" # switch default sound card to next
+# From https://gist.github.com/miyl/40cdf1a66b360ad8ec0b19e2ffa56194
 
-# $inputs: A list of currently playing inputs
-inputs=$(pacmd list-sink-inputs | awk '$1 == "index:" {print $2}')
-for INPUT in $inputs; do # Move all current inputs to the new default sound card
-    pacmd move-sink-input $INPUT $nextsc
+# Removing pulseaudio means removing pacmd, so this is an attempt at switching the default via pactl instead.
+# It successfully sets the default - BUT it appears my programs don't go to that default for some reason?
+
+# Unlike the other scripts where sinks are specified, this just switches between whatever sinks exist.
+# Sinks can be specified by name or index. Index changes sometimes when you disconnect and reconnect, restart or whatever, so names are better.
+# Annoyingly the command used to switch audio over to a new sink cannot take a name as its argument, otherwise I'd only need the name here.
+
+# TODO: Trigger a zenity or dmenu dialog with entr that asks whether to switch monitor and/or sound to hdmi? Could do
+# the same for mounting.
+
+# Names, which unlike indexes, are persistent
+
+get_all_sinks() {
+  pactl list short sinks | cut -f 2
+}
+
+get_default_sink() {
+  #pw-play --list-targets | grep \* | tail -n 1 | cut -d' ' -f 2 | cut -d : -f 1
+  pactl info | grep 'Default Sink' | cut -d':' -f 2
+}
+
+DEF_SINK=$(get_default_sink)
+for SINK in $(get_all_sinks) ; do
+  [ -z "$FIRST" ] && FIRST=$SINK # Save the first index in case the current default is the last in the list
+  # get_default_sink currently returns the index with a leading space
+  if [ " $SINK" = "$DEF_SINK" ]; then
+    NEXT=1;
+  # Subsequent pass, don't need continue above
+  elif [ -n "$NEXT"  ]; then
+    NEW_DEFAULT_SINK=$SINK
+    break
+  fi
 done
-# $nextscdec: The device.description of the new default sound card
-# NOTE: This is the most likely thing to break in future, the awk lines may need playing around with
-nextscdesc=$(pacmd list-sinks | awk '$1 == "device.description" {print substr($0,5+length($1 $2))}' \
-                 | sed 's|"||g' | awk -F"," 'NR==v1{print$0}' v1=$((nextind+1)))
-notify-send "Default sound-card changed to $nextscdesc"
-exit
-# Below text was from original author and remains unaltered
-# CC BY - creative commons
-# Thanks God for help :) and guys lhunath, geirha, Tramp and others from irc #bash on freenode.net
+
+# Don't particularly like this method of making it circular, but...
+[ -z "$NEW_DEFAULT_SINK" ] && NEW_DEFAULT_SINK=$FIRST;
+
+# Set default sink for new audio playback
+pactl set-default-sink "$NEW_DEFAULT_SINK"
+
+#SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+
+#notify-send --expire-time 1350 "Switched default output sink to: $($SCRIPT_DIR/print-default-sink.sh)"
+
+# Switch all currently running audio streams over to the newly selected sink, via the script I found
+# TODO: I think the below might need the index, not the name!:
+# "$SCRIPT_DIR"/pipe-out-sink-switch-realtime.sh $NEW_DEFAULT_SINK

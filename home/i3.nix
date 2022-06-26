@@ -167,9 +167,9 @@ in {
         "${modifier}+c" = "exec ${pkgs.dunst}/bin/dunstctl close";
         "${modifier}+shift+c" = "exec ${pkgs.dunst}/bin/dunstctl close-all";
         # Media bindings
-        "XF86AudioRaiseVolume" = "exec --no-startup-id pulseaudio-ctl up";
-        "XF86AudioLowerVolume" = "exec --no-startup-id pulseaudio-ctl down";
-        "XF86AudioMute" = "exec --no-startup-id pulseaudio-ctl mute";
+        "XF86AudioRaiseVolume" = "exec --no-startup-id pamixer -i 5";
+        "XF86AudioLowerVolume" = "exec --no-startup-id pamixer -d 5";
+        "XF86AudioMute" = "exec --no-startup-id pamixer -t";
         "XF86AudioPlay" =
           "exec --no-startup-id dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause";
         "XF86AudioPause" =

@@ -17,6 +17,8 @@
     # Scripting audio
     pamixer
     playerctl
+    # I'm using pipewire but can still use pulseaudio commands
+    pulseaudio
     pulseaudio-ctl
     # Screenshots
     scrot
@@ -44,6 +46,6 @@
     "${config.resources.paths.privateDotfiles}/vdirsyncer/config";
   # https://unix.stackexchange.com/a/562158
   # If encountering other sound issues, try deleting ~/.config/pulse
-  home.file.".alsoftrc".source =
-    builtins.toPath "${config.resources.paths.publicDotfiles}/.alsoftrc";
+  # home.file.".alsoftrc".source =
+  #   builtins.toPath "${config.resources.paths.publicDotfiles}/.alsoftrc";
 }

@@ -10,9 +10,7 @@
       pulseSupport = true;
     };
     config = {
-      "settings" = {
-        screenchange-reload = "true";
-      };
+      "settings" = { screenchange-reload = "true"; };
 
       "bar/top-main" = {
         width = "100%";
@@ -25,10 +23,13 @@
         padding-right = "1";
         module-margin-left = "1";
         module-margin-right = "1";
-        font-0 = "${config.resources.font.name}:pixelsize=${lib.strings.floatToString config.resources.font.size}:antialias=true;2";
+        font-0 = "${config.resources.font.name}:pixelsize=${
+            lib.strings.floatToString config.resources.font.size
+          }:antialias=true;2";
         modules-left = "i3";
         modules-center = "spotify previous playpause next sep date";
-        modules-right = "vpn screenshot temperature cpu memory network-wired network-wireless pulseaudio backlight battery powermenu";
+        modules-right =
+          "vpn screenshot temperature cpu memory network-wired network-wireless backlight battery powermenu";
         tray-position = "right";
         tray-detached = "false";
         tray-padding = "2";
@@ -46,7 +47,8 @@
         format = "%{T3}<label>";
         # Previous song icon
         exec = "echo ";
-        click-left = "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous";
+        click-left =
+          "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous";
       };
 
       "module/next" = {
@@ -55,7 +57,8 @@
         format = "%{T3}<label>";
         # Next song icon
         exec = "echo ";
-        click-left = "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next";
+        click-left =
+          "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next";
       };
 
       "module/playpause" = {
@@ -67,13 +70,15 @@
         # Paused
         hook-2 = "echo ";
         initial = "1";
-        click-left = "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause";
+        click-left =
+          "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause";
       };
 
       "module/spotify" = {
         type = "custom/ipc";
         hook-0 = "echo ";
-        hook-1 = "python3 ${config.resources.paths.publicConfig}/vendor/polybar-spotify-controls/scripts/spotify/spotify_status.py";
+        hook-1 =
+          "python3 ${config.resources.paths.publicConfig}/vendor/polybar-spotify-controls/scripts/spotify/spotify_status.py";
         initial = "1";
         format-padding = "2";
       };
@@ -91,7 +96,7 @@
         ws-icon-6 = "7; ";
         ws-icon-7 = "8;%{F#D91D57} %{F-}";
         ws-icon-8 = "9;%{F#205FB6} %{F-}";
-        ws-icon-9= "10;%{F#1DD05D}♫ %{F-}";
+        ws-icon-9 = "10;%{F#1DD05D}♫ %{F-}";
         ws-icon-default = "";
         format = "<label-state>";
         label-focused = "%icon%";
@@ -191,20 +196,6 @@
         format-prefix = " ";
         format-prefix-foreground = "#AB71FD";
       };
-
-      "module/pulseaudio" = {
-        type = "custom/script";
-        tail = "true";
-        label = "%output%";
-
-        exec = "~/.config/polybar/pulseaudio-control.bash listen";
-        click-right = "exec pavucontrol &";
-        click-left = "~/.config/polybar/pulseaudio-control.bash togmute";
-        click-middle = "~/.config/polybar/pulseaudio-control.bash next-sink";
-        scroll-up = "~/.config/polybar/pulseaudio-control.bash up";
-        scroll-down = "~/.config/polybar/pulseaudio-control.bash down";
-      };
-
 
       "module/temperature" = {
         type = "internal/temperature";

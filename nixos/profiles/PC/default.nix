@@ -5,6 +5,7 @@
     <home-manager/nixos>
     ../../../modules
     ../../dev/android.nix
+    ../../dev/audio.nix
     ../../dev/mounting.nix
     ../../dev/fwudp.nix
     ../../dev/ledger.nix
@@ -15,21 +16,22 @@
     ../../../vendor/infrastructure-private/resources/profiles/PC/aliases.nix
   ];
 
-  sound.enable = true;
-  hardware.pulseaudio.enable = true;
-  hardware.pulseaudio.support32Bit = true;
-
   powerManagement.cpuFreqGovernor = "performance";
 
   # https://nixos.wiki/wiki/Bluetooth#No_audio_when_using_headset_in_HSP.2FHFP_mode
   hardware.enableAllFirmware = true;
 
   # Wifi
-  environment.etc."wpa_supplicant.conf".source = "${config.resources.paths.secrets}/wpa_supplicant.conf";
+  environment.etc."wpa_supplicant.conf".source =
+    "${config.resources.paths.secrets}/wpa_supplicant.conf";
 
-  nix.nixPath = with builtins; options.nix.nixPath.default ++ [
-    "nixos-config=${toPath "${config.resources.paths.publicConfig}/nixos/hosts/${config.resources.hostname}/configuration.nix"}"
-  ];
+  nix.nixPath = with builtins;
+    options.nix.nixPath.default ++ [
+      "nixos-config=${
+        toPath
+        "${config.resources.paths.publicConfig}/nixos/hosts/${config.resources.hostname}/configuration.nix"
+      }"
+    ];
 
   services.xserver.libinput = {
     # Enable libinput
@@ -48,15 +50,13 @@
     };
   };
 
-  services.xserver.desktopManager.session = [
-    {
+  services.xserver.desktopManager.session = [{
     name = "home-manager";
     start = ''
       ${pkgs.runtimeShell} $HOME/.hm-xsession &
       waitPID=$!
     '';
-    }
-  ];
+  }];
 
   # Move garbage collection for 3:15 to 14:00
   nix.gc.dates = "14:00";
@@ -76,10 +76,11 @@
   };
 
   networking.hosts = {
-    "${config.resources.hosts.eldir.ip}" = [ "Eldir" "Eldir.${config.resources.domain}"];
+    "${config.resources.hosts.eldir.ip}" =
+      [ "Eldir" "Eldir.${config.resources.domain}" ];
   };
 
-  home-manager.users.${config.resources.username} = {...}: {
+  home-manager.users.${config.resources.username} = { ... }: {
     imports = [
       ../../../home
       (../../../home/hosts + builtins.toPath "/${config.resources.hostname}")
@@ -90,11 +91,12 @@
     resources = config.resources;
   };
 
-  fonts.fonts = with pkgs; [
-    # https://github.com/NixOS/nixpkgs/issues/47921#issuecomment-435310057
-    # nix-prefetch-url --type sha256 --unpack --name source https://files.martinache.net/nerd-fonts-2.1.0.tar.gz 1la79y16k9rwcl2zsxk73c0kgdms2ma43kpjfqnq5jlbfdj0niwg
-    nerdfonts
-  ];
+  fonts.fonts = with pkgs;
+    [
+      # https://github.com/NixOS/nixpkgs/issues/47921#issuecomment-435310057
+      # nix-prefetch-url --type sha256 --unpack --name source https://files.martinache.net/nerd-fonts-2.1.0.tar.gz 1la79y16k9rwcl2zsxk73c0kgdms2ma43kpjfqnq5jlbfdj0niwg
+      nerdfonts
+    ];
 
   environment.systemPackages = with pkgs; [
     # Grub theming
@@ -120,7 +122,7 @@
           #${pkgs.gnused}/bin/sed -i 's/desktop-image: "background.jpg"/desktop-image: "background.png"/g' /boot/grub/themes/Vimix/theme.txt
         fi
       '';
-      deps = [];
+      deps = [ ];
     };
   };
 
