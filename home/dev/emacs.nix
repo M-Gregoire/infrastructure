@@ -35,8 +35,15 @@
     nixfmt
   ];
 
-  home.file.".emacs.d/.local/etc/bookmarks".source =
-    builtins.toPath "${config.resources.paths.privateDotfiles}/emacs/bookmarks";
+  home.file.".doom.d/init.el".source =
+    builtins.toPath "${config.resources.paths.privateDotfiles}/doom.d/init.el";
+  home.file.".doom.d/config.el".source = builtins.toPath
+    "${config.resources.paths.privateDotfiles}/doom.d/config.el";
+  home.file.".doom.d/packages.el".source = builtins.toPath
+    "${config.resources.paths.privateDotfiles}/doom.d/packages.el";
+
+  home.file.".emacs.d/.local/etc/bookmarks".source = builtins.toPath
+    "${config.resources.paths.privateDotfiles}/emacs.d/bookmarks";
 
   systemd.user.services.emacs = {
     Unit = {
