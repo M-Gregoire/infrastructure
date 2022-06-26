@@ -127,7 +127,7 @@ in {
         # https://faq.i3wm.org/question/118/mouse-cursor-remains-waiting-after-closing-last-tile.1.html
         "${modifier}+Return" = "exec --no-startup-id i3-sensible-terminal";
         "${modifier}+Shift+f" = " exec --no-startup-id firefox";
-        "${modifier}+Shift+c" = " reload";
+        # "${modifier}+Shift+c" = " reload";
         "${modifier}+Shift+r" = " restart";
         "${modifier}+Shift+e" =
           "exec i3-nagbar -t warning -m 'Do you want to exit i3?' -b 'Yes' 'i3-msg exit'";
@@ -164,8 +164,8 @@ in {
         "${modifier}+space" = "focus mode_toggle";
         "${modifier}+q" = "focus parent";
         # Dunst
-        "Control+space" = "exec ${pkgs.dunst}/bin/dunstctl close";
-        "Control+shift+space" = "exec ${pkgs.dunst}/bin/dunstctl close-all";
+        "${modifier}+c" = "exec ${pkgs.dunst}/bin/dunstctl close";
+        "${modifier}+shift+c" = "exec ${pkgs.dunst}/bin/dunstctl close-all";
         # Media bindings
         "XF86AudioRaiseVolume" = "exec --no-startup-id pulseaudio-ctl up";
         "XF86AudioLowerVolume" = "exec --no-startup-id pulseaudio-ctl down";
