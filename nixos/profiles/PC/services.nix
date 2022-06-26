@@ -32,7 +32,7 @@
   # See https://github.com/NixOS/nixpkgs/issues/13287
   # dconf needed by home-manager
   # See https://github.com/rycee/home-manager/pull/510
-  services.dbus.packages = with pkgs; [ gnome3.dconf gnome2.GConf ];
+  services.dbus.packages = with pkgs; [ dconf gnome2.GConf ];
 
   # dconf needed for wpgtk
   # https://nixos.wiki/wiki/Wpgtk
