@@ -28,6 +28,7 @@
           }:antialias=true;2";
         modules-left = "i3";
         modules-center = "spotify previous playpause next sep date";
+        # TODO: Add pipewire module
         modules-right =
           "vpn screenshot temperature cpu memory network-wired network-wireless backlight battery powermenu";
         tray-position = "right";
@@ -139,6 +140,7 @@
       "module/screenshot" = {
         type = "custom/text";
         content = "";
+        # TODO: Fix
         click-left = "~/.config/rofi/scripts/menu_screenshot.sh";
       };
 
@@ -177,6 +179,7 @@
       "module/powermenu" = {
         type = "custom/text";
         content = "";
+        # TODO: Fix
         click-left = "~/.config/rofi/scripts/menu_powermenu.sh";
       };
 
