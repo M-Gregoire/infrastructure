@@ -19,6 +19,8 @@
     gnupg
     # backup
     kopia
+    # lsusb
+    usbutils
   ];
 
   home-manager.users.${config.resources.username} = { ... }: {
