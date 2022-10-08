@@ -351,6 +351,24 @@
         };
       };
 
+      nextcloud = {
+        url = mkOption {
+          type = types.str;
+          example = "https://cloud.domain.com";
+          description = "Nextcloud url";
+        };
+        username = mkOption {
+          type = types.str;
+          example = "John-Doe";
+          description = "Nextcloud username";
+        };
+        password = mkOption {
+          type = types.str;
+          example = "superSecretP@ssw0rd";
+          description = "Nextcloud password";
+        };
+      };
+
       ssh = {
         publicKeys = mkOption {
           type = with types; listOf str;
