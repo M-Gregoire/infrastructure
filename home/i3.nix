@@ -117,7 +117,7 @@ in {
       assigns = {
         # Use xprop
         "${workspace1}" = [{ class = "firefox"; }];
-        "${workspace9}" = [{ class = "Thunderbird"; }];
+        "${workspace9}" = [{ class = "thunderbird"; }];
       };
 
       defaultWorkspace = "workspace ${workspace1}";
