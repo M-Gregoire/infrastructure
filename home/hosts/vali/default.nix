@@ -3,14 +3,10 @@
 {
   imports = [ ./i3-polybar.nix ./battery.nix ];
 
-  home.packages = with pkgs;
-    [
-      # Backlight control
-      xorg.xbacklight
-    ];
+  home.packages = with pkgs; [ brightnessctl ];
 
   xsession.windowManager.i3.config.keybindings = {
-    "XF86MonBrightnessUp" = "exec xbacklight -inc 5";
-    "XF86MonBrightnessDown" = "exec xbacklight -dec 5";
+    "XF86MonBrightnessUp" = "exec brightnessctl set +5%";
+    "XF86MonBrightnessDown" = "exec brightnessctl set 5%-";
   };
 }
