@@ -46,8 +46,6 @@ in {
     i3lock-fancy
     # Auto lock after inactivity
     xidlehook
-    # Change brightness of screen
-    xorg.xbacklight
     # redshift
     # Not running as a service as there is no command available to change the brightness of the screen
     # redshift
@@ -285,12 +283,12 @@ in {
           always = false;
           notification = false;
         }
-        {
-          command =
-            "${config.resources.paths.scripts}/theme.sh ${config.resources.paths.wallpaper.folder} ${config.resources.paths.wallpaper.current} > /tmp/theme.sh.log 2>&1";
-          always = true;
-          notification = false;
-        }
+        # {
+        #   command =
+        #     "${config.resources.paths.scripts}/theme.sh ${config.resources.paths.wallpaper.folder} ${config.resources.paths.wallpaper.current} > /tmp/theme.sh.log 2>&1";
+        #   always = true;
+        #   notification = false;
+        # }
         {
           command = "${config.resources.paths.scripts}/xidlehook.sh";
           always = false;
@@ -334,7 +332,10 @@ in {
       exec --no-startup-id i3-msg "workspace ${workspace2}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/kitty.json" && kitty
       exec --no-startup-id i3-msg "workspace ${workspace3}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/emacs.json" &&  while ! ${pkgs.emacs}/bin/emacsclient -s /run/user/1000/emacs/main -ca false; do sleep 2; done;
       exec --no-startup-id i3-msg "workspace ${workspace4}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/pcmanfm.json" && pcmanfm
-
+      exec --no-startup-id i3-msg "workspace ${workspace1}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/firefox.json" \
+                                   && i3-msg "workspace ${workspace9}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/thunderbird.json" \
+                                   && ${config.resources.paths.scripts}/theme.sh ${config.resources.paths.wallpaper.folder} ${config.resources.paths.wallpaper.current} > /tmp/theme.sh.log 2>&1 \
+                                   && thunderbird
       # Get color from Xresources
       # https://i3wm.org/docs/userguide.html#xresources
       # Defaults to ugly red so I can immediatelyly see there is an issue
