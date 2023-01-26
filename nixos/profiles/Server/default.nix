@@ -29,5 +29,7 @@
     nixpkgs.overlays = config.nixpkgs.overlays;
     nixpkgs.config = import ../../../nixpkgs/config.nix;
     resources = config.resources;
+    home.stateVersion = "22.11";
   };
+
 }
