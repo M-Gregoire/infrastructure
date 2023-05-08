@@ -107,6 +107,6 @@
 
   security.pki.certificates = config.resources.pki.acrs;
 
-  nix.autoOptimiseStore = true;
+  nix.settings.auto-optimise-store = true;
   nix.gc = { automatic = true; };
 }

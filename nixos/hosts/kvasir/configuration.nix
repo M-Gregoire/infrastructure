@@ -27,6 +27,9 @@
   services.udev.extraRules = ''
     # Get info with udevadm info --attribute-walk /dev/tty...
     # If Modem in USB Storage mode, switch to 3G mode
+    # /!\ Done at Proxmox level for Huawei (Hotplugging not supported, device reset often)
+    # /etc/udev/rules.d/huawei.rules
+    # Requires `sudo apt-get install usb-modeswitch`
     ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="12d1", ATTRS{idProduct}=="15ca", RUN+="${pkgs.usb-modeswitch}/bin/usb_modeswitch -v 12d1 -p 15ca -M '55534243123456780000000000000011062000000100000000000000000000'"
     ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="12d1", ATTRS{idProduct}=="1506", RUN+="${pkgs.bash}/bin/bash -c 'modprobe option && echo 12d1 1506 > /sys/bus/usb-serial/drivers/option1/new_id'"
 
