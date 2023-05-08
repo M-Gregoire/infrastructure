@@ -60,6 +60,8 @@ in {
     element-desktop
     # Terminal emulator
     kitty
+    # Screen sharing
+    rustdesk
   ];
 
   xdg.configFile."kitty/kitty.conf".source = /.
