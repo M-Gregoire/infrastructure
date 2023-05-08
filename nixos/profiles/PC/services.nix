@@ -40,9 +40,31 @@
 
   # systemctl list-timers
 
-  systemd.timers.tasks = {
-    description = "Sync tasks every 5 minutes";
-    wantedBy = [ "timers.target" ];
-    timerConfig = { OnUnitInactiveSec = "5m"; };
+  systemd.user = {
+    services.nextcloud-autosync = {
+      enable = true;
+      description = "Auto sync Nextcloud";
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
+      serviceConfig = {
+        Type = "simple";
+        ExecStart =
+          "${pkgs.nextcloud-client}/bin/nextcloudcmd -h -n --path /org ${config.resources.paths.home}/org ${config.resources.services.nextcloud.url}";
+        TimeoutStopSec = "180";
+        # KillMode = "process";
+        # KillSignal = "SIGINT";
+      };
+      wantedBy = [ "multi-user.target" ];
+    };
+    timers.nextcloud-autosync = {
+      description =
+        "Automatic sync files with Nextcloud when booted up after 5 minutes then rerun every 5 minutes";
+      timerConfig = {
+        OnUnitActiveSec = "5min";
+        OnBootSec = "5min";
+        Unit = "nextcloud-autosync.service";
+      };
+      wantedBy = [ "multi-user.target" "timers.target" ];
+    };
   };
 }
