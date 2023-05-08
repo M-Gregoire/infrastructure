@@ -16,11 +16,6 @@ reload_dunst() {
   dunst&
 }
 
-# Setup pywall for Firefox if not already
-if [ ! -f ~/.mozilla/native-messaging-hosts/pywalfox.json ]; then
-  pywalfox install
-fi
-
 # Wpg install
 if [[ ! -L ~/.config/wpg/templates/gtk2 ]] || [[ ! -L ~/.config/wpg/templates/gtk3.0 ]] || [[ ! -L ~/.config/wpg/templates/dunstrc ]]
 then
@@ -68,6 +63,10 @@ fi
 reload_dunst
 
 # Start pywalfox daemon
+# Setup pywall for Firefox if not already
+#if [ ! -f ~/.mozilla/native-messaging-hosts/pywalfox.json ]; then
+  pywalfox install
+#fi
 pkill pywalfox
 pywalfox start&
 #pywalfox update
