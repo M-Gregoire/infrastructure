@@ -10,5 +10,7 @@
     opensc
     # Test a PC/SC driver, card or reader
     pcsctools
+    # OpenSSL
+    openssl
   ];
 }

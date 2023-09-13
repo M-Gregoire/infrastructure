@@ -12,7 +12,6 @@
     ./password-management.nix
     ./theme.nix
     ./services.nix
-    ../vendor/infrastructure-private/resources/home/work.nix
   ];
 
   nixpkgs.config = import ../nixpkgs/config.nix;

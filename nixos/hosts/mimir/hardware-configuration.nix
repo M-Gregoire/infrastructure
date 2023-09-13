@@ -26,5 +26,5 @@
     [{ device = "/dev/disk/by-uuid/8436e6f2-c6f2-4436-996f-dbe51d3c9e48"; }];
 
   # high-resolution display
-  hardware.video.hidpi.enable = lib.mkDefault true;
+  # hardware.video.hidpi.enable = lib.mkDefault true;
 }

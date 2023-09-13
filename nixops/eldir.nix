@@ -1,10 +1,8 @@
 {
-  eldir =
-    { config, pkgs, ... }:
-    {
-      deployment = {
-        targetHost = "${config.resources.hosts.eldir.ip}";
-        targetPort = config.resources.hosts.eldir.ssh.port;
-      };
+  eldir = { config, pkgs, ... }: {
+    deployment = {
+      targetHost = "${config.resources.networking.ip}";
+      targetPort = config.resources.services.ssh.port;
     };
+  };
 }

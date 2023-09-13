@@ -2,8 +2,8 @@
   kvasir = { config, pkgs, ... }: {
     deployment = {
       targetHost =
-        "${config.resources.hosts.kvasir.hostname}.${config.resources.domain}";
-      targetPort = config.resources.hosts.kvasir.ssh.port;
+        "${config.resources.hostname}.${config.resources.networking.domain}";
+      targetPort = config.resources.services.ssh.port;
     };
   };
 }

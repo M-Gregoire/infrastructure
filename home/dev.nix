@@ -10,7 +10,6 @@
     ./dev/gpg.nix
     ./dev/keyboard.nix
     ./dev/mimeapps.nix
-    ./dev/network.nix
     ./dev/nix.nix
     ./dev/python.nix
     ./dev/ssh.nix

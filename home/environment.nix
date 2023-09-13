@@ -20,11 +20,9 @@
     TERMINAL = "${config.home.sessionVariables.TERM}";
     # Needed for Trash in Thunar
     # https://github.com/NixOS/nixpkgs/issues/29137#issuecomment-354229533
-    GIO_EXTRA_MODULES = [ "${pkgs.gvfs}/lib/gio/modules" ];
+    # GIO_EXTRA_MODULES = [ "${pkgs.gvfs}/lib/gio/modules" ];
     # Base 16 themes
     THEME = "${config.resources.theme.name}";
-    # Work wifi
-    WORKWIFI = "${config.resources.networking.wifi.workSSID}";
     # Recover font and font size for Emacs
     EMACS_FONT = "${config.resources.font.name}";
     EMACS_FONT_SIZE = "${lib.strings.floatToString config.resources.font.size}";
@@ -36,10 +34,5 @@
     # Expose GPS coordinate in env for xidlehook script
     LATITUDE = "${builtins.toString config.resources.geo.latitude}";
     LONGITUDE = "${builtins.toString config.resources.geo.longitude}";
-    # Redshift temperature
-    REDSHIFT_TEMP_DAY =
-      "${builtins.toString config.resources.services.redshift.temperature.day}";
-    REDSHIFT_TEMP_NIGHT =
-      "${builtins.toString config.resources.services.redshift.temperature.day}";
   };
 }

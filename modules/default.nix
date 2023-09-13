@@ -39,18 +39,6 @@
         example = "/path/to/secrets/";
         description = "Secrets folder path";
       };
-      wallpaper = {
-        current = mkOption {
-          type = types.str;
-          example = "wallpaper.jpg";
-          description = "Wallpaper name";
-        };
-        folder = mkOption {
-          type = types.str;
-          example = "/path/to/wallpapers/";
-          description = "Folder containing wallpapers";
-        };
-      };
     };
     pcs = {
       firefox.profile = mkOption {
@@ -76,6 +64,19 @@
         example = "thunderbird";
         description = "Email reader";
       };
+
+      wallpaper = {
+        current = mkOption {
+          type = types.str;
+          example = "wallpaper.jpg";
+          description = "Wallpaper name";
+        };
+        folder = mkOption {
+          type = types.str;
+          example = "/path/to/wallpapers/";
+          description = "Folder containing wallpapers";
+        };
+      };
     };
     screen = {
       dpi = mkOption {
@@ -95,12 +96,6 @@
       type = types.str;
       example = "foo";
       description = "Hostname";
-    };
-
-    domain = mkOption {
-      type = types.str;
-      example = "foo";
-      description = "local.domain";
     };
 
     username = mkOption {
@@ -133,168 +128,6 @@
       description = "Path to LUKS drive";
     };
 
-    hosts = {
-      beyla = {
-        hostname = mkOption {
-          type = types.str;
-          example = "Beyla";
-          description = "Hostname of the host";
-        };
-        ssh.port = mkOption {
-          type = types.port;
-          example = [ "22" ];
-          description = "Specifies on which port the SSH daemon listens.";
-        };
-      };
-      bur = {
-        hostname = mkOption {
-          type = types.str;
-          example = "bur";
-          description = "Hostname of the host";
-        };
-        ssh.port = mkOption {
-          type = types.port;
-          example = [ "22" ];
-          description = "Specifies on which port the SSH daemon listens.";
-        };
-      };
-      vali = {
-        hostname = mkOption {
-          type = types.str;
-          example = "vali";
-          description = "Hostname of the host";
-        };
-        ssh.port = mkOption {
-          type = types.port;
-          example = [ "22" ];
-          description = "Specifies on which port the SSH daemon listens.";
-        };
-      };
-      eldir = {
-        hostname = mkOption {
-          type = types.str;
-          example = "eldir";
-          description = "Hostname of the host";
-        };
-        ip = mkOption {
-          type = types.str;
-          example = "1.1.1.1";
-          description = "Ip of the host";
-        };
-        ssh.port = mkOption {
-          type = types.port;
-          example = [ "22" ];
-          description = "Specifies on which port the SSH daemon listens.";
-        };
-        networking = {
-          defaultGateway = mkOption {
-            type = types.str;
-            example = "1.2.3.4";
-            description = "Default gateway";
-          };
-          nameservers = mkOption {
-            type = with types; listOf str;
-            example = [ "1.2.3.4" "4.3.2.1" ];
-            description = "Nameservers";
-          };
-          ipv6 = mkOption {
-            type = types.str;
-            example = "::01";
-            description = "ipv6 address";
-          };
-          initrd.ssh.port = mkOption {
-            type = types.port;
-            example = 22;
-            description = "Initrd port";
-          };
-        };
-      };
-      fenrir = {
-        hostname = mkOption {
-          type = types.str;
-          example = "fenrir";
-          description = "Hostname of the host";
-        };
-        ssh.port = mkOption {
-          type = types.port;
-          example = [ "22" ];
-          description = "Specifies on which port the SSH daemon listens.";
-        };
-      };
-      kvasir = {
-        hostname = mkOption {
-          type = types.str;
-          example = "kvasir";
-          description = "Hostname of the host";
-        };
-        ssh.port = mkOption {
-          type = types.port;
-          example = [ "22" ];
-          description = "Specifies on which port the SSH daemon listens.";
-        };
-      };
-      fenrirDocker = {
-        hostname = mkOption {
-          type = types.str;
-          example = "fenrirDocker";
-          description = "Hostname of the host";
-        };
-        ssh.port = mkOption {
-          type = types.port;
-          example = [ "22" ];
-          description = "Specifies on which port the SSH daemon listens.";
-        };
-      };
-      mimir = {
-        hostname = mkOption {
-          type = types.str;
-          example = "mimir";
-          description = "Hostname of the host";
-        };
-        ssh.port = mkOption {
-          type = types.port;
-          example = [ "22" ];
-          description = "Specifies on which port the SSH daemon listens.";
-        };
-      };
-      skuld = {
-        hostname = mkOption {
-          type = types.str;
-          example = "skuld";
-          description = "Hostname of the host.";
-        };
-        ssh.port = mkOption {
-          type = types.port;
-          example = [ "22" ];
-          description = "Specifies on which port the SSH daemon listens.";
-        };
-      };
-      octopi = {
-        hostname = mkOption {
-          type = types.str;
-          example = "octopi";
-          description = "Hostname of the host";
-        };
-        ssh.port = mkOption {
-          type = types.port;
-          example = [ "22" ];
-          description = "Specifies on which port the SSH daemon listens.";
-        };
-      };
-      idunn = {
-        hostname = mkOption {
-          type = types.str;
-          example = "idunn";
-          description = "Hostname of the host";
-        };
-        ssh.port = mkOption {
-          type = types.port;
-          example = [ "22" ];
-          description = "Specifies on which port the SSH daemon listens.";
-        };
-      };
-    };
-
     pki = {
       acrs = mkOption {
         type = with types; listOf str;
@@ -304,27 +137,6 @@
     };
 
     services = {
-      redshift = {
-        temperature = {
-          day = mkOption {
-            type = types.int;
-            default = 5500;
-            description = ''
-              Colour temperature to use during the day, between
-              <literal>1000</literal> and <literal>25000</literal> K.
-            '';
-          };
-          night = mkOption {
-            type = types.int;
-            default = 3700;
-            description = ''
-              Colour temperature to use at night, between
-              <literal>1000</literal> and <literal>25000</literal> K.
-            '';
-          };
-        };
-      };
-
       gotify = {
         url = mkOption {
           type = types.str;
@@ -370,6 +182,11 @@
       };
 
       ssh = {
+        port = mkOption {
+          type = types.port;
+          example = [ "22" ];
+          description = "Specifies on which port the SSH daemon listens.";
+        };
         publicKeys = mkOption {
           type = with types; listOf str;
           example = [
@@ -414,16 +231,43 @@
         description =
           "The list of fallback nameservers. It can be left empty if it is auto-detected.";
       };
+
+      domain = mkOption {
+        type = types.str;
+        example = "foo";
+        description = "local.domain";
+      };
+
       searchDomains = mkOption {
         type = types.listOf types.str;
         description =
           "list of domains. These domains are used as search suffixes when resolving single-label host names (domain names which contain no dot), in order to qualify them into fully-qualified domain names (FQDNs).";
       };
 
-      wifi.workSSID = mkOption {
+      defaultGateway = mkOption {
         type = types.str;
-        example = "foobar";
-        description = "Work wifi SSID";
+        example = "1.2.3.4";
+        description = "Default gateway";
+      };
+      nameservers = mkOption {
+        type = with types; listOf str;
+        example = [ "1.2.3.4" "4.3.2.1" ];
+        description = "Nameservers";
+      };
+      ip = mkOption {
+        type = types.str;
+        example = "1.1.1.1";
+        description = "Ip of the host";
+      };
+      ipv6 = mkOption {
+        type = types.str;
+        example = "::01";
+        description = "ipv6 address";
+      };
+      initrd.ssh.port = mkOption {
+        type = types.port;
+        example = 22;
+        description = "Initrd port";
       };
 
       firewall = {

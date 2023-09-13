@@ -1,10 +1,7 @@
 { config, lib, ... }:
 
 {
-  imports = [ ../../common.nix ];
+  imports = [ ../../../vendor/infrastructure-private/resources/hosts/kvasir ];
 
-  config.resources = with lib;
-    mapAttrs (_: v: mkDefault v) {
-      hostname = "${config.resources.hosts.kvasir.hostname}";
-    };
+  config.resources = with lib; mapAttrs (_: v: mkDefault v) { };
 }

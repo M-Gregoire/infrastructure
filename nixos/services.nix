@@ -3,8 +3,9 @@
 {
   services.openssh = {
     enable = true;
-    passwordAuthentication = false;
+    settings = { PasswordAuthentication = false; };
   };
 
-  users.users.root.openssh.authorizedKeys.keys = config.resources.services.ssh.publicKeys;
+  users.users.root.openssh.authorizedKeys.keys =
+    config.resources.services.ssh.publicKeys;
 }

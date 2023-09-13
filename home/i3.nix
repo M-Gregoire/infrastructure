@@ -46,9 +46,6 @@ in {
     i3lock-fancy
     # Auto lock after inactivity
     xidlehook
-    # redshift
-    # Not running as a service as there is no command available to change the brightness of the screen
-    # redshift
     # xidlehook script
     bc
     # Theme based on wallpaper
@@ -334,7 +331,7 @@ in {
       exec --no-startup-id i3-msg "workspace ${workspace4}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/pcmanfm.json" && pcmanfm
       exec --no-startup-id i3-msg "workspace ${workspace1}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/firefox.json" \
                                    && i3-msg "workspace ${workspace9}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/thunderbird.json" \
-                                   && ${config.resources.paths.scripts}/theme.sh ${config.resources.paths.wallpaper.folder} ${config.resources.paths.wallpaper.current} > /tmp/theme.sh.log 2>&1 \
+                                   && ${config.resources.paths.scripts}/theme.sh ${config.resources.pcs.wallpaper.folder} ${config.resources.pcs.wallpaper.current} > /tmp/theme.sh.log 2>&1 \
                                    && thunderbird
       # Get color from Xresources
       # https://i3wm.org/docs/userguide.html#xresources

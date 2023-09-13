@@ -1,10 +1,9 @@
 {
-  vali =
-    { config, pkgs, ... }:
-    {
-      deployment = {
-        targetHost = "${config.resources.hosts.vali.hostname}.${config.resources.domain}";
-        targetPort = config.resources.hosts.vali.ssh.port;
-      };
+  vali = { config, pkgs, ... }: {
+    deployment = {
+      targetHost =
+        "${config.resources.hostname}.${config.resources.networking.domain}";
+      targetPort = config.resources.services.ssh.port;
     };
+  };
 }

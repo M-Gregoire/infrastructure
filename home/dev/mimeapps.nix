@@ -8,6 +8,8 @@
     ];
 
   xdg.configFile."mimeapps.list".force = true;
+  # Use `file --mime-type <filename>` to get mime type
+  # Check $XDG_DATA_DIRS to search for .desktop
   xdg.mimeApps = {
     enable = true;
     defaultApplications = {
@@ -28,6 +30,9 @@
       "text/rhtml" = [ "emacs-client.desktop" "leafpad.desktop" ];
       "text/plain" = [ "emacs-client.desktop" "leafpad.desktop" ];
       "text/x-markdown" = [ "emacs-client.desktop" "leafpad.desktop" ];
+
+      # Books
+      "application/epub+zip" = [ "calibre-ebook-viewer.desktop" ];
 
       # Documents
       "application/vnd.oasis.opendocument.text" = [ "writer.desktop" ];

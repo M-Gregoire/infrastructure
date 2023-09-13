@@ -8,12 +8,6 @@
     keybase-gui
     # Needed by Keebase
     kbfs
-    # gopass
-    gopass
-    gopass-jsonapi
-    # Bitwarden
-    bitwarden
-    bitwarden-cli
   ];
 
 }

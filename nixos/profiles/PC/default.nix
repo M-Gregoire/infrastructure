@@ -3,23 +3,26 @@
 {
   imports = [
     <home-manager/nixos>
-    ../../../modules
+    ../../../vendor/infrastructure-private/resources/profiles/PC
     ../../dev/android.nix
     ../../dev/audio.nix
-    ../../dev/mounting.nix
     ../../dev/fwudp.nix
     ../../dev/ledger.nix
+    ../../dev/mounting.nix
     ../../dev/pam.nix
+    ../../dev/systemd-networkd.nix
     ../../dev/wireguard-tools.nix
     ./services.nix
-    ../../systemd-networkd.nix
-    ../../../vendor/infrastructure-private/resources/profiles/PC/aliases.nix
+    ./resources.nix
   ];
 
   powerManagement.cpuFreqGovernor = "performance";
 
   # https://nixos.wiki/wiki/Bluetooth#No_audio_when_using_headset_in_HSP.2FHFP_mode
   hardware.enableAllFirmware = true;
+
+  # Deploy to Arm64
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   # Wifi
   environment.etc."wpa_supplicant.conf".source =
@@ -73,11 +76,6 @@
       # Audio
       "audio"
     ];
-  };
-
-  networking.hosts = {
-    "${config.resources.hosts.eldir.ip}" =
-      [ "Eldir" "Eldir.${config.resources.domain}" ];
   };
 
   home-manager.users.${config.resources.username} = { ... }: {

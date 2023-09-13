@@ -1,10 +1,9 @@
 {
-  mimir =
-    { config, pkgs, ... }:
-    {
-      deployment = {
-        targetHost = "${config.resources.hosts.mimir.hostname}.${config.resources.domain}";
-        targetPort = config.resources.hosts.mimir.ssh.port;
-      };
+  mimir = { config, pkgs, ... }: {
+    deployment = {
+      targetHost =
+        "${config.resources.hostname}.${config.resources.networking.domain}";
+      targetPort = config.resources.services.ssh.port;
     };
+  };
 }

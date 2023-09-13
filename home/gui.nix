@@ -28,8 +28,6 @@ in {
     # Editors
     libreoffice
     leafpad
-    # Mumble
-    mumble
     # Music
     spotify
     # Chats

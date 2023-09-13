@@ -1,11 +1,7 @@
-{ config, lib,... }:
+{ config, lib, ... }:
 
 {
-  imports = [
-    ../../common.nix
-  ];
+  imports = [ ../../../vendor/infrastructure-private/resources/hosts/eldir ];
 
-  config.resources = with lib; mapAttrs (_: v: mkDefault v) {
-    hostname = "${config.resources.hosts.eldir.hostname}";
-  };
+  config.resources = with lib; mapAttrs (_: v: mkDefault v) { };
 }
