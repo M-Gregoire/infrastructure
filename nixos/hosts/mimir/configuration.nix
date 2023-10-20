@@ -12,6 +12,8 @@
     ./../../dev/luks.nix
     ./../../dev/steam.nix
     ./hardware-configuration.nix
+    <nixos-hardware/common/cpu/amd>
+    <nixos-hardware/common/pc/ssd>
   ];
 
   services.xserver.libinput = {
