@@ -22,6 +22,12 @@
   hades-3 = { config, pkgs, ... }: {
     imports = [ ../nixos/hosts/hades/hades-3/configuration.nix ];
   };
+  hades-4 = { config, pkgs, ... }: {
+    imports = [ ../nixos/hosts/hades/hades-4/configuration.nix ];
+  };
+  hades-k = { config, pkgs, ... }: {
+    imports = [ ../nixos/hosts/hades/hades-k/configuration.nix ];
+  };
 
   eldir = { config, pkgs, ... }: {
     imports = [ ../nixos/hosts/eldir/configuration.nix ];
