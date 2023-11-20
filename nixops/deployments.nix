@@ -5,9 +5,6 @@
     imports = [ ../nixos/hosts/mimir/configuration.nix ];
   };
 
-  kvasir = { config, pkgs, ... }: {
-    imports = [ ../nixos/hosts/kvasir/configuration.nix ];
-  };
 
   vali = { config, pkgs, ... }: {
     imports = [ ../nixos/hosts/vali/configuration.nix ];

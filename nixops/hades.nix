@@ -23,4 +23,10 @@
       targetPort = config.resources.services.ssh.port;
     };
   };
+  hades-k = { config, pkgs, ... }: {
+    deployment = {
+      targetHost = "192.168.3.30";
+      targetPort = config.resources.services.ssh.port;
+    };
+  };
 }

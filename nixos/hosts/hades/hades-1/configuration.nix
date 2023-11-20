@@ -38,10 +38,16 @@
     device = "/dev/disk/by-uuid/e8cab6fb-29f1-47f4-89d2-6b4ce302534f";
   };
 
+  fileSystems."/nfs/Safe" = {
+    device = "/dev/disk/by-uuid/c3a3426a-4421-4cd2-aa05-5e620f4e2fbb";
+  };
+
   services.nfs.server.enable = true;
   services.nfs.server.exports = ''
     /nfs         *(rw,fsid=0,no_subtree_check)
-    /nfs/Data *(rw,no_subtree_check,no_root_squash,anonuid=1000,anongid=1000)
+    /nfs/Data    *(rw,no_subtree_check,no_root_squash,anonuid=1000,anongid=1000)
+    /nfs/Safe    192.168.3.30(rw,no_subtree_check,all_squash,anonuid=1000,anongid=1000)
+    /nfs/Safe    *(rw,no_subtree_check,no_root_squash,anonuid=1000,anongid=1000)
   '';
 
 }

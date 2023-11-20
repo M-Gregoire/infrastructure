@@ -1,109 +1,127 @@
- { config, pkgs, lib, linuxKernel, ... }: {
-   imports = [
+{ config, pkgs, lib, linuxKernel, ... }:
 
-     (import ../../../common.nix {
-       inherit config pkgs lib;
-       hostname = "hades-k";
-       cluster = "hades";
-       clusterRole = "agent";
-       profile = "server";
-       network = "home";
-     })
-     ./hardware-configuration.nix
-     <nixos-hardware/raspberry-pi/4>
-     <home-manager/nixos>
-   ];
+let
 
-   system.stateVersion = "20.03";
+  customPkgs = (import ~/src/nixpkgs {
+    config.allowUnfree = true;
+    hostplatform = "armv7l-linux";
+    buildPlatform = "x86_64-linux";
+    system = "aarch64-linux";
+    # config.platform = lib.systems.platforms.raspberrypi4;
+    # crossSystem = "aarch64-linux";
+  });
+  # .pkgsCross.aarch64-multiplatform;
+in {
+  imports = [
 
-   services.xserver.enable = true;
-   services.xserver.desktopManager.kodi.enable = true;
-   # services.xserver.desktopManager.kodi.package = pkgs.kodi.withPackages (pkgs:
-   #   with pkgs; [
-   #     youtube
-   #     pvr-hts
-   #     invidious-test
-   #     arteplussept
-   #     #steamlauncher
-   #     # catchuptvandmore
-   #   ]);
-   services.xserver.desktopManager.kodi.package =
-     pkgs.kodi.withPackages (pkgs: [ ]);
-   services.xserver.displayManager.autoLogin.enable = true;
-   services.xserver.displayManager.autoLogin.user = "kodi";
+    (import ../../../common.nix {
+      inherit config pkgs lib;
+      hostname = "hades-k";
+      cluster = "hades";
+      clusterRole = "agent";
+      profile = "server";
+      network = "home";
+    })
+    ./hardware-configuration.nix
+    <nixos-hardware/raspberry-pi/4>
+    <home-manager/nixos>
+  ];
 
-   users.users.kodi = {
+  system.stateVersion = "20.03";
 
-     extraGroups = [ "${config.resources.username}" ];
-   };
+  fileSystems."/nfs/Safe" = {
+    device = "banana.martinache.net:/Safe";
+    fsType = "nfs";
+    options =
+      [ "x-systemd.automount" "noauto" "nolock" "x-systemd.idle-timeout=600" ];
+  };
 
-   home-manager.users.kodi = { ... }: {
-     home.stateVersion = "23.05";
-     programs.home-manager.enable = true;
+  services.xserver.enable = true;
+  services.xserver.desktopManager.kodi.enable = true;
 
-     programs.kodi = {
-       enable = true;
+  services.xserver.desktopManager.kodi.package = customPkgs.kodi.withPackages
+    (kodiPkgs:
+      with kodiPkgs; [
+        arteplussept
+        youtube
+        pvr-hts
+        catchuptvandmore
+      ]);
+  services.xserver.displayManager.autoLogin.enable = true;
+  services.xserver.displayManager.autoLogin.user = "kodi";
 
-       sources = {
-         video = {
-           default = "";
-           source = [
-             {
-               name = "movies";
-               path = "/nfs/Safe/services/movies/";
-               allowsharing = "true";
-             }
-             {
-               name = "tvseries";
-               path = "/nfs/Safe/services/tvseries/";
-               allowsharing = "true";
-             }
-           ];
-         };
-       };
-     };
+  # This may be needed to force Lightdm into 'autologin' mode.
+  # Setting an integer for the amount of time lightdm will wait
+  # between attempts to try to autologin again.
+  services.xserver.displayManager.lightdm.enable = true;
+  services.xserver.displayManager.lightdm.autoLogin.timeout = 3;
 
-   };
+  users.extraUsers.kodi.isNormalUser = true;
+  users.users.kodi = {
+    extraGroups = [
+      # Give access to CEC adapter
+      "dialout"
+    ];
+  };
 
-   # This may be needed to force Lightdm into 'autologin' mode.
-   # Setting an integer for the amount of time lightdm will wait
-   # between attempts to try to autologin again.
-   services.xserver.displayManager.lightdm.enable = true;
-   services.xserver.displayManager.lightdm.autoLogin.timeout = 3;
+  home-manager.users.kodi = { ... }: {
+    home.stateVersion = "23.05";
+    programs.home-manager.enable = true;
 
-   # Define a user account
-   users.extraUsers.kodi.isNormalUser = true;
+    # programs.kodi = {
+    #   enable = true;
 
-   boot.loader.grub.enable = false;
+    # sources = {
+    #   video = {
+    #     default = "";
+    #     source = [
+    #       {
+    #         name = "movies";
+    #         path = "/nfs/Safe/services/movies/";
+    #         allowsharing = "true";
+    #       }
+    #       {
+    #         name = "tvseries";
+    #         path = "/nfs/Safe/services/tvseries/";
+    #         allowsharing = "true";
+    #       }
+    #     ];
+    #   };
+    # };
 
-   #boot.kernelPackages = lib.mkForce pkgs.linuxPackages_rpi4;
-   boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
-   # Fix k3s
-   boot.kernelParams = [
-     "cgroup_enable=cpuset"
-     "cgroup_memory=1"
-     "cgroup_enable=memory"
-     # https://www.suse.com/support/kb/doc/?id=7014266
-     "nfs.nfs4_disable_idmapping=1"
+    # addonSettings = { };
+    # };
 
-   ];
-   # Enables the generation of /boot/extlinux/extlinux.conf
-   boot.loader.generic-extlinux-compatible.enable = true;
-   # boot.kernelModules = [ "cxd2880" "cxd2880-spi" ];
+    # home.file.".kodi/userdata/addon_data/pvr.hts/instance-settings-1.xml" =
+    #   "${config.resources.paths.secrets}/kodi/pvr.hts.config.xml";
+  };
 
-   environment.systemPackages = with pkgs; [
-     # libraspberrypi
-     # raspberrypi-eeprom
-     pkgs.k3s
-     pkgs.containerd
-     pkgs.kubectl
-   ];
+  boot.loader.grub.enable = false;
 
-   services.k3s = {
-     enable = true;
-     role = "agent";
-   };
+  # boot.kernelPackages = lib.mkForce pkgs.linuxPackages_rpi4;
+  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
+  # Fix k3s
+  boot.kernelParams = [
+    "cgroup_enable=cpuset"
+    "cgroup_memory=1"
+    "cgroup_enable=memory"
+    # https://www.suse.com/support/kb/doc/?id=7014266
+    "nfs.nfs4_disable_idmapping=1"
 
-   networking.firewall.allowedTCPPorts = [ 6443 ];
+  ];
+  # Enables the generation of /boot/extlinux/extlinux.conf
+  boot.loader.generic-extlinux-compatible.enable = true;
 
- }
+  environment.systemPackages = with pkgs; [
+    pkgs.k3s
+    pkgs.containerd
+    pkgs.kubectl
+  ];
+
+  services.k3s = {
+    enable = true;
+    role = "agent";
+  };
+
+  networking.firewall.allowedTCPPorts = [ 6443 ];
+}
