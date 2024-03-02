@@ -5,7 +5,6 @@
     imports = [ ../nixos/hosts/mimir/configuration.nix ];
   };
 
-
   vali = { config, pkgs, ... }: {
     imports = [ ../nixos/hosts/vali/configuration.nix ];
   };
@@ -22,8 +21,11 @@
   hades-4 = { config, pkgs, ... }: {
     imports = [ ../nixos/hosts/hades/hades-4/configuration.nix ];
   };
-  hades-k = { config, pkgs, ... }: {
-    imports = [ ../nixos/hosts/hades/hades-k/configuration.nix ];
+  hades-5 = { config, pkgs, ... }: {
+    imports = [ ../nixos/hosts/hades/hades-5/configuration.nix ];
+  };
+  hades-6 = { config, pkgs, ... }: {
+    imports = [ ../nixos/hosts/hades/hades-6/configuration.nix ];
   };
 
   eldir = { config, pkgs, ... }: {

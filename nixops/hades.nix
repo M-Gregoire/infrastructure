@@ -23,10 +23,18 @@
       targetPort = config.resources.services.ssh.port;
     };
   };
-  hades-k = { config, pkgs, ... }: {
+  hades-5 = { config, pkgs, ... }: {
     deployment = {
-      targetHost = "192.168.3.30";
-      targetPort = config.resources.services.ssh.port;
+      targetHost = "192.168.3.35";
+      targetPort = 22;
+      # targetPort = config.resources.services.ssh.port;
+    };
+  };
+  hades-6 = { config, pkgs, ... }: {
+    deployment = {
+      targetHost = "192.168.3.36";
+      targetPort = 22;
+      #targetPort = config.resources.services.ssh.port;
     };
   };
 }
