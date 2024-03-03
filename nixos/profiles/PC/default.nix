@@ -22,7 +22,7 @@
   hardware.enableAllFirmware = true;
 
   # Deploy to Arm64
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" "armv6l-linux" ];
 
   # Wifi
   environment.etc."wpa_supplicant.conf".source =
@@ -46,9 +46,6 @@
       # Fix Tramp (Emacs) with ZSH https://www.emacswiki.org/emacs/TrampMode#toc9
       interactiveShellInit = ''
         [[ $TERM == 'dumb' ]] && unsetopt zle && PS1='$ ' && return
-        # https://github.com/gopasspw/gopass/issues/585#issuecomment-355339632
-        source <(gopass completion zsh | head -n -1 | tail -n +2)
-        compdef _gopass gopass
       '';
     };
   };

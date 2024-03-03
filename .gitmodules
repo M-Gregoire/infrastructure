@@ -1,6 +1,6 @@
 [submodule "vendor/infrastructure-private"]
 	path = vendor/infrastructure-private
-	url = git@gitlab.martinache.net:M-Gregoire/infrastructure-private.git
+	url = ssh://git@git.martinache.net:2222/M-Gregoire/infrastructure-private.git
 [submodule "vendor/rofi"]
 	path = vendor/rofi
 	url = https://github.com/adi1090x/rofi.git
