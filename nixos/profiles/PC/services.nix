@@ -50,7 +50,7 @@
         Type = "simple";
         # TODO: Remove Grégoire
         ExecStart =
-          "${pkgs.nextcloud-client}/bin/nextcloudcmd -h -n --path /Grégoire/org ${config.resources.paths.home}/org ${config.resources.services.nextcloud.url}";
+          "${pkgs.nextcloud-client}/bin/nextcloudcmd -h -n --path /org ${config.resources.paths.home}/org ${config.resources.services.nextcloud.url}";
         TimeoutStopSec = "180";
         # KillMode = "process";
         # KillSignal = "SIGINT";
