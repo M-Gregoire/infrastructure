@@ -27,6 +27,13 @@
   boot.initrd.kernelModules = [ "amdgpu" ];
   services.xserver.videoDrivers = [ "amdgpu" ];
 
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
+   virtualisation.virtualbox.host.enable = true;
+   users.extraGroups.vboxusers.members = [ "gregoire" ];
+
+  boot.kernelModules = [ "kvm-amd" "kvm-intel" ];
+
   networking.wireless.enable = false;
 
   environment.systemPackages = with pkgs; [ numlockx glxinfo ];

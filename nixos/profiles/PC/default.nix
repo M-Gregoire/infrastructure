@@ -86,7 +86,7 @@
     resources = config.resources;
   };
 
-  fonts.fonts = with pkgs;
+  fonts.packages = with pkgs;
     [
       # https://github.com/NixOS/nixpkgs/issues/47921#issuecomment-435310057
       # nix-prefetch-url --type sha256 --unpack --name source https://files.martinache.net/nerd-fonts-2.1.0.tar.gz 1la79y16k9rwcl2zsxk73c0kgdms2ma43kpjfqnq5jlbfdj0niwg

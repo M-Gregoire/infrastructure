@@ -5,7 +5,7 @@
 
     (import ../../../common.nix {
       inherit config pkgs lib;
-      hostname = "hades-4";
+      hostname = "hades-5";
       cluster = "hades";
       clusterRole = "agent";
       profile = "server";
@@ -35,4 +35,7 @@
   };
 
   networking.firewall.allowedTCPPorts = [ 6443 ];
+
+  services.udev.extraRules = "";
+
 }

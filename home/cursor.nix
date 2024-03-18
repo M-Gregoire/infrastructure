@@ -5,7 +5,7 @@
   home = {
     pointerCursor = {
       size = 40;
-      package = pkgs.nur.repos.ambroisie.vimix-cursors;
+      package = pkgs.vimix-cursors;
       name = "Vimix-white-cursors";
     };
   };

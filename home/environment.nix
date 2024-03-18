@@ -7,7 +7,8 @@
     CONFIGROOT = "${config.resources.paths.publicConfig}";
     PRIVATEROOT = "${config.resources.paths.privateConfig}";
     # Go
-    GOROOT = "${pkgs.go.out}/share/go";
+    GOROOT = "~/go";
+    PATH = "$PATH:${config.resources.paths.home}/bin";
     # Config
     BROWSER = "${config.resources.pcs.browser}";
     EDITOR = "emacsclient -nw";

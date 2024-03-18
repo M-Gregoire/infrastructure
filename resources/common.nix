@@ -13,10 +13,10 @@
       keyboard.layout = "us";
       keyboard.xkbOptions = "compose:ralt";
 
-      font.name = "DejaVu Sans Mono Nerd Font";
+      font.name = "DejaVuSansM Nerd Font";
       font.size = 16.0;
 
-      bar.font.name = "DejaVu Sans Mono Nerd Font";
+      bar.font.name = "DejaVuSansM Nerd Font";
       bar.font.size = 16.0;
 
       theme = {

@@ -58,7 +58,7 @@
       # tree
       tree
       # dhclient
-      dhcp
+      # dhcp
       # lsof
       lsof
     ];
@@ -101,7 +101,7 @@
       home = "/home/${config.resources.username}";
       uid = 1000;
       group = "${config.resources.username}";
-      extraGroups = [ "users" "wheel" "docker" ];
+      extraGroups = [ "users" "wheel" "docker" "qemu-libvirtd" "libvirtd" ];
       shell = pkgs.zsh;
       openssh.authorizedKeys.keys = config.resources.services.ssh.publicKeys;
     };

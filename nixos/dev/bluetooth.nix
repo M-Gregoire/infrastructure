@@ -4,7 +4,7 @@
   # Bluetooth
   hardware.bluetooth = {
     enable = true;
-    package = pkgs.bluezFull;
+    package = pkgs.bluez;
     # A2DP Sink
     settings = { General = { Enable = "Source,Sink,Media,Socket"; }; };
   };

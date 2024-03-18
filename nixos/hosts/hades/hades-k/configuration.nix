@@ -45,7 +45,7 @@ in {
         arteplussept
         youtube
         pvr-hts
-        catchuptvandmore
+        # catchuptvandmore
       ]);
   services.xserver.displayManager.autoLogin.enable = true;
   services.xserver.displayManager.autoLogin.user = "kodi";

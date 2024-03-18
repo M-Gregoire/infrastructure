@@ -18,14 +18,14 @@ in {
 
   # /!\ DNS fallback is not a recovery DNS
   # See https://github.com/systemd/systemd/issues/5771#issuecomment-296673115
-  services.resolved.extraConfig = ''
-    FallbackDNS=${
-      builtins.concatStringsSep " " config.resources.networking.fallbackDNS
-    }
-  '';
+  # services.resolved.extraConfig = ''
+  #   FallbackDNS=${
+  #     builtins.concatStringsSep " " config.resources.networking.fallbackDNS
+  #   }
+  # '';
 
   # Add search domain
-  services.resolved.domains = config.resources.networking.searchDomains;
+  # services.resolved.domains = config.resources.networking.searchDomains;
 
   # Based on https://github.com/NixOS/nixpkgs/issues/30904#issuecomment-445073924
   # If two ethernet ports are present but only one is plugged in, wait-online would fail
