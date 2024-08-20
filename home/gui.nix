@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, flake-root, ... }:
 
 let
   # Needed for pcmanfm "Open terminal here"
@@ -17,6 +17,8 @@ in {
   xresources.properties = { "Xft.dpi" = config.resources.screen.dpi; };
 
   home.packages = with pkgs; [
+    glibc
+    linuxsampler
     # Browser & emails
     firefox
     chromium
@@ -28,8 +30,6 @@ in {
     # Editors
     libreoffice
     leafpad
-    # Music
-    spotify
     # Chats
     signal-desktop
     # File manager
@@ -62,8 +62,8 @@ in {
     rustdesk
   ];
 
-  xdg.configFile."kitty/kitty.conf".source = /.
-    + "${config.resources.paths.publicDotfiles}" + /kitty/kitty.conf;
+  xdg.configFile."kitty/kitty.conf".source =
+    builtins.toPath "${flake-root}/dotfiles/kitty/kitty.conf";
   home.file.".mozilla/firefox/${config.resources.pcs.firefox.profile}/user.js".source =
-    /. + "${config.resources.paths.publicDotfiles}" + /firefox/user.js;
+    builtins.toPath "${flake-root}/dotfiles/firefox/user.js";
 }

@@ -2,16 +2,17 @@
 
 let
 
-  pywalfox = pkgs.python39.pkgs.buildPythonPackage rec {
+  pywalfox = pkgs.python39.pkgs.buildPythonPackage {
     pname = "pywalfox";
-    version = "2.7.4";
-    doCheck = false;
-    src = pkgs.python39.pkgs.fetchPypi {
-      inherit pname version;
-      sha256 = "0rpdh1k4b37n0gcclr980vz9pw3ihhyy0d0nh3xp959q4xz3vrsr";
+    version = "2.8.0rc1";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "Frewacom";
+      repo = "pywalfox-native";
+      rev = "7ecbbb193e6a7dab424bf3128adfa7e2d0fa6ff9";
+      hash = "sha256-i1DgdYmNVvG+mZiFiBmVHsQnFvfDFOFTGf0GEy81lpE=";
     };
   };
-
 in {
   home.packages = with pkgs;
     [

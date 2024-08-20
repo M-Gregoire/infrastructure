@@ -15,7 +15,10 @@
     pulseaudio
     pulseaudio-ctl
     # Screenshots
-    scrot
+    xdg-user-dirs
+    xclip
+    viewnior
+    maim
     # Used by noCTRLqFirefox script
     xvkbd
     xdotool

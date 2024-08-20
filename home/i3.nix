@@ -43,7 +43,7 @@ in {
     # Remove urgency
     wmctrl
     # Lock screen
-    i3lock-fancy
+    betterlockscreen
     # Auto lock after inactivity
     xidlehook
     # xidlehook script
@@ -56,6 +56,10 @@ in {
     xsettingsd
     # Notifications
     dunst
+    # Spotify module
+    zscroll
+    # Brightness
+    light
   ];
 
   xsession = {
@@ -128,9 +132,9 @@ in {
           "exec i3-nagbar -t warning -m 'Do you want to exit i3?' -b 'Yes' 'i3-msg exit'";
         "${modifier}+Shift+a" = "kill";
         "${modifier}+d" =
-          "exec color='nordic' theme='ribbon_left_round' /home/${config.resources.username}/.config/rofi/launchers/ribbon/launcher.sh";
+          "exec --no-startup-id ${config.resources.paths.scripts}/launcher.sh";
         "${modifier}+Shift+s" =
-          "exec theme='row_rounded' color='nordic' shutdown='襤' reboot='ﰇ' lock='' suspend='⏾' logout='' /home/${config.resources.username}/.config/rofi/powermenu/powermenu.sh";
+          "exec --no-startup-id ${config.resources.paths.scripts}/powermenu.sh";
         "${modifier}+Shift+x" = "exec i3lock-fancy";
         # Basic movements/focus
         "${modifier}+j" = "focus left";
@@ -166,13 +170,11 @@ in {
         "XF86AudioLowerVolume" = "exec --no-startup-id pamixer -d 5";
         "XF86AudioMute" = "exec --no-startup-id pamixer -t";
         "XF86AudioPlay" =
-          "exec --no-startup-id dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause";
+          "exec --no-startup-id playerctl play-pause -p spotify";
         "XF86AudioPause" =
-          "exec --no-startup-id dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause";
-        "XF86AudioNext" =
-          "exec --no-startup-id dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next";
-        "XF86AudioPrev" =
-          "exec --no-startup-id dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous";
+          "exec --no-startup-id playerctl play-pause -p spotify";
+        "XF86AudioNext" = "exec --no-startup-id playerctl next -p spotify";
+        "XF86AudioPrev" = "exec --no-startup-id playerctl previous -p spotify";
         # Modes
         "${modifier}+r" = ''mode "resize"'';
         "${modifier}+m" = " focus floating; mode \"moveit\"";
@@ -183,9 +185,7 @@ in {
           "exec --no-startup-id ${config.resources.paths.scripts}/hidePolybar.sh";
         "Scroll_Lock" = "exec --no-startup-id $SCRIPTS/kbdLayout.sh";
         "Print" =
-          "exec --no-startup-id scrot -e 'mv $f ${screenshot}' && notify-send 'Screenshot taken'";
-        "--release ${modifier}+Print" =
-          "exec --no-startup-id scrot -s -e 'mv $f ${screenshot}' && notify-send 'Screenshot taken'";
+          "exec --no-startup-id ${config.resources.paths.scripts}/screenshot.sh";
         # Disable Control+q in Firefox
         "${modifier}+Control+q" =
           "exec --no-startup-id ${config.resources.paths.scripts}/noCTRLqFirefox.sh";
@@ -310,13 +310,6 @@ in {
           always = true;
           notification = false;
         }
-        # Spotify in Polybar
-        {
-          command =
-            "while ! ps -aux | grep 'spotify'; do sleep 3; done; /usr/bin/env python3 ${config.resources.paths.publicConfig}/vendor/polybar-spotify-controls/scripts/spotify/py_spotify_listener.py";
-          always = false;
-          notification = false;
-        }
         # Xbanish to hide mouse if unused
         {
           command = "xbanish";
@@ -331,8 +324,7 @@ in {
       exec --no-startup-id i3-msg "workspace ${workspace4}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/pcmanfm.json" && pcmanfm
       exec --no-startup-id i3-msg "workspace ${workspace1}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/firefox.json" \
                                    && i3-msg "workspace ${workspace9}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/thunderbird.json" \
-                                   && ${config.resources.paths.scripts}/theme.sh ${config.resources.pcs.wallpaper.folder} ${config.resources.pcs.wallpaper.current} > /tmp/theme.sh.log 2>&1 \
-                                   && thunderbird
+                                   && ${config.resources.paths.scripts}/theme.sh ${config.resources.pcs.wallpaper.folder} ${config.resources.pcs.wallpaper.current} > /tmp/theme.sh.log 2>&1
       # Get color from Xresources
       # https://i3wm.org/docs/userguide.html#xresources
       # Defaults to ugly red so I can immediatelyly see there is an issue

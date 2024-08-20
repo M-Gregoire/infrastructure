@@ -27,14 +27,11 @@
             lib.strings.floatToString config.resources.font.size
           }:antialias=true;2";
         modules-left = "i3";
-        modules-center = "spotify previous playpause next sep date";
+        modules-center =
+          "spotify spotify-prev spotify-play-pause spotify-next sep date";
         # TODO: Add pipewire module
         modules-right =
-          "vpn screenshot temperature cpu memory network-wired network-wireless backlight battery powermenu";
-        tray-position = "right";
-        tray-detached = "false";
-        tray-padding = "2";
-        tray-background = "\${xrdb:color0}";
+          "temperature cpu memory network-wired network-wireless battery tray";
         wm-restack = "i3";
         cursor-click = "pointer";
         cursor-scroll = "ns-resize";
@@ -42,46 +39,43 @@
         enable-ipc = "true";
       };
 
-      "module/previous" = {
+      "module/spotify-prev" = {
         type = "custom/script";
-        interval = "86400";
+        # interval = "86400";
         format = "%{T3}<label>";
         # Previous song icon
         exec = "echo ";
-        click-left =
-          "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous";
+        click-left = "playerctl previous -p spotify";
       };
 
-      "module/next" = {
+      "module/spotify-next" = {
         type = "custom/script";
-        interval = "86400";
+        # interval = "86400";
         format = "%{T3}<label>";
         # Next song icon
         exec = "echo ";
-        click-left =
-          "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next";
+        click-left = "playerctl next -p spotify";
       };
 
-      "module/playpause" = {
+      "module/spotify-play-pause" = {
         type = "custom/ipc";
-        # Default
-        hook-0 = "echo ";
         # Playing
-        hook-1 = "echo ";
+        hook-0 = "echo ";
         # Paused
-        hook-2 = "echo ";
+        hook-1 = "echo ";
         initial = "1";
-        click-left =
-          "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause";
+        click-left = "playerctl play-pause -p spotify";
       };
 
       "module/spotify" = {
-        type = "custom/ipc";
-        hook-0 = "echo ";
-        hook-1 =
-          "python3 ${config.resources.paths.publicConfig}/vendor/polybar-spotify-controls/scripts/spotify/spotify_status.py";
-        initial = "1";
-        format-padding = "2";
+        type = "custom/script";
+        tail = true;
+        interval = 1;
+        format-prefix = " ";
+        format = "<label>";
+        exec =
+          "${config.resources.paths.publicConfig}/vendor/polybar-spotify/scroll_spotify_status.sh";
+        # format-padding = "2";
       };
 
       "module/i3" = {
@@ -137,16 +131,9 @@
         ramp-load-7-foreground = "#C36561";
       };
 
-      "module/screenshot" = {
-        type = "custom/text";
-        content = "";
-        # TODO: Fix
-        click-left = "~/.config/rofi/scripts/menu_screenshot.sh";
-      };
-
       "module/sep" = {
         type = "custom/text";
-        content = " | ";
+        format = " | ";
       };
 
       "module/memory" = {
@@ -176,20 +163,6 @@
         ramp-used-7-foreground = "#C36561";
       };
 
-      "module/powermenu" = {
-        type = "custom/text";
-        content = "";
-        # TODO: Fix
-        click-left = "~/.config/rofi/scripts/menu_powermenu.sh";
-      };
-
-      "module/vpn" = {
-        type = "custom/script";
-        exec = "echo ";
-        exec-if = "systemctl is-active --quiet wireguard-wg0";
-        interval = 5;
-      };
-
       "module/date" = {
         type = "internal/date";
         interval = "1";
@@ -198,6 +171,11 @@
         label = "%date% %time%";
         format-prefix = " ";
         format-prefix-foreground = "#AB71FD";
+      };
+
+      "module/tray" = {
+        type = "internal/tray";
+        tray-spacing = "0px";
       };
 
       "module/temperature" = {
