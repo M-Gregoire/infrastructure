@@ -1,15 +1,6 @@
-[submodule "vendor/infrastructure-private"]
-	path = vendor/infrastructure-private
-	url = ssh://git@git.martinache.net:2222/M-Gregoire/infrastructure-private.git
+[submodule "vendor/polybar-spotify"]
+	path = vendor/polybar-spotify
+	url = git@github.com:M-Gregoire/polybar-spotify.git
 [submodule "vendor/rofi"]
 	path = vendor/rofi
-	url = https://github.com/adi1090x/rofi.git
-[submodule "vendor/grub2-themes"]
-	path = vendor/grub2-themes
-	url = https://github.com/vinceliuice/grub2-themes.git
-[submodule "vendor/polybar-spotify-controls"]
-	path = vendor/polybar-spotify-controls
-	url = https://github.com/dietervanhoof/polybar-spotify-controls.git
-[submodule "dotfiles/doom.d"]
-	path = dotfiles/doom.d
-	url = git@github.com:M-Gregoire/Doom-emacs-config.git
+	url = git@github.com:M-Gregoire/rofi.git
