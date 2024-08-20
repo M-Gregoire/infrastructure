@@ -1,7 +1,7 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, config, lib, private-config, ... }:
 
 {
-  imports = [ ../../../vendor/infrastructure-private/resources/hosts/vali ];
+  imports = [ "${private-config}/resources/hosts/vali" ];
 
   config.resources = {
     luks.drive = "/dev/nvme0n1p2";

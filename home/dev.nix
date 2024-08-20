@@ -1,4 +1,4 @@
-{ pkgs, config, substituteAll, ... }:
+{ pkgs, config, substituteAll, flake-root, ... }:
 
 {
   imports = [
@@ -13,8 +13,8 @@
     ./dev/nix.nix
     ./dev/python.nix
     ./dev/ssh.nix
+    ./dev/spicetify.nix
   ];
 
-  home.file.".editorconfig".source = builtins.toPath
-    "${config.resources.paths.publicDotfiles}/root.editorconfig";
+  home.file.".editorconfig".source = "${flake-root}/dotfiles/root.editorconfig";
 }

@@ -1,9 +1,7 @@
-{ config, ... }:
+{ config, private-config, ... }:
 
 {
-  imports = [
-    ../../vendor/infrastructure-private/resources/home/ssh.nix
-  ];
+  imports = [ "${private-config}/resources/home/ssh.nix" ];
 
   programs.ssh = {
     enable = true;

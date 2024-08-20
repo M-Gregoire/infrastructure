@@ -1,9 +1,9 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, private-config, ... }:
 
 {
   imports = [
     (import ../../common.nix {
-      inherit config pkgs lib;
+      inherit config pkgs lib private-config;
       hostname = "vali";
       profile = "PC";
       network = "home";
@@ -14,7 +14,6 @@
     ./../../dev/luks.nix
     ./../../dev/steam.nix
     ./hardware-configuration.nix
-    <nixos-hardware/dell/xps/13-9350>
   ];
 
   config = {

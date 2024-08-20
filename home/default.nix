@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, emacs-dotfiles, ... }:
 
 {
   imports = [ ./home.nix ];
@@ -19,20 +19,25 @@
             rm -f $d
           fi
         done
-        for d in ${config.resources.paths.publicConfig}/vendor/rofi/1080p/*; do
+        for d in ${config.resources.paths.publicConfig}/vendor/rofi/files/*; do
           f=$(basename "$d")
           if [[ ! -L "$f" ]]; then
-             ln -s ${config.resources.paths.publicConfig}/vendor/rofi/1080p/$f $f
+             ln -s ${config.resources.paths.publicConfig}/vendor/rofi/files/$f $f
           fi
         done
         if [[ ! -L "pywal.rasi" ]]; then
             ln -s ${config.resources.paths.home}/.cache/wal/colors-rofi-dark.rasi pywal.rasi
         fi
-        # Modify the scripts to get all parameters from environment variables
-        for val in "theme" "color" "shutdown" "reboot" "lock" "suspend" "logout"; do
-          sed -i "s/^$val/#$val/" ${config.resources.paths.publicConfig}/vendor/rofi/1080p/powermenu/powermenu.sh
-          sed -i "s/^$val/#$val/" ${config.resources.paths.publicConfig}/vendor/rofi/1080p/launchers/ribbon/launcher.sh
-        done
+        # Set theme
+        rm $HOME/.config/rofi/powermenu/type-2/shared/colors.rasi
+        echo '@import "~/.config/rofi/colors/solarized.rasi"' > $HOME/.config/rofi/powermenu/type-2/shared/colors.rasi
+        rm $HOME/.config/rofi/launchers/type-2/shared/colors.rasi
+        echo '@import "~/.config/rofi/colors/solarized.rasi"' > $HOME/.config/rofi/launchers/type-2/shared/colors.rasi
+        rm $HOME/.config/rofi/applets/shared/colors.rasi
+        echo '@import "~/.config/rofi/colors/solarized.rasi"' > $HOME/.config/rofi/applets/shared/colors.rasi
+        rm $HOME/.config/rofi/applets/shared/theme.bash
+        echo 'type="$HOME/.config/rofi/applets/type-2"' > $HOME/.config/rofi/applets/shared/theme.bash
+        echo "style='style-1.rasi'" >> $HOME/.config/rofi/applets/shared/theme.bash
       fi
     '';
 
@@ -41,18 +46,15 @@
       mkdir -p ${config.resources.paths.home}/Screenshots/
     '';
 
-    # Instead of using home file source, I prefer to make a Symlink
-    # To avoid having to rebuild home-assistant configuration everytime
-    # I make an emacs config change
-    # home.file.".doom.d/init.el".source =
-    #   builtins.toPath "${config.resources.paths.publicDotfiles}/doom.d/init.el";
-    # home.file.".doom.d/config.el".source =
-    #   builtins.toPath "${config.resources.paths.publicDotfiles}/doom.d/config.el";
-    # home.file.".doom.d/packages.el".source = builtins.toPath
-    #   "${config.resources.paths.publicDotfiles}/doom.d/packages.el";
-    doom = ''
-      [ -d "${config.resources.paths.home}/.doom.d" ] && rm -rf ${config.resources.paths.home}/.doom.d
-      ln -s ${config.resources.paths.publicDotfiles}/doom.d ${config.resources.paths.home}/.doom.d
-    '';
   };
+  # Instead of using home file source, I prefer to make a Symlink
+  # To avoid having to rebuild home-assistant configuration everytime
+  # I make an emacs config change
+  home.file.".doom.d/init.el".source = "${emacs-dotfiles}/init.el";
+  home.file.".doom.d/config.el".source = "${emacs-dotfiles}/config.el";
+  home.file.".doom.d/packages.el".source = "${emacs-dotfiles}/packages.el";
+  # doom = ''
+  #   [ -d "${config.resources.paths.home}/.doom.d" ] && rm -rf ${config.resources.paths.home}/.doom.d
+  #   ln -s ${config.resources.paths.publicDotfiles}/doom.d ${config.resources.paths.home}/.doom.d
+  # '';
 }

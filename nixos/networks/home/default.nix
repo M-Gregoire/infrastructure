@@ -1,7 +1,7 @@
-{ config, pkgs, ... }:
+{ config, pkgs, private-config, ... }:
 
 {
-  imports = [ ../../../vendor/infrastructure-private/resources/networks/home ];
+  imports = [ "${private-config}/resources/networks/home" ];
 
   networking.enableIPv6 = false;
 }

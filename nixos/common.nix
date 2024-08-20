@@ -1,5 +1,5 @@
 { config, pkgs, lib, hostname, cluster ? "", clusterRole ? "", profile, network
-, ... }:
+, private-config, ... }:
 
 # Note: It appears impossible to create the import paths
 # based on the define hostname through options (https://www.reddit.com/r/NixOS/comments/q2t69g/comment/hfrd1ig)
@@ -8,29 +8,29 @@
 {
   imports = lib.flatten [
     ../modules
-    ./dev/docker.nix
     ./dev/nfs.nix
+    ./dev/docker.nix
+    ../resources/common.nix
+    ./dev/openvpn-client.nix
+    ./dev/term.nix
+    ./services.nix
+    (./. + "/profiles/${profile}")
+    (./. + "/networks/${network}")
+
     (if cluster == "" then
       ../. + "/resources/hosts/${hostname}"
     else [
       (import (../. + "/resources/hosts/${cluster}") {
         inherit config pkgs lib clusterRole;
       })
-      (import
-        (../. + "/vendor/infrastructure-private/resources/hosts/${cluster}") {
-          inherit config pkgs lib clusterRole;
-        })
+      (import (../. + "${private-config}/resources/hosts/${cluster}") {
+        inherit config pkgs lib clusterRole;
+      })
       (import (./. + "/hosts/${cluster}") {
         inherit config pkgs lib clusterRole;
       })
       (../. + "/resources/hosts/${cluster}/${hostname}")
     ])
-    ../resources/common.nix
-    (./. + "/profiles/${profile}")
-    (./. + "/networks/${network}")
-    ./dev/openvpn-client.nix
-    ./dev/term.nix
-    ./services.nix
   ];
 
   config = {
@@ -62,9 +62,6 @@
       # lsof
       lsof
     ];
-
-    nixpkgs.config = import ../nixpkgs/config.nix;
-    nixpkgs.overlays = import ../nixpkgs/overlays.nix;
 
     networking.hostName = config.resources.hostname;
 

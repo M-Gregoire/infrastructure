@@ -1,10 +1,11 @@
-{ pkgs, config, ... }:
+{ pkgs, config, flake-root, ... }:
 
 {
 
-  home.file.".gnupg/gpg.conf".source = builtins.toPath "${config.resources.paths.publicDotfiles}/gnupg/gpg.conf";
+  home.file.".gnupg/gpg.conf".source =
+    builtins.toPath "${flake-root}/gnupg/gpg.conf";
 
-  home.packages = with pkgs; [pinentry-gtk2];
+  home.packages = with pkgs; [ pinentry-gtk2 ];
   services.gpg-agent = {
     enable = true;
     enableSshSupport = true;

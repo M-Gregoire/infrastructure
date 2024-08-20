@@ -1,8 +1,7 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, private-config, ... }:
 
 {
-  imports =
-    [ ../modules ../vendor/infrastructure-private/resources/common.nix ];
+  imports = [ ../modules "${private-config}/resources/common.nix" ];
 
   config.resources = with lib;
     mapAttrs (_: v: mkDefault v) {

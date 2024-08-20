@@ -14,9 +14,6 @@
     ./services.nix
   ];
 
-  nixpkgs.config = import ../nixpkgs/config.nix;
-  nixpkgs.overlays = import ../nixpkgs/overlays.nix;
-
   # Manage XDG base directories (Set XDG_ variables)
   xdg.enable = true;
   xdg.configFile."nixpkgs".source = ../nixpkgs;
@@ -26,4 +23,5 @@
   programs.home-manager.enable = true;
 
   home.stateVersion = "22.11";
+
 }

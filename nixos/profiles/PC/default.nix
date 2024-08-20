@@ -1,9 +1,8 @@
-{ config, pkgs, options, ... }:
+{ config, pkgs, options, private-config, ... }:
 
 {
   imports = [
-    <home-manager/nixos>
-    ../../../vendor/infrastructure-private/resources/profiles/PC
+    "${private-config}/resources/profiles/PC"
     ../../dev/android.nix
     ../../dev/audio.nix
     ../../dev/fwudp.nix
@@ -15,6 +14,8 @@
     ./services.nix
     ./resources.nix
   ];
+
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   powerManagement.cpuFreqGovernor = "performance";
 
@@ -40,6 +41,9 @@
     # Enable libinput
     enable = true;
   };
+
+  # Brightness control
+  programs.light.enable = true;
 
   programs = {
     zsh = {
@@ -72,6 +76,8 @@
       "disk"
       # Audio
       "audio"
+      # Brightness control
+      "video"
     ];
   };
 
@@ -81,8 +87,6 @@
       (../../../home/hosts + builtins.toPath "/${config.resources.hostname}")
     ];
     # Pass to home-manager
-    nixpkgs.overlays = config.nixpkgs.overlays;
-    nixpkgs.config = import ../../../nixpkgs/config.nix;
     resources = config.resources;
   };
 

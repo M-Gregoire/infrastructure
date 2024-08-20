@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, config, private-config, ... }:
 
 {
   home.packages = with pkgs; [
@@ -35,8 +35,8 @@
     nixfmt
   ];
 
-  home.file.".emacs.d/.local/etc/bookmarks".source = builtins.toPath
-    "${config.resources.paths.privateDotfiles}/emacs.d/bookmarks";
+  home.file.".emacs.d/.local/etc/bookmarks".source =
+    builtins.toPath "${private-config}/dotfiles/emacs.d/bookmarks";
 
   systemd.user.services.emacs = {
     Unit = {
