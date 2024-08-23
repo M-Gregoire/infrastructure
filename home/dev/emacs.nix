@@ -1,4 +1,4 @@
-{ pkgs, config, private-config, ... }:
+{ pkgs, config, private-config, emacs-dotfiles, ... }:
 
 {
   home.packages = with pkgs; [
@@ -17,7 +17,7 @@
     ##  Go
     go
     gopls
-    gocode
+    #gocode
     gomodifytags
     gotests
     gore
@@ -32,25 +32,14 @@
     ## Javascript
     nodePackages.javascript-typescript-langserver
     ## Nix
-    nixfmt
+    nixfmt-classic
   ];
 
   home.file.".emacs.d/.local/etc/bookmarks".source =
     builtins.toPath "${private-config}/dotfiles/emacs.d/bookmarks";
-
-  systemd.user.services.emacs = {
-    Unit = {
-      Description = "Emacs text editor";
-      After = [ "network-online.target" ];
-    };
-    Service = {
-      Type = "forking";
-      ExecStart = "${pkgs.emacs}/bin/emacs --daemon=main";
-      ExecStop = ''${pkgs.emacs}/bin/emacsclient --eval "(kill-emacs)"'';
-      Restart = "on-failure";
-    };
-    Install = { WantedBy = [ "default.target" ]; };
-  };
+  home.file.".doom.d/init.el".source = "${emacs-dotfiles}/init.el";
+  home.file.".doom.d/config.el".source = "${emacs-dotfiles}/config.el";
+  home.file.".doom.d/packages.el".source = "${emacs-dotfiles}/packages.el";
 
   xresources.properties = {
     # Font backend settings

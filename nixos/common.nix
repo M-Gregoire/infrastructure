@@ -8,12 +8,7 @@
 {
   imports = lib.flatten [
     ../modules
-    ./dev/nfs.nix
-    ./dev/docker.nix
     ../resources/common.nix
-    ./dev/openvpn-client.nix
-    ./dev/term.nix
-    ./services.nix
     (./. + "/profiles/${profile}")
     (./. + "/networks/${network}")
 
@@ -31,28 +26,22 @@
       })
       (../. + "/resources/hosts/${cluster}/${hostname}")
     ])
+
+    (if pkgs.stdenv.isLinux then
+      (import ./system/linux)
+    else
+      (import ./system/darwin))
   ];
 
   config = {
 
-    # Boot with last kernel by default
-    # https://github.com/NixOS/nixpkgs/issues/30335
-    # Check by comparing
-    # file -L /run/current-system/kernel
-    # uname -r
-    boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
-
     environment.systemPackages = with pkgs; [
       # File type
       file
-      # Disk management
-      parted
       # DNS utils (dig)
       dnsutils
       # htop
       htop
-      # List hardware
-      lshw
       # tmux
       tmux
       # tree
@@ -63,30 +52,6 @@
       lsof
     ];
 
-    networking.hostName = config.resources.hostname;
-
-    networking.firewall.allowedTCPPorts = [ config.resources.services.ssh.port ]
-      ++ config.resources.networking.firewall.openTCPPorts;
-    networking.firewall.allowedUDPPorts =
-      config.resources.networking.firewall.openUDPPorts;
-    networking.firewall.allowedTCPPortRanges =
-      config.resources.networking.firewall.openTCPPortsRange;
-    networking.firewall.allowedUDPPortRanges =
-      config.resources.networking.firewall.openUDPPortsRange;
-
-    services.openssh.ports = [ config.resources.services.ssh.port ];
-
-    networking.hosts = {
-      "127.0.0.1" = [
-        "${config.resources.hostname}"
-        "${config.resources.hostname}.${config.resources.networking.domain}"
-      ];
-      "::1" = [
-        "${config.resources.hostname}"
-        "${config.resources.hostname}.${config.resources.networking.domain}"
-      ];
-    };
-
     users.groups.${config.resources.username} = {
       name = "${config.resources.username}";
       members = [ "${config.resources.username}" ];
@@ -94,33 +59,12 @@
     };
 
     users.users.${config.resources.username} = {
-      isNormalUser = true;
-      home = "/home/${config.resources.username}";
-      uid = 1000;
-      group = "${config.resources.username}";
-      extraGroups = [ "users" "wheel" "docker" "qemu-libvirtd" "libvirtd" ];
+      home = (if pkgs.stdenv.isLinux then
+        "/home/${config.resources.username}"
+      else
+        "/Users/${config.resources.username}");
       shell = pkgs.zsh;
       openssh.authorizedKeys.keys = config.resources.services.ssh.publicKeys;
-    };
-
-    console = {
-      font = config.resources.console.font.name;
-      useXkbConfig = true;
-    };
-
-    i18n = {
-      defaultLocale = "en_US.UTF-8";
-      extraLocaleSettings = {
-        LC_MESSAGES = "en_US.UTF-8";
-        LC_TIME = "fr_FR.UTF-8";
-      };
-      supportedLocales = [ "all" ];
-    };
-
-    services.xserver = {
-      layout = config.resources.keyboard.layout;
-      # Compose key list available at http://duncanlock.net/blog/2013/05/03/how-to-set-your-compose-key-on-xfce-xubuntu-lxde-linux/
-      xkbOptions = config.resources.keyboard.xkbOptions;
     };
 
     time.timeZone = "Europe/Paris";

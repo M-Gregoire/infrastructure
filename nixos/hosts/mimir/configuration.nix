@@ -6,11 +6,11 @@
       profile = "PC";
       network = "home";
     })
-    ../../dev/bluetooth.nix
-    ../../dev/boot/grub-uefi.nix
-    ../../dev/boot/grub-multi.nix
-    ./../../dev/luks.nix
-    ./../../dev/steam.nix
+    ../../dev/linux/bluetooth.nix
+    ../../dev/linux/boot/grub-uefi.nix
+    ../../dev/linux/boot/grub-multi.nix
+    ./../../dev/linux/luks.nix
+    ./../../dev/linux/steam.nix
     ./hardware-configuration.nix
     <nixos-hardware/common/cpu/amd>
     <nixos-hardware/common/pc/ssd>
@@ -29,8 +29,8 @@
 
   virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
-   virtualisation.virtualbox.host.enable = true;
-   users.extraGroups.vboxusers.members = [ "gregoire" ];
+  virtualisation.virtualbox.host.enable = true;
+  users.extraGroups.vboxusers.members = [ "gregoire" ];
 
   boot.kernelModules = [ "kvm-amd" "kvm-intel" ];
 

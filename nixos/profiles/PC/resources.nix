@@ -1,7 +1,6 @@
 { config, lib, pkgs, ... }:
 
 {
-
   config.resources = with lib;
     mapAttrs (_: v: mkDefault v) {
       pcs = {

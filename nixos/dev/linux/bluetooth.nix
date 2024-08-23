@@ -1,6 +1,9 @@
 { config, pkgs, ... }:
 
 {
+  # https://nixos.wiki/wiki/Bluetooth#No_audio_when_using_headset_in_HSP.2FHFP_mode
+  hardware.enableAllFirmware = true;
+
   # Bluetooth
   hardware.bluetooth = {
     enable = true;

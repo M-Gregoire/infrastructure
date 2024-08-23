@@ -6,9 +6,9 @@
       profile = "server";
       network = "cloud";
     })
-    ../../dev/systemd-networkd.nix
+    ../../dev/linux/systemd-networkd.nix
     ./hardware-configuration.nix
-    ../../dev/k3s.nix
+    ../../dev/linux/k3s.nix
   ];
 
   system.stateVersion = "20.03";

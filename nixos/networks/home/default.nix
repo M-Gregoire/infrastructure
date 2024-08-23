@@ -1,7 +1,9 @@
 { config, pkgs, private-config, ... }:
 
 {
-  imports = [ "${private-config}/resources/networks/home" ];
+  imports = [
+    "${private-config}/resources/networks/home"
+    (if pkgs.stdenv.isLinux then (import ./linux.nix) else { })
+  ];
 
-  networking.enableIPv6 = false;
 }

@@ -1,43 +1,9 @@
 { config, lib, pkgs, flake-root, ... }:
 
-let
-  # Needed for pcmanfm "Open terminal here"
-  termDesktopItem = pkgs.makeDesktopItem {
-    name = "terminal";
-    desktopName = "Kitty";
-    exec = "${pkgs.kitty}/bin/kitty -d %F";
-    icon = "kitty";
-    comment = "Fast, feature-rich, GPU based terminal";
-    genericName = "Terminal emulator";
-    categories = [ "System" "TerminalEmulator" ];
-    terminal = false;
-  };
-
-in {
-  xresources.properties = { "Xft.dpi" = config.resources.screen.dpi; };
-
+{
   home.packages = with pkgs; [
-    glibc
-    linuxsampler
-    # Browser & emails
-    firefox
-    chromium
-    thunderbird
     # Video
     mpv
-    # Ebooks
-    calibre
-    # Editors
-    libreoffice
-    leafpad
-    # Chats
-    signal-desktop
-    # File manager
-    pcmanfm
-    termDesktopItem
-    xarchiver
-    ## Installed applications (https://nixos.wiki/wiki/PCManFM)
-    lxmenu-data
     # TODO: Check if needed
     # Network share &
     # Needed for Trash in Thunar
@@ -48,18 +14,12 @@ in {
     # fuse
     # Thumbnail
     # ffmpegthumbnailer
-    # Sound control
-    pavucontrol
-    # PDF reader which supports forms
-    evince
     # Image viewer
     nomacs
     # Matrix client
     element-desktop
     # Terminal emulator
     kitty
-    # Screen sharing
-    rustdesk
   ];
 
   xdg.configFile."kitty/kitty.conf".source =

@@ -8,11 +8,11 @@
       profile = "PC";
       network = "home";
     })
-    ../../dev/bluetooth.nix
-    ../../dev/suspend.nix
-    ../../dev/boot/grub-uefi.nix
-    ./../../dev/luks.nix
-    ./../../dev/steam.nix
+    ../../dev/linux/bluetooth.nix
+    ../../dev/linux/suspend.nix
+    ../../dev/linux/boot/grub-uefi.nix
+    ./../../dev/linux/luks.nix
+    ./../../dev/linux/steam.nix
     ./hardware-configuration.nix
   ];
 

@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ../../dev/printing.nix ../../dev/yubikey.nix ];
+  imports = [ ../../dev/linux/yubikey.nix ];
 
   services.xserver = {
     enable = true;
@@ -12,6 +12,18 @@
         user = config.resources.username;
       };
     };
+    libinput = {
+      # Enable libinput
+      enable = true;
+    };
+    desktopManager.session = [{
+      name = "home-manager";
+      start = ''
+        ${pkgs.runtimeShell} $HOME/.hm-xsession &
+        waitPID=$!
+      '';
+    }];
+
   };
 
   # Smart card
