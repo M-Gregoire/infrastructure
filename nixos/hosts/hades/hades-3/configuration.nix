@@ -33,16 +33,16 @@
     role = "agent";
   };
 
-  fileSystems."/nfs/Cameras" = {
-    device = "/dev/disk/by-uuid/ca58144d-d731-4d1c-a90e-3a49f2424c68";
-    options = [ "auto" "nofail" "x-systemd.device-timeout=30" ];
-  };
+  # fileSystems."/nfs/Cameras" = {
+  #   device = "/dev/disk/by-uuid/ca58144d-d731-4d1c-a90e-3a49f2424c68";
+  #   options = [ "auto" "nofail" "x-systemd.device-timeout=30" ];
+  # };
 
-  services.nfs.server.enable = true;
-  services.nfs.server.exports = ''
-    /nfs         *(rw,fsid=0,no_subtree_check)
-    /nfs/Cameras *(rw,no_subtree_check,no_root_squash,anonuid=1000,anongid=1000)
-  '';
+  # services.nfs.server.enable = true;
+  # services.nfs.server.exports = ''
+  #   /nfs         *(rw,fsid=0,no_subtree_check)
+  #   /nfs/Cameras *(rw,no_subtree_check,no_root_squash,anonuid=1000,anongid=1000)
+  # '';
 
   networking.firewall.allowedTCPPorts = [ 6443 ];
 

@@ -36,16 +36,15 @@
 
   networking.firewall.allowedTCPPorts = [ 6443 ];
 
-  fileSystems."/nfs/Safe" = {
-    device = "/dev/disk/by-uuid/c3a3426a-4421-4cd2-aa05-5e620f4e2fbb";
+  fileSystems."/nfs/Cameras" = {
+    device = "/dev/disk/by-uuid/ca58144d-d731-4d1c-a90e-3a49f2424c68";
     options = [ "auto" "nofail" "x-systemd.device-timeout=30" ];
   };
 
   services.nfs.server.enable = true;
   services.nfs.server.exports = ''
     /nfs         *(rw,fsid=0,no_subtree_check)
-    /nfs/Safe    192.168.3.30(rw,no_subtree_check,all_squash,anonuid=1000,anongid=1000)
-    /nfs/Safe    *(rw,no_subtree_check,no_root_squash,anonuid=1000,anongid=1000)
+    /nfs/Cameras    *(rw,no_subtree_check,no_root_squash,anonuid=1000,anongid=1000)
   '';
 
   services.udev.extraRules = "";
