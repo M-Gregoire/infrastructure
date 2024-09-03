@@ -24,7 +24,7 @@ in {
     ./dev/linux/emacs-service.nix
     ./dev/linux/mimeapps.nix
     ./dev/linux/spicetify.nix
-    ./dev/linux/gpg-agent.conf
+    ./dev/linux/gpg-agent.nix
     ./dev/linux/rofi.nix
     ./dev/linux/password-management.nix
   ];

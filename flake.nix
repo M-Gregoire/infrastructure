@@ -3,9 +3,9 @@
 
   inputs = {
     # Linux
-    nixpkgs-linux.url = "github:NixOS/nixpkgs/nixos-23.11";
+    nixpkgs-linux.url = "github:NixOS/nixpkgs/nixos-24.05";
     home-manager-linux = {
-      url = "github:nix-community/home-manager/release-23.11";
+      url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs-linux";
     };
 
@@ -49,9 +49,13 @@
       flake = false;
     };
     spicetify-nix.url = "github:the-argus/spicetify-nix";
+
+    deploy-rs.url = "github:serokell/deploy-rs";
   };
 
-  outputs = { self, nixpkgs-linux, home-manager-linux, nixos-hardware, nix-darwin, nixpkgs-darwin, nix-homebrew, homebrew-core, homebrew-cask, homebrew-bundle, home-manager-darwin, emacs-plus, ... }@attrs:
+  outputs = { self, nixpkgs-linux, home-manager-linux, nixos-hardware
+    , nix-darwin, nixpkgs-darwin, nix-homebrew, homebrew-core, homebrew-cask
+    , homebrew-bundle, home-manager-darwin, emacs-plus, deploy-rs, ... }@attrs:
     let
       system = "x86_64-linux";
       pkgs-linux = import nixpkgs-linux {
@@ -63,7 +67,16 @@
           allowUnfreeRedistributable = true;
         };
       };
-      
+
+      pkgs-linux-aarch64 = import nixpkgs-linux {
+        system = "aarch64-linux";
+        config = {
+          allowBroken = false;
+          allowUnfree = true;
+          allowUnfreePredicate = (_: true);
+          allowUnfreeRedistributable = true;
+        };
+      };
       pkgs-darwin = import nixpkgs-darwin {
         #inherit system;
         system = "aarch64-darwin";
@@ -77,58 +90,151 @@
 
     in {
 
+      #darwinPackages = self.darwinConfigurations."Gregoires-MacBook-Pro".pkgs;
+      darwinConfigurations."Gregoires-MacBook-Pro" =
+        nix-darwin.lib.darwinSystem {
 
-    #darwinPackages = self.darwinConfigurations."Gregoires-MacBook-Pro".pkgs;
-    darwinConfigurations."Gregoires-MacBook-Pro" = nix-darwin.lib.darwinSystem {
-
-
-      specialArgs = attrs // { pkgs = pkgs-darwin; } // { flake-root = ./.; };
-      
-      modules = [ 
-        (import ./nixos/hosts/idunn/configuration.nix)
-        home-manager-darwin.darwinModules.home-manager
-        {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.gregoire = import ./home/home.nix;
-            home-manager.extraSpecialArgs = attrs // { pkgs = pkgs-darwin; } // { flake-root = ./.; };
-        }
-        nix-homebrew.darwinModules.nix-homebrew
-        {
-          nix-homebrew = {
-            enable = true;
-            enableRosetta = false;
-            user = "gregoire";
-            taps = {
-              "homebrew/homebrew-core" = homebrew-core;
-              "homebrew/homebrew-cask" = homebrew-cask;
-              "homebrew/homebrew-bundle" = homebrew-bundle;
-              "d12frosted/homebrew-emacs-plus" = emacs-plus;
-            };
-            mutableTaps = false;
+          specialArgs = attrs // {
+            pkgs = pkgs-darwin;
+          } // {
+            flake-root = ./.;
           };
-        }
-      ];
-    };
 
-    nixosConfigurations.vali = nixpkgs-linux.lib.nixosSystem {
-      inherit system;
+          modules = [
+            (import ./nixos/hosts/idunn/configuration.nix)
+            home-manager-darwin.darwinModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.gregoire = import ./home/home.nix;
+              home-manager.extraSpecialArgs = attrs // {
+                pkgs = pkgs-darwin;
+              } // {
+                flake-root = ./.;
+              };
+            }
+            nix-homebrew.darwinModules.nix-homebrew
+            {
+              nix-homebrew = {
+                enable = true;
+                enableRosetta = false;
+                user = "gregoire";
+                taps = {
+                  "homebrew/homebrew-core" = homebrew-core;
+                  "homebrew/homebrew-cask" = homebrew-cask;
+                  "homebrew/homebrew-bundle" = homebrew-bundle;
+                  "d12frosted/homebrew-emacs-plus" = emacs-plus;
+                };
+                mutableTaps = false;
+              };
+            }
+          ];
+        };
 
-      specialArgs = attrs // { pkgs = pkgs-linux; } // { flake-root = ./.; };
+      nixosConfigurations= {
+        vali = nixpkgs-linux.lib.nixosSystem {
+        inherit system;
 
-      modules = [
-        (import ./nixos/hosts/vali/configuration.nix)
-        nixos-hardware.nixosModules.dell-xps-13-9350
-        home-manager-linux.nixosModules.home-manager
-        {
+        specialArgs = attrs // { pkgs = pkgs-linux; } // { flake-root = ./.; };
+
+        modules = [
+          (import ./nixos/hosts/vali/configuration.nix)
+          nixos-hardware.nixosModules.dell-xps-13-9350
+          home-manager-linux.nixosModules.home-manager
+          {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
 
             home-manager.users.gregoire = import ./home/home.nix;
 
-            home-manager.extraSpecialArgs = attrs // { flake-root = ./.; };
-        }
-      ];
+            home-manager.extraSpecialArgs = attrs // {
+              pkgs = pkgs-linux;
+            } // {
+              flake-root = ./.;
+            };
+          }
+        ];
+      };
+
+        hades1 = nixpkgs-linux.lib.nixosSystem {
+        inherit system;
+
+        specialArgs = attrs // { pkgs = pkgs-linux-aarch64; } // { flake-root = ./.; };
+
+        modules = [
+          (import ./nixos/hosts/hades/hades-1/configuration.nix)
+          home-manager-linux.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+
+            home-manager.users.gregoire = import ./home/profiles/server;
+
+            home-manager.extraSpecialArgs = attrs // {
+              pkgs = pkgs-linux-aarch64;
+            } // {
+              flake-root = ./.;
+            };
+          }
+        ];
+      };
+
+        hades2 = nixpkgs-linux.lib.nixosSystem {
+        inherit system;
+
+        specialArgs = attrs // { pkgs = pkgs-linux-aarch64; } // { flake-root = ./.; };
+
+        modules = [
+          (import ./nixos/hosts/hades/hades-2/configuration.nix)
+          home-manager-linux.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+
+            home-manager.users.gregoire = import ./home/profiles/server;
+
+            home-manager.extraSpecialArgs = attrs // {
+              pkgs = pkgs-linux-aarch64;
+            } // {
+              flake-root = ./.;
+            };
+          }
+        ];
+      };
+      };
+
+      deploy.nodes = {
+        vali = {
+        hostname = "localhost";
+        sshOpts = [ "-p" "5421" ];
+        sshUser = "root";
+        profiles.system = {
+          user = "root";
+          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.vali;
+        };
     };
-  };
+
+        hades1 = {
+        hostname = "hades-1.martinache.net";
+        sshOpts = [ "-p" "5421" ];
+        sshUser = "root";
+        profiles.system = {
+          user = "root";
+          path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.hades1;
+        };
+    };
+
+        hades2 = {
+        hostname = "hades-2.martinache.net";
+        sshOpts = [ "-p" "5421" ];
+        sshUser = "root";
+        profiles.system = {
+          user = "root";
+          path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.hades2;
+        };
+    };
+      };
+
+    checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+    };
 }

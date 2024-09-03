@@ -1,10 +1,10 @@
-{ config, lib, ... }:
+{ config, lib, private-config, ... }:
 
 {
   imports = [
     ../default.nix
 
-    ../../../../vendor/infrastructure-private/resources/hosts/hades/hades-1
+    "${private-config}/resources/hosts/hades/hades-1"
   ];
 
   config.resources = with lib; mapAttrs (_: v: mkDefault v) { };

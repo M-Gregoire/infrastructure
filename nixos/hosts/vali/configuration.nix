@@ -17,7 +17,7 @@
   ];
 
   config = {
-    services.xserver.libinput = {
+    services.libinput = {
       # Enable tapping
       enable = true;
       touchpad = {

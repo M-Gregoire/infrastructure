@@ -3,18 +3,23 @@
 {
   imports = [ ../../dev/linux/yubikey.nix ];
 
-  services.xserver = {
-    enable = true;
-    displayManager = {
-      lightdm = { enable = true; };
+  services = {
+
+    libinput = {
+      # Enable libinput
+      enable = true;
+    };
+    displayManager =
+      {
       autoLogin = {
         enable = true;
         user = config.resources.username;
       };
-    };
-    libinput = {
-      # Enable libinput
-      enable = true;
+      };
+    xserver = {
+    enable = true;
+    displayManager = {
+      lightdm = { enable = true; };
     };
     desktopManager.session = [{
       name = "home-manager";
@@ -25,7 +30,7 @@
     }];
 
   };
-
+  };
   # Smart card
   services.pcscd.enable = true;
 

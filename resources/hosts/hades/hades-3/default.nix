@@ -1,8 +1,8 @@
-{ config, lib, ... }:
+{ config, lib, private-config, ... }:
 
 {
   imports =
-    [ ../../../../vendor/infrastructure-private/resources/hosts/hades/hades-3 ];
+    [ "${private-config}/resources/hosts/hades/hades-3" ];
 
   config.resources = with lib; mapAttrs (_: v: mkDefault v) { };
 }

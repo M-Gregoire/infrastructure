@@ -1,8 +1,8 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, lib, private-config, ... }: {
   imports = [
 
     (import ../../../common.nix {
-      inherit config pkgs lib;
+      inherit config pkgs lib private-config;
       hostname = "hades-2";
       cluster = "hades";
       clusterRole = "agent";

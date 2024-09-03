@@ -61,9 +61,11 @@
   };
 
   services.xserver = {
-    layout = config.resources.keyboard.layout;
     # Compose key list available at http://duncanlock.net/blog/2013/05/03/how-to-set-your-compose-key-on-xfce-xubuntu-lxde-linux/
-    xkbOptions = config.resources.keyboard.xkbOptions;
+    xkb = {
+      layout = config.resources.keyboard.layout;
+      options = config.resources.keyboard.xkbOptions;
+    };
   };
 
   users.users.${config.resources.username} = {

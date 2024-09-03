@@ -1,10 +1,10 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, private-config, ... }:
 
 {
   imports = [
 
     (import ../../../common.nix {
-      inherit config pkgs lib;
+      inherit config pkgs lib private-config;
       hostname = "hades-5";
       cluster = "hades";
       clusterRole = "agent";
@@ -13,7 +13,6 @@
     })
     ./hardware-configuration.nix
     <nixos-hardware/raspberry-pi/4>
-    <home-manager/nixos>
   ];
 
   system.stateVersion = "20.03";

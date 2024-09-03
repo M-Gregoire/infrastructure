@@ -2,12 +2,12 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, private-config, ... }:
 
 {
   imports = [ # Include the results of the hardware scan.
     (import ../../../common.nix {
-      inherit config pkgs lib;
+      inherit config pkgs lib private-config;
       hostname = "hades-1";
       cluster = "hades";
       clusterRole = "server";

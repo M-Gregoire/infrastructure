@@ -16,7 +16,7 @@
     <nixos-hardware/common/pc/ssd>
   ];
 
-  services.xserver.libinput = {
+  services.libinput = {
     # Disable acceleration
     touchpad = {
       accelProfile = "adaptive";

@@ -18,7 +18,7 @@
       (import (../. + "/resources/hosts/${cluster}") {
         inherit config pkgs lib clusterRole;
       })
-      (import (../. + "${private-config}/resources/hosts/${cluster}") {
+      (import "${private-config}/resources/hosts/${cluster}" {
         inherit config pkgs lib clusterRole;
       })
       (import (./. + "/hosts/${cluster}") {

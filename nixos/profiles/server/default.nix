@@ -1,9 +1,8 @@
-{ config, pkgs, ... }:
+{ config, pkgs, private-config, ... }:
 
 {
   imports = [
-    <home-manager/nixos>
-    ../../../vendor/infrastructure-private/resources/profiles/server
+    "${private-config}/resources/profiles/server"
   ];
 
   environment.systemPackages = with pkgs; [
@@ -31,8 +30,6 @@
   home-manager.users.${config.resources.username} = { ... }: {
     imports = [ (../../../home/profiles/server) ];
     # Pass to home-manager
-    nixpkgs.overlays = config.nixpkgs.overlays;
-    nixpkgs.config = import ../../../nixpkgs/config.nix;
     resources = config.resources;
     home.stateVersion = "22.11";
   };
