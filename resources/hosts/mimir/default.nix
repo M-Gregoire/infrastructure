@@ -1,7 +1,7 @@
-{ config, lib, ... }:
+{ config, lib, private-config, ... }:
 
 {
-  imports = [ ../../../vendor/infrastructure-private/resources/hosts/mimir ];
+  imports = [ "${private-config}/resources/hosts/mimir" ];
 
   config.resources = with lib;
     mapAttrs (_: v: mkDefault v) {

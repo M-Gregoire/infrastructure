@@ -12,7 +12,6 @@
       network = "home";
     })
     ./hardware-configuration.nix
-    <nixos-hardware/raspberry-pi/4>
   ];
 
   system.stateVersion = "20.03";

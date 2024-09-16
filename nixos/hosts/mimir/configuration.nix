@@ -1,7 +1,7 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, lib, private-config, ... }: {
   imports = [
     (import ../../common.nix {
-      inherit config pkgs lib;
+      inherit config pkgs lib private-config;
       hostname = "mimir";
       profile = "PC";
       network = "home";
@@ -12,8 +12,6 @@
     ./../../dev/linux/luks.nix
     ./../../dev/linux/steam.nix
     ./hardware-configuration.nix
-    <nixos-hardware/common/cpu/amd>
-    <nixos-hardware/common/pc/ssd>
   ];
 
   services.libinput = {
@@ -27,10 +25,10 @@
   boot.initrd.kernelModules = [ "amdgpu" ];
   services.xserver.videoDrivers = [ "amdgpu" ];
 
-  virtualisation.libvirtd.enable = true;
-  programs.virt-manager.enable = true;
-  virtualisation.virtualbox.host.enable = true;
-  users.extraGroups.vboxusers.members = [ "gregoire" ];
+  # virtualisation.libvirtd.enable = true;
+  # programs.virt-manager.enable = true;
+  # virtualisation.virtualbox.host.enable = true;
+  # users.extraGroups.vboxusers.members = [ "gregoire" ];
 
   boot.kernelModules = [ "kvm-amd" "kvm-intel" ];
 
