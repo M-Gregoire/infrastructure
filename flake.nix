@@ -48,7 +48,11 @@
         "git+ssh://git@git.martinache.net:2222/M-Gregoire/infrastructure-private.git";
       flake = false;
     };
-    spicetify-nix.url = "github:the-argus/spicetify-nix";
+
+    spicetify-nix = {
+      url = "github:Gerg-L/spicetify-nix";
+      inputs.nixpkgs.follows = "nixpkgs-linux";
+    };
 
     deploy-rs.url = "github:serokell/deploy-rs";
   };
@@ -131,110 +135,316 @@
           ];
         };
 
-      nixosConfigurations= {
+      nixosConfigurations = {
         vali = nixpkgs-linux.lib.nixosSystem {
-        inherit system;
+          inherit system;
 
-        specialArgs = attrs // { pkgs = pkgs-linux; } // { flake-root = ./.; };
+          specialArgs = attrs // {
+            pkgs = pkgs-linux;
+          } // {
+            flake-root = ./.;
+          };
 
-        modules = [
-          (import ./nixos/hosts/vali/configuration.nix)
-          nixos-hardware.nixosModules.dell-xps-13-9350
-          home-manager-linux.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
+          modules = [
+            (import ./nixos/hosts/vali/configuration.nix)
+            nixos-hardware.nixosModules.dell-xps-13-9350
+            home-manager-linux.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
 
-            home-manager.users.gregoire = import ./home/home.nix;
+              home-manager.users.gregoire = import ./home/home.nix;
 
-            home-manager.extraSpecialArgs = attrs // {
-              pkgs = pkgs-linux;
-            } // {
-              flake-root = ./.;
-            };
-          }
-        ];
-      };
+              home-manager.extraSpecialArgs = attrs // {
+                pkgs = pkgs-linux;
+              } // {
+                flake-root = ./.;
+              };
+            }
+          ];
+        };
 
+        mimir = nixpkgs-linux.lib.nixosSystem {
+          inherit system;
+
+          specialArgs = attrs // {
+            pkgs = pkgs-linux;
+          } // {
+            flake-root = ./.;
+          };
+
+          modules = [
+            (import ./nixos/hosts/mimir/configuration.nix)
+            nixos-hardware.nixosModules.common-cpu-amd
+            nixos-hardware.nixosModules.common-pc-ssd
+            home-manager-linux.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+
+              home-manager.users.gregoire = import ./home/home.nix;
+
+              home-manager.extraSpecialArgs = attrs // {
+                pkgs = pkgs-linux;
+              } // {
+                flake-root = ./.;
+              };
+            }
+          ];
+        };
         hades1 = nixpkgs-linux.lib.nixosSystem {
-        inherit system;
+          inherit system;
 
-        specialArgs = attrs // { pkgs = pkgs-linux-aarch64; } // { flake-root = ./.; };
+          specialArgs = attrs // {
+            pkgs = pkgs-linux-aarch64;
+          } // {
+            flake-root = ./.;
+          };
 
-        modules = [
-          (import ./nixos/hosts/hades/hades-1/configuration.nix)
-          home-manager-linux.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
+          modules = [
+            (import ./nixos/hosts/hades/hades-1/configuration.nix)
+            home-manager-linux.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
 
-            home-manager.users.gregoire = import ./home/profiles/server;
+              home-manager.users.gregoire = import ./home/profiles/server;
 
-            home-manager.extraSpecialArgs = attrs // {
-              pkgs = pkgs-linux-aarch64;
-            } // {
-              flake-root = ./.;
-            };
-          }
-        ];
-      };
+              home-manager.extraSpecialArgs = attrs // {
+                pkgs = pkgs-linux-aarch64;
+              } // {
+                flake-root = ./.;
+              };
+            }
+          ];
+        };
 
         hades2 = nixpkgs-linux.lib.nixosSystem {
-        inherit system;
+          inherit system;
 
-        specialArgs = attrs // { pkgs = pkgs-linux-aarch64; } // { flake-root = ./.; };
+          specialArgs = attrs // {
+            pkgs = pkgs-linux-aarch64;
+          } // {
+            flake-root = ./.;
+          };
 
-        modules = [
-          (import ./nixos/hosts/hades/hades-2/configuration.nix)
-          home-manager-linux.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
+          modules = [
+            (import ./nixos/hosts/hades/hades-2/configuration.nix)
+            home-manager-linux.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
 
-            home-manager.users.gregoire = import ./home/profiles/server;
+              home-manager.users.gregoire = import ./home/profiles/server;
 
-            home-manager.extraSpecialArgs = attrs // {
-              pkgs = pkgs-linux-aarch64;
-            } // {
-              flake-root = ./.;
-            };
-          }
-        ];
-      };
+              home-manager.extraSpecialArgs = attrs // {
+                pkgs = pkgs-linux-aarch64;
+              } // {
+                flake-root = ./.;
+              };
+            }
+          ];
+        };
+
+        hades3 = nixpkgs-linux.lib.nixosSystem {
+          inherit system;
+
+          specialArgs = attrs // {
+            pkgs = pkgs-linux-aarch64;
+          } // {
+            flake-root = ./.;
+          };
+
+          modules = [
+            (import ./nixos/hosts/hades/hades-3/configuration.nix)
+            home-manager-linux.nixosModules.home-manager
+            nixos-hardware.nixosModules.raspberry-pi-4
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+
+              home-manager.users.gregoire = import ./home/profiles/server;
+
+              home-manager.extraSpecialArgs = attrs // {
+                pkgs = pkgs-linux-aarch64;
+              } // {
+                flake-root = ./.;
+              };
+            }
+          ];
+        };
+
+        hades4 = nixpkgs-linux.lib.nixosSystem {
+          inherit system;
+
+          specialArgs = attrs // {
+            pkgs = pkgs-linux-aarch64;
+          } // {
+            flake-root = ./.;
+          };
+
+          modules = [
+            (import ./nixos/hosts/hades/hades-4/configuration.nix)
+            home-manager-linux.nixosModules.home-manager
+            nixos-hardware.nixosModules.raspberry-pi-4
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+
+              home-manager.users.gregoire = import ./home/profiles/server;
+
+              home-manager.extraSpecialArgs = attrs // {
+                pkgs = pkgs-linux-aarch64;
+              } // {
+                flake-root = ./.;
+              };
+            }
+          ];
+        };
+
+        hades5 = nixpkgs-linux.lib.nixosSystem {
+          inherit system;
+
+          specialArgs = attrs // {
+            pkgs = pkgs-linux-aarch64;
+          } // {
+            flake-root = ./.;
+          };
+
+          modules = [
+            (import ./nixos/hosts/hades/hades-5/configuration.nix)
+            home-manager-linux.nixosModules.home-manager
+            nixos-hardware.nixosModules.raspberry-pi-4
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+
+              home-manager.users.gregoire = import ./home/profiles/server;
+
+              home-manager.extraSpecialArgs = attrs // {
+                pkgs = pkgs-linux-aarch64;
+              } // {
+                flake-root = ./.;
+              };
+            }
+          ];
+        };
+
+        hades6 = nixpkgs-linux.lib.nixosSystem {
+          inherit system;
+
+          specialArgs = attrs // {
+            pkgs = pkgs-linux-aarch64;
+          } // {
+            flake-root = ./.;
+          };
+
+          modules = [
+            (import ./nixos/hosts/hades/hades-6/configuration.nix)
+            home-manager-linux.nixosModules.home-manager
+            nixos-hardware.nixosModules.raspberry-pi-4
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+
+              home-manager.users.gregoire = import ./home/profiles/server;
+
+              home-manager.extraSpecialArgs = attrs // {
+                pkgs = pkgs-linux-aarch64;
+              } // {
+                flake-root = ./.;
+              };
+            }
+          ];
+        };
       };
 
       deploy.nodes = {
         vali = {
-        hostname = "localhost";
-        sshOpts = [ "-p" "5421" ];
-        sshUser = "root";
-        profiles.system = {
-          user = "root";
-          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.vali;
+          hostname = "localhost";
+          sshOpts = [ "-p" "5421" ];
+          sshUser = "root";
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.x86_64-linux.activate.nixos
+              self.nixosConfigurations.vali;
+          };
         };
-    };
 
-        hades1 = {
-        hostname = "hades-1.martinache.net";
-        sshOpts = [ "-p" "5421" ];
-        sshUser = "root";
-        profiles.system = {
-          user = "root";
-          path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.hades1;
+        mimir = {
+          hostname = "localhost";
+          sshOpts = [ "-p" "5421" ];
+          sshUser = "root";
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.x86_64-linux.activate.nixos
+              self.nixosConfigurations.mimir;
+          };
         };
-    };
+        hades1 = {
+          hostname = "hades-1.martinache.net";
+          sshOpts = [ "-p" "5421" ];
+          sshUser = "root";
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.aarch64-linux.activate.nixos
+              self.nixosConfigurations.hades1;
+          };
+        };
 
         hades2 = {
-        hostname = "hades-2.martinache.net";
-        sshOpts = [ "-p" "5421" ];
-        sshUser = "root";
-        profiles.system = {
-          user = "root";
-          path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.hades2;
+          hostname = "hades-2.martinache.net";
+          sshOpts = [ "-p" "5421" ];
+          sshUser = "root";
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.aarch64-linux.activate.nixos
+              self.nixosConfigurations.hades2;
+          };
         };
-    };
+        hades3 = {
+          hostname = "hades-3.martinache.net";
+          sshOpts = [ "-p" "5421" ];
+          sshUser = "root";
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.aarch64-linux.activate.nixos
+              self.nixosConfigurations.hades3;
+          };
+        };
+        hades4 = {
+          hostname = "hades-4.martinache.net";
+          sshOpts = [ "-p" "5421" ];
+          sshUser = "root";
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.aarch64-linux.activate.nixos
+              self.nixosConfigurations.hades4;
+          };
+        };
+        hades5 = {
+          hostname = "hades-5.martinache.net";
+          sshOpts = [ "-p" "5421" ];
+          sshUser = "root";
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.aarch64-linux.activate.nixos
+              self.nixosConfigurations.hades5;
+          };
+        };
+        hades6 = {
+          hostname = "hades-6.martinache.net";
+          sshOpts = [ "-p" "5421" ];
+          sshUser = "root";
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.aarch64-linux.activate.nixos
+              self.nixosConfigurations.hades6;
+          };
+        };
       };
 
-    checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+      checks = builtins.mapAttrs
+        (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
     };
 }
