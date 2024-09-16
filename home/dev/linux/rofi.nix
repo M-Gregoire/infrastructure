@@ -23,7 +23,7 @@
           fi
         done
         if [[ ! -L "pywal.rasi" ]]; then
-            ln -s ${config.resources.paths.home}/.cache/wal/colors-rofi-dark.rasi pywal.rasi
+            ln -s $HOME/.cache/wal/colors-rofi-dark.rasi pywal.rasi
         fi
         # Set theme
         rm $HOME/.config/rofi/powermenu/type-2/shared/colors.rasi
