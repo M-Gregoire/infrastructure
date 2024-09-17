@@ -34,8 +34,9 @@
 
   networking.firewall.allowedTCPPorts = [ 6443 ];
 
+  # mkdir -p /nfs/Cameras && chattr +i /nfs/Cameras
   fileSystems."/nfs/Cameras" = {
-    device = "/dev/disk/by-uuid/ca58144d-d731-4d1c-a90e-3a49f2424c68";
+    device = "/dev/disk/by-uuid/5e2b8ebc-270f-4df8-82a4-008ca38e0b4f";
     options = [ "auto" "nofail" "x-systemd.device-timeout=30" ];
   };
 
