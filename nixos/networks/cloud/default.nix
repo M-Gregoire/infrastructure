@@ -1,7 +1,7 @@
-{ config, pkgs, ... }:
+{ config, pkgs, private-config, ... }:
 
 {
-  imports = [ ../../../vendor/infrastructure-private/resources/networks/cloud ];
+  imports = [ "${private-config}/resources/networks/cloud" ];
 
   networking.nameservers = config.resources.networking.DNS;
 }
