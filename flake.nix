@@ -44,22 +44,35 @@
       flake = false;
     };
     private-config = {
-      url =
-        "git+ssh://git@git.martinache.net:2222/M-Gregoire/infrastructure-private.git";
+      url = "git+file:///home/gregoire/src/infrastructure-private";
       flake = false;
     };
+    # private-config = {
+    #   url =
+    #     "git+ssh://git@git.martinache.net:2222/M-Gregoire/infrastructure-private.git";
+    #   flake = false;
+    # };
 
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs-linux";
     };
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     deploy-rs.url = "github:serokell/deploy-rs";
+
+    # nixos-anywhere
+
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs-linux";
+    };
+    nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
   };
 
   outputs = { self, nixpkgs-linux, home-manager-linux, nixos-hardware
-    , nix-darwin, nixpkgs-darwin, nix-homebrew, homebrew-core, homebrew-cask
-    , homebrew-bundle, home-manager-darwin, emacs-plus, deploy-rs, ... }@attrs:
+    , nix-darwin, nixpkgs-darwin, home-manager-darwin, deploy-rs
+    , nixpkgs-unstable, ... }@attrs:
     let
       system = "x86_64-linux";
       pkgs-linux = import nixpkgs-linux {
@@ -100,7 +113,7 @@
 
           specialArgs = attrs // {
             pkgs = pkgs-darwin;
-          } // {
+            inputs = self.inputs;
             flake-root = ./.;
           };
 
@@ -113,21 +126,20 @@
               home-manager.users.gregoire = import ./home/home.nix;
               home-manager.extraSpecialArgs = attrs // {
                 pkgs = pkgs-darwin;
-              } // {
                 flake-root = ./.;
               };
             }
-            nix-homebrew.darwinModules.nix-homebrew
+            self.inputs.nix-homebrew.darwinModules.nix-homebrew
             {
               nix-homebrew = {
                 enable = true;
                 enableRosetta = false;
                 user = "gregoire";
                 taps = {
-                  "homebrew/homebrew-core" = homebrew-core;
-                  "homebrew/homebrew-cask" = homebrew-cask;
-                  "homebrew/homebrew-bundle" = homebrew-bundle;
-                  "d12frosted/homebrew-emacs-plus" = emacs-plus;
+                  "homebrew/homebrew-core" = self.inputs.homebrew-core;
+                  "homebrew/homebrew-cask" = self.inputs.homebrew-cask;
+                  "homebrew/homebrew-bundle" = self.inputs.homebrew-bundle;
+                  "d12frosted/homebrew-emacs-plus" = self.inputs.emacs-plus;
                 };
                 mutableTaps = false;
               };
@@ -140,8 +152,8 @@
           inherit system;
 
           specialArgs = attrs // {
+            inputs = self.inputs;
             pkgs = pkgs-linux;
-          } // {
             flake-root = ./.;
           };
 
@@ -157,7 +169,6 @@
 
               home-manager.extraSpecialArgs = attrs // {
                 pkgs = pkgs-linux;
-              } // {
                 flake-root = ./.;
               };
             }
@@ -169,7 +180,7 @@
 
           specialArgs = attrs // {
             pkgs = pkgs-linux;
-          } // {
+            inputs = self.inputs;
             flake-root = ./.;
           };
 
@@ -186,18 +197,17 @@
 
               home-manager.extraSpecialArgs = attrs // {
                 pkgs = pkgs-linux;
-              } // {
                 flake-root = ./.;
               };
             }
           ];
         };
-        hades1 = nixpkgs-linux.lib.nixosSystem {
+        hades-1 = nixpkgs-linux.lib.nixosSystem {
           inherit system;
 
           specialArgs = attrs // {
             pkgs = pkgs-linux-aarch64;
-          } // {
+            inputs = self.inputs;
             flake-root = ./.;
           };
 
@@ -212,19 +222,18 @@
 
               home-manager.extraSpecialArgs = attrs // {
                 pkgs = pkgs-linux-aarch64;
-              } // {
                 flake-root = ./.;
               };
             }
           ];
         };
 
-        hades2 = nixpkgs-linux.lib.nixosSystem {
+        hades-2 = nixpkgs-linux.lib.nixosSystem {
           inherit system;
 
           specialArgs = attrs // {
             pkgs = pkgs-linux-aarch64;
-          } // {
+            inputs = self.inputs;
             flake-root = ./.;
           };
 
@@ -239,19 +248,18 @@
 
               home-manager.extraSpecialArgs = attrs // {
                 pkgs = pkgs-linux-aarch64;
-              } // {
                 flake-root = ./.;
               };
             }
           ];
         };
 
-        hades3 = nixpkgs-linux.lib.nixosSystem {
+        hades-3 = nixpkgs-linux.lib.nixosSystem {
           inherit system;
 
           specialArgs = attrs // {
             pkgs = pkgs-linux-aarch64;
-          } // {
+            inputs = self.inputs;
             flake-root = ./.;
           };
 
@@ -267,19 +275,18 @@
 
               home-manager.extraSpecialArgs = attrs // {
                 pkgs = pkgs-linux-aarch64;
-              } // {
                 flake-root = ./.;
               };
             }
           ];
         };
 
-        hades4 = nixpkgs-linux.lib.nixosSystem {
+        hades-4 = nixpkgs-linux.lib.nixosSystem {
           inherit system;
 
           specialArgs = attrs // {
             pkgs = pkgs-linux-aarch64;
-          } // {
+            inputs = self.inputs;
             flake-root = ./.;
           };
 
@@ -295,19 +302,18 @@
 
               home-manager.extraSpecialArgs = attrs // {
                 pkgs = pkgs-linux-aarch64;
-              } // {
                 flake-root = ./.;
               };
             }
           ];
         };
 
-        hades5 = nixpkgs-linux.lib.nixosSystem {
+        hades-5 = nixpkgs-linux.lib.nixosSystem {
           inherit system;
 
           specialArgs = attrs // {
             pkgs = pkgs-linux-aarch64;
-          } // {
+            inputs = self.inputs;
             flake-root = ./.;
           };
 
@@ -323,19 +329,18 @@
 
               home-manager.extraSpecialArgs = attrs // {
                 pkgs = pkgs-linux-aarch64;
-              } // {
                 flake-root = ./.;
               };
             }
           ];
         };
 
-        hades6 = nixpkgs-linux.lib.nixosSystem {
+        hades-6 = nixpkgs-linux.lib.nixosSystem {
           inherit system;
 
           specialArgs = attrs // {
             pkgs = pkgs-linux-aarch64;
-          } // {
+            inputs = self.inputs;
             flake-root = ./.;
           };
 
@@ -351,12 +356,39 @@
 
               home-manager.extraSpecialArgs = attrs // {
                 pkgs = pkgs-linux-aarch64;
-              } // {
                 flake-root = ./.;
               };
             }
           ];
         };
+
+        orion = nixpkgs-linux.lib.nixosSystem {
+          inherit system;
+
+          specialArgs = attrs // {
+            pkgs = pkgs-linux;
+            inputs = self.inputs;
+            flake-root = ./.;
+          };
+
+          modules = [
+            home-manager-linux.nixosModules.home-manager
+            self.inputs.disko.nixosModules.disko
+            (import ./nixos/hosts/orion/configuration.nix)
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+
+              home-manager.users.gregoire = import ./home/profiles/server;
+
+              home-manager.extraSpecialArgs = attrs // {
+                pkgs = pkgs-linux;
+                flake-root = ./.;
+              };
+            }
+          ];
+        };
+
       };
 
       deploy.nodes = {
@@ -381,66 +413,84 @@
               self.nixosConfigurations.mimir;
           };
         };
-        hades1 = {
+        hades-1 = {
           hostname = "hades-1.martinache.net";
           sshOpts = [ "-p" "5421" ];
           sshUser = "root";
           profiles.system = {
             user = "root";
             path = deploy-rs.lib.aarch64-linux.activate.nixos
-              self.nixosConfigurations.hades1;
+              self.nixosConfigurations.hades-1;
           };
+          magicRollback = false;
         };
 
-        hades2 = {
+        hades-2 = {
           hostname = "hades-2.martinache.net";
           sshOpts = [ "-p" "5421" ];
           sshUser = "root";
           profiles.system = {
             user = "root";
             path = deploy-rs.lib.aarch64-linux.activate.nixos
-              self.nixosConfigurations.hades2;
+              self.nixosConfigurations.hades-2;
           };
+          magicRollback = false;
         };
-        hades3 = {
+        hades-3 = {
           hostname = "hades-3.martinache.net";
           sshOpts = [ "-p" "5421" ];
           sshUser = "root";
           profiles.system = {
             user = "root";
             path = deploy-rs.lib.aarch64-linux.activate.nixos
-              self.nixosConfigurations.hades3;
+              self.nixosConfigurations.hades-3;
           };
+          magicRollback = false;
         };
-        hades4 = {
+        hades-4 = {
           hostname = "hades-4.martinache.net";
           sshOpts = [ "-p" "5421" ];
           sshUser = "root";
           profiles.system = {
             user = "root";
             path = deploy-rs.lib.aarch64-linux.activate.nixos
-              self.nixosConfigurations.hades4;
+              self.nixosConfigurations.hades-4;
           };
+          magicRollback = false;
         };
-        hades5 = {
+        hades-5 = {
           hostname = "hades-5.martinache.net";
           sshOpts = [ "-p" "5421" ];
           sshUser = "root";
           profiles.system = {
             user = "root";
             path = deploy-rs.lib.aarch64-linux.activate.nixos
-              self.nixosConfigurations.hades5;
+              self.nixosConfigurations.hades-5;
           };
+          magicRollback = false;
         };
-        hades6 = {
+        hades-6 = {
           hostname = "hades-6.martinache.net";
           sshOpts = [ "-p" "5421" ];
           sshUser = "root";
           profiles.system = {
             user = "root";
             path = deploy-rs.lib.aarch64-linux.activate.nixos
-              self.nixosConfigurations.hades6;
+              self.nixosConfigurations.hades-6;
           };
+          magicRollback = false;
+        };
+        orion = {
+          hostname = "orion.martinache.net";
+          sshOpts = [ "-p" "5421" ];
+          sshUser = "root";
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.x86_64-linux.activate.nixos
+              self.nixosConfigurations.orion;
+          };
+          autoRollback = false;
+          magicRollback = false;
         };
       };
 
