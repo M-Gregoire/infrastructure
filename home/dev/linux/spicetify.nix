@@ -1,4 +1,4 @@
-{ pkgs, lib, spicetify-nix, ... }:
+{ pkgs, lib, spicetify-nix, nixpkgs-unstable, ... }:
 
 let spicePkgs = spicetify-nix.legacyPackages.${pkgs.system};
 in {
@@ -19,5 +19,7 @@ in {
     ];
     theme = spicePkgs.themes.catppuccin;
     colorScheme = "mocha";
+    spicetifyPackage =
+      nixpkgs-unstable.legacyPackages."${pkgs.system}".spicetify-cli; # added this
   };
 }
