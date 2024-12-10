@@ -10,6 +10,9 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+
+  boot.kernelParams = [ "boot.shell_on_fail" ];
+
   programs = {
     zsh = {
       # Fix Tramp (Emacs) with ZSH https://www.emacswiki.org/emacs/TrampMode#toc9
