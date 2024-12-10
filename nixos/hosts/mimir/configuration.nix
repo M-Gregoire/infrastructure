@@ -1,7 +1,7 @@
-{ config, pkgs, lib, private-config, ... }: {
+{ config, pkgs, lib, inputs, ... }: {
   imports = [
     (import ../../common.nix {
-      inherit config pkgs lib private-config;
+      inherit config pkgs lib inputs;
       hostname = "mimir";
       profile = "PC";
       network = "home";
@@ -13,6 +13,8 @@
     ./../../dev/linux/steam.nix
     ./hardware-configuration.nix
   ];
+
+  environment.etc."machine-id".text = "c4e9716cfd684ec1ad9c70b7b0dabe2a";
 
   services.libinput = {
     # Disable acceleration
