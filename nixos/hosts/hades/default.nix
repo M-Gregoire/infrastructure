@@ -3,6 +3,8 @@
 {
   imports = [ ../../dev/linux/systemd-networkd.nix ];
 
+  environment.systemPackages = with pkgs; [ libraspberrypi ];
+
   boot.kernelModules = [ "nbd" "rbd" "ceph" "usb_storage" ];
 
   boot.kernelParams = [

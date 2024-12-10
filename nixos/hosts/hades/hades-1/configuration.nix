@@ -2,12 +2,12 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs, lib, private-config, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 {
   imports = [ # Include the results of the hardware scan.
     (import ../../../common.nix {
-      inherit config pkgs lib private-config;
+      inherit config pkgs lib inputs;
       hostname = "hades-1";
       cluster = "hades";
       clusterRole = "server";
@@ -16,6 +16,8 @@
     })
     ./hardware-configuration.nix
   ];
+
+  environment.etc."machine-id".text = "3fe6c883e941417bae469e646b7946cf";
 
   boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
 

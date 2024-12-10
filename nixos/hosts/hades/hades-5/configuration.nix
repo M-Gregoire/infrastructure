@@ -1,10 +1,10 @@
-{ config, pkgs, lib, private-config, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 {
   imports = [
 
     (import ../../../common.nix {
-      inherit config pkgs lib private-config;
+      inherit config pkgs lib inputs;
       hostname = "hades-5";
       cluster = "hades";
       clusterRole = "agent";
@@ -13,6 +13,8 @@
     })
     ./hardware-configuration.nix
   ];
+
+  environment.etc."machine-id".text = "";
 
   system.stateVersion = "20.03";
 

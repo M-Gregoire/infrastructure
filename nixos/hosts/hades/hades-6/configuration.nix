@@ -1,10 +1,10 @@
-{ config, pkgs, lib, private-config, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 {
   imports = [
 
     (import ../../../common.nix {
-      inherit config pkgs lib private-config;
+      inherit config pkgs lib inputs;
       hostname = "hades-6";
       cluster = "hades";
       clusterRole = "agent";
@@ -13,6 +13,8 @@
     })
     ./hardware-configuration.nix
   ];
+
+  environment.etc."machine-id".text = "dcf8a7751aa94acab1e61bb6edb85ece";
 
   system.stateVersion = "20.03";
 
@@ -48,4 +50,12 @@
 
   services.udev.extraRules = "";
 
+  # Increase GPU mem for Frigate
+  # https://docs.frigate.video/configuration/hardware_acceleration/#raspberry-pi-34
+  # boot.loader.raspberryPi = {
+  #   enable = true;
+  #   firmwareConfig = ''
+  #     gpu_mem=128
+  #   '';
+  # };
 }
