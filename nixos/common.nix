@@ -1,5 +1,5 @@
 { config, pkgs, lib, hostname, cluster ? "", clusterRole ? "", profile, network
-, private-config, ... }:
+, inputs, ... }:
 
 # Note: It appears impossible to create the import paths
 # based on the define hostname through options (https://www.reddit.com/r/NixOS/comments/q2t69g/comment/hfrd1ig)
@@ -18,7 +18,7 @@
       (import (../. + "/resources/hosts/${cluster}") {
         inherit config pkgs lib clusterRole;
       })
-      (import "${private-config}/resources/hosts/${cluster}" {
+      (import "${inputs.private-config}/resources/hosts/${cluster}" {
         inherit config pkgs lib clusterRole;
       })
       (import (./. + "/hosts/${cluster}") {

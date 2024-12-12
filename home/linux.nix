@@ -16,17 +16,17 @@ let
 in {
 
   imports = [
-    ./dev/linux/i3.nix
-    ./dev/linux/theme.nix
-    ./dev/linux/cursor.nix
     ./dev/linux/bluetooth.nix
-    ./dev/linux/picom.nix
+    ./dev/linux/cursor.nix
     ./dev/linux/emacs-service.nix
-    ./dev/linux/mimeapps.nix
-    ./dev/linux/spicetify.nix
     ./dev/linux/gpg-agent.nix
-    ./dev/linux/rofi.nix
+    ./dev/linux/i3.nix
+    ./dev/linux/mimeapps.nix
     ./dev/linux/password-management.nix
+    ./dev/linux/picom.nix
+    ./dev/linux/rofi.nix
+    ./dev/linux/spicetify.nix
+    ./dev/linux/theme.nix
   ];
   xsession.scriptPath = ".hm-xsession";
 
@@ -61,7 +61,7 @@ in {
     pavucontrol
 
     # Screen sharing
-    rustdesk
+    # rustdesk
 
     # PDF reader which supports forms
     evince

@@ -1,9 +1,9 @@
-{ config, lib, pkgs, private-config, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 {
   imports = [
     (import ../../common.nix {
-      inherit config pkgs lib private-config;
+      inherit config pkgs lib inputs;
       hostname = "idunn";
       profile = "PC";
       network = "home";

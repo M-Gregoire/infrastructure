@@ -1,7 +1,7 @@
-{ config, pkgs, lib, modulesPath, private-config, ... }: {
+{ config, pkgs, lib, modulesPath, inputs, ... }: {
   imports = [
     (import ../../common.nix {
-      inherit config pkgs lib private-config;
+      inherit config pkgs lib inputs;
       hostname = "orion";
       profile = "server";
       network = "cloud";
