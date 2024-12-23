@@ -44,6 +44,13 @@
 
   };
 
+  # mkdir -p /nfs/Kodi && chattr +i /nfs/Kodi
+  fileSystems."/nfs/Kodi" = {
+    device = "/dev/disk/by-uuid/160eb233-cb31-43bb-b2be-1836ed18d3d2";
+    options = [ "auto" "nofail" "x-systemd.device-timeout=30" ];
+
+  };
+
   # fileSystems."/nfs/Harbor" = {
   #   device = "/dev/disk/by-uuid/26b0657b-b71f-4d51-b1b6-06216e0fd6c9";
   #   options = [ "auto" "nofail" "x-systemd.device-timeout=30" ];
@@ -54,6 +61,7 @@
   services.nfs.server.exports = ''
     /nfs         *(rw,fsid=0,no_subtree_check)
     /nfs/Data    *(rw,no_subtree_check,no_root_squash,anonuid=1000,anongid=1000)
+    /nfs/Kodi    *(rw,no_subtree_check,no_root_squash,anonuid=1000,anongid=1000)
   '';
 
 }
