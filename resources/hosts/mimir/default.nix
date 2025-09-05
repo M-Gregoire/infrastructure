@@ -1,7 +1,6 @@
 { config, lib, private-config, ... }:
 
 {
-  imports = [ "${private-config}/resources/hosts/mimir" ];
 
   config.resources = with lib;
     mapAttrs (_: v: mkDefault v) {

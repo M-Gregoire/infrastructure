@@ -1,13 +1,24 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
-  imports = [ ./home.nix ./environment.nix ./apps.nix ./gui.nix ];
 
-  home.activation = {
-    folders = ''
-      mkdir -p ${config.resources.paths.home}/src/
-      mkdir -p ${config.resources.paths.home}/Screenshots/
-    '';
+  programs.home-manager.enable = true;
 
-  };
+  home.stateVersion = "22.11";
+
+  home.packages = with pkgs; [
+    # Utilities
+    wget
+    zip
+    unzip
+    # mtp mount
+    jmtpfs
+    # Mount remote filesystems over SSH
+    sshfs
+    # uptime -p
+    procps
+    # Yubikey
+    yubico-piv-tool
+    # deploy-rs
+  ];
 }

@@ -1,0 +1,101 @@
+{
+    "idunn": {
+        "configName": "idunn",
+        "hostname": "Gregfoire-MacBook-Pro",
+        "profile": "PC",
+        "network": "work",
+        "user": "gregoire.cadenemartinache",
+        "cluster": "",
+        "clusterRole": ""
+    },
+    "datadog": {
+        "configName": "datadog",
+        "hostname": "COMP-CQ5H77T0CQ",
+        "profile": "PC",
+        "network": "work",
+        "user": "gregoire.cadenemartinache",
+        "cluster": "",
+        "clusterRole": ""
+    },
+    "vali": {
+        "configName": "vali",
+        "hostname": "vali",
+        "profile": "PC",
+        "network": "home",
+        "user": "gregoire",
+        "cluster": "",
+        "clusterRole": ""
+    },
+    "mimir": {
+        "configName": "mimir",
+        "hostname": "mimir",
+        "profile": "PC",
+        "network": "home",
+        "user": "gregoire",
+        "cluster": "",
+        "clusterRole": ""
+    },
+    "hades-1": {
+        "configName": "hades-1",
+        "hostname": "hades-1",
+        "profile": "server",
+        "network": "home",
+        "user": "gregoire",
+        "cluster": "hades",
+        "clusterRole": "server"
+    },
+    "hades-2": {
+        "configName": "hades-2",
+        "hostname": "hades-2",
+        "profile": "server",
+        "network": "home",
+        "user": "gregoire",
+        "cluster": "hades",
+        "clusterRole": "agent"
+    },
+    "hades-3": {
+        "configName": "hades-3",
+        "hostname": "hades-3",
+        "profile": "server",
+        "network": "home",
+        "user": "gregoire",
+        "cluster": "hades",
+        "clusterRole": "agent"
+    },
+    "hades-4": {
+        "configName": "hades-4",
+        "hostname": "hades-4",
+        "profile": "server",
+        "network": "home",
+        "user": "gregoire",
+        "cluster": "hades",
+        "clusterRole": "agent"
+    },
+    "hades-5": {
+        "configName": "hades-5",
+        "hostname": "hades-5",
+        "profile": "server",
+        "network": "home",
+        "user": "gregoire",
+        "cluster": "hades",
+        "clusterRole": "agent"
+    },
+    "hades-6": {
+        "configName": "hades-6",
+        "hostname": "hades-6",
+        "profile": "server",
+        "network": "home",
+        "user": "gregoire",
+        "cluster": "hades",
+        "clusterRole": "agent"
+    },
+    "orion": {
+        "configName": "orion",
+        "hostname": "orion",
+        "profile": "server",
+        "network": "home",
+        "user": "gregoire",
+        "cluster": "",
+        "clusterRole": ""
+    }
+}

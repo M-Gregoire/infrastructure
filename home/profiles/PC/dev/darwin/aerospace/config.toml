@@ -1,0 +1,145 @@
+    # Start AeroSpace at login
+    start-at-login = true
+    after-startup-command = [
+    'exec-and-forget sketchybar',
+    'exec-and-forget borders active_color=0xff632ca6 inactive_color=0xff494d64 width=5.0'
+    ]
+exec-on-workspace-change = [
+  "/bin/bash",
+  "-lc",
+  "/run/current-system/sw/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=\"$AEROSPACE_FOCUSED_WORKSPACE\" PREV_WORKSPACE=\"$AEROSPACE_PREV_WORKSPACE\"" ]
+    # Normalization settings
+    enable-normalization-flatten-containers = true
+    enable-normalization-opposite-orientation-for-nested-containers = true
+
+    # Accordion layout settings
+    accordion-padding = 30
+
+    # Default root container settings
+    default-root-container-layout = 'tiles'
+    default-root-container-orientation = 'auto'
+
+    # Mouse follows focus settings
+    on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+    on-focus-changed = ['move-mouse window-lazy-center']
+
+    # Automatically unhide macOS hidden apps
+    automatically-unhide-macos-hidden-apps = true
+
+    # Key mapping preset
+    [key-mapping]
+    preset = 'qwerty'
+
+    # Gaps settings
+    [gaps]
+    inner.horizontal = 6
+    inner.vertical =   6
+    outer.left =       6
+    outer.bottom =     6
+    outer.right =      6
+    outer.top = [
+                    { monitor."built-in" = 0 },
+                    30 # default for other monitors if you want
+                ]
+
+    # Main mode bindings
+    [mode.main.binding]
+    # Launch applications
+    ctrl-enter = 'exec-and-forget open -na kitty'
+    ctrl-shift-f = 'exec-and-forget open -a "Google Chrome"'
+    #ctrl-shift-f = 'exec-and-forget open -a Finder'
+
+    # Window management
+    ctrl-shift-q = "close"
+    ctrl-f = 'fullscreen'
+    ctrl-shift-s = 'layout floating tiling'
+
+    # Focus movement
+    ctrl-h = 'focus left'
+    ctrl-j = 'focus down'
+    ctrl-k = 'focus up'
+    ctrl-l = 'focus right'
+    ctrl-left = 'focus left'
+    ctrl-down = 'focus down'
+    ctrl-up = 'focus up'
+    ctrl-right = 'focus right'
+
+    # Window movement
+    ctrl-shift-h = 'move left'
+    ctrl-shift-j = 'move down'
+    ctrl-shift-k = 'move up'
+    ctrl-shift-l = 'move right'
+    ctrl-shift-left = 'move left'
+    ctrl-shift-down = 'move down'
+    ctrl-shift-up = 'move up'
+    ctrl-shift-right = 'move right'
+
+    # Resize windows
+    ctrl-shift-minus = 'resize smart -50'
+    ctrl-shift-equal = 'resize smart +50'
+
+    # Workspace management
+    ctrl-1 = 'workspace 1'
+    ctrl-2 = 'workspace 2'
+    ctrl-3 = 'workspace 3'
+    ctrl-4 = 'workspace 4'
+    ctrl-5 = 'workspace 5'
+    ctrl-6 = 'workspace 6'
+    ctrl-7 = 'workspace 7'
+    ctrl-8 = 'workspace 8'
+    ctrl-9 = 'workspace 9'
+
+    # Move windows to workspaces
+    ctrl-shift-1 = 'move-node-to-workspace --focus-follows-window 1'
+    ctrl-shift-2 = 'move-node-to-workspace --focus-follows-window 2'
+    ctrl-shift-3 = 'move-node-to-workspace --focus-follows-window 3'
+    ctrl-shift-4 = 'move-node-to-workspace --focus-follows-window 4'
+    ctrl-shift-5 = 'move-node-to-workspace --focus-follows-window 5'
+    ctrl-shift-6 = 'move-node-to-workspace --focus-follows-window 6'
+    ctrl-shift-7 = 'move-node-to-workspace --focus-follows-window 7'
+    ctrl-shift-8 = 'move-node-to-workspace --focus-follows-window 8'
+    ctrl-shift-9 = 'move-node-to-workspace --focus-follows-window 9'
+
+    # Workspace navigation
+    alt-tab = 'workspace-back-and-forth'
+    alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+
+    # Enter passthrough mode for typing special characters
+    alt-p = 'mode passthrough'
+
+    # Enter service mode
+    alt-shift-semicolon = 'mode service'
+
+    # Service mode bindings
+    [mode.service.binding]
+    # Reload config and exit service mode
+    esc = ['reload-config', 'mode main']
+
+    # Reset layout
+    r = ['flatten-workspace-tree', 'mode main']
+
+    # Toggle floating/tiling layout
+    f = ['layout floating tiling', 'mode main']
+
+    # Close all windows but current
+    backspace = ['close-all-windows-but-current', 'mode main']
+
+    # Join with adjacent windows
+    alt-shift-h = ['join-with left', 'mode main']
+    alt-shift-j = ['join-with down', 'mode main']
+    alt-shift-k = ['join-with up', 'mode main']
+    alt-shift-l = ['join-with right', 'mode main']
+
+    # Passthrough mode to allow typing special characters (e.g., Polish letters)
+    # Enter with 'alt-p', exit with 'alt-p' or 'esc'.
+    [mode.passthrough.binding]
+    alt-p = 'mode main'
+    esc = 'mode main'
+
+    # Window detection rules
+    [[on-window-detected]]
+    if.app-id = 'org.gnu.Emacs'
+    run = 'move-node-to-workspace 3'
+    [[on-window-detected]]
+    if.app-id = 'us.zoom.xos'
+    run = 'move-node-to-workspace 9'

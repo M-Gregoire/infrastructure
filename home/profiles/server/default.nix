@@ -1,8 +1,7 @@
 { config, ... }:
 
 {
-  imports = [ ../../../modules ../../dev/linux/gpg-agent.nix ../../dev/ssh.nix ];
-
+  # imports = [ ../../dev/linux/gpg-agent.nix ../../dev/ssh.nix ];
 
   programs.home-manager.enable = true;
 

@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+# Check if deploying to current machine (local deployment)
+current_hostname=$(hostname)
+is_local=false
+
+# Map deploy targets to expected hostnames
+case "$current_hostname" in
+  vali*)
+    if [[ "$(uname -s)" == "Linux" ]] && [[ -f /etc/NIXOS || -d /etc/nixos ]]; then
+      is_local=true
+    fi
+    ;;
+esac
+
+if [[ "$is_local" == "true" ]]; then
+  # Handle --dry option for local deployment
+  dry_run=false
+  extra_args=()
+  for arg in "$@"; do
+    if [[ "$arg" == "--dry" ]]; then
+      dry_run=true
+    else
+      extra_args+=("$arg")
+    fi
+  done
+
+  if [[ "$dry_run" == "true" ]]; then
+    echo "🏠 Local deployment (dry run): nixos-rebuild build --flake .#vali"
+    exec sudo nixos-rebuild build --flake .#vali "${extra_args[@]}"
+  else
+    echo "🏠 Local deployment: nixos-rebuild switch --flake .#vali"
+    exec sudo nixos-rebuild switch --flake .#vali "${extra_args[@]}"
+  fi
+else
+  # Remote deployment via deploy-rs
+  args=()
+  for arg in "$@"; do
+    if [[ "$arg" == "--dry" ]]; then
+      args+=("--dry-activate")
+    else
+      args+=("$arg")
+    fi
+  done
+  exec deploy .#vali --skip-checks "${args[@]}"
+fi

@@ -40,11 +40,11 @@ done
 [ -z "$NEW_DEFAULT_SINK" ] && NEW_DEFAULT_SINK=$FIRST;
 
 # Set default sink for new audio playback
-pactl set-default-sink "$NEW_DEFAULT_SINK"
+wpctl set-default "$NEW_DEFAULT_SINK"
 
 #SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
-#notify-send --expire-time 1350 "Switched default output sink to: $($SCRIPT_DIR/print-default-sink.sh)"
+notify-send --expire-time 1350 "Switched default output sink to: $($SCRIPT_DIR/print-default-sink.sh)"
 
 # Switch all currently running audio streams over to the newly selected sink, via the script I found
 # TODO: I think the below might need the index, not the name!:

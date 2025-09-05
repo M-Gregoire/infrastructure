@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Handle --dry option
+args=()
+for arg in "$@"; do
+  if [[ "$arg" == "--dry" ]]; then
+    args+=("--dry-activate")
+  else
+    args+=("$arg")
+  fi
+done
+
+exec deploy .#hades-3 --skip-checks "${args[@]}"
