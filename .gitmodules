@@ -4,3 +4,6 @@
 [submodule "vendor/rofi"]
 	path = vendor/rofi
 	url = git@github.com:M-Gregoire/rofi.git
+[submodule "dotfiles/doom.d"]
+	path = dotfiles/doom.d
+	url = git@github.com:M-Gregoire/Doom-emacs-config.git

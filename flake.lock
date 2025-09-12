@@ -167,11 +167,11 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1757611053,
-        "narHash": "sha256-eJ2S12rrKE8oQP12XCVLjS9C7zjfR3+2dDJ08wgJEsA=",
+        "lastModified": 1757654913,
+        "narHash": "sha256-L1pCFKOeHD/sIe8lqthZVA/D4dJuNkEtXJ894o0J3yU=",
         "owner": "homebrew",
         "repo": "homebrew-cask",
-        "rev": "6d7f33a10f0fb0ee09b86990dd4a02a323edbb17",
+        "rev": "5624d2d8ee9897919e39ca4bd7eeecc6a01515a3",
         "type": "github"
       },
       "original": {
@@ -183,11 +183,11 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1757615787,
-        "narHash": "sha256-Jscqugw5PXy3yQN5OgALUF/lfqN1le8JdLcHHtvn+Uo=",
+        "lastModified": 1757669938,
+        "narHash": "sha256-XrTx/to2Wpcg3cDQXJ5i178ggFD10whL+EYUXgBhaC8=",
         "owner": "homebrew",
         "repo": "homebrew-core",
-        "rev": "860413dcb9c2956980bee3d07a28ebf85dac246b",
+        "rev": "c3d1b2914814b66fa8595b611a75d73433091efe",
         "type": "github"
       },
       "original": {
@@ -284,11 +284,11 @@
     },
     "nixpkgs-darwin": {
       "locked": {
-        "lastModified": 1757539104,
-        "narHash": "sha256-AopHBvFn6PgccYsr+MIjMJUsj+3iyBcexUEW0z8g8Jo=",
+        "lastModified": 1757590060,
+        "narHash": "sha256-EWwwdKLMZALkgHFyKW7rmyhxECO74+N+ZO5xTDnY/5c=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "e6a06ffdbf5e5e9a274658bff60707a965308b53",
+        "rev": "0ef228213045d2cdb5a169a95d63ded38670b293",
         "type": "github"
       },
       "original": {
@@ -300,11 +300,11 @@
     },
     "nixpkgs-linux": {
       "locked": {
-        "lastModified": 1757408970,
-        "narHash": "sha256-aSgK4BLNFFGvDTNKPeB28lVXYqVn8RdyXDNAvgGq+k0=",
+        "lastModified": 1757545623,
+        "narHash": "sha256-mCxPABZ6jRjUQx3bPP4vjA68ETbPLNz9V2pk9tO7pRQ=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "d179d77c139e0a3f5c416477f7747e9d6b7ec315",
+        "rev": "8cd5ce828d5d1d16feff37340171a98fc3bf6526",
         "type": "github"
       },
       "original": {
@@ -355,11 +355,11 @@
         "rev": "f86235297c12b5ce48e8a679c805f9abe42047be",
         "revCount": 224,
         "type": "git",
-        "url": "file:///home/gregoire/src/infrastructure-private"
+        "url": "file:///Users/gregoire.cadenemartinache/src/infrastructure-private"
       },
       "original": {
         "type": "git",
-        "url": "file:///home/gregoire/src/infrastructure-private"
+        "url": "file:///Users/gregoire.cadenemartinache/src/infrastructure-private"
       }
     },
     "root": {

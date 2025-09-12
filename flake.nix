@@ -44,7 +44,8 @@
       flake = false;
     };
     private-config = {
-      url = "git+file:///home/gregoire/src/infrastructure-private";
+      url =
+        "git+file:///Users/gregoire.cadenemartinache/src/infrastructure-private";
       flake = false;
     };
 
@@ -69,6 +70,8 @@
     , nix-darwin, nixpkgs-darwin, home-manager-darwin, ... }@inputs:
     let
       lib = nixpkgs-linux.lib;
+
+      flakeRoot = builtins.toString ./.;
 
       hostVars = builtins.fromJSON (builtins.readFile ./hosts.json);
 
@@ -176,7 +179,7 @@
               _module.args = {
                 inherit inputs system;
                 inherit (inputs) private-config;
-                flake-root = ./.;
+                flake-root = flakeRoot;
                 configName = configName;
                 inherit (h) hostname profile network user cluster clusterRole;
               };
@@ -186,15 +189,19 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.sharedModules = [{
-                _module.args = {
-                  inherit inputs;
-                  inherit (inputs) private-config;
-                  flake-root = ./.;
-                  configName = configName;
-                  inherit (h) hostname profile network user cluster clusterRole;
-                };
-              }];
+              home-manager.sharedModules = [
+                {
+                  _module.args = {
+                    inherit inputs;
+                    inherit (inputs) private-config;
+                    flake-root = flakeRoot;
+                    configName = configName;
+                    inherit (h)
+                      hostname profile network user cluster clusterRole;
+                  };
+                }
+                ./modules
+              ];
 
               home-manager.users.${h.user} = { config, lib, pkgs, ... }: {
                 imports = homeList configName "darwin"
@@ -253,15 +260,19 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.sharedModules = [{
-                _module.args = {
-                  inherit inputs;
-                  inherit (inputs) private-config;
-                  flake-root = ./.;
-                  configName = configName;
-                  inherit (h) hostname profile network user cluster clusterRole;
-                };
-              }];
+              home-manager.sharedModules = [
+                {
+                  _module.args = {
+                    inherit inputs;
+                    inherit (inputs) private-config;
+                    flake-root = ./.;
+                    configName = configName;
+                    inherit (h)
+                      hostname profile network user cluster clusterRole;
+                  };
+                }
+                ./modules
+              ];
               home-manager.users.${h.user} = { config, lib, pkgs, ... }: {
 
                 imports = homeList configName "linux"

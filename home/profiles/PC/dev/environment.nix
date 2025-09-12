@@ -10,18 +10,11 @@
     GOROOT = "~/go";
     PATH = "$PATH:${config.resources.paths.home}/bin";
     # Config
-    BROWSER = "${config.resources.pcs.browser}";
     EDITOR = "emacsclient -nw";
     ALTERNATE_EDITOR = "nano";
     VISUAL = "${config.home.sessionVariables.EDITOR}";
-    TERM = "${config.resources.pcs.terminal}";
     # Transparency percentage to use
     TRANSPARENCY = "${config.resources.theme.alphaPercent}";
-    # Used by i3 sensible-terminal https://build.i3wm.org/docs/i3-sensible-terminal.htmlhttps://build.i3wm.org/docs/i3-sensible-terminal.html
-    TERMINAL = "${config.home.sessionVariables.TERM}";
-    # Needed for Trash in Thunar
-    # https://github.com/NixOS/nixpkgs/issues/29137#issuecomment-354229533
-    # GIO_EXTRA_MODULES = [ "${pkgs.gvfs}/lib/gio/modules" ];
     # Base 16 themes
     THEME = "${config.resources.theme.name}";
     # Recover font and font size for Emacs
