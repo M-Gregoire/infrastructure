@@ -7,7 +7,7 @@
 exec-on-workspace-change = [
   "/bin/bash",
   "-lc",
-  "/run/current-system/sw/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=\"$AEROSPACE_FOCUSED_WORKSPACE\" PREV_WORKSPACE=\"$AEROSPACE_PREV_WORKSPACE\"" ]
+  "sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=\"$AEROSPACE_FOCUSED_WORKSPACE\" PREV_WORKSPACE=\"$AEROSPACE_PREV_WORKSPACE\"" ]
     # Normalization settings
     enable-normalization-flatten-containers = true
     enable-normalization-opposite-orientation-for-nested-containers = true
@@ -45,60 +45,60 @@ exec-on-workspace-change = [
     # Main mode bindings
     [mode.main.binding]
     # Launch applications
-    ctrl-enter = 'exec-and-forget open -na kitty'
-    ctrl-shift-f = 'exec-and-forget open -a "Google Chrome"'
-    #ctrl-shift-f = 'exec-and-forget open -a Finder'
+    cmd-shift-enter = 'exec-and-forget open -na kitty'
+    cmd-shift-f = 'exec-and-forget open -a "Google Chrome"'
+    #cmd-shift-f = 'exec-and-forget open -a Finder'
 
     # Window management
-    ctrl-shift-q = "close"
-    ctrl-f = 'fullscreen'
-    ctrl-shift-s = 'layout floating tiling'
+    cmd-shift-q = "close"
+    cmd-f = 'fullscreen'
+    cmd-shift-s = 'layout floating tiling'
 
     # Focus movement
-    ctrl-h = 'focus left'
-    ctrl-j = 'focus down'
-    ctrl-k = 'focus up'
-    ctrl-l = 'focus right'
-    ctrl-left = 'focus left'
-    ctrl-down = 'focus down'
-    ctrl-up = 'focus up'
-    ctrl-right = 'focus right'
+    cmd-h = 'focus left'
+    cmd-j = 'focus down'
+    cmd-k = 'focus up'
+    cmd-l = 'focus right'
+    cmd-left = 'focus left'
+    cmd-down = 'focus down'
+    cmd-up = 'focus up'
+    cmd-right = 'focus right'
 
     # Window movement
-    ctrl-shift-h = 'move left'
-    ctrl-shift-j = 'move down'
-    ctrl-shift-k = 'move up'
-    ctrl-shift-l = 'move right'
-    ctrl-shift-left = 'move left'
-    ctrl-shift-down = 'move down'
-    ctrl-shift-up = 'move up'
-    ctrl-shift-right = 'move right'
+    cmd-shift-h = 'move left'
+    cmd-shift-j = 'move down'
+    cmd-shift-k = 'move up'
+    cmd-shift-l = 'move right'
+    cmd-shift-left = 'move left'
+    cmd-shift-down = 'move down'
+    cmd-shift-up = 'move up'
+    cmd-shift-right = 'move right'
 
     # Resize windows
-    ctrl-shift-minus = 'resize smart -50'
-    ctrl-shift-equal = 'resize smart +50'
+    cmd-shift-minus = 'resize smart -50'
+    cmd-shift-equal = 'resize smart +50'
 
     # Workspace management
-    ctrl-1 = 'workspace 1'
-    ctrl-2 = 'workspace 2'
-    ctrl-3 = 'workspace 3'
-    ctrl-4 = 'workspace 4'
-    ctrl-5 = 'workspace 5'
-    ctrl-6 = 'workspace 6'
-    ctrl-7 = 'workspace 7'
-    ctrl-8 = 'workspace 8'
-    ctrl-9 = 'workspace 9'
+    cmd-1 = 'workspace 1'
+    cmd-2 = 'workspace 2'
+    cmd-3 = 'workspace 3'
+    cmd-4 = 'workspace 4'
+    cmd-5 = 'workspace 5'
+    cmd-6 = 'workspace 6'
+    cmd-7 = 'workspace 7'
+    cmd-8 = 'workspace 8'
+    cmd-9 = 'workspace 9'
 
     # Move windows to workspaces
-    ctrl-shift-1 = 'move-node-to-workspace --focus-follows-window 1'
-    ctrl-shift-2 = 'move-node-to-workspace --focus-follows-window 2'
-    ctrl-shift-3 = 'move-node-to-workspace --focus-follows-window 3'
-    ctrl-shift-4 = 'move-node-to-workspace --focus-follows-window 4'
-    ctrl-shift-5 = 'move-node-to-workspace --focus-follows-window 5'
-    ctrl-shift-6 = 'move-node-to-workspace --focus-follows-window 6'
-    ctrl-shift-7 = 'move-node-to-workspace --focus-follows-window 7'
-    ctrl-shift-8 = 'move-node-to-workspace --focus-follows-window 8'
-    ctrl-shift-9 = 'move-node-to-workspace --focus-follows-window 9'
+    cmd-shift-1 = 'move-node-to-workspace --focus-follows-window 1'
+    cmd-shift-2 = 'move-node-to-workspace --focus-follows-window 2'
+    cmd-shift-3 = 'move-node-to-workspace --focus-follows-window 3'
+    cmd-shift-4 = 'move-node-to-workspace --focus-follows-window 4'
+    cmd-shift-5 = 'move-node-to-workspace --focus-follows-window 5'
+    cmd-shift-6 = 'move-node-to-workspace --focus-follows-window 6'
+    cmd-shift-7 = 'move-node-to-workspace --focus-follows-window 7'
+    cmd-shift-8 = 'move-node-to-workspace --focus-follows-window 8'
+    cmd-shift-9 = 'move-node-to-workspace --focus-follows-window 9'
 
     # Workspace navigation
     alt-tab = 'workspace-back-and-forth'

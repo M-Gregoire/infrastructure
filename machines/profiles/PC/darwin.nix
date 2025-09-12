@@ -18,7 +18,7 @@
     "com.raycast.macos" = {
       # from your plist dump:
       # plutil -convert xml1 ~/Library/Preferences/com.raycast.macos.plist -o raycast.plist
-      raycastGlobalHotkey = "Control-2";
+      raycastGlobalHotkey = "Command-2";
     };
   };
 

@@ -71,8 +71,6 @@
     let
       lib = nixpkgs-linux.lib;
 
-      flakeRoot = builtins.toString ./.;
-
       hostVars = builtins.fromJSON (builtins.readFile ./hosts.json);
 
       conditionalImports = relativePath:
@@ -167,6 +165,7 @@
         in nix-darwin.lib.darwinSystem {
           inherit system;
           modules = [
+            ./modules
             {
               nixpkgs.config = {
                 allowBroken = false;
@@ -179,7 +178,7 @@
               _module.args = {
                 inherit inputs system;
                 inherit (inputs) private-config;
-                flake-root = flakeRoot;
+                flake-root = ./.;
                 configName = configName;
                 inherit (h) hostname profile network user cluster clusterRole;
               };
@@ -194,7 +193,7 @@
                   _module.args = {
                     inherit inputs;
                     inherit (inputs) private-config;
-                    flake-root = flakeRoot;
+                    flake-root = ./.;
                     configName = configName;
                     inherit (h)
                       hostname profile network user cluster clusterRole;
@@ -238,6 +237,7 @@
         in nixpkgs-linux.lib.nixosSystem {
           inherit system;
           modules = [
+            ./modules
             {
               nixpkgs.config = {
                 allowBroken = false;

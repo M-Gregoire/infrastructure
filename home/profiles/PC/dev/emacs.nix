@@ -9,9 +9,8 @@
     fd
 
     # Spell check
-    aspell
-    aspellDicts.fr
-    aspellDicts.en
+    enchant
+    (aspellWithDicts (dicts: with dicts; [ en en-computers en-science fr ]))
 
     # Langs
     ##  Go
@@ -37,13 +36,11 @@
 
   home.file.".emacs.d/.local/etc/bookmarks".source =
     builtins.toPath "${private-config}/dotfiles/emacs.d/bookmarks";
-  home.file.".doom.d/init.el".source = config.lib.file.mkOutOfStoreSymlink
-    "${inputs.emacs-dotfiles}/dotfiles/doom.d/init.el";
+  home.file.".doom.d/init.el".source = "${flake-root}/dotfiles/doom.d/init.el";
   home.file.".doom.d/config.el".source =
-    "${inputs.emacs-dotfiles}/dotfiles/doom.d/config.el";
-  home.file.".doom.d/packages.el".source = config.lib.file.mkOutOfStoreSymlink
+    "${flake-root}/dotfiles/doom.d/config.el";
+  home.file.".doom.d/packages.el".source =
     "${flake-root}/dotfiles/doom.d/packages.el";
-
   xresources.properties = {
     # Font backend settings
     "Xft.autohint" = "0";

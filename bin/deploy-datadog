@@ -26,11 +26,11 @@ if [[ "$is_local" == "true" ]]; then
   done
 
   if [[ "$dry_run" == "true" ]]; then
-    echo "🏠 Local deployment (dry run): darwin-rebuild build --flake .#datadog"
-    exec sudo darwin-rebuild build --flake .#datadog "${extra_args[@]}"
+    echo "🏠 Local deployment (dry run): darwin-rebuild build --flake .?submodules=1#datadog"
+    exec sudo darwin-rebuild build --flake .?submodules=1#datadog "${extra_args[@]}"
   else
-    echo "🏠 Local deployment: darwin-rebuild switch --flake .#datadog"
-    exec sudo darwin-rebuild switch --flake .#datadog "${extra_args[@]}"
+    echo "🏠 Local deployment: darwin-rebuild switch --flake .?submodules=1#datadog"
+    exec sudo darwin-rebuild switch --flake .?submodules=1#datadog "${extra_args[@]}"
   fi
 else
   # Remote deployment via deploy-rs
@@ -42,5 +42,5 @@ else
       args+=("$arg")
     fi
   done
-  exec deploy .#datadog --skip-checks "${args[@]}"
+  exec deploy .?submodules=1#datadog --skip-checks "${args[@]}"
 fi

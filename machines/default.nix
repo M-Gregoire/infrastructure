@@ -2,7 +2,7 @@
 , inputs, ... }:
 
 {
-  imports = lib.flatten [ ../modules ./dev/term.nix ];
+  imports = lib.flatten [ ];
 
   config = {
 

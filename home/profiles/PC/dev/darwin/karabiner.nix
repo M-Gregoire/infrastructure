@@ -1,7 +1,6 @@
 { config, pkgs, ... }:
 
 let
-  # List of terminal applications - easy to modify in one place
   terminalApps = [
     "com.apple.Terminal"
     "com.googlecode.iterm2"
@@ -10,119 +9,97 @@ let
     "net.kovidgoyal.kitty"
   ];
 
-  # Generate rules for swapping ONLY Cmd+number and Ctrl+number in terminal
-  generateTerminalNumberSwaps = let
-    numbers = [
-      "1"
-      "2"
-      "3"
-      "4"
-      "5"
-      "6"
-      "7"
-      "8"
-      "9"
-      "0"
-      "left_arrow"
-      "right_arrow"
-      "up_arrow"
-      "down_arrow"
-      "d"
-    ];
-    # Cmd+number -> Ctrl+number in terminal
-  in (map (num: {
-    description = "Cmd+${num} to Ctrl+${num} in terminal";
+  browserApps = [
+    "com.apple.Safari"
+    "com.google.Chrome"
+    "org.mozilla.firefox"
+    "com.microsoft.edgemac"
+    "com.operasoftware.Opera"
+    "com.brave.Browser"
+    "org.chromium.Chromium"
+    "com.vivaldi.Vivaldi"
+  ];
+
+  # Generate rules for swapping only c, v, x between Cmd and Ctrl globally (except terminals)
+  generateGlobalCopyPasteSwaps = let
+    keys = [ "c" "v" "x" ];
+    # Cmd+key -> Ctrl+key globally (except terminals)
+  in (map (key: {
+    description = "Cmd+${key} to Ctrl+${key} globally (except terminals)";
     type = "basic";
     from = {
-      key_code = num;
+      key_code = key;
       modifiers = { mandatory = [ "command" ]; };
     };
     to = [{
-      key_code = num;
+      key_code = key;
       modifiers = [ "control" ];
     }];
     conditions = [{
-      type = "frontmost_application_if";
+      type = "frontmost_application_unless";
       bundle_identifiers = terminalApps;
     }];
-  }) numbers) ++
-  # Ctrl+number -> Cmd+number in terminal
-  (map (num: {
-    description = "Ctrl+${num} to Cmd+${num} in terminal";
+  }) keys) ++
+  # Ctrl+key -> Cmd+key globally (except terminals)
+  (map (key: {
+    description = "Ctrl+${key} to Cmd+${key} globally (except terminals)";
     type = "basic";
     from = {
-      key_code = num;
+      key_code = key;
       modifiers = { mandatory = [ "control" ]; };
     };
     to = [{
-      key_code = num;
+      key_code = key;
       modifiers = [ "command" ];
     }];
     conditions = [{
-      type = "frontmost_application_if";
+      type = "frontmost_application_unless";
       bundle_identifiers = terminalApps;
     }];
-  }) numbers);
+  }) keys);
 
   # Complete Karabiner configuration
-  karabinerConfig = {
-    title =
-      "Global Cmd/Ctrl swap with Terminal number-only swaps for Aerospace";
+  cmdCtrlKarabinerConfig = {
+    title = "Global Cmd/Ctrl swap for copy, paste, cut (except terminals)";
     rules = [{
       description =
-        "Swap Cmd and Ctrl globally, but only Cmd/Ctrl+numbers in terminal";
-      manipulators =
-        # Terminal-specific number swaps FIRST (highest priority)
-        generateTerminalNumberSwaps ++ [
-          # Global Cmd to Ctrl swap (excluding terminals entirely)
-          {
-            description = "Cmd to Ctrl globally (except terminals)";
-            type = "basic";
-            from = { key_code = "left_command"; };
-            to = [{ key_code = "left_control"; }];
-            conditions = [{
-              type = "frontmost_application_unless";
-              bundle_identifiers = terminalApps;
-            }];
-          }
-          {
-            description = "Right Cmd to Right Ctrl globally (except terminals)";
-            type = "basic";
-            from = { key_code = "right_command"; };
-            to = [{ key_code = "right_control"; }];
-            conditions = [{
-              type = "frontmost_application_unless";
-              bundle_identifiers = terminalApps;
-            }];
-          }
-          # Global Ctrl to Cmd swap (excluding terminals entirely)
-          {
-            description = "Ctrl to Cmd globally (except terminals)";
-            type = "basic";
-            from = { key_code = "left_control"; };
-            to = [{ key_code = "left_command"; }];
-            conditions = [{
-              type = "frontmost_application_unless";
-              bundle_identifiers = terminalApps;
-            }];
-          }
-          {
-            description = "Right Ctrl to Right Cmd globally (except terminals)";
-            type = "basic";
-            from = { key_code = "right_control"; };
-            to = [{ key_code = "right_command"; }];
-            conditions = [{
-              type = "frontmost_application_unless";
-              bundle_identifiers = terminalApps;
-            }];
-          }
-        ];
+        "Swap Cmd+c/v/x with Ctrl+c/v/x globally except in terminals";
+      manipulators = generateGlobalCopyPasteSwaps;
+    }];
+  };
+
+  browserKarabinerConfig = {
+    title = "Remap Cmd+Enter for aerospace except in browsers";
+    rules = [{
+      description =
+        "Remap Cmd+Enter to Cmd+Shift+Enter for aerospace (except browsers)";
+      manipulators = [{
+        description = "Cmd+Enter to Cmd+Shift+Enter outside browsers";
+        type = "basic";
+        from = {
+          key_code = "return_or_enter";
+          modifiers = { mandatory = [ "command" ]; };
+        };
+        to = [{
+          key_code = "return_or_enter";
+          modifiers = [ "command" "shift" ];
+        }];
+        conditions = [{
+          type = "frontmost_application_unless";
+          bundle_identifiers = browserApps;
+        }];
+      }];
     }];
   };
 
 in {
-  xdg.configFile."karabiner/assets/complex_modifications/global-cmd-ctrl-swap.json" =
+  xdg.configFile."karabiner/assets/complex_modifications/global-cmd-ctrl-copy-paste-swap-except-terminals.json" =
     {
-      text = builtins.toJSON karabinerConfig;
+      text = builtins.toJSON cmdCtrlKarabinerConfig;
+    };
+
+  xdg.configFile."karabiner/assets/complex_modifications/aerospace-cmd-enter-remap.json" =
+    {
+      text = builtins.toJSON browserKarabinerConfig;
     };
 }
