@@ -1,11 +1,24 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, user, ... }:
 
 {
-  users.users.gregoire.home = "/Users/gregoire";
+  imports = [ ./dev/darwin/shortcuts.nix ];
 
-  # The platform the configuration will be used on.
-  nixpkgs.hostPlatform = "aarch64-darwin";
+  users.users.gregoire.home = "/Users/${user}";
 
+  # # The platform the configuration will be used on.
+  # nixpkgs.hostPlatform = "aarch64-darwin";
+
+  homebrew.enable = true;
+  homebrew.brews = [ "borders" "k9s" ];
+  homebrew.casks = [
+    "emacs-mac"
+    "hammerspoon"
+    "raycast"
+    "kitty"
+    "notunes"
+    "bluesnooze"
+    "karabiner-elements"
+  ];
   programs.zsh = {
     enable = true;
     shellInit = ''
@@ -29,4 +42,7 @@
   system.defaults.NSGlobalDomain."com.apple.swipescrolldirection" = false;
 
   security.pam.services.sudo_local.touchIdAuth = true;
+
+  system.primaryUser = "${user}";
+
 }

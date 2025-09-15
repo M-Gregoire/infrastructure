@@ -60,33 +60,17 @@
     "emacs-dotfiles": {
       "flake": false,
       "locked": {
-        "lastModified": 1757144867,
-        "narHash": "sha256-7YPuJ4ce4ToZySw4hW5ef8abq5I6CL7BnhU6H01f57o=",
+        "lastModified": 1757690577,
+        "narHash": "sha256-ob+94L0EpIIAOghWezpRQQo3u/EhG5yZ2L7NCmoEilY=",
         "owner": "M-Gregoire",
         "repo": "Doom-emacs-config",
-        "rev": "0441ed83124cd3b02079885738ad998dc3362df9",
+        "rev": "1b36df60d59dccf080d6bf4e41f03991d1b8a5f8",
         "type": "github"
       },
       "original": {
         "owner": "M-Gregoire",
         "ref": "main",
         "repo": "Doom-emacs-config",
-        "type": "github"
-      }
-    },
-    "emacs-plus": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1756021711,
-        "narHash": "sha256-Ew69BHwupkdHyECC7EHyG0YKzBhBEyZbmoD84leUhfw=",
-        "owner": "d12frosted",
-        "repo": "homebrew-emacs-plus",
-        "rev": "15a9e55c28347ace5bc4d1cbd954e8594bc67dd9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "d12frosted",
-        "repo": "homebrew-emacs-plus",
         "type": "github"
       }
     },
@@ -148,6 +132,22 @@
         "type": "github"
       }
     },
+    "homebrew-borders": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1738172733,
+        "narHash": "sha256-jggo/EU1IGQsB4q8FQ/6NXP3DEPi8hx/Y02cpnbh2FI=",
+        "owner": "FelixKratz",
+        "repo": "homebrew-formulae",
+        "rev": "aa79c1d02c7923c38a63114d41500109245b5d7f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "FelixKratz",
+        "repo": "homebrew-formulae",
+        "type": "github"
+      }
+    },
     "homebrew-bundle": {
       "flake": false,
       "locked": {
@@ -167,11 +167,11 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1757654913,
-        "narHash": "sha256-L1pCFKOeHD/sIe8lqthZVA/D4dJuNkEtXJ894o0J3yU=",
+        "lastModified": 1757768218,
+        "narHash": "sha256-Y+GP44rKA5DWpy/1CoXfosiXw0lsPNNjzJfIh8cXWT8=",
         "owner": "homebrew",
         "repo": "homebrew-cask",
-        "rev": "5624d2d8ee9897919e39ca4bd7eeecc6a01515a3",
+        "rev": "41e4c67b35b26fa1d6da20fb33b15becfcbe18e2",
         "type": "github"
       },
       "original": {
@@ -183,16 +183,32 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1757669938,
-        "narHash": "sha256-XrTx/to2Wpcg3cDQXJ5i178ggFD10whL+EYUXgBhaC8=",
+        "lastModified": 1757768381,
+        "narHash": "sha256-/ylp86NUVaa9dIZ54ATXPoFVHUAonYpVfrHbJmpJ2AU=",
         "owner": "homebrew",
         "repo": "homebrew-core",
-        "rev": "c3d1b2914814b66fa8595b611a75d73433091efe",
+        "rev": "bcbf85ca566cf92aec3b1c9f1f6298511f683c7d",
         "type": "github"
       },
       "original": {
         "owner": "homebrew",
         "repo": "homebrew-core",
+        "type": "github"
+      }
+    },
+    "homebrew-emacs": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1749770685,
+        "narHash": "sha256-9UPgnr+Wd2oIpxksx6EoffcfkZ0i8kJ1mYdLOESLk2U=",
+        "owner": "railwaycat",
+        "repo": "homebrew-emacsmacport",
+        "rev": "98f2c3f99c2af1f456f03bc77c16da13d2ccf62a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "railwaycat",
+        "repo": "homebrew-emacsmacport",
         "type": "github"
       }
     },
@@ -349,17 +365,14 @@
     "private-config": {
       "flake": false,
       "locked": {
-        "lastModified": 1757665133,
-        "narHash": "sha256-UuHwgblbdVjZkm8FUsQqHUlGYbZkiJ51snNjAzncgRc=",
-        "ref": "refs/heads/main",
-        "rev": "f86235297c12b5ce48e8a679c805f9abe42047be",
-        "revCount": 224,
-        "type": "git",
-        "url": "file:///Users/gregoire.cadenemartinache/src/infrastructure-private"
+        "lastModified": 1757696578,
+        "narHash": "sha256-cXAs2xZtmy+RJY2fpLhoQVEJ+nnIUoHzWbN4wq++Q6s=",
+        "path": "/Users/gregoire/src/infrastructure-private",
+        "type": "path"
       },
       "original": {
-        "type": "git",
-        "url": "file:///Users/gregoire.cadenemartinache/src/infrastructure-private"
+        "path": "/Users/gregoire/src/infrastructure-private",
+        "type": "path"
       }
     },
     "root": {
@@ -367,12 +380,13 @@
         "deploy-rs": "deploy-rs",
         "disko": "disko",
         "emacs-dotfiles": "emacs-dotfiles",
-        "emacs-plus": "emacs-plus",
         "home-manager-darwin": "home-manager-darwin",
         "home-manager-linux": "home-manager-linux",
+        "homebrew-borders": "homebrew-borders",
         "homebrew-bundle": "homebrew-bundle",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
+        "homebrew-emacs": "homebrew-emacs",
         "nix-darwin": "nix-darwin",
         "nix-homebrew": "nix-homebrew",
         "nixos-facter-modules": "nixos-facter-modules",

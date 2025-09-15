@@ -2,10 +2,10 @@
 , inputs, ... }:
 
 {
-  imports = lib.flatten [ ];
 
   config = {
 
+    nix.settings.experimental-features = [ "nix-command" "flakes" ];
     environment.systemPackages = with pkgs; [
       # File type
       file
@@ -21,6 +21,8 @@
       # dhcp
       # lsof
       lsof
+      vim
+      coreutils
     ];
 
     users.groups.${user} = {

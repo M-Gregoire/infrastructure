@@ -1,10 +1,10 @@
 {
     "idunn": {
         "configName": "idunn",
-        "hostname": "Gregfoire-MacBook-Pro",
+        "hostname": "idunn",
         "profile": "PC",
-        "network": "work",
-        "user": "gregoire.cadenemartinache",
+        "network": "home",
+        "user": "gregoire",
         "cluster": "",
         "clusterRole": ""
     },

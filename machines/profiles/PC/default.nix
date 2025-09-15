@@ -1,12 +1,7 @@
 { config, lib, pkgs, options, user, hostname, private-config, ... }:
 
 {
-  imports = [ ./resources.nix ../../dev/wireguard-tools.nix ];
-
-  # nix.settings.experimental-features = [
-  #   "nix-command"
-  #   "flakes"
-  # ];
+  imports = [ ../../dev/wireguard-tools.nix ];
 
   # programs = {
   #   zsh = {
@@ -33,6 +28,11 @@
   #     resources = config.resources;
   #   };
 
-  fonts.packages = with pkgs; [ nerd-fonts.dejavu-sans-mono nerd-fonts.hack ];
+  fonts.packages = with pkgs; [
+    nerd-fonts.dejavu-sans-mono
+    nerd-fonts.hack
+    fira-code
+    fira-code-symbols
+  ];
 
 }

@@ -1,7 +1,6 @@
 { pkgs, config, lib, private-config, ... }:
 
 {
-  imports = [ "${private-config}/resources/hosts/idunn" ];
 
   config.resources = {
     #luks.drive = "/dev/nvme0n1p2";

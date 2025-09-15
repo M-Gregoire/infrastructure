@@ -6,7 +6,7 @@ is_local=false
 
 # Map deploy targets to expected hostnames
 case "$current_hostname" in
-  "Gregoires-MacBook-Pro"* | *"Gregoire"*)
+  *idunn* | *MacbookPro-De-Gregoire*)
     if [[ "$(uname -s)" == "Darwin" ]]; then
       is_local=true
     fi
@@ -26,11 +26,11 @@ if [[ "$is_local" == "true" ]]; then
   done
 
   if [[ "$dry_run" == "true" ]]; then
-    echo "🏠 Local deployment (dry run): darwin-rebuild build --flake .#Gregoires-MacBook-Pro"
-    exec darwin-rebuild build --flake .#Gregoires-MacBook-Pro "${extra_args[@]}"
+    echo "🏠 Local deployment (dry run): darwin-rebuild build --flake .?submodules=1#datadog"
+    exec sudo darwin-rebuild build --flake .?submodules=1#idunn "${extra_args[@]}"
   else
-    echo "🏠 Local deployment: darwin-rebuild switch --flake .#Gregoires-MacBook-Pro"
-    exec darwin-rebuild switch --flake .#Gregoires-MacBook-Pro "${extra_args[@]}"
+    echo "🏠 Local deployment: darwin-rebuild switch --flake .?submodules=1#datadog"
+    exec sudo darwin-rebuild switch --flake .?submodules=1#idunn "${extra_args[@]}"
   fi
 else
   # Remote deployment via deploy-rs
@@ -42,5 +42,5 @@ else
       args+=("$arg")
     fi
   done
-  exec deploy .#idunn --skip-checks "${args[@]}"
+  exec deploy .?submodules=1#idunn --skip-checks "${args[@]}"
 fi

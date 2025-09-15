@@ -32,8 +32,12 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
-    emacs-plus = {
-      url = "github:d12frosted/homebrew-emacs-plus";
+    homebrew-emacs = {
+      url = "github:railwaycat/homebrew-emacsmacport";
+      flake = false;
+    };
+    homebrew-borders = {
+      url = "github:FelixKratz/homebrew-formulae";
       flake = false;
     };
 
@@ -44,8 +48,7 @@
       flake = false;
     };
     private-config = {
-      url =
-        "git+file:///Users/gregoire.cadenemartinache/src/infrastructure-private";
+      url = "path:/Users/gregoire/src/infrastructure-private";
       flake = false;
     };
 
@@ -219,7 +222,8 @@
                   "homebrew/homebrew-core" = self.inputs.homebrew-core;
                   "homebrew/homebrew-cask" = self.inputs.homebrew-cask;
                   "homebrew/homebrew-bundle" = self.inputs.homebrew-bundle;
-                  "d12frosted/homebrew-emacs-plus" = self.inputs.emacs-plus;
+                  "homebrew/homebrew-emacsmacport" = self.inputs.homebrew-emacs;
+                  "FelixKratz/homebrew-formulae" = self.inputs.homebrew-borders;
                 };
                 mutableTaps = false;
               };
