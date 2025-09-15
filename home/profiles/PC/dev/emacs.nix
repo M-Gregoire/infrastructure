@@ -21,7 +21,8 @@
     gotests
     gore
     godef
-
+    ## Bash
+    bash-language-server
     ## C / C++
     ccls
     gcc # go-vet

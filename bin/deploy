@@ -7,27 +7,14 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." &>/dev/null && pwd)"
 HOSTS_JSON="$REPO_ROOT/hosts.json"
 
-# Colors for output using tput (more compatible)
-if command -v tput >/dev/null 2>&1 && [[ -t 1 ]]; then
-    RED=$(tput setaf 1)
-    GREEN=$(tput setaf 2)
-    YELLOW=$(tput setaf 3)
-    BLUE=$(tput setaf 4)
-    PURPLE=$(tput setaf 5)
-    CYAN=$(tput setaf 6)
-    BOLD=$(tput bold)
-    NC=$(tput sgr0) # No Color
-else
-    # Fallback: no colors if tput unavailable or not a terminal
-    RED=""
-    GREEN=""
-    YELLOW=""
-    BLUE=""
-    PURPLE=""
-    CYAN=""
-    BOLD=""
-    NC=""
-fi
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+PURPLE='\033[0;35m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
 
 # Emoji for better UX
 EMOJI_LOCAL="🏠"
@@ -39,49 +26,59 @@ EMOJI_SUCCESS="✅"
 EMOJI_ERROR="❌"
 
 print_usage() {
-    printf "${CYAN}nix-deploy${NC} - Unified NixOS/nix-darwin deployment tool\n\n"
-    printf "${BOLD}${YELLOW}USAGE:${NC}\n"
-    printf "    nix-deploy <COMMAND> [OPTIONS] [TARGETS...]\n\n"
-    printf "${BOLD}${YELLOW}COMMANDS:${NC}\n"
-    printf "    ${GREEN}local${NC} [build|switch]         Build or deploy local configuration\n"
-    printf "    ${GREEN}build${NC} <HOST> [HOST...]        Cross-build configuration for target host(s)\n"  
-    printf "    ${GREEN}deploy${NC} <HOST> [HOST...]       Deploy configuration to target host(s)\n"
-    printf "    ${GREEN}list${NC}                          List all available hosts and their details\n"
-    printf "    ${GREEN}help${NC}                          Show this help message\n\n"
-    printf "${BOLD}${YELLOW}LOCAL COMMAND:${NC}\n"
-    printf "    nix-deploy local                 Deploy local config (switch)\n"
-    printf "    nix-deploy local build           Build local config only\n"  
-    printf "    nix-deploy local switch          Deploy local config (same as 'nix-deploy local')\n\n"
-    printf "${BOLD}${YELLOW}BUILD COMMAND:${NC}\n"
-    printf "    nix-deploy build <HOST>          Build config for HOST (cross-build if needed)\n"
-    printf "    nix-deploy build <HOST> <HOST2>  Build configs for multiple hosts\n"
-    printf "    nix-deploy build all             Build configs for all hosts\n"
-    printf "    nix-deploy build hades           Build configs for all hades cluster nodes\n"
-    printf "    ${CYAN}Note: Cross-platform builds work best with remote builders${NC}\n\n"
-    printf "${BOLD}${YELLOW}DEPLOY COMMAND:${NC}\n"
-    printf "    nix-deploy deploy <HOST>         Deploy config to HOST (remote-build by default)\n"
-    printf "    nix-deploy deploy <HOST> --local Deploy config to HOST (build locally then deploy)\n"
-    printf "    nix-deploy deploy all            Deploy to all hosts\n"  
-    printf "    nix-deploy deploy hades          Deploy to all hades cluster nodes\n"
-    printf "    nix-deploy deploy local-hosts    Deploy to local development machines\n\n"
-    printf "${BOLD}${YELLOW}OPTIONS:${NC}\n"
-    printf "    --dry                            Perform dry run (build only, no activation)\n"
-    printf "    --local                          Force local building (for deploy command)\n"
-    printf "    --remote                         Force remote building (default for deploy command)\n"
-    printf "    --skip-checks                    Skip evaluation checks for faster deployment\n"
-    printf "    --help, -h                       Show help for specific command\n\n"
-    printf "${BOLD}${YELLOW}EXAMPLES:${NC}\n"
-    printf "    nix-deploy local                 # Deploy to current machine\n"
-    printf "    nix-deploy local build --dry     # Test build current machine config\n"
-    printf "    nix-deploy build mimir           # Cross-build mimir config\n"  
-    printf "    nix-deploy deploy vali           # Deploy to vali (remote build)\n"
-    printf "    nix-deploy deploy vali --local   # Deploy to vali (local build)\n"
-    printf "    nix-deploy deploy all --dry      # Dry run deploy to all hosts\n"
-    printf "    nix-deploy list                  # Show all available hosts\n\n"
-    printf "${BOLD}${YELLOW}AUTOMATIC DETECTION:${NC}\n"
-    printf "    ${EMOJI_LOCAL} Local deployment automatically uses nix-darwin (macOS) or nixos-rebuild (Linux)\n"
-    printf "    ${EMOJI_BUILD} Cross-building detects remote builders (nix-rosetta-builder, etc.) and architecture differences\n"
-    printf "    ${EMOJI_REMOTE} Remote deployment uses deploy-rs with intelligent build location selection\n\n"
+    cat << EOF
+${CYAN}deploy${NC} - Unified NixOS/nix-darwin deployment tool
+
+${YELLOW}USAGE:${NC}
+    deploy <COMMAND> [OPTIONS] [TARGETS...]
+
+${YELLOW}COMMANDS:${NC}
+    ${GREEN}local${NC} [build|switch]         Build or deploy local configuration
+    ${GREEN}build${NC} <HOST> [HOST...]        Cross-build configuration for target host(s)  
+    ${GREEN}deploy${NC} <HOST> [HOST...]       Deploy configuration to target host(s)
+    ${GREEN}list${NC}                          List all available hosts and their details
+    ${GREEN}help${NC}                          Show this help message
+
+${YELLOW}LOCAL COMMAND:${NC}
+    deploy local                     Deploy local config (switch)
+    deploy local build               Build local config only  
+    deploy local switch              Deploy local config (same as 'deploy local')
+
+${YELLOW}BUILD COMMAND:${NC}
+    deploy build <HOST>              Build config for HOST (cross-build if needed)
+    deploy build <HOST> <HOST2>      Build configs for multiple hosts
+    deploy build all                 Build configs for all hosts
+    deploy build hades               Build configs for all hades cluster nodes
+
+${YELLOW}DEPLOY COMMAND:${NC}
+    deploy deploy <HOST>             Deploy config to HOST (remote-build by default)
+    deploy deploy <HOST> --local     Deploy config to HOST (build locally then deploy)
+    deploy deploy all                Deploy to all hosts  
+    deploy deploy hades              Deploy to all hades cluster nodes
+    deploy deploy local-hosts        Deploy to local development machines
+
+${YELLOW}OPTIONS:${NC}
+    --dry                            Perform dry run (build only, no activation)
+    --local                          Force local building (for deploy command)
+    --remote                         Force remote building (default for deploy command)
+    --skip-checks                    Skip evaluation checks for faster deployment
+    --help, -h                       Show help for specific command
+
+${YELLOW}EXAMPLES:${NC}
+    deploy local                     # Deploy to current machine
+    deploy local build --dry         # Test build current machine config
+    deploy build mimir               # Cross-build mimir config  
+    deploy deploy vali               # Deploy to vali (remote build)
+    deploy deploy vali --local       # Deploy to vali (local build)
+    deploy deploy all --dry          # Dry run deploy to all hosts
+    deploy list                      # Show all available hosts
+
+${YELLOW}AUTOMATIC DETECTION:${NC}
+    • Local deployment automatically uses nix-darwin (macOS) or nixos-rebuild (Linux)
+    • Cross-building detects architecture differences and enables appropriate flags
+    • Remote deployment uses deploy-rs with intelligent build location selection
+
+EOF
 }
 
 print_error() {
@@ -120,15 +117,6 @@ get_host_info() {
     jq -r ".\"$host\".\"$field\" // empty" "$HOSTS_JSON"
 }
 
-get_host_architecture() {
-    local host="$1"
-    local system
-    system="$(get_host_info "$host" "system")"
-    
-    # Extract architecture from system (e.g., "x86_64-darwin" -> "x86_64")
-    echo "${system%%-*}"
-}
-
 list_hosts() {
     echo -e "${CYAN}Available hosts:${NC}"
     echo
@@ -153,13 +141,7 @@ get_current_hostname() {
 
 get_current_system() {
     case "$(uname -s)" in
-        Darwin)
-            case "$(uname -m)" in
-                x86_64) echo "x86_64-darwin" ;;
-                arm64|aarch64) echo "aarch64-darwin" ;;
-                *) echo "unknown-darwin" ;;
-            esac
-            ;;
+        Darwin) echo "x86_64-darwin" ;;
         Linux) 
             case "$(uname -m)" in
                 x86_64) echo "x86_64-linux" ;;
@@ -392,7 +374,7 @@ cmd_build() {
     
     if [[ ${#targets[@]} -eq 0 ]]; then
         print_error "No build targets specified"
-        print_info "Usage: nix-deploy build <HOST> [HOST...]"
+        print_info "Usage: deploy build <HOST> [HOST...]"
         exit 1
     fi
     
@@ -402,53 +384,15 @@ cmd_build() {
     for host in "${expanded_hosts[@]}"; do
         local target_system
         target_system="$(get_host_info "$host" "system")"
-        
-        # Determine the correct attribute path based on system type
-        local build_target
-        if [[ "$target_system" == *"darwin"* ]]; then
-            build_target=".#darwinConfigurations.$host.system"
-        else
-            build_target=".#nixosConfigurations.$host.config.system.build.toplevel"
-        fi
+        local flake_uri
+        flake_uri="$(get_flake_uri "$host")"
         
         if needs_cross_build "$host"; then
             print_info "${EMOJI_BUILD} Cross-building $host ($target_system)"
-            
-            # For cross-compilation, we need different strategies based on the target
-            local current_system
-            current_system="$(get_current_system)"
-            
-            # Check if remote builders are available for cross-compilation
-            local has_remote_builders=false
-            
-            # Check for remote builders in various ways
-            if nix show-config builders 2>/dev/null | grep -q "linux" || \
-               [[ -n "${NIX_REMOTE_BUILDERS:-}" ]] || \
-               nix show-config builders 2>/dev/null | grep -q -E "(ssh-ng://|ssh://)" || \
-               [[ -f "/etc/nix/machines" ]] && grep -q "linux" /etc/nix/machines 2>/dev/null; then
-                has_remote_builders=true
-            fi
-            
-            case "$current_system-to-$target_system" in
-                *"darwin-to-"*"linux")
-                    if [[ "$has_remote_builders" == "true" ]]; then
-                        print_info "🔄 Cross-compiling with remote Linux builders..."
-                        nix build "$build_target" --system "$target_system" "${extra_args[@]}"
-                    else
-                        print_info "🔄 Attempting cross-compilation..."
-                        print_info "💡 ${CYAN}Tip: Set up nix-rosetta-builder for faster Darwin→Linux builds${NC}"
-                        nix build "$build_target" --system "$target_system" "${extra_args[@]}"
-                    fi
-                    ;;
-                *)
-                    # Standard cross-compilation (Linux to Linux with different arch)
-                    print_info "🔄 Cross-compiling..."
-                    nix build "$build_target" --system "$target_system" "${extra_args[@]}"
-                    ;;
-            esac
+            nix build "$flake_uri" --system "$target_system" "${extra_args[@]}"
         else
             print_info "${EMOJI_BUILD} Building $host"
-            nix build "$build_target" "${extra_args[@]}"
+            nix build "$flake_uri" "${extra_args[@]}"
         fi
     done
     
@@ -489,7 +433,7 @@ cmd_deploy() {
     
     if [[ ${#targets[@]} -eq 0 ]]; then
         print_error "No deployment targets specified"
-        print_info "Usage: nix-deploy deploy <HOST> [HOST...] [OPTIONS]"
+        print_info "Usage: deploy deploy <HOST> [HOST...] [OPTIONS]"
         exit 1
     fi
     
@@ -573,7 +517,7 @@ main() {
             ;;
         *)
             print_error "Unknown command: $command"
-            print_info "Run 'nix-deploy help' for usage information"
+            print_info "Run 'deploy help' for usage information"
             exit 1
             ;;
     esac
