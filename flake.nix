@@ -40,10 +40,6 @@
       url = "github:FelixKratz/homebrew-formulae";
       flake = false;
     };
-    nix-rosetta-builder = {
-      url = "github:cpick/nix-rosetta-builder";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
     # Common
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     emacs-dotfiles = {
@@ -233,16 +229,6 @@
             }
 
             self.inputs.sops-nix-darwin.darwinModules.sops
-            # An existing Linux builder is needed to initially bootstrap `nix-rosetta-builder`.
-            # If one isn't already available: comment out the `nix-rosetta-builder` module below,
-            # uncomment this `linux-builder` module, and run `darwin-rebuild switch`:
-            # {
-            #   nix.linux-builder.enable = true;
-            # }
-            # Then: uncomment `nix-rosetta-builder`, remove `linux-builder`, and `darwin-rebuild switch`
-            # a second time. Subsequently, `nix-rosetta-builder` can rebuild itself.
-            self.inputs.nix-rosetta-builder.darwinModules.default
-            { nix-rosetta-builder.onDemand = true; }
           ] ++ modulesList configName "darwin"
             ++ resourcesList configName "darwin" ++ extraModules;
         };

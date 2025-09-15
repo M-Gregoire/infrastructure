@@ -290,32 +290,42 @@ cmd_local() {
     case "$current_system" in
         *darwin*)
             local cmd="darwin-rebuild"
+            # Force local building by overriding builders configuration
+            local nix_options=(
+                --option builders ""
+                --option max-jobs auto
+            )
             if [[ "$action" == "switch" ]]; then
                 if [[ "$is_dry_run" == "true" ]]; then
                     print_info "${EMOJI_LOCAL} Local deployment (dry run): $cmd build --flake $flake_uri"
-                    exec sudo "$cmd" build --flake "$flake_uri" "${extra_args[@]}"
+                    exec sudo "$cmd" build --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
                 else
                     print_info "${EMOJI_LOCAL} Local deployment: $cmd switch --flake $flake_uri"
-                    exec sudo "$cmd" switch --flake "$flake_uri" "${extra_args[@]}"
+                    exec sudo "$cmd" switch --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
                 fi
             else
                 print_info "${EMOJI_BUILD} Local build: $cmd build --flake $flake_uri"
-                exec sudo "$cmd" build --flake "$flake_uri" "${extra_args[@]}"
+                exec sudo "$cmd" build --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
             fi
             ;;
         *linux*)
             local cmd="nixos-rebuild"
+            # Force local building by overriding builders configuration
+            local nix_options=(
+                --option builders ""
+                --option max-jobs auto
+            )
             if [[ "$action" == "switch" ]]; then
                 if [[ "$is_dry_run" == "true" ]]; then
                     print_info "${EMOJI_LOCAL} Local deployment (dry run): $cmd build --flake $flake_uri"
-                    exec sudo "$cmd" build --flake "$flake_uri" "${extra_args[@]}"
+                    exec sudo "$cmd" build --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
                 else
                     print_info "${EMOJI_LOCAL} Local deployment: $cmd switch --flake $flake_uri"  
-                    exec sudo "$cmd" switch --flake "$flake_uri" "${extra_args[@]}"
+                    exec sudo "$cmd" switch --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
                 fi
             else
                 print_info "${EMOJI_BUILD} Local build: $cmd build --flake $flake_uri"
-                exec sudo "$cmd" build --flake "$flake_uri" "${extra_args[@]}"
+                exec sudo "$cmd" build --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
             fi
             ;;
         *)
@@ -414,41 +424,30 @@ cmd_build() {
         if needs_cross_build "$host"; then
             print_info "${EMOJI_BUILD} Cross-building $host ($target_system)"
             
-            # For cross-compilation, we need different strategies based on the target
+            # For cross-platform builds, recommend using remote building instead
             local current_system
             current_system="$(get_current_system)"
             
-            # Check if remote builders are available for cross-compilation
-            local has_remote_builders=false
-            
-            # Check for remote builders in various ways
-            if nix show-config builders 2>/dev/null | grep -q "linux" || \
-               [[ -n "${NIX_REMOTE_BUILDERS:-}" ]] || \
-               nix show-config builders 2>/dev/null | grep -q -E "(ssh-ng://|ssh://)" || \
-               [[ -f "/etc/nix/machines" ]] && grep -q "linux" /etc/nix/machines 2>/dev/null; then
-                has_remote_builders=true
-            fi
-            
             case "$current_system-to-$target_system" in
-                *"darwin-to-"*"linux")
-                    if [[ "$has_remote_builders" == "true" ]]; then
-                        print_info "🔄 Cross-compiling with remote Linux builders..."
-                        nix build "$build_target" --system "$target_system" "${extra_args[@]}"
-                    else
-                        print_info "🔄 Attempting cross-compilation..."
-                        print_info "💡 ${CYAN}Tip: Set up nix-rosetta-builder for faster Darwin→Linux builds${NC}"
-                        nix build "$build_target" --system "$target_system" "${extra_args[@]}"
-                    fi
+                *"darwin-to-"*"linux"|*"linux-to-"*"darwin")
+                    # Cross-OS compilation is complex, recommend remote building
+                    print_error "❌ Cross-platform compilation ($current_system → $target_system) is not supported"
+                    print_info ""
+                    print_info "🚀 ${BOLD}Use remote building instead:${NC}"
+                    print_info "   ${GREEN}nix-deploy deploy $host${NC} (builds on target)"
+                    print_info ""
+                    exit 1
                     ;;
                 *)
-                    # Standard cross-compilation (Linux to Linux with different arch)
-                    print_info "🔄 Cross-compiling..."
+                    # Same OS, different architecture - attempt cross-compilation
+                    print_info "🔄 Cross-compiling ($current_system → $target_system)..."
                     nix build "$build_target" --system "$target_system" "${extra_args[@]}"
                     ;;
             esac
         else
-            print_info "${EMOJI_BUILD} Building $host"
-            nix build "$build_target" "${extra_args[@]}"
+            # Building for same platform - force local building
+            print_info "${EMOJI_BUILD} Building $host (local)"
+            nix build "$build_target" --option builders "" --option max-jobs auto "${extra_args[@]}"
         fi
     done
     
