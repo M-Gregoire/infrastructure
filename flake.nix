@@ -48,7 +48,7 @@
       flake = false;
     };
     private-config = {
-      url = "path:/Users/gregoire/src/infrastructure-private";
+      url = "path:/Users/gregoire.cadenemartinache/src/infrastructure-private";
       flake = false;
     };
 
@@ -231,7 +231,7 @@
 
             self.inputs.sops-nix-darwin.darwinModules.sops
           ] ++ modulesList configName "darwin"
-            ++ resourcesList configName "darwin";
+            ++ resourcesList configName "darwin" ++ extraModules;
         };
 
       mkNixos = configName: arch: extraModules:
@@ -284,7 +284,7 @@
               };
             }
           ] ++ modulesList configName "linux"
-            ++ resourcesList configName "linux";
+            ++ resourcesList configName "linux" ++ extraModules;
         };
 
     in {

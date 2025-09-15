@@ -31,6 +31,7 @@
       gid = 1000;
     };
 
+    programs.zsh.enable = true;
     users.users.${user} = {
       home =
         (if pkgs.stdenv.isLinux then "/home/${user}" else "/Users/${user}");
