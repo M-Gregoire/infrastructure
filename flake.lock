@@ -365,13 +365,13 @@
     "private-config": {
       "flake": false,
       "locked": {
-        "lastModified": 1757921121,
-        "narHash": "sha256-bHxGHFSNK+7ClLFP+WB2N3se9CClA+/PC87063oLobY=",
-        "path": "/Users/gregoire.cadenemartinache/src/infrastructure-private",
+        "lastModified": 1757945242,
+        "narHash": "sha256-vyYdBDTShaGorKlhP/2KfylSsw63iUyLyPfX8keifWs=",
+        "path": "/home/gregoire/src/infrastructure-private",
         "type": "path"
       },
       "original": {
-        "path": "/Users/gregoire.cadenemartinache/src/infrastructure-private",
+        "path": "/home/gregoire/src/infrastructure-private",
         "type": "path"
       }
     },

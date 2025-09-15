@@ -21,8 +21,9 @@
   environment.systemPackages = [ pkgs.k3s pkgs.containerd pkgs.kubectl ];
   networking.firewall.allowedTCPPorts = [ 6443 ];
 
+  # mkdir -p /nfs/Data && chattr +i /nfs/Data
   fileSystems."/nfs/Data" = {
-    device = "/dev/disk/by-uuid/e8cab6fb-29f1-47f4-89d2-6b4ce302534f";
+    device = "/dev/disk/by-uuid/beee5400-19ac-43d6-8d0f-4a3d87e8ce6d";
     options = [ "auto" "nofail" "x-systemd.device-timeout=30" ];
 
   };

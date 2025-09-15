@@ -47,7 +47,7 @@
       flake = false;
     };
     private-config = {
-      url = "path:/Users/gregoire.cadenemartinache/src/infrastructure-private";
+      url = "path:/home/gregoire/src/infrastructure-private";
       flake = false;
     };
 
@@ -351,6 +351,7 @@
             path = self.inputs.deploy-rs.lib.aarch64-linux.activate.nixos
               self.nixosConfigurations.hades-1;
           };
+          autoRollback = false;
           magicRollback = false;
         };
 
