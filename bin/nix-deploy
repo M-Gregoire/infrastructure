@@ -1,0 +1,543 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Script directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." &>/dev/null && pwd)"
+HOSTS_JSON="$REPO_ROOT/hosts.json"
+
+# Colors for output using tput (more compatible)
+if command -v tput >/dev/null 2>&1 && [[ -t 1 ]]; then
+    RED=$(tput setaf 1)
+    GREEN=$(tput setaf 2)
+    YELLOW=$(tput setaf 3)
+    BLUE=$(tput setaf 4)
+    PURPLE=$(tput setaf 5)
+    CYAN=$(tput setaf 6)
+    BOLD=$(tput bold)
+    NC=$(tput sgr0) # No Color
+else
+    # Fallback: no colors if tput unavailable or not a terminal
+    RED=""
+    GREEN=""
+    YELLOW=""
+    BLUE=""
+    PURPLE=""
+    CYAN=""
+    BOLD=""
+    NC=""
+fi
+
+# Emoji for better UX
+EMOJI_LOCAL="🏠"
+EMOJI_REMOTE="🚀"  
+EMOJI_BUILD="🔨"
+EMOJI_DEPLOY="⚡"
+EMOJI_DRY="🧪"
+EMOJI_SUCCESS="✅"
+EMOJI_ERROR="❌"
+
+print_usage() {
+    printf "${CYAN}nix-deploy${NC} - Unified NixOS/nix-darwin deployment tool\n\n"
+    printf "${BOLD}${YELLOW}USAGE:${NC}\n"
+    printf "    nix-deploy <COMMAND> [OPTIONS] [TARGETS...]\n\n"
+    printf "${BOLD}${YELLOW}COMMANDS:${NC}\n"
+    printf "    ${GREEN}local${NC} [build|switch]         Build or deploy local configuration\n"
+    printf "    ${GREEN}build${NC} <HOST> [HOST...]        Cross-build configuration for target host(s)\n"  
+    printf "    ${GREEN}deploy${NC} <HOST> [HOST...]       Deploy configuration to target host(s)\n"
+    printf "    ${GREEN}list${NC}                          List all available hosts and their details\n"
+    printf "    ${GREEN}help${NC}                          Show this help message\n\n"
+    printf "${BOLD}${YELLOW}LOCAL COMMAND:${NC}\n"
+    printf "    nix-deploy local                 Deploy local config (switch)\n"
+    printf "    nix-deploy local build           Build local config only\n"  
+    printf "    nix-deploy local switch          Deploy local config (same as 'nix-deploy local')\n\n"
+    printf "${BOLD}${YELLOW}BUILD COMMAND:${NC}\n"
+    printf "    nix-deploy build <HOST>          Build config for HOST (cross-build if needed)\n"
+    printf "    nix-deploy build <HOST> <HOST2>  Build configs for multiple hosts\n"
+    printf "    nix-deploy build all             Build configs for all hosts\n"
+    printf "    nix-deploy build hades           Build configs for all hades cluster nodes\n\n"
+    printf "${BOLD}${YELLOW}DEPLOY COMMAND:${NC}\n"
+    printf "    nix-deploy deploy <HOST>         Deploy config to HOST (remote-build by default)\n"
+    printf "    nix-deploy deploy <HOST> --local Deploy config to HOST (build locally then deploy)\n"
+    printf "    nix-deploy deploy all            Deploy to all hosts\n"  
+    printf "    nix-deploy deploy hades          Deploy to all hades cluster nodes\n"
+    printf "    nix-deploy deploy local-hosts    Deploy to local development machines\n\n"
+    printf "${BOLD}${YELLOW}OPTIONS:${NC}\n"
+    printf "    --dry                            Perform dry run (build only, no activation)\n"
+    printf "    --local                          Force local building (for deploy command)\n"
+    printf "    --remote                         Force remote building (default for deploy command)\n"
+    printf "    --skip-checks                    Skip evaluation checks for faster deployment\n"
+    printf "    --help, -h                       Show help for specific command\n\n"
+    printf "${BOLD}${YELLOW}EXAMPLES:${NC}\n"
+    printf "    nix-deploy local                 # Deploy to current machine\n"
+    printf "    nix-deploy local build --dry     # Test build current machine config\n"
+    printf "    nix-deploy build mimir           # Cross-build mimir config\n"  
+    printf "    nix-deploy deploy vali           # Deploy to vali (remote build)\n"
+    printf "    nix-deploy deploy vali --local   # Deploy to vali (local build)\n"
+    printf "    nix-deploy deploy all --dry      # Dry run deploy to all hosts\n"
+    printf "    nix-deploy list                  # Show all available hosts\n\n"
+    printf "${BOLD}${YELLOW}AUTOMATIC DETECTION:${NC}\n"
+    printf "    ${EMOJI_LOCAL} Local deployment automatically uses nix-darwin (macOS) or nixos-rebuild (Linux)\n"
+    printf "    ${EMOJI_BUILD} Cross-building detects architecture differences and enables appropriate flags\n"
+    printf "    ${EMOJI_REMOTE} Remote deployment uses deploy-rs with intelligent build location selection\n\n"
+}
+
+print_error() {
+    echo -e "${RED}${EMOJI_ERROR} Error: $1${NC}" >&2
+}
+
+print_success() {
+    echo -e "${GREEN}${EMOJI_SUCCESS} $1${NC}"
+}
+
+print_info() {
+    echo -e "${BLUE}ℹ️  $1${NC}"
+}
+
+print_warning() {
+    echo -e "${YELLOW}⚠️  $1${NC}"
+}
+
+# Load and parse hosts.json
+load_hosts() {
+    if [[ ! -f "$HOSTS_JSON" ]]; then
+        print_error "hosts.json not found at $HOSTS_JSON"
+        exit 1
+    fi
+    
+    if ! command -v jq >/dev/null 2>&1; then
+        print_error "jq is required but not installed"
+        exit 1
+    fi
+}
+
+get_host_info() {
+    local host="$1"
+    local field="$2"
+    
+    jq -r ".\"$host\".\"$field\" // empty" "$HOSTS_JSON"
+}
+
+get_host_architecture() {
+    local host="$1"
+    local system
+    system="$(get_host_info "$host" "system")"
+    
+    # Extract architecture from system (e.g., "x86_64-darwin" -> "x86_64")
+    echo "${system%%-*}"
+}
+
+list_hosts() {
+    echo -e "${CYAN}Available hosts:${NC}"
+    echo
+    
+    jq -r 'to_entries[] | "\(.key)|\(.value.system)|\(.value.profile)|\(.value.network)|\(.value.cluster // "none")"' "$HOSTS_JSON" | \
+    while IFS='|' read -r name system profile network cluster; do
+        if [[ "$cluster" != "none" ]]; then
+            cluster_info=" (${cluster})"
+        else
+            cluster_info=""
+        fi
+        
+        printf "  %-12s ${GREEN}%-14s${NC} %-8s %-8s${PURPLE}%s${NC}\n" \
+            "$name" "$system" "$profile" "$network" "$cluster_info"
+    done
+    echo
+}
+
+get_current_hostname() {
+    hostname
+}
+
+get_current_system() {
+    case "$(uname -s)" in
+        Darwin) echo "x86_64-darwin" ;;
+        Linux) 
+            case "$(uname -m)" in
+                x86_64) echo "x86_64-linux" ;;
+                aarch64|arm64) echo "aarch64-linux" ;;
+                *) echo "unknown-linux" ;;
+            esac
+            ;;
+        *) echo "unknown" ;;
+    esac
+}
+
+is_local_host() {
+    local target_host="$1"
+    local current_hostname
+    current_hostname="$(get_current_hostname)"
+    local target_hostname
+    target_hostname="$(get_host_info "$target_host" "hostname")"
+    
+    # Check direct hostname match
+    if [[ "$current_hostname" == "$target_hostname"* ]] || [[ "$current_hostname" == *"$target_hostname"* ]]; then
+        return 0
+    fi
+    
+    # Check special cases from existing scripts
+    case "$target_host" in
+        idunn)
+            [[ "$current_hostname" == *"idunn"* ]] || [[ "$current_hostname" == *"MacbookPro-De-Gregoire"* ]]
+            ;;
+        datadog)
+            [[ "$current_hostname" == *"datadog"* ]] || [[ "$current_hostname" == *"DATADOG"* ]] || [[ "$current_hostname" == *"COMP-CQ5H77T0CQ"* ]]
+            ;;
+        mimir)
+            [[ "$current_hostname" == "mimir"* ]]
+            ;;
+        vali)  
+            [[ "$current_hostname" == "vali"* ]]
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+needs_cross_build() {
+    local target_host="$1"
+    local current_system target_system
+    
+    current_system="$(get_current_system)"
+    target_system="$(get_host_info "$target_host" "system")"
+    
+    [[ "$current_system" != "$target_system" ]]
+}
+
+handle_dry_flag() {
+    local -n _args=$1
+    local is_deploy_rs="$2"
+    local -a filtered_args=()
+    local dry_run=false
+    
+    for arg in "${_args[@]}"; do
+        if [[ "$arg" == "--dry" ]]; then
+            dry_run=true
+            if [[ "$is_deploy_rs" == "true" ]]; then
+                filtered_args+=("--dry-activate")
+            else
+                filtered_args+=("--dry")
+            fi
+        else
+            filtered_args+=("$arg")
+        fi
+    done
+    
+    _args=("${filtered_args[@]}")
+    [[ "$dry_run" == "true" ]]
+}
+
+get_flake_uri() {
+    local host="$1"
+    local use_submodules=false
+    
+    # Check if host requires submodules (datadog and idunn based on existing scripts)
+    case "$host" in
+        datadog|idunn)
+            use_submodules=true
+            ;;
+    esac
+    
+    if [[ "$use_submodules" == "true" ]]; then
+        echo ".?submodules=1#$host"
+    else
+        echo ".#$host"
+    fi
+}
+
+cmd_local() {
+    local action="${1:-switch}"
+    shift || true
+    local -a extra_args=("$@")
+    
+    local current_system
+    current_system="$(get_current_system)"
+    local is_dry_run=false
+    
+    if handle_dry_flag extra_args "false"; then
+        is_dry_run=true
+    fi
+    
+    # Determine current host config name by matching hostname
+    local current_hostname host_config=""
+    current_hostname="$(get_current_hostname)"
+    
+    # Find matching host in hosts.json
+    while IFS= read -r host; do
+        if is_local_host "$host"; then
+            host_config="$host"
+            break
+        fi
+    done < <(jq -r 'keys[]' "$HOSTS_JSON")
+    
+    if [[ -z "$host_config" ]]; then
+        print_error "No host configuration found for current hostname: $current_hostname"
+        exit 1
+    fi
+    
+    local flake_uri
+    flake_uri="$(get_flake_uri "$host_config")"
+    
+    case "$current_system" in
+        *darwin*)
+            local cmd="darwin-rebuild"
+            if [[ "$action" == "switch" ]]; then
+                if [[ "$is_dry_run" == "true" ]]; then
+                    print_info "${EMOJI_LOCAL} Local deployment (dry run): $cmd build --flake $flake_uri"
+                    exec sudo "$cmd" build --flake "$flake_uri" "${extra_args[@]}"
+                else
+                    print_info "${EMOJI_LOCAL} Local deployment: $cmd switch --flake $flake_uri"
+                    exec sudo "$cmd" switch --flake "$flake_uri" "${extra_args[@]}"
+                fi
+            else
+                print_info "${EMOJI_BUILD} Local build: $cmd build --flake $flake_uri"
+                exec sudo "$cmd" build --flake "$flake_uri" "${extra_args[@]}"
+            fi
+            ;;
+        *linux*)
+            local cmd="nixos-rebuild"
+            if [[ "$action" == "switch" ]]; then
+                if [[ "$is_dry_run" == "true" ]]; then
+                    print_info "${EMOJI_LOCAL} Local deployment (dry run): $cmd build --flake $flake_uri"
+                    exec sudo "$cmd" build --flake "$flake_uri" "${extra_args[@]}"
+                else
+                    print_info "${EMOJI_LOCAL} Local deployment: $cmd switch --flake $flake_uri"  
+                    exec sudo "$cmd" switch --flake "$flake_uri" "${extra_args[@]}"
+                fi
+            else
+                print_info "${EMOJI_BUILD} Local build: $cmd build --flake $flake_uri"
+                exec sudo "$cmd" build --flake "$flake_uri" "${extra_args[@]}"
+            fi
+            ;;
+        *)
+            print_error "Unsupported system: $current_system"
+            exit 1
+            ;;
+    esac
+}
+
+expand_host_groups() {
+    local -a hosts=()
+    local -a expanded=()
+    
+    for arg in "$@"; do
+        case "$arg" in
+            all)
+                while IFS= read -r host; do
+                    expanded+=("$host")
+                done < <(jq -r 'keys[]' "$HOSTS_JSON")
+                ;;
+            hades)
+                while IFS= read -r host; do
+                    if [[ "$(get_host_info "$host" "cluster")" == "hades" ]]; then
+                        expanded+=("$host")
+                    fi
+                done < <(jq -r 'keys[]' "$HOSTS_JSON")
+                ;;
+            local-hosts)
+                for host in vali mimir idunn; do
+                    if jq -e ".\"$host\"" "$HOSTS_JSON" >/dev/null 2>&1; then
+                        expanded+=("$host")
+                    fi
+                done
+                ;;
+            *)
+                if jq -e ".\"$arg\"" "$HOSTS_JSON" >/dev/null 2>&1; then
+                    expanded+=("$arg")
+                else
+                    print_error "Unknown host or group: $arg"
+                    exit 1
+                fi
+                ;;
+        esac
+    done
+    
+    printf '%s\n' "${expanded[@]}"
+}
+
+cmd_build() {
+    local -a targets=()
+    local -a extra_args=()
+    local dry_run=false
+    
+    # Parse arguments
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --help|-h)
+                print_usage
+                exit 0
+                ;;
+            --dry)
+                dry_run=true
+                extra_args+=("--dry-run")
+                ;;
+            --*|-*)
+                extra_args+=("$1")
+                ;;
+            *)
+                targets+=("$1")
+                ;;
+        esac
+        shift
+    done
+    
+    if [[ ${#targets[@]} -eq 0 ]]; then
+        print_error "No build targets specified"
+        print_info "Usage: nix-deploy build <HOST> [HOST...]"
+        exit 1
+    fi
+    
+    local -a expanded_hosts
+    readarray -t expanded_hosts < <(expand_host_groups "${targets[@]}")
+    
+    for host in "${expanded_hosts[@]}"; do
+        local target_system
+        target_system="$(get_host_info "$host" "system")"
+        
+        # Determine the correct attribute path based on system type
+        local build_target
+        if [[ "$target_system" == *"darwin"* ]]; then
+            build_target=".#darwinConfigurations.$host.system"
+        else
+            build_target=".#nixosConfigurations.$host.config.system.build.toplevel"
+        fi
+        
+        if needs_cross_build "$host"; then
+            print_info "${EMOJI_BUILD} Cross-building $host ($target_system)"
+            nix build "$build_target" --system "$target_system" "${extra_args[@]}"
+        else
+            print_info "${EMOJI_BUILD} Building $host"
+            nix build "$build_target" "${extra_args[@]}"
+        fi
+    done
+    
+    print_success "Build completed for: ${expanded_hosts[*]}"
+}
+
+cmd_deploy() {
+    local -a targets=()
+    local -a extra_args=()
+    local force_local_build=false
+    local force_remote_build=false
+    
+    # Parse arguments
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --help|-h)
+                print_usage
+                exit 0
+                ;;
+            --local)
+                force_local_build=true
+                ;;
+            --remote)
+                force_remote_build=true
+                ;;
+            --dry|--skip-checks)
+                extra_args+=("$1")
+                ;;
+            -*)
+                extra_args+=("$1")
+                ;;
+            *)
+                targets+=("$1")
+                ;;
+        esac
+        shift
+    done
+    
+    if [[ ${#targets[@]} -eq 0 ]]; then
+        print_error "No deployment targets specified"
+        print_info "Usage: nix-deploy deploy <HOST> [HOST...] [OPTIONS]"
+        exit 1
+    fi
+    
+    local -a expanded_hosts
+    readarray -t expanded_hosts < <(expand_host_groups "${targets[@]}")
+    
+    local is_dry_run=false
+    if handle_dry_flag extra_args "true"; then
+        is_dry_run=true
+    fi
+    
+    # Add --skip-checks if not present
+    local has_skip_checks=false
+    for arg in "${extra_args[@]}"; do
+        if [[ "$arg" == "--skip-checks" ]]; then
+            has_skip_checks=true
+            break
+        fi
+    done
+    
+    if [[ "$has_skip_checks" == "false" ]]; then
+        extra_args+=("--skip-checks")
+    fi
+    
+    # Handle single host local deployment
+    if [[ ${#expanded_hosts[@]} -eq 1 ]] && is_local_host "${expanded_hosts[0]}"; then
+        print_info "${EMOJI_LOCAL} Detected local deployment for ${expanded_hosts[0]}"
+        if [[ "$is_dry_run" == "true" ]]; then
+            cmd_local "build" "${extra_args[@]}"
+        else
+            cmd_local "switch" "${extra_args[@]}"
+        fi
+        return
+    fi
+    
+    # Remote deployment via deploy-rs
+    local -a flake_targets=()
+    for host in "${expanded_hosts[@]}"; do
+        local flake_uri
+        flake_uri="$(get_flake_uri "$host")"
+        flake_targets+=("$flake_uri")
+    done
+    
+    print_info "${EMOJI_REMOTE} Remote deployment to: ${expanded_hosts[*]}"
+    
+    if [[ "$is_dry_run" == "true" ]]; then
+        print_info "${EMOJI_DRY} Dry run deployment"
+    fi
+    
+    exec deploy "${flake_targets[@]}" "${extra_args[@]}"
+}
+
+# Main command dispatcher
+main() {
+    cd "$REPO_ROOT"
+    load_hosts
+    
+    if [[ $# -eq 0 ]]; then
+        print_usage
+        exit 1
+    fi
+    
+    local command="$1"
+    shift
+    
+    case "$command" in
+        local)
+            cmd_local "$@"
+            ;;
+        build)
+            cmd_build "$@"
+            ;;
+        deploy)
+            cmd_deploy "$@"
+            ;;
+        list)
+            list_hosts
+            ;;
+        help|--help|-h)
+            print_usage
+            ;;
+        *)
+            print_error "Unknown command: $command"
+            print_info "Run 'nix-deploy help' for usage information"
+            exit 1
+            ;;
+    esac
+}
+
+main "$@"
