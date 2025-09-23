@@ -1,12 +1,19 @@
 { config, lib, pkgs, user, ... }:
 
-{
+let
+  aerospaceTap = builtins.fetchGit {
+    url = "https://github.com/nikitabobko/homebrew-tap";
+    rev = "2eff00794112cf73fdefeec27cd9b30abe644408";
+  };
+in {
   imports = [ ./dev/darwin/shortcuts.nix ];
 
-  users.users.gregoire.home = "/Users/${user}";
+  users.users.${user}.home = "/Users/${user}";
 
   # # The platform the configuration will be used on.
   # nixpkgs.hostPlatform = "aarch64-darwin";
+
+  nix-homebrew = { taps = { "nikitabobko/homebrew-tap" = aerospaceTap; }; };
 
   homebrew.enable = true;
   homebrew.brews = [ "borders" "k9s" ];
@@ -18,6 +25,7 @@
     "notunes"
     "bluesnooze"
     "karabiner-elements"
+    "nikitabobko/tap/aerospace"
   ];
   programs.zsh = {
     enable = true;

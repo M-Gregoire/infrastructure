@@ -73,14 +73,17 @@
     /nfs/Cameras    *(rw,no_subtree_check,no_root_squash,anonuid=1000,anongid=1000)
   '';
 
-  services.udev.extraRules = "";
+  services.udev.extraRules = ''
+    # # Make alias for bluetooth
+    # # SUBSYSTEM=="tty", ATTRS{idVendor}=="0a5c", ATTRS{idProduct}=="21e8", SYMLINK+="ttyUSB-Pluggable-Bluetooth"
 
-  # Increase GPU mem for Frigate
-  # https://docs.frigate.video/configuration/hardware_acceleration/#raspberry-pi-34
-  # boot.loader.raspberryPi = {
-  #   enable = true;
-  #   firmwareConfig = ''
-  #     gpu_mem=128
-  #   '';
-  # };
+    # Get info with udevadm info --attribute-walk /dev/tty...
+    # If Modem in USB Storage mode, switch to 3G mode
+    # Requires `usb-modeswitch`
+    ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="12d1", ATTRS{idProduct}=="15ca", RUN+="${pkgs.usb-modeswitch}/bin/usb_modeswitch -v 12d1 -p 15ca -M '55534243123456780000000000000011062000000100000000000000000000'"
+    ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="12d1", ATTRS{idProduct}=="1506", RUN+="${pkgs.bash}/bin/bash -c 'modprobe option && echo 12d1 1506 > /sys/bus/usb-serial/drivers/option1/new_id'"
+
+    # If Modem in 3G mode, make alias named ttyUSB-Huawei-3G
+    SUBSYSTEM=="tty", ATTRS{idVendor}=="12d1", ATTRS{idProduct}=="1506", SYMLINK+="ttyUSB-Huawei-3G"
+  '';
 }

@@ -12,15 +12,8 @@
     smartmontools
   ];
 
-  boot.kernelModules = [
-    "nbd"
-    "rbd"
-    "ceph"
-    "usb_storage"
-    #"uas"
-    "usbhid"
-    "xhci_pci"
-  ];
+  boot.kernelModules =
+    [ "nbd" "rbd" "ceph" "usb_storage" "uas" "usbhid" "xhci_pci" ];
   # boot.kernelParams = [
   #   # 174c:55aa ASMedia Technology Inc. ASM1051E SATA 6Gb/s bridge, ASM1053E SATA 6Gb/s bridge, ASM1153 SATA 3Gb/s bridge, ASM1153E SATA 6Gb/s bridge
   #   # 14b0:0206 StarTech.com Ltd. SDSSDA480G
@@ -30,12 +23,12 @@
   #   # "usbcore.quirks=174c:55aa:u,14b0:0206:u,7825:a2a4:u"
   #   "usb-storage.quirks=0bda:9210:u"
   # ];
-  boot.kernelParams = [ "usb_storage.use_uas=0" "usbcore.autosuspend=-1" ];
-  fileSystems."/var/log" = {
-    device = "tmpfs";
-    fsType = "tmpfs";
-    options = [ "size=300M" "mode=0755" ];
-  };
+  # boot.kernelParams = [ "usb_storage.use_uas=0" "usbcore.autosuspend=-1" ];
+  # fileSystems."/var/log" = {
+  #   device = "tmpfs";
+  #   fsType = "tmpfs";
+  #   options = [ "size=300M" "mode=0755" ];
+  # };
   systemd.tmpfiles.rules = [
     "d /var/log/journal 2755 root systemd-journal -"
     "d /var/log/journal/%m 2755 root systemd-journal -"

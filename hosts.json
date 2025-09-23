@@ -99,6 +99,16 @@
         "clusterRole": "agent",
         "system": "aarch64-linux"
     },
+    "hades-nfs": {
+        "configName": "hades-nfs",
+        "hostname": "hades-nfs",
+        "profile": "server",
+        "network": "home",
+        "user": "gregoire",
+        "cluster": "",
+        "clusterRole": "",
+        "system": "aarch64-linux"
+    },
     "orion": {
         "configName": "orion",
         "hostname": "orion",

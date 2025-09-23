@@ -40,6 +40,7 @@
       url = "github:FelixKratz/homebrew-formulae";
       flake = false;
     };
+
     # Common
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     emacs-dotfiles = {
@@ -47,7 +48,7 @@
       flake = false;
     };
     private-config = {
-      url = "path:/home/gregoire/src/infrastructure-private";
+      url = "path:/Users/gregoire/src/infrastructure-private";
       flake = false;
     };
 
@@ -312,6 +313,8 @@
           [ nixos-hardware.nixosModules.raspberry-pi-4 ];
         hades-6 = mkNixos "hades-6" "aarch64-linux"
           [ nixos-hardware.nixosModules.raspberry-pi-4 ];
+        hades-nfs = mkNixos "hades-nfs" "aarch64-linux"
+          [ nixos-hardware.nixosModules.pine64-rockpro64 ];
         orion = mkNixos "orion" "x86_64-linux"
           [ self.inputs.disko.nixosModules.disko ];
 
@@ -420,6 +423,19 @@
           autoRollback = false;
           magicRollback = false;
         };
+        hades-nfs = {
+          hostname = "192.168.3.30";
+          sshOpts = [ "-p" "5421" ];
+          sshUser = "root";
+          remoteBuild = true;
+          profiles.system = {
+            user = "root";
+            path = self.inputs.deploy-rs.lib.aarch64-linux.activate.nixos
+              self.nixosConfigurations.hades-nfs;
+          };
+          autoRollback = false;
+          magicRollback = false;
+        };
         orion = {
           hostname = "orion.martinache.net";
           sshOpts = [ "-p" "5421" ];
@@ -484,13 +500,13 @@
               ++ [ inputs.deploy-rs.packages.x86_64-linux.deploy-rs ];
             shellHook = ''
               export PATH="$PWD/bin:$PATH"
-              echo "NixOS Infrastructure Development Shell"
-              echo "Building happens on target hosts (remoteBuild = true)"
-              echo ""
-              echo "Available commands:"
-              echo "  deploy .#<hostname>"
-              echo "  deploy .# --dry-activate"
-              echo "  deploy-help"
+               echo "NixOS Infrastructure Development Shell"
+               echo "Building happens on target hosts (remoteBuild = true)"
+               echo ""
+               echo "Available commands:"
+               echo "  deploy .#<hostname>"
+               echo "  deploy .# --dry-activate"
+               echo "  deploy-help"
             '';
           };
         };

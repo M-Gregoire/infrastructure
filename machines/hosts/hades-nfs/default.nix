@@ -11,7 +11,7 @@
 
   environment.etc."machine-id".text = "4fe6c883e941417bae469e646b7946ab";
 
-  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
+  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_6_12;
 
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
   boot.loader.grub.enable = false;
@@ -19,22 +19,25 @@
   boot.loader.generic-extlinux-compatible.enable = true;
   system.stateVersion = "23.05"; # Did you read the comment?
 
-  # networking.localCommands = ''
-  #   ${pkgs.ethtool}/bin/ethtool -K eth0 rx off tx off
-  # '';
+  networking.firewall.allowedTCPPorts = [ 2049 ];
 
   security.sudo.wheelNeedsPassword = false;
 
-  services.k3s.enable = true;
-
-  environment.systemPackages = [ pkgs.k3s pkgs.containerd pkgs.kubectl ];
-  networking.firewall.allowedTCPPorts = [ 6443 ];
-
+  # mkdir -p /nfs/Kodi && chattr +i /nfs/Kodi
+  fileSystems."/nfs/Kodi" = {
+    device = "/dev/disk/by-uuid/160eb233-cb31-43bb-b2be-1836ed18d3d2";
+    options = [ "auto" "nofail" "x-systemd.device-timeout=30" ];
+  };
+  # mkdir -p /nfs/Safe && chattr +i /nfs/Safe
+  fileSystems."/nfs/Safe" = {
+    device = "/dev/disk/by-uuid/c3a3426a-4421-4cd2-aa05-5e620f4e2fbb";
+    options = [ "auto" "nofail" "x-systemd.device-timeout=30" ];
+  };
   services.nfs.server.enable = true;
-  # /nfs/Harbor    *(rw,no_subtree_check,no_root_squash,anonuid=1000,anongid=1000)
   services.nfs.server.exports = ''
     /nfs         *(rw,fsid=0,no_subtree_check)
-    /nfs/Data    *(rw,no_subtree_check,no_root_squash,anonuid=1000,anongid=1000)
+    /nfs/Kodi    *(rw,no_subtree_check,no_root_squash,anonuid=1000,anongid=1000)
+    /nfs/Safe    *(rw,no_subtree_check,no_root_squash,anonuid=1000,anongid=1000)
   '';
 
 }

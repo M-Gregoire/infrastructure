@@ -7,7 +7,6 @@
     "datadog/tap/dd-gitsign"
     "datadog/tap/dd-auth"
     "google-cloud-sdk"
-    "nikitabobko/tap/aerospace"
     "karabiner-elements"
     "1password-cli"
     "aws-vault"

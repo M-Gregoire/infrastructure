@@ -23,6 +23,8 @@
     godef
     ## Bash
     bash-language-server
+    ## Json
+    nodePackages.vscode-json-languageserver
     ## C / C++
     ccls
     gcc # go-vet
