@@ -1,9 +1,11 @@
 { config, lib, pkgs, user, ... }:
 
 let
-  aerospaceTap = builtins.fetchGit {
-    url = "https://github.com/nikitabobko/homebrew-tap";
+  aerospaceTap = pkgs.fetchFromGitHub {
+    owner = "nikitabobko";
+    repo = "homebrew-tap";
     rev = "2eff00794112cf73fdefeec27cd9b30abe644408";
+    sha256 = "sha256-AB7c96r/7JgkBubPrlEFz9yaIPdsD7S8JkLVnGtlhAw=";
   };
 in {
   imports = [ ./dev/darwin/shortcuts.nix ];

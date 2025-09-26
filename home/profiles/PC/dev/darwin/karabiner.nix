@@ -58,9 +58,81 @@ let
     }];
   }) keys);
 
+  # Browser swap configuration
+  swapKeys = [ "w" "t" "f" "z" "a" ];
+  createSwapManipulators = key: [
+    # Regular key swaps
+    {
+      description = "Ctrl+${key} to Cmd+${key} in browsers";
+      type = "basic";
+      from = {
+        key_code = key;
+        modifiers = { mandatory = [ "control" ]; };
+      };
+      to = [{
+        key_code = key;
+        modifiers = [ "command" ];
+      }];
+      conditions = [{
+        type = "frontmost_application_if";
+        bundle_identifiers = browserApps;
+      }];
+    }
+    {
+      description = "Cmd+${key} to Ctrl+${key} in browsers";
+      type = "basic";
+      from = {
+        key_code = key;
+        modifiers = { mandatory = [ "command" ]; };
+      };
+      to = [{
+        key_code = key;
+        modifiers = [ "control" ];
+      }];
+      conditions = [{
+        type = "frontmost_application_if";
+        bundle_identifiers = browserApps;
+      }];
+    }
+    # Shift combinations
+    {
+      description = "Ctrl+Shift+${key} to Cmd+Shift+${key} in browsers";
+      type = "basic";
+      from = {
+        key_code = key;
+        modifiers = { mandatory = [ "control" "shift" ]; };
+      };
+      to = [{
+        key_code = key;
+        modifiers = [ "command" "shift" ];
+      }];
+      conditions = [{
+        type = "frontmost_application_if";
+        bundle_identifiers = browserApps;
+      }];
+    }
+    {
+      description = "Cmd+Shift+${key} to Ctrl+Shift+${key} in browsers";
+      type = "basic";
+      from = {
+        key_code = key;
+        modifiers = { mandatory = [ "command" "shift" ]; };
+      };
+      to = [{
+        key_code = key;
+        modifiers = [ "control" "shift" ];
+      }];
+      conditions = [{
+        type = "frontmost_application_if";
+        bundle_identifiers = browserApps;
+      }];
+    }
+  ];
+
   # Complete Karabiner configuration
   cmdCtrlKarabinerConfig = {
-    title = "Global Cmd/Ctrl swap for copy, paste, cut (except terminals)";
+    title =
+      "Custom - Global Cmd/Ctrl swap for copy, paste, cut (except terminals)";
     rules = [{
       description =
         "Swap Cmd+c/v/x with Ctrl+c/v/x globally except in terminals";
@@ -68,8 +140,8 @@ let
     }];
   };
 
-  browserKarabinerConfig = {
-    title = "Remap Cmd+Enter for aerospace except in browsers";
+  browserOpenTermKarabinerConfig = {
+    title = "Custom - Remap Cmd+Enter for aerospace except in browsers";
     rules = [{
       description =
         "Remap Cmd+Enter to Cmd+Shift+Enter for aerospace (except browsers)";
@@ -92,6 +164,15 @@ let
     }];
   };
 
+  browserTabSwapKarabinerConfig = {
+    title = "Custom - Swap Ctrl and Cmd for specific keys in browsers";
+    rules = [{
+      description =
+        "Swap Ctrl and Cmd for w,t keys (with shift support) in browsers only";
+      manipulators = builtins.concatLists (map createSwapManipulators swapKeys);
+    }];
+  };
+
 in {
   xdg.configFile."karabiner/assets/complex_modifications/global-cmd-ctrl-copy-paste-swap-except-terminals.json" =
     {
@@ -100,6 +181,11 @@ in {
 
   xdg.configFile."karabiner/assets/complex_modifications/aerospace-cmd-enter-remap.json" =
     {
-      text = builtins.toJSON browserKarabinerConfig;
+      text = builtins.toJSON browserOpenTermKarabinerConfig;
+    };
+
+  xdg.configFile."karabiner/assets/complex_modifications/aerospace-cmd-ctrl-swap-browser-remap.json" =
+    {
+      text = builtins.toJSON browserTabSwapKarabinerConfig;
     };
 }
