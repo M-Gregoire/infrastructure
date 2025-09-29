@@ -2,6 +2,8 @@
 
 {
 
+  home.packages = with pkgs; [ age sops ];
+
   imports = let
     folder = ./dev;
     files = builtins.attrNames (builtins.readDir folder);

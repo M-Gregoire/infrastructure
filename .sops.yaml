@@ -1,0 +1,20 @@
+keys:
+  - &admin_greg age1604y9ldx7tvdgrk2szspnxe4sr2glv26zvy3n9lvu3rmwedyrd2q625vxt
+  - &server_hades1 age1fqhjl2sds49w8z3339cv9q2xfzdqutqldhhva6ccns5tvwtftflqq0anh5
+  - &server_hades2 age16cw4v3ksc3a8m5g7h68593j8r74j4gw6munnwes7prcsdg7u2eys2xprpr
+  - &server_hades3 age1agqydr7m2twknjwm80wfjprdyvrtfjr4l6z39afajzlvj3hy65ks764ewp
+  - &server_hades4 age1mjjdu4daxk0tqalhxlz2hv39teqdnfz9nr2wkcg6ugsmc7gxjsns4p9jgt
+  - &server_hades5 age1megdf7qjq46zffafk4g4gnnxe289fd08s5yfqfcusm7e8yl75uhqg48c5n
+  - &server_hades6 age1w5ekya9ddtgnsx9pxumtappd0lhumjgj3vy0m0jg9tuygxzaqfgsln0ln4
+
+creation_rules:
+  - path_regex: secrets/datadog.yaml
+    key_groups:
+    - age:
+      - *admin_greg
+      - *server_hades1
+      - *server_hades2
+      - *server_hades3
+      - *server_hades4
+      - *server_hades5
+      - *server_hades6

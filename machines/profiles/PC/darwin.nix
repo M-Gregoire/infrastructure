@@ -7,6 +7,7 @@ let
     rev = "2eff00794112cf73fdefeec27cd9b30abe644408";
     sha256 = "sha256-AB7c96r/7JgkBubPrlEFz9yaIPdsD7S8JkLVnGtlhAw=";
   };
+
 in {
   imports = [ ./dev/darwin/shortcuts.nix ];
 

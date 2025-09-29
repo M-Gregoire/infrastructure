@@ -26,6 +26,10 @@ in {
   xresources.properties = { "Xft.dpi" = config.resources.screen.dpi; };
 
   home.packages = with pkgs; [
+
+    bitwarden-cli
+    bitwarden-desktop
+
     glibc
     linuxsampler
 

@@ -23,6 +23,8 @@
     pkgs.k3s
     pkgs.containerd
     pkgs.kubectl
+
+    usb-modeswitch
   ];
 
   services.k3s = {

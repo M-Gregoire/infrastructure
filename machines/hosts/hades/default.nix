@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ ../../dev/linux/systemd-networkd.nix ];
+  imports = [ ./datadog.nix ../../dev/linux/systemd-networkd.nix ];
 
   environment.systemPackages = with pkgs; [
     libraspberrypi
@@ -29,10 +29,12 @@
   #   fsType = "tmpfs";
   #   options = [ "size=300M" "mode=0755" ];
   # };
-  systemd.tmpfiles.rules = [
-    "d /var/log/journal 2755 root systemd-journal -"
-    "d /var/log/journal/%m 2755 root systemd-journal -"
-  ];
+
+  # Write log files to tmpfs
+  # systemd.tmpfiles.rules = [
+  #   "d /var/log/journal 2755 root systemd-journal -"
+  #   "d /var/log/journal/%m 2755 root systemd-journal -"
+  # ];
 
   # https://serverfault.com/a/949159
   boot.kernel.sysctl = {
