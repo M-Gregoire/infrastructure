@@ -6,6 +6,7 @@
     ./../../dev/linux/luks.nix
     ./../../dev/linux/steam.nix
     ./hardware-configuration.nix
+    ./zsa.nix
   ];
 
   environment.etc."machine-id".text = "c4e9716cfd684ec1ad9c70b7b0dabe2a";
