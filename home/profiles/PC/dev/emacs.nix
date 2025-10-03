@@ -1,4 +1,4 @@
-{ pkgs, config, private-config, inputs, flake-root, ... }:
+{ pkgs, config, private-config, inputs, flake-root, system, ... }:
 
 {
   home.packages = with pkgs; [
@@ -21,13 +21,11 @@
     gotests
     gore
     godef
+    #go-vet
     ## Bash
     bash-language-server
     ## Json
     nodePackages.vscode-json-languageserver
-    ## C / C++
-    ccls
-    gcc # go-vet
     ## Python
     # Broken in 21.11
     #python37Packages.python-language-server

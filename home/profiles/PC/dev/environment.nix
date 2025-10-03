@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, network, ... }:
 
 {
   home.sessionVariables = {
@@ -18,6 +18,7 @@
     # Avoid Firefox profile change
     # https://github.com/NixOS/nixpkgs/issues/58923
     MOZ_LEGACY_PROFILES = "1";
+  } // lib.optionalAttrs (network != "work") {
     # Use gpg-agent for ssh
     # SSH_AUTH_SOCK = "$(gpgconf --list-dirs agent-ssh-socket)";
     SSH_AUTH_SOCK = "${config.resources.paths.home}/.bitwarden-ssh-agent.sock";
