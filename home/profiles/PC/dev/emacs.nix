@@ -24,6 +24,8 @@
     #go-vet
     ## Bash
     bash-language-server
+    ## Yaml
+    yaml-language-server
     ## Json
     nodePackages.vscode-json-languageserver
     ## Python
