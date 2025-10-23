@@ -19,7 +19,7 @@ in {
   nix-homebrew = { taps = { "nikitabobko/homebrew-tap" = aerospaceTap; }; };
 
   homebrew.enable = true;
-  homebrew.brews = [ "borders" "k9s" ];
+  homebrew.brews = [ "borders" "k9s" "just" ];
   homebrew.casks = [
     "emacs-mac"
     "hammerspoon"
