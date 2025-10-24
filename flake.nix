@@ -54,7 +54,7 @@
 
     sops-nix-linux = {
       url = "github:Mic92/sops-nix";
-      follows = "nixpkgs-linux";
+      # follows = "nixpkgs-linux";
     };
     sops-nix-darwin = { url = "github:Mic92/sops-nix"; };
 
@@ -278,11 +278,12 @@
                 ./modules
               ];
               home-manager.users.${h.user} = { config, lib, pkgs, ... }: {
-
                 imports = homeList configName "linux"
                   ++ resourcesList configName "linux";
               };
             }
+
+            self.inputs.sops-nix-linux.nixosModules.sops
           ] ++ modulesList configName "linux"
             ++ resourcesList configName "linux" ++ extraModules;
         };
