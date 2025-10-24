@@ -3,8 +3,10 @@
 {
   programs.git = {
     enable = true;
-    # TODO: Depends if work laptop
-    # userEmail = "${config.resources.services.git.email}";
+    userEmail = if network != "work" then
+      config.resources.services.git.username
+    else
+      null;
     userName = "${config.resources.services.git.username}";
     # TODO: Depends if work laptop or not
     signing = {
