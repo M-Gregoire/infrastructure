@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ ./datadog.nix ../../dev/linux/systemd-networkd.nix ];
+  imports = [ ../../dev/datadog.nix ../../dev/linux/systemd-networkd.nix ];
 
   environment.systemPackages = with pkgs; [
     libraspberrypi

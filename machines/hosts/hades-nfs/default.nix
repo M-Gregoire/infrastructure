@@ -7,6 +7,7 @@
 {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ../../dev/datadog.nix
   ];
 
   environment.etc."machine-id".text = "4fe6c883e941417bae469e646b7946ab";
