@@ -429,13 +429,13 @@
           magicRollback = false;
         };
         hades-7 = {
-          hostname = "192.168.3.160";
-          sshOpts = [ "-p" "22" ];
+          hostname = "192.168.3.37";
+          sshOpts = [ "-p" "5421" ];
           sshUser = "root";
           remoteBuild = true;
           profiles.system = {
             user = "root";
-            path = self.inputs.deploy-rs.lib.x86_x64-linux.activate.nixos
+            path = self.inputs.deploy-rs.lib.x86_64-linux.activate.nixos
               self.nixosConfigurations.hades-7;
           };
           autoRollback = false;
