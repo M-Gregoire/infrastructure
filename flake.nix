@@ -435,7 +435,7 @@
           remoteBuild = true;
           profiles.system = {
             user = "root";
-            path = self.inputs.deploy-rs.lib.aarch64-linux.activate.nixos
+            path = self.inputs.deploy-rs.lib.x86_x64-linux.activate.nixos
               self.nixosConfigurations.hades-6;
           };
           autoRollback = false;
