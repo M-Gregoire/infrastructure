@@ -8,6 +8,9 @@
 
   system.stateVersion = "20.03";
 
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
   environment.systemPackages = with pkgs; [
     # libraspberrypi
     # raspberrypi-eeprom
