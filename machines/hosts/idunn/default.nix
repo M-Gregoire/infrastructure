@@ -7,7 +7,8 @@ let
   };
 in {
   nix-homebrew = { taps = { "mulbc/homebrew-ceph-client" = cephTap; }; };
-  homebrew.brews = [ "ceph-client" "openssh" "openvpn" "docker" ];
+  homebrew.brews =
+    [ "ceph-client" "openssh" "openvpn" "docker" "python3" "esphome" "pipx" ];
   homebrew.casks = [
     "openvpn-connect"
     "firefox"

@@ -3,14 +3,10 @@
 {
   imports = [ ../../dev/datadog.nix ../../dev/linux/systemd-networkd.nix ];
 
-  environment.systemPackages = with pkgs; [
-    libraspberrypi
-    ceph
-    ceph-client
-    util-linux
-    gptfdisk
-    smartmontools
-  ];
+  environment.systemPackages = with pkgs;
+    [ ceph ceph-client util-linux gptfdisk smartmontools ]
+    ++ lib.optionals (config.networking.hostName != "hades-7")
+    [ libraspberrypi ];
 
   boot.kernelModules =
     [ "nbd" "rbd" "ceph" "usb_storage" "uas" "usbhid" "xhci_pci" ];

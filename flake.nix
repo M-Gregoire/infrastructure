@@ -54,7 +54,7 @@
 
     sops-nix-linux = {
       url = "github:Mic92/sops-nix";
-      # follows = "nixpkgs-linux";
+      inputs.nixpkgs.follows = "nixpkgs-linux";
     };
     sops-nix-darwin = { url = "github:Mic92/sops-nix"; };
 
@@ -314,6 +314,10 @@
           [ nixos-hardware.nixosModules.raspberry-pi-4 ];
         hades-6 = mkNixos "hades-6" "aarch64-linux"
           [ nixos-hardware.nixosModules.raspberry-pi-4 ];
+        hades-7 = mkNixos "hades-7" "x86_64-linux" [
+          nixos-hardware.nixosModules.common-cpu-intel
+          nixos-hardware.nixosModules.common-pc-ssd
+        ];
         hades-nfs = mkNixos "hades-nfs" "aarch64-linux"
           [ nixos-hardware.nixosModules.pine64-rockpro64 ];
         orion = mkNixos "orion" "x86_64-linux"
@@ -414,6 +418,19 @@
         hades-6 = {
           hostname = "hades-6.martinache.net";
           sshOpts = [ "-p" "5421" ];
+          sshUser = "root";
+          remoteBuild = true;
+          profiles.system = {
+            user = "root";
+            path = self.inputs.deploy-rs.lib.aarch64-linux.activate.nixos
+              self.nixosConfigurations.hades-6;
+          };
+          autoRollback = false;
+          magicRollback = false;
+        };
+        hades-7 = {
+          hostname = "192.168.3.160";
+          sshOpts = [ "-p" "22" ];
           sshUser = "root";
           remoteBuild = true;
           profiles.system = {
