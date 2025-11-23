@@ -436,7 +436,7 @@
           profiles.system = {
             user = "root";
             path = self.inputs.deploy-rs.lib.x86_x64-linux.activate.nixos
-              self.nixosConfigurations.hades-6;
+              self.nixosConfigurations.hades-7;
           };
           autoRollback = false;
           magicRollback = false;
