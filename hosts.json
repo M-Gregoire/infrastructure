@@ -99,6 +99,16 @@
         "clusterRole": "agent",
         "system": "aarch64-linux"
     },
+    "hades-7": {
+        "configName": "hades-7",
+        "hostname": "hades-7",
+        "profile": "server",
+        "network": "home",
+        "user": "gregoire",
+        "cluster": "hades",
+        "clusterRole": "agent",
+        "system": "x86_64-linux"
+    },
     "hades-nfs": {
         "configName": "hades-nfs",
         "hostname": "hades-nfs",

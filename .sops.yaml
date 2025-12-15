@@ -6,6 +6,7 @@ keys:
   - &server_hades4 age1mjjdu4daxk0tqalhxlz2hv39teqdnfz9nr2wkcg6ugsmc7gxjsns4p9jgt
   - &server_hades5 age1megdf7qjq46zffafk4g4gnnxe289fd08s5yfqfcusm7e8yl75uhqg48c5n
   - &server_hades6 age1w5ekya9ddtgnsx9pxumtappd0lhumjgj3vy0m0jg9tuygxzaqfgsln0ln4
+  - &server_hades7 age1j7zm9vh7jlzkhxpteeweas8t9c85d7tuc4zz577zjf9zxpx604hqacdl5a
   - &server_hades_nfs age1t5sz6xqkn5hed4rm0dnapptjlzqeh4fuuekl6t3pv8u3ll4vudgqsafrmm
 creation_rules:
   - path_regex: secrets/datadog.yaml
@@ -18,4 +19,5 @@ creation_rules:
       - *server_hades4
       - *server_hades5
       - *server_hades6
+      - *server_hades7
       - *server_hades_nfs
