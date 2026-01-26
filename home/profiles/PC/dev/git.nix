@@ -44,7 +44,10 @@
       color = { ui = true; };
       branch = { autosetupmerge = "always"; };
       # https://stackoverflow.com/a/21866819/4187028
-      push = { default = "current"; };
+      push = {
+        default = "current";
+        autoSetupRemote = true;
+      };
       credential = { helper = "cache --timeout=3600"; };
     };
   };
