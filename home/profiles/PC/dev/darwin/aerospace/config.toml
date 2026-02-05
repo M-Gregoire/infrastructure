@@ -45,7 +45,7 @@ exec-on-workspace-change = [
     # Main mode bindings
     [mode.main.binding]
     # Launch applications
-    cmd-shift-enter = 'exec-and-forget open -na kitty'
+    cmd-shift-enter = 'exec-and-forget /Applications/kitty.app/Contents/MacOS/kitty'
     cmd-shift-f = 'exec-and-forget open -a "Google Chrome"'
     #cmd-shift-f = 'exec-and-forget open -a Finder'
 
