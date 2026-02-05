@@ -100,6 +100,19 @@ print_warning() {
     echo -e "${YELLOW}⚠️  $1${NC}"
 }
 
+load_github_token() {
+    echo "🔐 Loading GitHub token from password manager..."
+
+    if [ "$HOSTNAME" = "COMP-CQ5H77T0CQ" ]; then
+        echo "   Using 1Password for $HOSTNAME"
+        export GITHUB_TOKEN=$(op read "op://Private/GitHub/nix-token")
+    else
+        echo "   Using Bitwarden for $HOSTNAME"
+        export GITHUB_TOKEN=$(bw get password github-nix-token)
+    fi
+
+}
+
 # Load and parse hosts.json
 load_hosts() {
     if [[ ! -f "$HOSTS_JSON" ]]; then
