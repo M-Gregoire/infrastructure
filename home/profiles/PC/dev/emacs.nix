@@ -12,6 +12,10 @@
     enchant
     (aspellWithDicts (dicts: with dicts; [ en en-computers en-science fr ]))
 
+    # AI Agent tools
+    # Claude Code ACP for agent-shell integration
+    # nodePackages."@zed-industries/claude-code-acp"  # Package not available in current nixpkgs
+
     # Langs
     ##  Go
     go
@@ -37,13 +41,15 @@
     nixfmt-classic
   ];
 
+  # Symlink bookmarks for instant changes without rebuild
+  # Uses absolute filesystem paths from resources.paths for out-of-store symlinks
   home.file.".emacs.d/.local/etc/bookmarks".source =
-    builtins.toPath "${private-config}/dotfiles/emacs.d/bookmarks";
-  home.file.".doom.d/init.el".source = "${flake-root}/dotfiles/doom.d/init.el";
-  home.file.".doom.d/config.el".source =
-    "${flake-root}/dotfiles/doom.d/config.el";
-  home.file.".doom.d/packages.el".source =
-    "${flake-root}/dotfiles/doom.d/packages.el";
+    config.lib.file.mkOutOfStoreSymlink
+    "${config.resources.paths.privateDotfiles}/emacs.d/bookmarks";
+  # Symlink entire doom.d directory for instant changes without rebuild
+  # Uses absolute filesystem paths from resources.paths for out-of-store symlinks
+  home.file.".doom.d".source = config.lib.file.mkOutOfStoreSymlink
+    "${config.resources.paths.publicDotfiles}/doom.d";
   xresources.properties = {
     # Font backend settings
     "Xft.autohint" = "0";

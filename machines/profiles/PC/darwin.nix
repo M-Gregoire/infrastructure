@@ -18,18 +18,25 @@ in {
 
   nix-homebrew = { taps = { "nikitabobko/homebrew-tap" = aerospaceTap; }; };
 
-  homebrew.enable = true;
-  homebrew.brews = [ "borders" "k9s" "just" ];
-  homebrew.casks = [
-    "emacs-mac"
-    "hammerspoon"
-    "raycast"
-    "kitty"
-    "notunes"
-    "bluesnooze"
-    "karabiner-elements"
-    "nikitabobko/tap/aerospace"
-  ];
+  homebrew = {
+    enable = true;
+    onActivation = {
+      autoUpdate = true;
+      upgrade = true;
+      extraFlags = [ "--upgrade" ];
+    };
+    brews = [ "borders" "k9s" "just" ];
+    casks = [
+      "emacs-mac"
+      "hammerspoon"
+      "raycast"
+      "kitty"
+      "notunes"
+      "bluesnooze"
+      "karabiner-elements"
+      "nikitabobko/tap/aerospace"
+    ];
+  };
   programs.zsh = {
     enable = true;
     shellInit = ''

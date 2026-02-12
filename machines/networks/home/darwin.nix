@@ -30,6 +30,8 @@ in {
     };
   };
 
-  homebrew.brews = [ "bitwarden-cli" "anylinuxfs" ];
-  homebrew.casks = [ "bitwarden" ];
+  homebrew = {
+    brews = [ "bitwarden-cli" "anylinuxfs" ];
+    casks = [ "bitwarden" ];
+  };
 }

@@ -3,6 +3,32 @@
 {
   imports = [ ../../dev/wireguard-tools.nix ];
 
+  # Configure Git safe directories for root user (needed for darwin-rebuild/nixos-rebuild with sudo)
+  # Note: Uses home-manager config to get home directory, works for both Linux and macOS
+  environment.etc."gitconfig".text = let
+    infraPath = builtins.replaceStrings [ "/home/" ] [ "/Users/" ]
+      (builtins.replaceStrings [ "/Users/" ] [ "/home/" ] "${
+          config.home-manager.users.${user}.home.homeDirectory
+        }/src/infrastructure");
+  in ''
+    [safe]
+      directory = ${
+        config.home-manager.users.${user}.home.homeDirectory
+      }/src/infrastructure
+      directory = ${
+        config.home-manager.users.${user}.home.homeDirectory
+      }/src/infrastructure-private
+      directory = ${
+        config.home-manager.users.${user}.home.homeDirectory
+      }/src/infrastructure/dotfiles/doom.d
+      directory = ${
+        config.home-manager.users.${user}.home.homeDirectory
+      }/src/infrastructure/vendor/polybar-spotify
+      directory = ${
+        config.home-manager.users.${user}.home.homeDirectory
+      }/src/infrastructure/vendor/rofi
+  '';
+
   # programs = {
   #   zsh = {
   #     # Fix Tramp (Emacs) with ZSH https://www.emacswiki.org/emacs/TrampMode#toc9

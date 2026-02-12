@@ -34,6 +34,11 @@
         example = "/path/to/dotfiles/";
         description = "Dotfiles folder path";
       };
+      claudeConfig = mkOption {
+        type = types.str;
+        example = "/path/to/claude/";
+        description = "Claude configuration folder path";
+      };
       secrets = mkOption {
         type = types.str;
         example = "/path/to/secrets/";
