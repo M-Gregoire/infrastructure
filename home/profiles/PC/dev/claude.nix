@@ -1,6 +1,9 @@
 { pkgs, config, private-config, inputs, flake-root, system, configName, ... }:
 
 {
+
+  homebrew.casks = [ "claude-code" ];
+
   # Claude Code ACP is already installed in emacs.nix via:
   # nodePackages."@zed-industries/claude-code-acp"
 
