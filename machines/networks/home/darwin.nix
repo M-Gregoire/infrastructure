@@ -21,7 +21,6 @@ let
     sha256 = "sha256-LzvdjSW+V3StLfmgkJDO42YbF14ykJj7/WSFnF0UoHg=";
   };
 in {
-
   nix-homebrew = {
     taps = {
       "FiloSottile/homebrew-musl-cross" = muslcrossTap;

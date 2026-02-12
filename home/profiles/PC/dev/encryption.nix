@@ -9,7 +9,7 @@
     # Open source smart card tools
     opensc
     # Test a PC/SC driver, card or reader
-    pcsctools
+    pcsc-tools
     # OpenSSL
     openssl
   ];
