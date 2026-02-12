@@ -47,10 +47,7 @@
       url = "github:M-Gregoire/Doom-emacs-config/main";
       flake = false;
     };
-    private-config = {
-      url = "path:/Users/gregoire/src/infrastructure-private";
-      flake = false;
-    };
+    private-config.url = "git+file:../infrastructure-private";
 
     sops-nix-linux = {
       url = "github:Mic92/sops-nix";
