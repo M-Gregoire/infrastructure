@@ -1,12 +1,14 @@
-{ config, network, ... }:
+{ config, network, lib, ... }:
 
 {
   programs.git = {
     enable = true;
     settings = {
-      userEmail =
-        if network != "work" then config.resources.services.git.email else null;
-      userName = "${config.resources.services.git.username}";
+      user = {
+        name = config.resources.services.git.username;
+      } // lib.optionalAttrs (network != "work") {
+        email = config.resources.services.git.email;
+      };
 
       aliases = {
         st = "status";
