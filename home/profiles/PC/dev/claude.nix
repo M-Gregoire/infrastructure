@@ -2,8 +2,6 @@
 
 {
 
-  homebrew.casks = [ "claude-code" ];
-
   # Claude Code ACP is already installed in emacs.nix via:
   # nodePackages."@zed-industries/claude-code-acp"
 

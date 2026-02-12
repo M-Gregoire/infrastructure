@@ -35,6 +35,7 @@ in {
       "bluesnooze"
       "karabiner-elements"
       "nikitabobko/tap/aerospace"
+      "claude-code"
     ];
   };
   programs.zsh = {
