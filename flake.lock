@@ -363,16 +363,19 @@
       }
     },
     "private-config": {
-      "flake": false,
       "locked": {
-        "path": "./../infrastructure-private",
-        "type": "path"
+        "lastModified": 1771328566,
+        "narHash": "sha256-DrZ/LK1khFh32YdGiJ45OjsEQJxa3jN/9nrLGMBo01s=",
+        "ref": "refs/heads/main",
+        "rev": "36c6f4c8d6d5feb3732c25bf1f38e4d632b20600",
+        "revCount": 249,
+        "type": "git",
+        "url": "file:../infrastructure-private"
       },
       "original": {
-        "path": "./../infrastructure-private",
-        "type": "path"
-      },
-      "parent": []
+        "type": "git",
+        "url": "file:../infrastructure-private"
+      }
     },
     "root": {
       "inputs": {
