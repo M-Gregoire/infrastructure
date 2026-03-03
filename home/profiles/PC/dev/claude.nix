@@ -37,6 +37,11 @@
   home.file.".claude/hooks".source = config.lib.file.mkOutOfStoreSymlink
     "${config.resources.paths.claudeConfig}/hooks";
 
+  # Symlink claude-hook-guard config for instant changes without rebuild
+  home.file.".config/claude-hook-guard/config.yaml".source =
+    config.lib.file.mkOutOfStoreSymlink
+    "${config.resources.paths.claudeConfig}/config/claude-hook-guard.yaml";
+
   # Symlink hostname-specific settings.json for instant changes without rebuild
   # Uses configName from hosts.json to determine which settings to use
   home.file.".claude/settings.json".source =
