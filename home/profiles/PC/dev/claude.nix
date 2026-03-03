@@ -14,8 +14,11 @@
       if [ -d "$HOME/.claude/skills" ] && [ ! -L "$HOME/.claude/skills" ]; then
         $DRY_RUN_CMD rm -rf "$HOME/.claude/skills"
       fi
-      if [ -f "$HOME/.claude/settings.local.json" ] && [ ! -L "$HOME/.claude/settings.local.json" ]; then
-        $DRY_RUN_CMD rm -f "$HOME/.claude/settings.local.json"
+      if [ -d "$HOME/.claude/hooks" ] && [ ! -L "$HOME/.claude/hooks" ]; then
+        $DRY_RUN_CMD rm -rf "$HOME/.claude/hooks"
+      fi
+      if [ -f "$HOME/.claude/settings.json" ] && [ ! -L "$HOME/.claude/settings.json" ]; then
+        $DRY_RUN_CMD rm -f "$HOME/.claude/settings.json"
       fi
     '';
 
@@ -29,9 +32,14 @@
   home.file.".claude/skills".source = config.lib.file.mkOutOfStoreSymlink
     "${config.resources.paths.claudeConfig}/skills";
 
-  # Symlink hostname-specific settings.local.json for instant changes without rebuild
+  # Symlink hooks directory for instant changes without rebuild
+  # Uses absolute filesystem paths from resources.paths for out-of-store symlinks
+  home.file.".claude/hooks".source = config.lib.file.mkOutOfStoreSymlink
+    "${config.resources.paths.claudeConfig}/hooks";
+
+  # Symlink hostname-specific settings.json for instant changes without rebuild
   # Uses configName from hosts.json to determine which settings to use
-  home.file.".claude/settings.local.json".source =
+  home.file.".claude/settings.json".source =
     config.lib.file.mkOutOfStoreSymlink
-    "${config.resources.paths.claudeConfig}/settings/${configName}/settings.local.json";
+    "${config.resources.paths.claudeConfig}/settings/${configName}/settings.json";
 }
