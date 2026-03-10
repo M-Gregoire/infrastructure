@@ -5,6 +5,9 @@
   # Claude Code ACP is already installed in emacs.nix via:
   # nodePackages."@zed-industries/claude-code-acp"
 
+  # RTK - CLI proxy that reduces LLM token consumption by 60-90%
+  home.packages = [ inputs.llm-agents.packages.${pkgs.system}.rtk ];
+
   # Remove old non-symlink files before creating symlinks
   home.activation.cleanupClaudeFiles =
     config.lib.dag.entryBefore [ "linkGeneration" ] ''

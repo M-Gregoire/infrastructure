@@ -21,7 +21,24 @@
     builtins.toPath "${flake-root}/dotfiles/kitty/kitty.conf";
   xdg.configFile."kitty/nord.conf".source =
     builtins.toPath "${flake-root}/dotfiles/kitty/nord.conf";
-  programs.zsh = { enable = true; };
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    initContent = ''
+      # Optimize zsh-syntax-highlighting if installed
+      ZSH_HIGHLIGHT_MAXLENGTH=300
+
+      # Lazy load expensive commands with --no-rehash for faster startup
+      # Note: Run 'pyenv rehash' or 'rbenv rehash' manually after installing new versions
+      if command -v pyenv >/dev/null 2>&1; then
+        eval "$(pyenv init - --no-rehash)"
+      fi
+
+      if command -v rbenv >/dev/null 2>&1; then
+        eval "$(rbenv init - --no-rehash)"
+      fi
+    '';
+  };
 
   #   oh-my-zsh.enable = true;
   #   oh-my-zsh.plugins = [

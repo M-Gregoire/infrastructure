@@ -49,6 +49,9 @@
     };
     private-config.url = "git+file:../infrastructure-private";
 
+    # LLM tools
+    llm-agents.url = "github:numtide/llm-agents.nix";
+
     sops-nix-linux = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs-linux";
@@ -148,8 +151,8 @@
             (conditionalImports "home/hosts/${configName}");
 
           clusterModules = lib.optionals (h.cluster != "")
-            (conditionalImports "home/hosts/${h.cluster}")
-            ++ conditionalImports "home/hosts/${h.cluster}/${configName}";
+            ((conditionalImports "home/hosts/${h.cluster}")
+            ++ conditionalImports "home/hosts/${h.cluster}/${configName}");
 
           networkModules = systemImports "home/networks/${h.network}" system;
 
