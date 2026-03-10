@@ -547,11 +547,11 @@
     },
     "private-config": {
       "locked": {
-        "lastModified": 1773135928,
-        "narHash": "sha256-LqRG3qllDlAeZAynhKqr4RlxD+Xi19Ms7MNlGRXEFzI=",
+        "lastModified": 1773136084,
+        "narHash": "sha256-cztfPPyry5BD8pYtJcJXDuF1GdNS+JwNKzs6y5H2U5o=",
         "ref": "refs/heads/main",
-        "rev": "f4922a53d34f2c4339f5def90459583621b78d1d",
-        "revCount": 259,
+        "rev": "527ab6ce41f92b10cccbd4737fdfaf74687806d2",
+        "revCount": 260,
         "type": "git",
         "url": "file:../infrastructure-private"
       },
