@@ -54,6 +54,8 @@
       fi
 
       wt switch --create "''$branch_name" "''$@"
+      # Unset upstream so the new branch doesn't inherit tracking from master
+      git branch --unset-upstream 2>/dev/null
     }
   '';
 }
