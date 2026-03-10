@@ -1,3 +1,0 @@
-#!/bin/bash
-# Simple sudo askpass helper using macOS osascript
-osascript -e 'Tell application "System Events" to display dialog "sudo requires your password:" default answer "" with hidden answer' -e 'text returned of result' 2>/dev/null

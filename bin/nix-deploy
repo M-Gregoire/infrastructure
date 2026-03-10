@@ -2,6 +2,19 @@
 
 set -euo pipefail
 
+# Check if running with sudo - this breaks privilege escalation
+if [ "${SUDO_USER:-}" != "" ]; then
+    echo "❌ Error: Do not run nix-deploy with sudo"
+    echo ""
+    echo "The script handles privilege escalation internally using Privileges.app and askpass helpers."
+    echo "Running with sudo will break the privilege escalation mechanism."
+    echo ""
+    echo "Run without sudo:"
+    echo "  ./bin/nix-deploy local"
+    echo ""
+    exit 1
+fi
+
 # Script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." &>/dev/null && pwd)"
@@ -267,6 +280,20 @@ get_flake_uri() {
     fi
 }
 
+is_clamshell_mode() {
+    # Check if built-in display is active (macOS only)
+    if [[ "$(uname -s)" != "Darwin" ]]; then
+        return 1
+    fi
+
+    # Check if built-in display is detected using system_profiler
+    if system_profiler SPDisplaysDataType 2>/dev/null | grep -qi "built-in"; then
+        return 1  # Not clamshell (built-in display active)
+    else
+        return 0  # Clamshell mode (no built-in display detected)
+    fi
+}
+
 cmd_local() {
     local action="${1:-switch}"
     shift || true
@@ -275,6 +302,8 @@ cmd_local() {
     # Work laptop requires Privileges.app for sudo access
     local current_hostname
     current_hostname="$(get_current_hostname)"
+    local use_askpass=false
+
     if [[ "$current_hostname" == *"COMP-CQ5H77T0CQ"* ]] || [[ "$current_hostname" == *"datadog"* ]]; then
         print_info "Work laptop detected - requesting admin privileges..."
         /Applications/Privileges.app/Contents/MacOS/PrivilegesCLI --add
@@ -282,14 +311,31 @@ cmd_local() {
             print_error "Failed to obtain admin privileges via Privileges.app"
             exit 1
         fi
-        # Use pinentry-mac for GUI password prompt (fallback for clamshell mode)
-        export SUDO_ASKPASS="$SCRIPT_DIR/sudo-askpass-pinentry"
+
+        # Use askpass in clamshell mode OR non-interactive mode
+        if is_clamshell_mode; then
+            print_info "Clamshell mode - using password prompt"
+            export SUDO_ASKPASS="$SCRIPT_DIR/sudo-askpass-pinentry"
+            use_askpass=true
+        elif [[ ! -t 0 ]] || [[ ! -t 1 ]]; then
+            print_info "Non-interactive mode - using password prompt"
+            export SUDO_ASKPASS="$SCRIPT_DIR/sudo-askpass-pinentry"
+            use_askpass=true
+        else
+            print_info "Normal mode - will use TouchID"
+        fi
+    fi
+
+    # Use sudo -A only in clamshell mode
+    local sudo_cmd="sudo"
+    if [[ "$use_askpass" == "true" ]]; then
+        sudo_cmd="sudo -A"
     fi
 
     local current_system
     current_system="$(get_current_system)"
     local is_dry_run=false
-    
+
     if handle_dry_flag extra_args "false"; then
         is_dry_run=true
     fi
@@ -325,10 +371,10 @@ cmd_local() {
             if [[ "$action" == "switch" ]]; then
                 if [[ "$is_dry_run" == "true" ]]; then
                     print_info "${EMOJI_LOCAL} Local deployment (dry run): $cmd build --flake $flake_uri"
-                    exec sudo -A "$cmd" build --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
+                    exec $sudo_cmd "$cmd" build --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
                 else
                     print_info "${EMOJI_LOCAL} Local deployment: $cmd switch --flake $flake_uri"
-                    exec sudo -A "$cmd" switch --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
+                    exec $sudo_cmd "$cmd" switch --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
                 fi
             else
                 print_info "${EMOJI_BUILD} Local build: $cmd build --flake $flake_uri"
@@ -345,10 +391,10 @@ cmd_local() {
             if [[ "$action" == "switch" ]]; then
                 if [[ "$is_dry_run" == "true" ]]; then
                     print_info "${EMOJI_LOCAL} Local deployment (dry run): $cmd build --flake $flake_uri"
-                    exec sudo -A "$cmd" build --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
+                    exec $sudo_cmd "$cmd" build --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
                 else
                     print_info "${EMOJI_LOCAL} Local deployment: $cmd switch --flake $flake_uri"  
-                    exec sudo -A "$cmd" switch --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
+                    exec $sudo_cmd "$cmd" switch --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
                 fi
             else
                 print_info "${EMOJI_BUILD} Local build: $cmd build --flake $flake_uri"
