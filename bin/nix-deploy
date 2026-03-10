@@ -105,7 +105,7 @@ load_github_token() {
 
     if [ "$HOSTNAME" = "COMP-CQ5H77T0CQ" ]; then
         echo "   Using 1Password for $HOSTNAME"
-        export GITHUB_TOKEN=$(op read "op://Private/GitHub/nix-token")
+        export GITHUB_TOKEN=$(op read "op://Employee/GitHub/add more/nix-token")
     else
         echo "   Using Bitwarden for $HOSTNAME"
         export GITHUB_TOKEN=$(bw get password github-nix-token)

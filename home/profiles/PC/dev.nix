@@ -8,6 +8,7 @@
     ./dev/keyboard.nix
     ./dev/python.nix
     ./dev/ssh.nix
+    ./dev/worktree.nix
   ];
 
   home.file.".editorconfig".source = "${flake-root}/dotfiles/root.editorconfig";

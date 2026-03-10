@@ -48,7 +48,7 @@
             HOSTNAME=$(hostname)
 
             if [ "$HOSTNAME" = "COMP-CQ5H77T0CQ" ]; then
-                export GITHUB_TOKEN=$(op read "op://Employee/GitHub/dnq26vcp54uun55gryg6pplmmm")
+                export GITHUB_TOKEN=$(op read "op://Employee/GitHub/add more/nix-token")
             else
                 export GITHUB_TOKEN=$(bw get password github-nix-token)
             fi

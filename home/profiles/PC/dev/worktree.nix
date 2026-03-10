@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 {
+  # Worktrunk - CLI for Git worktree management, designed for parallel AI agent workflows
+  home.packages = [ inputs.worktrunk.packages.${pkgs.system}.default ];
+
   programs.zsh.initContent = ''
     # Create a new worktree with branch prefix and switch to it
     nw() {
@@ -94,5 +97,8 @@
         return 1
       fi
     }
+
+    # Worktrunk shell integration for directory navigation
+    eval "$(wt config shell-hook zsh)"
   '';
 }

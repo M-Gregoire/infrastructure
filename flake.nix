@@ -51,6 +51,7 @@
 
     # LLM tools
     llm-agents.url = "github:numtide/llm-agents.nix";
+    worktrunk.url = "github:max-sixty/worktrunk";
 
     sops-nix-linux = {
       url = "github:Mic92/sops-nix";
