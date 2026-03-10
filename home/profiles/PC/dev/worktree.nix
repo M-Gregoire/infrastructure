@@ -9,7 +9,7 @@
     # Worktree path template - siblings alongside trunk
     # For repo at ~/dd/dd-source/trunk, branch greg.cm/gcp-work creates ~/dd/dd-source/gcp-work
     # Strip greg.cm/ prefix from folder name while keeping it in branch name
-    worktree-path = "{{ repo_path }}/../{{ branch | replace(from="greg.cm/", to="") | sanitize }}"
+    worktree-path = '{{ repo_path }}/../{{ branch | replace(from="greg.cm/", to="") | sanitize }}'
 
     [commit]
     # Auto-stage all changes before commit
