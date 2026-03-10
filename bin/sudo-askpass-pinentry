@@ -1,0 +1,20 @@
+#!/bin/bash
+# Sudo askpass helper using pinentry-mac for native macOS GUI
+# Used as fallback when Privileges.app TouchID is unavailable (e.g., clamshell mode)
+
+PINENTRY=$(command -v pinentry-mac)
+
+if [[ -z "$PINENTRY" ]]; then
+    # Fallback to simple osascript if pinentry-mac not found
+    exec "$(dirname "$0")/sudo-askpass"
+fi
+
+# Use pinentry protocol to get password
+exec 3< <(
+    echo "SETTITLE Sudo Password Required"
+    echo "SETDESC sudo requires your password to continue"
+    echo "SETPROMPT Password:"
+    echo "GETPIN"
+)
+
+$PINENTRY < <(cat <&3) 2>/dev/null | awk '/^D / {sub(/^D /, ""); print; exit}'

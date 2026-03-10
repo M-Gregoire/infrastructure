@@ -271,7 +271,21 @@ cmd_local() {
     local action="${1:-switch}"
     shift || true
     local -a extra_args=("$@")
-    
+
+    # Work laptop requires Privileges.app for sudo access
+    local current_hostname
+    current_hostname="$(get_current_hostname)"
+    if [[ "$current_hostname" == *"COMP-CQ5H77T0CQ"* ]] || [[ "$current_hostname" == *"datadog"* ]]; then
+        print_info "Work laptop detected - requesting admin privileges..."
+        /Applications/Privileges.app/Contents/MacOS/PrivilegesCLI --add
+        if [[ $? -ne 0 ]]; then
+            print_error "Failed to obtain admin privileges via Privileges.app"
+            exit 1
+        fi
+        # Use pinentry-mac for GUI password prompt (fallback for clamshell mode)
+        export SUDO_ASKPASS="$SCRIPT_DIR/sudo-askpass-pinentry"
+    fi
+
     local current_system
     current_system="$(get_current_system)"
     local is_dry_run=false
@@ -311,14 +325,14 @@ cmd_local() {
             if [[ "$action" == "switch" ]]; then
                 if [[ "$is_dry_run" == "true" ]]; then
                     print_info "${EMOJI_LOCAL} Local deployment (dry run): $cmd build --flake $flake_uri"
-                    exec sudo "$cmd" build --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
+                    exec sudo -A "$cmd" build --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
                 else
                     print_info "${EMOJI_LOCAL} Local deployment: $cmd switch --flake $flake_uri"
-                    exec sudo "$cmd" switch --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
+                    exec sudo -A "$cmd" switch --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
                 fi
             else
                 print_info "${EMOJI_BUILD} Local build: $cmd build --flake $flake_uri"
-                exec sudo "$cmd" build --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
+                exec sudo -A "$cmd" build --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
             fi
             ;;
         *linux*)
@@ -331,14 +345,14 @@ cmd_local() {
             if [[ "$action" == "switch" ]]; then
                 if [[ "$is_dry_run" == "true" ]]; then
                     print_info "${EMOJI_LOCAL} Local deployment (dry run): $cmd build --flake $flake_uri"
-                    exec sudo "$cmd" build --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
+                    exec sudo -A "$cmd" build --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
                 else
                     print_info "${EMOJI_LOCAL} Local deployment: $cmd switch --flake $flake_uri"  
-                    exec sudo "$cmd" switch --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
+                    exec sudo -A "$cmd" switch --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
                 fi
             else
                 print_info "${EMOJI_BUILD} Local build: $cmd build --flake $flake_uri"
-                exec sudo "$cmd" build --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
+                exec sudo -A "$cmd" build --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
             fi
             ;;
         *)
@@ -391,7 +405,10 @@ cmd_build() {
     local -a targets=()
     local -a extra_args=()
     local dry_run=false
-    
+
+    # Load GitHub token for API access
+    load_github_token
+
     # Parse arguments
     while [[ $# -gt 0 ]]; do
         case "$1" in
@@ -454,13 +471,13 @@ cmd_build() {
                 *)
                     # Same OS, different architecture - attempt cross-compilation
                     print_info "🔄 Cross-compiling ($current_system → $target_system)..."
-                    nix build "$build_target" --system "$target_system" "${extra_args[@]}"
+                    nix build "$build_target" --system "$target_system" --option access-tokens "github.com=$GITHUB_TOKEN" "${extra_args[@]}"
                     ;;
             esac
         else
             # Building for same platform - force local building
             print_info "${EMOJI_BUILD} Building $host (local)"
-            nix build "$build_target" --option builders "" --option max-jobs auto "${extra_args[@]}"
+            nix build "$build_target" --option builders "" --option max-jobs auto --option access-tokens "github.com=$GITHUB_TOKEN" "${extra_args[@]}"
         fi
     done
     
