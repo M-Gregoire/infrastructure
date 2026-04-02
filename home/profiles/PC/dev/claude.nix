@@ -1,4 +1,4 @@
-{ pkgs, config, private-config, inputs, flake-root, system, configName, ... }:
+{ pkgs, config, private-config, inputs, flake-root, configName, ... }:
 
 {
 
@@ -6,7 +6,7 @@
   # nodePackages."@zed-industries/claude-code-acp"
 
   # RTK - CLI proxy that reduces LLM token consumption by 60-90%
-  home.packages = [ inputs.llm-agents.packages.${pkgs.system}.rtk ];
+  home.packages = [ inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.rtk ];
 
   # Remove old non-symlink files before creating symlinks
   home.activation.cleanupClaudeFiles =
@@ -20,8 +20,17 @@
       if [ -d "$HOME/.claude/hooks" ] && [ ! -L "$HOME/.claude/hooks" ]; then
         $DRY_RUN_CMD rm -rf "$HOME/.claude/hooks"
       fi
+      if [ -d "$HOME/.claude/plugins" ] && [ ! -L "$HOME/.claude/plugins" ]; then
+        $DRY_RUN_CMD rm -rf "$HOME/.claude/plugins"
+      fi
+      if [ -L "$HOME/.claude/plugins" ] && [[ "$(readlink "$HOME/.claude/plugins")" == /nix/store/* ]]; then
+        $DRY_RUN_CMD rm -f "$HOME/.claude/plugins"
+      fi
       if [ -f "$HOME/.claude/settings.json" ] && [ ! -L "$HOME/.claude/settings.json" ]; then
         $DRY_RUN_CMD rm -f "$HOME/.claude/settings.json"
+      fi
+      if [ -f "$HOME/.claude/statusline-command.sh" ] && [ ! -L "$HOME/.claude/statusline-command.sh" ]; then
+        $DRY_RUN_CMD rm -f "$HOME/.claude/statusline-command.sh"
       fi
     '';
 
@@ -40,6 +49,10 @@
   home.file.".claude/hooks".source = config.lib.file.mkOutOfStoreSymlink
     "${config.resources.paths.claudeConfig}/hooks";
 
+  # Symlink plugins directory for instant changes without rebuild
+  home.file.".claude/plugins".source = config.lib.file.mkOutOfStoreSymlink
+    "${config.resources.paths.claudeConfig}/plugins";
+
   # Symlink claude-hook-guard config for instant changes without rebuild
   home.file.".config/claude-hook-guard/config.yaml".source =
     config.lib.file.mkOutOfStoreSymlink
@@ -50,4 +63,9 @@
   home.file.".claude/settings.json".source =
     config.lib.file.mkOutOfStoreSymlink
     "${config.resources.paths.claudeConfig}/settings/${configName}/settings.json";
+
+  # Symlink worktrunk status line script for instant changes without rebuild
+  home.file.".claude/statusline-command.sh".source =
+    config.lib.file.mkOutOfStoreSymlink
+    "${config.resources.paths.claudeConfig}/statusline-command.sh";
 }

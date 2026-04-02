@@ -25,7 +25,7 @@ in {
       upgrade = true;
       extraFlags = [ "--upgrade" ];
     };
-    brews = [ "borders" "k9s" "just" ];
+    brews = [ "borders" "k9s" "just" "terminal-notifier" ];
     casks = [
       "emacs-mac"
       "hammerspoon"
@@ -35,7 +35,6 @@ in {
       "bluesnooze"
       "karabiner-elements"
       "nikitabobko/tap/aerospace"
-      "claude-code"
     ];
   };
   programs.zsh = {
