@@ -39,6 +39,11 @@
         example = "/path/to/claude/";
         description = "Claude configuration folder path";
       };
+      piConfig = mkOption {
+        type = types.str;
+        example = "/path/to/pi/";
+        description = "Pi agent configuration folder path";
+      };
       secrets = mkOption {
         type = types.str;
         example = "/path/to/secrets/";

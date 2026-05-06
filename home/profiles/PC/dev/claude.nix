@@ -6,7 +6,11 @@
   # nodePackages."@zed-industries/claude-code-acp"
 
   # RTK - CLI proxy that reduces LLM token consumption by 60-90%
-  home.packages = [ inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.rtk ];
+  # pi - terminal coding agent with multi-model support
+  home.packages = with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
+    rtk
+    pi
+  ];
 
   # Remove old non-symlink files before creating symlinks
   home.activation.cleanupClaudeFiles =
