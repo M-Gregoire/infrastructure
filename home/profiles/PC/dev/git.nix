@@ -3,7 +3,7 @@
 {
   programs.git = {
     enable = true;
-    settings = {
+    extraConfig = {
       user = {
         name = config.resources.services.git.username;
       } // lib.optionalAttrs (network != "work") {
