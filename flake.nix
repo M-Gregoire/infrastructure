@@ -2,6 +2,8 @@
   description = "M-Gregoire infrastructure";
 
   inputs = {
+    self.submodules = true;
+
     # Linux
     nixpkgs-linux.url = "github:NixOS/nixpkgs/nixos-25.05";
     home-manager-linux = {
