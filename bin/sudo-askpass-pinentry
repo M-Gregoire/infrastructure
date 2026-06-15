@@ -5,34 +5,17 @@
 
 set -euo pipefail
 
-KEYCHAIN_SERVICE="sudo-askpass-cache"  # Shared across invocations for 1-hour caching
-KEYCHAIN_ACCOUNT="$USER"
-CACHE_DURATION=3600  # 1 hour in seconds
+KEYCHAIN_SERVICE="sudo-askpass-cache"
+KEYCHAIN_ACCOUNT="$(whoami)"
 
-# Check if password is cached and still valid
+# Check if password is cached in keychain
 check_cached_password() {
-    # Try to get password from keychain
     local cached_password
     cached_password=$(security find-generic-password -s "$KEYCHAIN_SERVICE" -a "$KEYCHAIN_ACCOUNT" -w 2>/dev/null || true)
 
     if [[ -n "$cached_password" ]]; then
-        # Get the modification time of the keychain item
-        local mod_time
-        mod_time=$(security find-generic-password -s "$KEYCHAIN_SERVICE" -a "$KEYCHAIN_ACCOUNT" 2>/dev/null | grep "mdat" | cut -d'"' -f4 || echo "")
-
-        if [[ -n "$mod_time" ]]; then
-            # Convert to epoch time (macOS format: "0x00000000XXXXXXXX"=<timestamp>)
-            local mod_epoch
-            mod_epoch=$(date -j -f "%Y%m%d%H%M%S" "$mod_time" "+%s" 2>/dev/null || echo "0")
-            local current_epoch
-            current_epoch=$(date "+%s")
-            local age=$((current_epoch - mod_epoch))
-
-            if [[ $age -lt $CACHE_DURATION ]]; then
-                echo "$cached_password"
-                return 0
-            fi
-        fi
+        echo "$cached_password"
+        return 0
     fi
 
     return 1

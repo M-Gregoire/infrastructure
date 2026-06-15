@@ -2,7 +2,7 @@
 
 {
   # Worktrunk - CLI for Git worktree management, designed for parallel AI agent workflows
-  home.packages = [ inputs.worktrunk.packages.${pkgs.system}.default ];
+  home.packages = [ inputs.worktrunk.packages.${pkgs.stdenv.hostPlatform.system}.default ];
 
   # Worktrunk configuration
   xdg.configFile."worktrunk/config.toml".text = ''

@@ -35,6 +35,7 @@ in {
       "bluesnooze"
       "karabiner-elements"
       "nikitabobko/tap/aerospace"
+      "datadog/tap/tfdeployctl"
     ];
   };
   programs.zsh = {

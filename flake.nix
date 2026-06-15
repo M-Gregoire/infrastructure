@@ -47,7 +47,7 @@
       url = "github:M-Gregoire/Doom-emacs-config/main";
       flake = false;
     };
-    private-config.url = "git+file:../infrastructure-private";
+    private-config.url = "git+file:./../infrastructure-private";
 
     # LLM tools
     llm-agents.url = "github:numtide/llm-agents.nix";

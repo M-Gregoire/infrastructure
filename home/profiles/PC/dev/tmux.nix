@@ -18,11 +18,14 @@
       # Renumber windows when one is closed
       set -g renumber-windows on
 
-      # Split panes with | and - (keeping current path)
-      bind | split-window -h -c "#{pane_current_path}"
-      bind - split-window -v -c "#{pane_current_path}"
+      # Split panes - Doom Emacs style (SPC w v / SPC w s)
+      bind v split-window -h -c "#{pane_current_path}"
+      bind s split-window -v -c "#{pane_current_path}"
       unbind '"'
       unbind %
+
+      # Choose session - Doom Emacs style (SPC TAB)
+      bind Tab choose-session
 
       # New window in current path
       bind c new-window -c "#{pane_current_path}"
@@ -59,6 +62,11 @@
 
       # Message style
       set -g message-style "bg=#3b4252,fg=#88c0d0"
+
+      # Extended keys (csi-u) for better key handling in pi/emacs
+      set -g extended-keys always
+      set -g extended-keys-format csi-u
+      set -as terminal-features "xterm-kitty:extkeys"
     '';
   };
 
