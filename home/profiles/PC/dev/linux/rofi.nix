@@ -18,9 +18,9 @@
         done
         for d in ${flake-root}/vendor/rofi/files/*; do
           f=$(basename "$d")
-          ln -sf ${flake-root}/vendor/rofi/files/$f $f
+          ln -sfn ${flake-root}/vendor/rofi/files/$f $f
         done
-        ln -sf $HOME/.cache/wal/colors-rofi-dark.rasi pywal.rasi
+        ln -sfn $HOME/.cache/wal/colors-rofi-dark.rasi pywal.rasi
         # Set theme
         rm $HOME/.config/rofi/powermenu/type-2/shared/colors.rasi
         echo '@import "~/.config/rofi/colors/solarized.rasi"' > $HOME/.config/rofi/powermenu/type-2/shared/colors.rasi
