@@ -18,13 +18,9 @@
         done
         for d in ${flake-root}/vendor/rofi/files/*; do
           f=$(basename "$d")
-          if [[ ! -L "$f" ]]; then
-             ln -s ${flake-root}/vendor/rofi/files/$f $f
-          fi
+          ln -sf ${flake-root}/vendor/rofi/files/$f $f
         done
-        if [[ ! -L "pywal.rasi" ]]; then
-            ln -s $HOME/.cache/wal/colors-rofi-dark.rasi pywal.rasi
-        fi
+        ln -sf $HOME/.cache/wal/colors-rofi-dark.rasi pywal.rasi
         # Set theme
         rm $HOME/.config/rofi/powermenu/type-2/shared/colors.rasi
         echo '@import "~/.config/rofi/colors/solarized.rasi"' > $HOME/.config/rofi/powermenu/type-2/shared/colors.rasi
