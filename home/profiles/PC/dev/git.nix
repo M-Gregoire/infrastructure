@@ -3,7 +3,7 @@
 {
   programs.git = {
     enable = true;
-    extraConfig = {
+    settings = {
       user = {
         name = config.resources.services.git.username;
       } // lib.optionalAttrs (network != "work") {
@@ -49,9 +49,10 @@
       signByDefault = true;
       # key = config.resources.gpg.publicKey.fingerprint;
     };
-    includes = if network == "work" then [{
-      path = "~/.config/gitsign/gitconfig";
-    }] else
+    includes = if network == "work" then [
+      { path = "~/.config/gitsign/gitconfig"; }
+      { path = "~/.config/datadog/git/config"; }
+    ] else
       [ ];
     ignores = [ "*.log" ".envrc" "shell.nix" ];
   };

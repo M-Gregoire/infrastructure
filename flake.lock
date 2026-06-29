@@ -547,17 +547,17 @@
     },
     "private-config": {
       "locked": {
-        "lastModified": 1773136084,
-        "narHash": "sha256-cztfPPyry5BD8pYtJcJXDuF1GdNS+JwNKzs6y5H2U5o=",
+        "lastModified": 1781527352,
+        "narHash": "sha256-h1w3ZRY2iHqvNNVBhADJBZQB8TGkdP9Nofeik/p9cM8=",
         "ref": "refs/heads/main",
-        "rev": "527ab6ce41f92b10cccbd4737fdfaf74687806d2",
-        "revCount": 260,
+        "rev": "0f82134affb45538ec00cdd4a1cee20372d1aae4",
+        "revCount": 288,
         "type": "git",
-        "url": "file:../infrastructure-private"
+        "url": "file:./../infrastructure-private"
       },
       "original": {
         "type": "git",
-        "url": "file:../infrastructure-private"
+        "url": "file:./../infrastructure-private"
       }
     },
     "root": {
