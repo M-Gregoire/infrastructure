@@ -71,17 +71,12 @@ pywalfox start &
 # Wait for network before starting Firefox and Thunderbird
 while ! systemctl is-active --quiet network-online.target; do sleep 3; done;
 
-# pgrep might be missing, prefer ps
-# Need [.] to not return ps process as result
-# https://stackoverflow.com/a/8965530
-if ! ps -aux | grep "[.]firefox">/dev/null
-then
+if ! pgrep -f firefox >/dev/null; then
   echo "[+] Firefox not running. Starting..."
-  firefox&
+  firefox &
 fi
 
-if ! ps -aux | grep "[.]thunderbird" > /dev/null
-then
+if ! pgrep -f thunderbird >/dev/null; then
   echo "[+] Thunderbird not running. Starting..."
-  thunderbird&
+  thunderbird &
 fi
