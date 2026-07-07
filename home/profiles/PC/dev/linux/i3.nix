@@ -65,7 +65,7 @@ in {
   xsession = {
     enable = true;
     windowManager.i3.enable = true;
-    windowManager.i3.package = pkgs.i3-gaps;
+    windowManager.i3.package = pkgs.i3;
 
     windowManager.i3.config = {
       fonts = {
