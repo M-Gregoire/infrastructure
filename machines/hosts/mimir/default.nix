@@ -34,7 +34,7 @@
 
   networking.wireless.enable = false;
 
-  environment.systemPackages = with pkgs; [ numlockx glxinfo ];
+  environment.systemPackages = with pkgs; [ numlockx mesa-demos ];
   services.xserver.displayManager.lightdm.extraSeatDefaults = ''
     greeter-setup-script=${pkgs.numlockx}/bin/numlockx on
   '';
