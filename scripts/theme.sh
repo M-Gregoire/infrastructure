@@ -12,10 +12,9 @@
 # 4 -> If not null, use light theme
 
 reload_dunst() {
+  # Kill existing dunst; dbus will auto-activate a new instance
+  # on the next notification with the updated config
   killall dunst .dunst-wrapped 2>/dev/null
-  sleep 1
-  dunst &
-  disown
 }
 
 # Wpg install
