@@ -13,7 +13,7 @@
 
 reload_dunst() {
   pkill -x dunst 2>/dev/null
-  sleep 0.5
+  while pgrep -x dunst >/dev/null 2>&1; do sleep 0.1; done
   dunst &
 }
 
