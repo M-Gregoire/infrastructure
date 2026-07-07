@@ -5,9 +5,9 @@
     self.submodules = true;
 
     # Linux
-    nixpkgs-linux.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs-linux.url = "github:NixOS/nixpkgs/nixos-25.11";
     home-manager-linux = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs-linux";
     };
 
