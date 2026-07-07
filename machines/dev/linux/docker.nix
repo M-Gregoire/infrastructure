@@ -3,6 +3,7 @@
 {
   virtualisation.docker = {
     enable = true;
+    package = pkgs.docker_29;
     logDriver = "json-file";
     extraOptions = "--log-opt max-size=10 --log-opt max-file=3";
   };
