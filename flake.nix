@@ -49,7 +49,7 @@
       url = "github:M-Gregoire/Doom-emacs-config/main";
       flake = false;
     };
-    private-config.url = "git+file:./../infrastructure-private";
+    private-config.url = "path:../infrastructure-private";
 
     # LLM tools
     llm-agents.url = "github:numtide/llm-agents.nix";
@@ -251,6 +251,9 @@
                 allowUnfree = true;
                 allowUnfreePredicate = (_: true);
                 allowUnfreeRedistributable = true;
+                permittedInsecurePackages = [
+                  "electron-39.8.10"
+                ];
               };
             }
             {
