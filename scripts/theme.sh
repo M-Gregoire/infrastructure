@@ -13,8 +13,9 @@
 
 reload_dunst() {
   killall dunst 2>/dev/null
-  while pidof dunst >/dev/null 2>&1; do sleep 0.1; done
+  sleep 1
   dunst &
+  disown
 }
 
 # Wpg install
