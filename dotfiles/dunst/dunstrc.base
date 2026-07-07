@@ -97,6 +97,11 @@
     highlight = "{color9}"
     timeout = 15
 
+[Thunderbird]
+    appname = Thunderbird
+    timeout = 6
+    set_transient = true
+
 [Spotify]
     appname = Spotify
     format = "<b>♪ %s</b>\n<span size='small'>%b</span>"
