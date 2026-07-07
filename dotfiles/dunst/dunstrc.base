@@ -5,9 +5,9 @@
 
     ### Geometry ###
     width = (280, 380)
-    height = 200
+    height = (0, 200)
     origin = top-right
-    offset = 16x40
+    offset = (16, 40)
     scale = 0
     notification_limit = 5
 
@@ -49,7 +49,7 @@
 
     ### Icons ###
     enable_recursive_icon_lookup = true
-    icon_theme = "Papirus-Dark"
+    icon_theme = "breeze-dark, hicolor"
     icon_position = left
     min_icon_size = 48
     max_icon_size = 64
