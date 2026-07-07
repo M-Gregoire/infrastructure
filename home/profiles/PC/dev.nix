@@ -1,4 +1,4 @@
-{ pkgs, config, substituteAll, flake-root, network, ... }:
+{ pkgs, config, flake-root, network, ... }:
 
 {
   imports = [

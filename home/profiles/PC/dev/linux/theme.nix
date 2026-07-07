@@ -1,10 +1,8 @@
 { config, pkgs, flake-root, ... }:
 
 {
-  xdg.configFile."wpg/templates/dunstrc.base".source = pkgs.substituteAll {
-    src = "${flake-root}/dotfiles/dunst/dunstrc.base";
-    user = "${config.resources.username}";
-  };
+  xdg.configFile."wpg/templates/dunstrc.base".source =
+    "${flake-root}/dotfiles/dunst/dunstrc.base";
 
   home.packages = with pkgs; [
     # Themes, icons
