@@ -12,7 +12,7 @@
 # 4 -> If not null, use light theme
 
 reload_dunst() {
-  killall dunst 2>/dev/null
+  killall dunst .dunst-wrapped 2>/dev/null
   sleep 1
   dunst &
   disown
