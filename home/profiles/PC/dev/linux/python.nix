@@ -16,6 +16,7 @@ let
 in {
   home.packages = with pkgs;
     [
+      pywalfox
       # TODO: Restore python packages
       (python314.withPackages (ps:
         with ps;
@@ -26,8 +27,6 @@ in {
           # Polybar spotify controls
           # dbus-python
           # pygobject3
-          # Pywall for Firefox
-          # pywalfox
         ]))
     ];
 }

@@ -63,12 +63,10 @@ fi
 # Restart dunst
 reload_dunst
 
-# Start pywalfox daemon (if available)
-if command -v pywalfox >/dev/null 2>&1; then
-  pywalfox install
-  pkill pywalfox 2>/dev/null
-  pywalfox start &
-fi
+# Start pywalfox daemon
+pywalfox install
+pkill pywalfox 2>/dev/null
+pywalfox start &
 
 # Wait for network before starting Firefox and Thunderbird
 while ! systemctl is-active --quiet network-online.target; do sleep 3; done;
