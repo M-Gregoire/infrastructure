@@ -45,7 +45,7 @@
         if command -v bw >/dev/null 2>&1 && [ "$(hostname)" != "COMP-CQ5H77T0CQ" ]; then
           if ! bw login --check >/dev/null 2>&1; then
             echo "\033[33m⚠ Bitwarden is not logged in — nix commands will fail to authenticate with GitHub.\033[0m"
-            echo "  Run: bw login"
+            echo "  Run: bw config server https://your-vault-url && bw login"
           elif [ -z "$BW_SESSION" ] && ! bw unlock --check >/dev/null 2>&1; then
             echo "\033[33m⚠ Bitwarden vault is locked — nix commands will fail to authenticate with GitHub.\033[0m"
             echo "  Run: export BW_SESSION=\$(bw unlock --raw)"
