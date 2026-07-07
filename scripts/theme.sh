@@ -12,8 +12,9 @@
 # 4 -> If not null, use light theme
 
 reload_dunst() {
-  pkill dunst
-  dunst&
+  pkill -x dunst 2>/dev/null
+  sleep 0.5
+  dunst &
 }
 
 # Wpg install
@@ -22,7 +23,7 @@ then
   mkdir -p ~/.themes
   mkdir -p ~/.config/dunst
 
-  wpg-install.sh -g -i #-d
+  wpg-install.sh -g -i 2>/dev/null || true
 
   # wpg-install.sh install Dunst template from
   # https://github.com/deviantfero/wpgtk-templates/tree/master/dunst
@@ -62,14 +63,12 @@ fi
 # Restart dunst
 reload_dunst
 
-# Start pywalfox daemon
-# Setup pywall for Firefox if not already
-#if [ ! -f ~/.mozilla/native-messaging-hosts/pywalfox.json ]; then
+# Start pywalfox daemon (if available)
+if command -v pywalfox >/dev/null 2>&1; then
   pywalfox install
-#fi
-pkill pywalfox
-pywalfox start&
-#pywalfox update
+  pkill pywalfox 2>/dev/null
+  pywalfox start &
+fi
 
 # Wait for network before starting Firefox and Thunderbird
 while ! systemctl is-active --quiet network-online.target; do sleep 3; done;
