@@ -280,6 +280,18 @@ get_flake_uri() {
     fi
 }
 
+# On macOS, /etc is a symlink to /private/etc, and Nix >= 2.20 refuses to
+# traverse symlinks in git+file: paths. Resolve the private-config input
+# to its real path so Nix sees a symlink-free path.
+get_private_config_override() {
+    local private_path="/etc/nix/infrastructure-private"
+    if [[ -L "$private_path" ]]; then
+        local real_path
+        real_path="$(readlink -f "$private_path")"
+        echo "--override-input" "private-config" "git+file://$real_path"
+    fi
+}
+
 is_clamshell_mode() {
     # Check if built-in display is active (macOS only)
     if [[ "$(uname -s)" != "Darwin" ]]; then
@@ -360,6 +372,15 @@ cmd_local() {
     local flake_uri
     flake_uri="$(get_flake_uri "$host_config")"
     
+    # Resolve private-config symlink for macOS compatibility (Nix >= 2.20
+    # rejects symlinks in git+file: paths; on macOS /etc is a symlink)
+    local -a override_args=()
+    local _override
+    _override="$(get_private_config_override)"
+    if [[ -n "$_override" ]]; then
+        read -ra override_args <<< "$_override"
+    fi
+    
     case "$current_system" in
         *darwin*)
             local cmd="darwin-rebuild"
@@ -371,14 +392,14 @@ cmd_local() {
             if [[ "$action" == "switch" ]]; then
                 if [[ "$is_dry_run" == "true" ]]; then
                     print_info "${EMOJI_LOCAL} Local deployment (dry run): $cmd build --flake $flake_uri"
-                    exec $sudo_cmd "$cmd" build --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
+                    exec $sudo_cmd "$cmd" build --flake "$flake_uri" "${override_args[@]}" "${nix_options[@]}" "${extra_args[@]}"
                 else
                     print_info "${EMOJI_LOCAL} Local deployment: $cmd switch --flake $flake_uri"
-                    exec $sudo_cmd "$cmd" switch --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
+                    exec $sudo_cmd "$cmd" switch --flake "$flake_uri" "${override_args[@]}" "${nix_options[@]}" "${extra_args[@]}"
                 fi
             else
                 print_info "${EMOJI_BUILD} Local build: $cmd build --flake $flake_uri"
-                exec sudo -A "$cmd" build --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
+                exec sudo -A "$cmd" build --flake "$flake_uri" "${override_args[@]}" "${nix_options[@]}" "${extra_args[@]}"
             fi
             ;;
         *linux*)
@@ -391,14 +412,14 @@ cmd_local() {
             if [[ "$action" == "switch" ]]; then
                 if [[ "$is_dry_run" == "true" ]]; then
                     print_info "${EMOJI_LOCAL} Local deployment (dry run): $cmd build --flake $flake_uri"
-                    exec $sudo_cmd "$cmd" build --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
+                    exec $sudo_cmd "$cmd" build --flake "$flake_uri" "${override_args[@]}" "${nix_options[@]}" "${extra_args[@]}"
                 else
                     print_info "${EMOJI_LOCAL} Local deployment: $cmd switch --flake $flake_uri"  
-                    exec $sudo_cmd "$cmd" switch --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
+                    exec $sudo_cmd "$cmd" switch --flake "$flake_uri" "${override_args[@]}" "${nix_options[@]}" "${extra_args[@]}"
                 fi
             else
                 print_info "${EMOJI_BUILD} Local build: $cmd build --flake $flake_uri"
-                exec sudo -A "$cmd" build --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
+                exec sudo -A "$cmd" build --flake "$flake_uri" "${override_args[@]}" "${nix_options[@]}" "${extra_args[@]}"
             fi
             ;;
         *)
