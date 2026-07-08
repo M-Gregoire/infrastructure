@@ -63,6 +63,9 @@
       # Message style
       set -g message-style "bg=#3b4252,fg=#88c0d0"
 
+      # Focus events: let apps (pi, emacs) detect pane focus changes
+      set -g focus-events on
+
       # Extended keys (csi-u) for better key handling in pi/emacs
       set -g extended-keys always
       set -g extended-keys-format csi-u
