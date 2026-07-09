@@ -1,8 +1,8 @@
 # NixOS Infrastructure
 
-[![NixOS](https://img.shields.io/badge/NixOS-25.05-blue.svg?style=flat&logo=nixos&logoColor=white)](https://nixos.org)
-[![nix-darwin](https://img.shields.io/badge/nix--darwin-25.05-blue.svg?style=flat&logo=apple&logoColor=white)](https://github.com/LnL7/nix-darwin)
-[![home-manager](https://img.shields.io/badge/home--manager-25.05-blue.svg?style=flat&logo=nixos&logoColor=white)](https://github.com/nix-community/home-manager)
+[![NixOS](https://img.shields.io/badge/NixOS-26.05-blue.svg?style=flat&logo=nixos&logoColor=white)](https://nixos.org)
+[![nix-darwin](https://img.shields.io/badge/nix--darwin-26.05-blue.svg?style=flat&logo=apple&logoColor=white)](https://github.com/LnL7/nix-darwin)
+[![home-manager](https://img.shields.io/badge/home--manager-26.05-blue.svg?style=flat&logo=nixos&logoColor=white)](https://github.com/nix-community/home-manager)
 [![deploy-rs](https://img.shields.io/badge/deploy--rs-enabled-green.svg?style=flat&logo=rocket&logoColor=white)](https://github.com/serokell/deploy-rs)
 
 Personal infrastructure configuration using NixOS, nix-darwin, and home-manager to manage multiple machines across different environments.
@@ -111,6 +111,33 @@ nix develop
 
 # View available deployment commands
 deploy-help
+```
+
+### Private Configuration
+
+Sensitive configuration lives in a separate `infrastructure-private` repository.
+The flake references it at a fixed path (`/etc/nix/infrastructure-private`) so the
+flake.nix stays portable across machines — no user-specific home directory paths.
+
+The repo must be a **real directory** (not a symlink) at that path because
+Nix ≥ 2.20 refuses to traverse symlinks in `git+file:` inputs. On macOS this
+is especially problematic since `/etc` is itself a symlink to `/private/etc`.
+
+The setup is: clone directly into `/etc/nix/`, then symlink from `~/src/` for
+convenience. Nix only ever sees the real path; the symlink is just for you.
+
+**macOS** (use `/private/etc` to avoid the `/etc` → `/private/etc` symlink):
+```bash
+sudo git clone git@github.com:YOU/infrastructure-private.git /private/etc/nix/infrastructure-private
+sudo chown -R $(whoami) /private/etc/nix/infrastructure-private
+ln -s /private/etc/nix/infrastructure-private ~/src/infrastructure-private
+```
+
+**Linux:**
+```bash
+sudo git clone git@github.com:YOU/infrastructure-private.git /etc/nix/infrastructure-private
+sudo chown -R $(whoami) /etc/nix/infrastructure-private
+ln -s /etc/nix/infrastructure-private ~/src/infrastructure-private
 ```
 
 ### First Deployment

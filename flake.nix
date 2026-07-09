@@ -49,11 +49,8 @@
       url = "github:M-Gregoire/Doom-emacs-config/main";
       flake = false;
     };
-    # Private config: each machine needs a symlink pointing to the local checkout:
-    #   sudo ln -sf ~/src/infrastructure-private /etc/nix/infrastructure-private
-    # On macOS, Nix >= 2.20 rejects symlinks in git+file: paths (because /etc
-    # is itself a symlink to /private/etc). The deploy/nix-deploy scripts work
-    # around this with --override-input, resolving the symlink to a real path.
+    # Private config: clone infrastructure-private directly into /etc/nix/ (not a
+    # symlink — Nix >= 2.20 rejects symlinks in git+file: paths). See README.
     private-config.url = "git+file:///etc/nix/infrastructure-private";
 
     # LLM tools
