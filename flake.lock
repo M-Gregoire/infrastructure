@@ -552,7 +552,7 @@
         "lastModified": 1782750087,
         "narHash": "sha256-LTJ6sGpeY4CTLfmUgkFOWbwwBmsW2UCS34lTdtDPPg8=",
         "type": "git",
-        "url": "file:///etc/nix/infrastructure-private"
+        "url": "file:///private/etc/nix/infrastructure-private"
       },
       "original": {
         "type": "git",
