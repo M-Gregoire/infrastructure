@@ -23,7 +23,7 @@
   powerManagement.cpuFreqGovernor = "performance";
 
   # Brightness control
-  programs.light.enable = true;
+  hardware.acpilight.enable = true;
 
   boot.kernelParams = [ "boot.shell_on_fail" ];
 

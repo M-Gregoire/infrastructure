@@ -1,7 +1,7 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
   nixpkgs.config.android_sdk.accept_license = true;
-  programs.adb.enable = true;
+  environment.systemPackages = [ pkgs.android-tools ];
   users.users.${config.resources.username}.extraGroups = [ "adbusers" ];
 }
