@@ -665,7 +665,7 @@ cmd_deploy() {
             }
             
             print_info "${EMOJI_DEPLOY} Copying closure to $host..."
-            nix copy --to "ssh-ng://${ssh_target}?ssh-key=&port=${ssh_port}" "$out_path" || {
+            nix copy --to "ssh-ng://${ssh_target}?port=${ssh_port}" "$out_path" || {
                 print_error "Failed to copy closure to $host"
                 exit 1
             }
