@@ -11,6 +11,8 @@
   # Auto-boot default generation after 3s (extlinux/U-Boot)
   boot.loader.timeout = 3;
 
+  boot.kernelPackages = lib.mkForce pkgs.linuxPackages;
+
   boot.kernelModules =
     [ "nbd" "rbd" "ceph" "usb_storage" "uas" "usbhid" "xhci_pci" ];
   # boot.kernelParams = [

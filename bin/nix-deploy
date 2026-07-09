@@ -79,8 +79,8 @@ print_usage() {
     printf "    nix-deploy deploy local-hosts    Deploy to local development machines\n\n"
     printf "${BOLD}${YELLOW}OPTIONS:${NC}\n"
     printf "    --dry                            Perform dry run (build only, no activation)\n"
-    printf "    --local                          Force local building (for deploy command)\n"
-    printf "    --remote                         Force remote building (default for deploy command)\n"
+    printf "    --local                          Cross-compile locally (for RPi/aarch64 targets)\n"
+    printf "    --remote                         Force remote building, skip cross-compile prompt\n"
     printf "    --skip-checks                    Skip evaluation checks for faster deployment\n"
     printf "    --help, -h                       Show help for specific command\n\n"
     printf "${BOLD}${YELLOW}EXAMPLES:${NC}\n"
@@ -602,13 +602,104 @@ cmd_deploy() {
         return
     fi
     
+    # Check if any target is aarch64-linux (RPi) and we're on a different arch
+    local current_system
+    current_system="$(get_current_system)"
+    local has_cross_targets=false
+    
+    if [[ "$current_system" != "aarch64-linux" ]] && [[ "$force_remote_build" == "false" ]]; then
+        for host in "${expanded_hosts[@]}"; do
+            local target_system
+            target_system="$(get_host_info "$host" "system")"
+            if [[ "$target_system" == "aarch64-linux" ]]; then
+                has_cross_targets=true
+                break
+            fi
+        done
+    fi
+    
+    if [[ "$has_cross_targets" == "true" ]] && [[ "$force_local_build" == "false" ]]; then
+        print_warning "Target(s) include aarch64-linux (Raspberry Pi) hosts."
+        print_warning "Building on the Pi is very slow (kernel builds take hours)."
+        echo -en "${YELLOW}Cross-compile locally instead? [Y/n] ${NC}"
+        read -r answer
+        if [[ "$answer" != "n" ]] && [[ "$answer" != "N" ]]; then
+            force_local_build=true
+        fi
+    fi
+    
     # Remote deployment via deploy-rs
     local -a flake_targets=()
+    local -a deploy_extra_args=()
     for host in "${expanded_hosts[@]}"; do
         local flake_uri
         flake_uri="$(get_flake_uri "$host")"
         flake_targets+=("$flake_uri")
     done
+    
+    # If cross-compiling locally, build closures, copy to target, and activate
+    if [[ "$force_local_build" == "true" ]] && [[ "$has_cross_targets" == "true" ]]; then
+        for host in "${expanded_hosts[@]}"; do
+            local target_system
+            target_system="$(get_host_info "$host" "system")"
+            if [[ "$target_system" != "aarch64-linux" ]]; then
+                continue
+            fi
+            
+            local target_hostname
+            target_hostname="$(get_host_info "$host" "hostname")"
+            local ssh_port
+            ssh_port="$(jq -r '."'"$host"'".sshOpts // [] | .[]' "$HOSTS_JSON" | grep -oE '[0-9]+' | head -1)"
+            ssh_port="${ssh_port:-22}"
+            local ssh_target="root@${target_hostname}"
+            local ssh_opts="-p ${ssh_port}"
+            
+            local build_target=".#nixosConfigurations.${host}.config.system.build.toplevel"
+            print_info "${EMOJI_BUILD} Cross-compiling $host locally..."
+            local out_path
+            out_path=$(nix build "$build_target" --print-out-paths --no-link \
+                --option access-tokens "github.com/M-Gregoire=\$GITHUB_TOKEN") || {
+                print_error "Local build failed for $host"
+                exit 1
+            }
+            
+            print_info "${EMOJI_DEPLOY} Copying closure to $host..."
+            nix copy --to "ssh-ng://${ssh_target}?ssh-key=&port=${ssh_port}" "$out_path" || {
+                print_error "Failed to copy closure to $host"
+                exit 1
+            }
+            
+            if [[ "$is_dry_run" == "true" ]]; then
+                print_info "${EMOJI_DRY} Dry run — skipping activation for $host"
+            else
+                print_info "⚡ Activating $host..."
+                ssh $ssh_opts "$ssh_target" \
+                    "nix-env -p /nix/var/nix/profiles/system --set $out_path && $out_path/bin/switch-to-configuration switch" || {
+                    print_error "Activation failed for $host"
+                    exit 1
+                }
+                print_success "Deployed $host"
+            fi
+        done
+        
+        # Deploy any remaining non-aarch64 hosts via deploy-rs
+        local -a remaining_targets=()
+        for host in "${expanded_hosts[@]}"; do
+            local target_system
+            target_system="$(get_host_info "$host" "system")"
+            if [[ "$target_system" != "aarch64-linux" ]]; then
+                local flake_uri
+                flake_uri="$(get_flake_uri "$host")"
+                remaining_targets+=("$flake_uri")
+            fi
+        done
+        
+        if [[ ${#remaining_targets[@]} -gt 0 ]]; then
+            print_info "${EMOJI_REMOTE} Deploying remaining hosts via deploy-rs..."
+            exec deploy "${remaining_targets[@]}" "${extra_args[@]}"
+        fi
+        return
+    fi
     
     print_info "${EMOJI_REMOTE} Remote deployment to: ${expanded_hosts[*]}"
     
