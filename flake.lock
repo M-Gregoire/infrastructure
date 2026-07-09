@@ -547,10 +547,11 @@
     },
     "private-config": {
       "locked": {
-        "dirtyRev": "42f31d15d876c85dc3957b36cfcd828ddfc358bc-dirty",
-        "dirtyShortRev": "42f31d1-dirty",
-        "lastModified": 1782750087,
-        "narHash": "sha256-LTJ6sGpeY4CTLfmUgkFOWbwwBmsW2UCS34lTdtDPPg8=",
+        "lastModified": 1783605055,
+        "narHash": "sha256-ZU26nxTNxzxC0cblTXT6dV16R0/71OZOgXwbeEK5cU0=",
+        "ref": "refs/heads/main",
+        "rev": "4e9ab21308f6bd022e5c4b38330e2cacf1b37a52",
+        "revCount": 292,
         "type": "git",
         "url": "file:///private/etc/nix/infrastructure-private"
       },
