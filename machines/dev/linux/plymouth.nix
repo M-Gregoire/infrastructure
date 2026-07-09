@@ -2,5 +2,6 @@
 
 {
   # https://github.com/NixOS/nixpkgs/issues/26722
-  boot.plymouth.enable = true;
+  # Disabled: build failure in 26.05 (plymouth-quit.service)
+  # boot.plymouth.enable = true;
 }
