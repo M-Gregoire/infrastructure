@@ -35,7 +35,7 @@ in {
     # Displays management
     arandr
     # Get key inputs
-    xorg.xev
+    xev
     # Notification (notify-send)
     libnotify
     # D-menu replacement
