@@ -8,6 +8,9 @@
     ++ lib.optionals (config.networking.hostName != "hades-7")
     [ libraspberrypi ];
 
+  # Auto-boot default generation after 3s (extlinux/U-Boot)
+  boot.loader.timeout = 3;
+
   boot.kernelModules =
     [ "nbd" "rbd" "ceph" "usb_storage" "uas" "usbhid" "xhci_pci" ];
   # boot.kernelParams = [
