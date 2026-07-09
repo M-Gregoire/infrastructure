@@ -22,7 +22,8 @@
   #   # "usbcore.quirks=174c:55aa:u,14b0:0206:u,7825:a2a4:u"
   #   "usb-storage.quirks=0bda:9210:u"
   # ];
-  # boot.kernelParams = [ "usb_storage.use_uas=0" "usbcore.autosuspend=-1" ];
+  boot.kernelParams = [ "usbcore.autosuspend=-1" ];
+  # boot.kernelParams = [ "usb_storage.use_uas=0" ];
   # fileSystems."/var/log" = {
   #   device = "tmpfs";
   #   fsType = "tmpfs";
