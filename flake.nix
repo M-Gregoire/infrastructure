@@ -253,9 +253,7 @@
                 allowUnfree = true;
                 allowUnfreePredicate = (_: true);
                 allowUnfreeRedistributable = true;
-                permittedInsecurePackages = [
-                  "electron-39.8.10"
-                ];
+                permittedInsecurePackages = [ ];
               };
             }
             {
