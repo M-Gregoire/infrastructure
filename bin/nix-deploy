@@ -538,13 +538,13 @@ cmd_build() {
                 *)
                     # Same OS, different architecture - attempt cross-compilation
                     print_info "🔄 Cross-compiling ($current_system → $target_system)..."
-                    nix build "$build_target" --system "$target_system" --option access-tokens "github.com=$GITHUB_TOKEN" "${extra_args[@]}"
+                    nix build "$build_target" --system "$target_system" --option access-tokens "github.com/M-Gregoire=$GITHUB_TOKEN" "${extra_args[@]}"
                     ;;
             esac
         else
             # Building for same platform - force local building
             print_info "${EMOJI_BUILD} Building $host (local)"
-            nix build "$build_target" --option builders "" --option max-jobs auto --option access-tokens "github.com=$GITHUB_TOKEN" "${extra_args[@]}"
+            nix build "$build_target" --option builders "" --option max-jobs auto --option access-tokens "github.com/M-Gregoire=$GITHUB_TOKEN" "${extra_args[@]}"
         fi
     done
     

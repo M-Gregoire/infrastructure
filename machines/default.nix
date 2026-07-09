@@ -67,7 +67,7 @@
         # Auto-load token for nix commands
         nix() {
             load-github-token
-            command nix --access-tokens "github.com=$GITHUB_TOKEN" "$@"
+            command nix --access-tokens "github.com/M-Gregoire=$GITHUB_TOKEN" "$@"
         }
       '';
     };
