@@ -647,9 +647,10 @@ cmd_deploy() {
             fi
             
             local target_hostname
-            target_hostname="$(get_host_info "$host" "hostname")"
+            target_hostname="$(get_host_info "$host" "deployHostname")"
+            target_hostname="${target_hostname:-$(get_host_info "$host" "hostname")}"
             local ssh_port
-            ssh_port="$(jq -r '."'"$host"'".sshOpts // [] | .[]' "$HOSTS_JSON" | grep -oE '[0-9]+' | head -1)"
+            ssh_port="$(get_host_info "$host" "sshPort")"
             ssh_port="${ssh_port:-22}"
             local ssh_target="root@${target_hostname}"
             local ssh_opts="-p ${ssh_port}"
@@ -658,7 +659,7 @@ cmd_deploy() {
             print_info "${EMOJI_BUILD} Cross-compiling $host locally..."
             local out_path
             out_path=$(nix build "$build_target" --print-out-paths --no-link \
-                --option access-tokens "github.com/M-Gregoire=\$GITHUB_TOKEN") || {
+                --option access-tokens "github.com/M-Gregoire=$GITHUB_TOKEN") || {
                 print_error "Local build failed for $host"
                 exit 1
             }
