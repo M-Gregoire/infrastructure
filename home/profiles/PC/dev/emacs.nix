@@ -31,12 +31,12 @@
     ## Yaml
     yaml-language-server
     ## Json
-    nodePackages.vscode-json-languageserver
+    vscode-json-languageserver
     ## Python
     # Broken in 21.11
     #python37Packages.python-language-server
     ## Javascript
-    nodePackages.javascript-typescript-langserver
+    javascript-typescript-langserver
     ## Nix
     nixfmt-classic
   ];
