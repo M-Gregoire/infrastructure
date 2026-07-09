@@ -11,7 +11,8 @@
   # Auto-boot default generation after 3s (extlinux/U-Boot)
   boot.loader.timeout = 3;
 
-  boot.kernelPackages = lib.mkForce pkgs.linuxPackages;
+  # nixos-hardware provides the RPi4 kernel via mkDefault.
+  # Not cached by Hydra yet — first build is slow, but cached locally after.
 
 
 
