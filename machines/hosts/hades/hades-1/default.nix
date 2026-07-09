@@ -24,8 +24,8 @@
   # mkdir -p /nfs/Data && chattr +i /nfs/Data
   fileSystems."/nfs/Data" = {
     device = "/dev/disk/by-uuid/beee5400-19ac-43d6-8d0f-4a3d87e8ce6d";
+    fsType = "ext4";
     options = [ "auto" "nofail" "x-systemd.device-timeout=30" ];
-
   };
 
   services.nfs.server.enable = true;

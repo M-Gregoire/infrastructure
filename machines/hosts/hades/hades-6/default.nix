@@ -33,6 +33,7 @@
   # mkdir -p /nfs/Cameras && chattr +i /nfs/Cameras
   fileSystems."/nfs/Cameras" = {
     device = "/dev/disk/by-uuid/c78289ef-b0bf-48c0-a17c-02d6f2cbed6c";
+    fsType = "ext4";
     options = [ "auto" "nofail" "x-systemd.device-timeout=30" ];
   };
 
