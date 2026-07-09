@@ -12,7 +12,7 @@
   # Check by comparing
   # file -L /run/current-system/kernel
   # uname -r
-  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
+  boot.kernelPackages = lib.mkOverride 1100 pkgs.linuxPackages_latest;
 
   environment.systemPackages = with pkgs; [
     # Disk management
