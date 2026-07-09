@@ -23,6 +23,7 @@
     builtins.toPath "${flake-root}/dotfiles/kitty/nord.conf";
   programs.zsh = {
     enable = true;
+    dotDir = config.home.homeDirectory; # keep legacy behavior
     enableCompletion = true;
     initContent = ''
       # Optimize zsh-syntax-highlighting if installed

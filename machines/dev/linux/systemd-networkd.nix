@@ -13,9 +13,9 @@ in {
   networking.useDHCP = false;
 
   services.resolved.enable = true;
-  services.resolved.dnssec = "false";
+  services.resolved.settings.Resolve.DNSSEC = "false";
   networking.resolvconf.dnsExtensionMechanism = false;
-  services.resolved.fallbackDns = config.resources.networking.fallbackDNS;
+  services.resolved.settings.Resolve.FallbackDNS = config.resources.networking.fallbackDNS;
 
   # /!\ DNS fallback is not a recovery DNS
   # See https://github.com/systemd/systemd/issues/5771#issuecomment-296673115
