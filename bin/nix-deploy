@@ -675,11 +675,13 @@ cmd_deploy() {
             else
                 print_info "⚡ Activating $host..."
                 ssh $ssh_opts "$ssh_target" \
-                    "nix-env -p /nix/var/nix/profiles/system --set $out_path && $out_path/bin/switch-to-configuration switch" || {
-                    print_error "Activation failed for $host"
-                    exit 1
-                }
-                print_success "Deployed $host"
+                    "nix-env -p /nix/var/nix/profiles/system --set $out_path && $out_path/bin/switch-to-configuration switch"
+                local rc=$?
+                if [[ $rc -ne 0 ]]; then
+                    print_warning "Activation returned exit code $rc for $host (may need a reboot)"
+                else
+                    print_success "Deployed $host"
+                fi
             fi
         done
         
