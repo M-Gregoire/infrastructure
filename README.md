@@ -123,10 +123,12 @@ The repo must be a **real directory** (not a symlink) at that path because
 Nix ≥ 2.20 refuses to traverse symlinks in `git+file:` inputs. On macOS this
 is especially problematic since `/etc` is itself a symlink to `/private/etc`.
 
-The setup is: clone directly into `/etc/nix/`, then symlink from `~/src/` for
-convenience. Nix only ever sees the real path; the symlink is just for you.
+The setup is: clone directly into `/private/etc/nix/`, then symlink from `~/src/`
+for convenience. Nix only ever sees the real path; the symlink is just for you.
+We use `/private/etc/nix/` on both platforms so the flake input and lock file are
+identical everywhere (on macOS `/etc` is a symlink to `/private/etc`).
 
-**macOS** (use `/private/etc` to avoid the `/etc` → `/private/etc` symlink):
+**macOS:**
 ```bash
 sudo git clone git@github.com:YOU/infrastructure-private.git /private/etc/nix/infrastructure-private
 sudo chown -R $(whoami) /private/etc/nix/infrastructure-private
@@ -135,9 +137,10 @@ ln -s /private/etc/nix/infrastructure-private ~/src/infrastructure-private
 
 **Linux:**
 ```bash
-sudo git clone git@github.com:YOU/infrastructure-private.git /etc/nix/infrastructure-private
-sudo chown -R $(whoami) /etc/nix/infrastructure-private
-ln -s /etc/nix/infrastructure-private ~/src/infrastructure-private
+sudo mkdir -p /private/etc/nix
+sudo git clone git@github.com:YOU/infrastructure-private.git /private/etc/nix/infrastructure-private
+sudo chown -R $(whoami) /private/etc/nix/infrastructure-private
+ln -s /private/etc/nix/infrastructure-private ~/src/infrastructure-private
 ```
 
 ### First Deployment

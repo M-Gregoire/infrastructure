@@ -49,9 +49,9 @@
       url = "github:M-Gregoire/Doom-emacs-config/main";
       flake = false;
     };
-    # Private config: clone infrastructure-private directly into /etc/nix/ (not a
+    # Private config: clone infrastructure-private into /private/etc/nix/ (not a
     # symlink — Nix >= 2.20 rejects symlinks in git+file: paths). See README.
-    private-config.url = "git+file:///etc/nix/infrastructure-private";
+    private-config.url = "git+file:///private/etc/nix/infrastructure-private";
 
     # LLM tools
     llm-agents.url = "github:numtide/llm-agents.nix";

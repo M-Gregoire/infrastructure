@@ -556,7 +556,7 @@
       },
       "original": {
         "type": "git",
-        "url": "file:///etc/nix/infrastructure-private"
+        "url": "file:///private/etc/nix/infrastructure-private"
       }
     },
     "root": {
