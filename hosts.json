@@ -1,132 +1,147 @@
 {
-    "idunn": {
-        "configName": "idunn",
-        "hostname": "idunn",
-        "profile": "PC",
-        "network": "home",
-        "user": "gregoire",
-        "cluster": "",
-        "clusterRole": "",
-        "system": "x86_64-darwin"
-    },
-    "datadog": {
-        "configName": "datadog",
-        "hostname": "COMP-CQ5H77T0CQ",
-        "profile": "PC",
-        "network": "work",
-        "user": "gregoire.cadenemartinache",
-        "cluster": "",
-        "clusterRole": "",
-        "system": "x86_64-darwin"
-    },
-    "vali": {
-        "configName": "vali",
-        "hostname": "vali",
-        "profile": "PC",
-        "network": "home",
-        "user": "gregoire",
-        "cluster": "",
-        "clusterRole": "",
-        "system": "x86_64-linux"
-    },
-    "mimir": {
-        "configName": "mimir",
-        "hostname": "mimir",
-        "profile": "PC",
-        "network": "home",
-        "user": "gregoire",
-        "cluster": "",
-        "clusterRole": "",
-        "system": "x86_64-linux"
-    },
-    "hades-1": {
-        "configName": "hades-1",
-        "hostname": "hades-1",
-        "profile": "server",
-        "network": "home",
-        "user": "gregoire",
-        "cluster": "hades",
-        "clusterRole": "server",
-        "system": "aarch64-linux"
-    },
-    "hades-2": {
-        "configName": "hades-2",
-        "hostname": "hades-2",
-        "profile": "server",
-        "network": "home",
-        "user": "gregoire",
-        "cluster": "hades",
-        "clusterRole": "agent",
-        "system": "aarch64-linux"
-    },
-    "hades-3": {
-        "configName": "hades-3",
-        "hostname": "hades-3",
-        "profile": "server",
-        "network": "home",
-        "user": "gregoire",
-        "cluster": "hades",
-        "clusterRole": "agent",
-        "system": "aarch64-linux"
-    },
-    "hades-4": {
-        "configName": "hades-4",
-        "hostname": "hades-4",
-        "profile": "server",
-        "network": "home",
-        "user": "gregoire",
-        "cluster": "hades",
-        "clusterRole": "agent",
-        "system": "aarch64-linux"
-    },
-    "hades-5": {
-        "configName": "hades-5",
-        "hostname": "hades-5",
-        "profile": "server",
-        "network": "home",
-        "user": "gregoire",
-        "cluster": "hades",
-        "clusterRole": "agent",
-        "system": "aarch64-linux"
-    },
-    "hades-6": {
-        "configName": "hades-6",
-        "hostname": "hades-6",
-        "profile": "server",
-        "network": "home",
-        "user": "gregoire",
-        "cluster": "hades",
-        "clusterRole": "agent",
-        "system": "aarch64-linux"
-    },
-    "hades-7": {
-        "configName": "hades-7",
-        "hostname": "hades-7",
-        "profile": "server",
-        "network": "home",
-        "user": "gregoire",
-        "cluster": "hades",
-        "clusterRole": "agent",
-        "system": "x86_64-linux"
-    },
-    "hades-nfs": {
-        "configName": "hades-nfs",
-        "hostname": "hades-nfs",
-        "profile": "server",
-        "network": "home",
-        "user": "gregoire",
-        "cluster": "",
-        "clusterRole": "",
-        "system": "aarch64-linux"
-    },
-    "orion": {
-        "configName": "orion",
-        "hostname": "orion",
-        "profile": "server",
-        "network": "home",
-        "user": "gregoire",
-        "cluster": "",
-        "clusterRole": "",
-        "system": "x86_64-linux"
-    }
+  "idunn": {
+    "configName": "idunn",
+    "hostname": "idunn",
+    "profile": "PC",
+    "network": "home",
+    "user": "gregoire",
+    "cluster": "",
+    "clusterRole": "",
+    "system": "x86_64-darwin"
+  },
+  "datadog": {
+    "configName": "datadog",
+    "hostname": "COMP-CQ5H77T0CQ",
+    "profile": "PC",
+    "network": "work",
+    "user": "gregoire.cadenemartinache",
+    "cluster": "",
+    "clusterRole": "",
+    "system": "x86_64-darwin"
+  },
+  "vali": {
+    "configName": "vali",
+    "hostname": "vali",
+    "profile": "PC",
+    "network": "home",
+    "user": "gregoire",
+    "cluster": "",
+    "clusterRole": "",
+    "system": "x86_64-linux"
+  },
+  "mimir": {
+    "configName": "mimir",
+    "hostname": "mimir",
+    "profile": "PC",
+    "network": "home",
+    "user": "gregoire",
+    "cluster": "",
+    "clusterRole": "",
+    "system": "x86_64-linux"
+  },
+  "hades-1": {
+    "configName": "hades-1",
+    "hostname": "hades-1",
+    "profile": "server",
+    "network": "home",
+    "user": "gregoire",
+    "cluster": "hades",
+    "clusterRole": "server",
+    "system": "aarch64-linux",
+    "deployHostname": "hades-1.martinache.net",
+    "sshPort": 5421
+  },
+  "hades-2": {
+    "configName": "hades-2",
+    "hostname": "hades-2",
+    "profile": "server",
+    "network": "home",
+    "user": "gregoire",
+    "cluster": "hades",
+    "clusterRole": "agent",
+    "system": "aarch64-linux",
+    "deployHostname": "hades-2.martinache.net",
+    "sshPort": 5421
+  },
+  "hades-3": {
+    "configName": "hades-3",
+    "hostname": "hades-3",
+    "profile": "server",
+    "network": "home",
+    "user": "gregoire",
+    "cluster": "hades",
+    "clusterRole": "agent",
+    "system": "aarch64-linux",
+    "deployHostname": "hades-3.martinache.net",
+    "sshPort": 5421
+  },
+  "hades-4": {
+    "configName": "hades-4",
+    "hostname": "hades-4",
+    "profile": "server",
+    "network": "home",
+    "user": "gregoire",
+    "cluster": "hades",
+    "clusterRole": "agent",
+    "system": "aarch64-linux",
+    "deployHostname": "hades-4.martinache.net",
+    "sshPort": 5421
+  },
+  "hades-5": {
+    "configName": "hades-5",
+    "hostname": "hades-5",
+    "profile": "server",
+    "network": "home",
+    "user": "gregoire",
+    "cluster": "hades",
+    "clusterRole": "agent",
+    "system": "aarch64-linux",
+    "deployHostname": "hades-5.martinache.net",
+    "sshPort": 5421
+  },
+  "hades-6": {
+    "configName": "hades-6",
+    "hostname": "hades-6",
+    "profile": "server",
+    "network": "home",
+    "user": "gregoire",
+    "cluster": "hades",
+    "clusterRole": "agent",
+    "system": "aarch64-linux",
+    "deployHostname": "hades-6.martinache.net",
+    "sshPort": 5421
+  },
+  "hades-7": {
+    "configName": "hades-7",
+    "hostname": "hades-7",
+    "profile": "server",
+    "network": "home",
+    "user": "gregoire",
+    "cluster": "hades",
+    "clusterRole": "agent",
+    "system": "x86_64-linux",
+    "deployHostname": "hades-7.martinache.net",
+    "sshPort": 5421
+  },
+  "hades-nfs": {
+    "configName": "hades-nfs",
+    "hostname": "hades-nfs",
+    "profile": "server",
+    "network": "home",
+    "user": "gregoire",
+    "cluster": "",
+    "clusterRole": "",
+    "system": "aarch64-linux",
+    "sshPort": 5421
+  },
+  "orion": {
+    "configName": "orion",
+    "hostname": "orion",
+    "profile": "server",
+    "network": "home",
+    "user": "gregoire",
+    "cluster": "",
+    "clusterRole": "",
+    "system": "x86_64-linux"
+  }
 }
