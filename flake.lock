@@ -552,7 +552,7 @@
         "lastModified": 1782750087,
         "narHash": "sha256-LTJ6sGpeY4CTLfmUgkFOWbwwBmsW2UCS34lTdtDPPg8=",
         "type": "git",
-        "url": "file:///Users/gregoire.cadenemartinache/src/infrastructure-private"
+        "url": "file:///etc/nix/infrastructure-private"
       },
       "original": {
         "type": "git",
