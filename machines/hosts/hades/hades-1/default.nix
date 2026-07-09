@@ -5,7 +5,6 @@
 
   environment.etc."machine-id".text = "3fe6c883e941417bae469e646b7946cf";
 
-  boot.kernelPackages = pkgs.linuxPackages_rpi4;
   boot.kernelParams = [
     "cgroup_enable=memory"
     "cgroup_memory=1"

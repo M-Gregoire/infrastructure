@@ -8,7 +8,6 @@
 
   system.stateVersion = "20.03";
 
-  boot.kernelPackages = pkgs.linuxPackages_rpi4;
   boot.kernelParams = [
     "cgroup_enable=memory"
     "cgroup_memory=1"
