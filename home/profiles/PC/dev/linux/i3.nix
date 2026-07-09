@@ -59,7 +59,7 @@ in {
     # Spotify module
     zscroll
     # Brightness
-    light
+    brightnessctl
   ];
 
   xsession = {

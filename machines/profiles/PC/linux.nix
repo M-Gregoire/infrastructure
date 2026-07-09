@@ -23,7 +23,7 @@
   powerManagement.cpuFreqGovernor = "performance";
 
   # Brightness control
-  hardware.acpilight.enable = true;
+  # brightnessctl works without extra system config (uses udev rules from systemd)
 
   boot.kernelParams = [ "boot.shell_on_fail" ];
 
