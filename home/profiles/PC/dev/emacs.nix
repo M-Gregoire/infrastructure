@@ -38,7 +38,7 @@
     ## Javascript
     javascript-typescript-langserver
     ## Nix
-    nixfmt-classic
+    nixfmt
   ];
 
   # Symlink bookmarks for instant changes without rebuild
