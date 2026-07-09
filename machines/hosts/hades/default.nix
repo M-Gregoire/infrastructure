@@ -13,6 +13,9 @@
 
   boot.kernelPackages = lib.mkForce pkgs.linuxPackages;
 
+  # Mainline kernel on aarch64 may not support 33 bits of ASLR
+  boot.kernel.sysctl."vm.mmap_rnd_bits" = lib.mkForce 32;
+
   boot.kernelModules =
     [ "nbd" "rbd" "ceph" "usb_storage" "uas" "usbhid" "xhci_pci" ];
   # boot.kernelParams = [
