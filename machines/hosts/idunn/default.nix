@@ -26,5 +26,8 @@ in {
     gid = 1000;
   };
 
+  # Linux builder VM for cross-compiling aarch64-linux (e.g. RPi)
+  nix.linux-builder.enable = true;
+
   system.stateVersion = 4;
 }
