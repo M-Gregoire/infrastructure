@@ -500,28 +500,8 @@ cmd_build() {
         fi
         
         if needs_cross_build "$host"; then
-            print_info "${EMOJI_BUILD} Cross-building $host ($target_system)"
-            
-            # For cross-platform builds, recommend using remote building instead
-            local current_system
-            current_system="$(get_current_system)"
-            
-            case "$current_system-to-$target_system" in
-                *"darwin-to-"*"linux"|*"linux-to-"*"darwin")
-                    # Cross-OS compilation is complex, recommend remote building
-                    print_error "❌ Cross-platform compilation ($current_system → $target_system) is not supported"
-                    print_info ""
-                    print_info "🚀 ${BOLD}Use remote building instead:${NC}"
-                    print_info "   ${GREEN}nix-deploy deploy $host${NC} (builds on target)"
-                    print_info ""
-                    exit 1
-                    ;;
-                *)
-                    # Same OS, different architecture - attempt cross-compilation
-                    print_info "🔄 Cross-compiling ($current_system → $target_system)..."
-                    nix build "$build_target" --system "$target_system" --option access-tokens "github.com/M-Gregoire=$GITHUB_TOKEN" "${extra_args[@]}"
-                    ;;
-            esac
+            print_info "${EMOJI_BUILD} Cross-building $host ($target_system)..."
+            nix build "$build_target" --option access-tokens "github.com/M-Gregoire=$GITHUB_TOKEN" "${extra_args[@]}"
         else
             # Building for same platform - force local building
             print_info "${EMOJI_BUILD} Building $host (local)"
