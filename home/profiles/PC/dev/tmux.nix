@@ -66,6 +66,10 @@
       # Focus events: let apps (pi, emacs) detect pane focus changes
       set -g focus-events on
 
+      # Allow OSC 8 hyperlinks and other sequences to pass through to kitty
+      # Fixes URL detection for long URLs that wrap across lines
+      set -g allow-passthrough on
+
       # Extended keys (csi-u) for better key handling in pi/emacs
       set -g extended-keys always
       set -g extended-keys-format csi-u
