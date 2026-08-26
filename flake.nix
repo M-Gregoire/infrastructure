@@ -230,7 +230,7 @@
                   "homebrew/homebrew-emacsmacport" = self.inputs.homebrew-emacs;
                   "FelixKratz/homebrew-formulae" = self.inputs.homebrew-borders;
                 };
-                mutableTaps = false;
+                mutableTaps = true;
               };
             }
 

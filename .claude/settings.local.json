@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__acp__Edit",
+      "Bash(git -C /Users/gregoire.cadenemartinache/dd/dd-source/trunk worktree list:*)",
+      "Bash(git -C /Users/gregoire.cadenemartinache/dd/dd-source/trunk rev-parse --git-common-dir)",
+      "WebFetch(domain:www.rtk-ai.app)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "Bash(nix search:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(./bin/nix-deploy local build:*)",
+      "WebFetch(domain:agent-safehouse.dev)",
+      "WebFetch(domain:openviking.ai)"
+    ]
+  },
+  "enabledMcpjsonServers": [
+    "atlassian",
+    "datadog"
+  ]
+}
