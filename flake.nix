@@ -22,18 +22,9 @@
       inputs.nixpkgs.follows = "nixpkgs-darwin";
     };
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
-    homebrew-bundle = {
-      url = "github:homebrew/homebrew-bundle";
-      flake = false;
-    };
-    homebrew-core = {
-      url = "github:homebrew/homebrew-core";
-      flake = false;
-    };
-    homebrew-cask = {
-      url = "github:homebrew/homebrew-cask";
-      flake = false;
-    };
+    # Core taps (homebrew-core, homebrew-cask, homebrew-bundle) are no longer
+    # pinned — Homebrew manages them via its JSON API. Pinning them with
+    # mutableTaps=true caused read-only .git errors after rsync from nix store.
     homebrew-emacs = {
       url = "github:railwaycat/homebrew-emacsmacport";
       flake = false;
@@ -223,14 +214,22 @@
                 enable = true;
                 enableRosetta = false;
                 user = "${h.user}";
+                # Only declare third-party taps. Core taps (homebrew-core,
+                # homebrew-cask, homebrew-bundle) are managed by Homebrew's API
+                # — pinning them forces HOMEBREW_NO_INSTALL_FROM_API=1 and
+                # causes read-only .git errors after rsync from nix store.
                 taps = {
-                  "homebrew/homebrew-core" = self.inputs.homebrew-core;
-                  "homebrew/homebrew-cask" = self.inputs.homebrew-cask;
-                  "homebrew/homebrew-bundle" = self.inputs.homebrew-bundle;
                   "homebrew/homebrew-emacsmacport" = self.inputs.homebrew-emacs;
                   "FelixKratz/homebrew-formulae" = self.inputs.homebrew-borders;
                 };
                 mutableTaps = true;
+                trust = {
+                  taps = [
+                    "DataDog/homebrew-tap"
+                    "datadog-labs/homebrew-pack"
+                    "FelixKratz/homebrew-formulae"
+                  ];
+                };
               };
             }
 
