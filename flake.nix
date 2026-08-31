@@ -141,11 +141,12 @@
 
           systemModules = systemImports "machines/" system;
 
-          hostModules = lib.optionals (h.cluster == "") (conditionalImports "resources/hosts/${configName}");
+          hostModules = lib.optionals (h.cluster == "") (conditionalImports "machines/hosts/${configName}");
 
-          clusterModules =
-            lib.optionals (h.cluster != "") (conditionalImports "machines/hosts/${h.cluster}")
-            ++ conditionalImports "machines/hosts/${h.cluster}/${configName}";
+          clusterModules = lib.optionals (h.cluster != "") (
+            conditionalImports "machines/hosts/${h.cluster}"
+            ++ conditionalImports "machines/hosts/${h.cluster}/${configName}"
+          );
 
           networkModules = systemImports "machines/networks/${h.network}" system;
 
@@ -208,6 +209,8 @@
                   clusterRole
                   ;
               };
+              resources.hostname = lib.mkDefault h.hostname;
+              resources.username = lib.mkDefault h.user;
             }
 
             home-manager-darwin.darwinModules.home-manager
@@ -309,6 +312,8 @@
                   clusterRole
                   ;
               };
+              resources.hostname = lib.mkDefault h.hostname;
+              resources.username = lib.mkDefault h.user;
             }
 
             home-manager-linux.nixosModules.home-manager

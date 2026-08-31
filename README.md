@@ -126,7 +126,9 @@ is especially problematic since `/etc` is itself a symlink to `/private/etc`.
 The setup is: clone directly into `/private/etc/nix/`, then symlink from `~/src/`
 for convenience. Nix only ever sees the real path; the symlink is just for you.
 We use `/private/etc/nix/` on both platforms so the flake input and lock file are
-identical everywhere (on macOS `/etc` is a symlink to `/private/etc`).
+identical everywhere (on macOS `/etc` is a symlink to `/private/etc`). After
+committing private changes, run `nix-deploy update-private-lock --push` to push
+the private repo and stage the public `flake.lock` update.
 
 **macOS:**
 ```bash

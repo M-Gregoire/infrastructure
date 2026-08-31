@@ -1,7 +1,5 @@
-{ config, lib, private-config, ... }:
+{ config, lib, ... }:
 
 {
-  imports = [ "${private-config}/resources/hosts/orion" ];
-
   config.resources = with lib; mapAttrs (_: v: mkDefault v) { };
 }

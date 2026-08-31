@@ -54,7 +54,19 @@ For aarch64-linux targets, the script prompts to cross-compile locally if `--loc
 
 ### `nix-deploy list`
 
-Show all available hosts from `hosts.json` with their system, profile, network, and cluster.
+Show all available hosts from `hosts.json` plus private host overlays with their system, profile, network, and cluster.
+
+### `nix-deploy update-private-lock [--push]`
+
+Pin the public `flake.lock` to the current `infrastructure-private` commit.
+
+```bash
+nix-deploy update-private-lock        # update and stage flake.lock
+nix-deploy update-private-lock --push # push private repo first, then update/stage flake.lock
+```
+
+The command refuses to run if the private repo has uncommitted changes. Without
+`--push`, it warns if the private commit is ahead of its upstream.
 
 ## Options
 
@@ -65,6 +77,7 @@ Show all available hosts from `hosts.json` with their system, profile, network, 
 | `--switch` | Activate the new generation immediately (restart services, etc.) |
 | `--dry` | Dry run — build only, don't activate |
 | `--skip-checks` | Skip deploy-rs evaluation checks (added automatically) |
+| `--push` | For `update-private-lock`: push private config before updating `flake.lock` |
 
 ## Activation: boot vs switch
 
@@ -112,7 +125,7 @@ When deploying via deploy-rs (without `--local`), activation behavior is control
 
 ## Configuration
 
-All host metadata lives in `hosts.json` at the repo root. Each entry specifies:
+Public host metadata lives in `hosts.json` at the repo root. Private host metadata can be overlaid from `infrastructure-private/hosts.json`. Each entry specifies:
 
 ```json
 {

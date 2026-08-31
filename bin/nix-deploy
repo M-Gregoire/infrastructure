@@ -63,6 +63,7 @@ print_usage() {
     printf "    ${GREEN}local${NC} [build|switch]         Build or deploy local configuration\n"
     printf "    ${GREEN}build${NC} <HOST> [HOST...]        Cross-build configuration for target host(s)\n"  
     printf "    ${GREEN}deploy${NC} <HOST> [HOST...]       Deploy configuration to target host(s)\n"
+    printf "    ${GREEN}update-private-lock${NC} [--push]   Pin flake.lock to current private-config commit\n"
     printf "    ${GREEN}list${NC}                          List all available hosts and their details\n"
     printf "    ${GREEN}help${NC}                          Show this help message\n\n"
     printf "${BOLD}${YELLOW}LOCAL COMMAND:${NC}\n"
@@ -96,6 +97,7 @@ print_usage() {
     printf "    nix-deploy deploy vali --local   # Deploy to vali (local build)\n"
     printf "    nix-deploy deploy hades-1 --local --switch  # Deploy and activate immediately\n"
     printf "    nix-deploy deploy all --dry      # Dry run deploy to all hosts\n"
+    printf "    nix-deploy update-private-lock --push  # Push private config and update flake.lock\n"
     printf "    nix-deploy list                  # Show all available hosts\n\n"
     printf "${BOLD}${YELLOW}AUTOMATIC DETECTION:${NC}\n"
     printf "    ${EMOJI_LOCAL} Local deployment automatically uses nix-darwin (macOS) or nixos-rebuild (Linux)\n"
@@ -531,6 +533,65 @@ cmd_build() {
     print_success "Build completed for: ${expanded_hosts[*]}"
 }
 
+cmd_update_private_lock() {
+    local push_private=false
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --push)
+                push_private=true
+                ;;
+            --help|-h)
+                printf "${CYAN}nix-deploy update-private-lock${NC} - Pin flake.lock to current private-config commit\n\n"
+                printf "Usage: nix-deploy update-private-lock [--push]\n\n"
+                printf "Updates the public flake.lock private-config input to the current commit in:\n"
+                printf "  %s\n\n" "$PRIVATE_CONFIG_PATH"
+                printf "Options:\n"
+                printf "  --push   Push the private repo before updating flake.lock\n"
+                return 0
+                ;;
+            *)
+                print_error "Unknown update-private-lock option: $1"
+                exit 1
+                ;;
+        esac
+        shift
+    done
+
+    if [[ ! -d "$PRIVATE_CONFIG_PATH/.git" ]]; then
+        print_error "private-config git repo not found at $PRIVATE_CONFIG_PATH"
+        exit 1
+    fi
+
+    if [[ -n "$(git -C "$PRIVATE_CONFIG_PATH" status --porcelain)" ]]; then
+        print_error "private-config has uncommitted changes. Commit or stash them before updating flake.lock."
+        git -C "$PRIVATE_CONFIG_PATH" status --short
+        exit 1
+    fi
+
+    if [[ "$push_private" == "true" ]]; then
+        print_info "Pushing private-config..."
+        git -C "$PRIVATE_CONFIG_PATH" push
+    fi
+
+    local private_rev private_ref ahead_count
+    private_rev="$(git -C "$PRIVATE_CONFIG_PATH" rev-parse HEAD)"
+    private_ref="git+file://$PRIVATE_CONFIG_PATH?rev=$private_rev"
+
+    if git -C "$PRIVATE_CONFIG_PATH" rev-parse --abbrev-ref --symbolic-full-name '@{u}' >/dev/null 2>&1; then
+        ahead_count="$(git -C "$PRIVATE_CONFIG_PATH" rev-list --count '@{u}..HEAD')"
+        if [[ "$ahead_count" != "0" ]]; then
+            print_warning "private-config is $ahead_count commit(s) ahead of upstream. Other machines must fetch/pull it before this lock works."
+            print_warning "Run with --push to push private-config first."
+        fi
+    fi
+
+    print_info "Updating flake.lock private-config to $private_rev"
+    nix flake update --override-input private-config "$private_ref" private-config
+    git add flake.lock
+    print_success "Updated and staged flake.lock"
+}
+
 cmd_deploy() {
     local -a targets=()
     local -a extra_args=()
@@ -720,6 +781,9 @@ main() {
             ;;
         deploy)
             cmd_deploy "$@"
+            ;;
+        update-private-lock)
+            cmd_update_private_lock "$@"
             ;;
         list)
             list_hosts

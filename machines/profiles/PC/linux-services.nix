@@ -17,14 +17,20 @@
     };
     xserver = {
       enable = true;
-      displayManager = { lightdm = { enable = true; }; };
-      desktopManager.session = [{
-        name = "home-manager";
-        start = ''
-          ${pkgs.runtimeShell} $HOME/.hm-xsession &
-          waitPID=$!
-        '';
-      }];
+      displayManager = {
+        lightdm = {
+          enable = true;
+        };
+      };
+      desktopManager.session = [
+        {
+          name = "home-manager";
+          start = ''
+            ${pkgs.runtimeShell} $HOME/.hm-xsession &
+            waitPID=$!
+          '';
+        }
+      ];
 
     };
   };
@@ -46,7 +52,10 @@
   # See https://github.com/NixOS/nixpkgs/issues/13287
   # dconf needed by home-manager
   # See https://github.com/rycee/home-manager/pull/510
-  services.dbus.packages = with pkgs; [ dconf gnome2.GConf ];
+  services.dbus.packages = with pkgs; [
+    dconf
+    gnome2.GConf
+  ];
 
   # dconf needed for wpgtk
   # https://nixos.wiki/wiki/Wpgtk
@@ -62,9 +71,7 @@
       wants = [ "network-online.target" ];
       serviceConfig = {
         Type = "simple";
-        # TODO: Remove Grégoire
-        ExecStart =
-          "${pkgs.nextcloud-client}/bin/nextcloudcmd -h -n --path /org ${config.resources.paths.home}/org ${config.resources.services.nextcloud.url}";
+        ExecStart = "${pkgs.nextcloud-client}/bin/nextcloudcmd -h -n --path /org ${config.resources.paths.home}/org ${config.resources.services.nextcloud.url}";
         TimeoutStopSec = "180";
         # KillMode = "process";
         # KillSignal = "SIGINT";
@@ -72,14 +79,16 @@
       wantedBy = [ "multi-user.target" ];
     };
     timers.nextcloud-autosync = {
-      description =
-        "Automatic sync files with Nextcloud when booted up after 5 minutes then rerun every 5 minutes";
+      description = "Automatic sync files with Nextcloud when booted up after 5 minutes then rerun every 5 minutes";
       timerConfig = {
         OnUnitActiveSec = "5min";
         OnBootSec = "5min";
         Unit = "nextcloud-autosync.service";
       };
-      wantedBy = [ "multi-user.target" "timers.target" ];
+      wantedBy = [
+        "multi-user.target"
+        "timers.target"
+      ];
     };
   };
 }
