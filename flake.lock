@@ -146,23 +146,6 @@
         "type": "github"
       }
     },
-    "emacs-dotfiles": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1757773157,
-        "narHash": "sha256-bKvaap+aEOR41pBTIvL+DkT7kYepiRSDQTuX1IQt8G0=",
-        "owner": "M-Gregoire",
-        "repo": "Doom-emacs-config",
-        "rev": "d8997a7689774e911d0fcaaf3853b873a9ae71fd",
-        "type": "github"
-      },
-      "original": {
-        "owner": "M-Gregoire",
-        "ref": "main",
-        "repo": "Doom-emacs-config",
-        "type": "github"
-      }
-    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -564,11 +547,11 @@
     },
     "private-config": {
       "locked": {
-        "lastModified": 1787750941,
-        "narHash": "sha256-RSgp0FVRFN1rtfsxzKqSPK8qiGVRNSl0ljHW9cCYHak=",
+        "lastModified": 1788188337,
+        "narHash": "sha256-3lSbE+Ag+NP6UV3IsJm8D2CQ/beCzkRhXyKKSUaI+YY=",
         "ref": "refs/heads/main",
-        "rev": "725e137f01f4fd65524271fc2f8ac12c89bfd025",
-        "revCount": 297,
+        "rev": "3c847adca0a27e1b7e35d2552d1fd19e78f7fd7f",
+        "revCount": 299,
         "type": "git",
         "url": "file:///private/etc/nix/infrastructure-private"
       },
@@ -581,7 +564,6 @@
       "inputs": {
         "deploy-rs": "deploy-rs",
         "disko": "disko",
-        "emacs-dotfiles": "emacs-dotfiles",
         "home-manager-darwin": "home-manager-darwin",
         "home-manager-linux": "home-manager-linux",
         "homebrew-borders": "homebrew-borders",

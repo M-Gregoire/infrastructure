@@ -7,17 +7,11 @@
     "user": "gregoire",
     "cluster": "",
     "clusterRole": "",
-    "system": "x86_64-darwin"
-  },
-  "datadog": {
-    "configName": "datadog",
-    "hostname": "COMP-CQ5H77T0CQ",
-    "profile": "PC",
-    "network": "work",
-    "user": "gregoire.cadenemartinache",
-    "cluster": "",
-    "clusterRole": "",
-    "system": "x86_64-darwin"
+    "system": "aarch64-darwin",
+    "localHostAliases": [
+      "MacbookPro-De-Gregoire"
+    ],
+    "requiresSubmodules": true
   },
   "vali": {
     "configName": "vali",
@@ -27,7 +21,8 @@
     "user": "gregoire",
     "cluster": "",
     "clusterRole": "",
-    "system": "x86_64-linux"
+    "system": "x86_64-linux",
+    "requiresSubmodules": true
   },
   "mimir": {
     "configName": "mimir",
@@ -37,7 +32,8 @@
     "user": "gregoire",
     "cluster": "",
     "clusterRole": "",
-    "system": "x86_64-linux"
+    "system": "x86_64-linux",
+    "requiresSubmodules": true
   },
   "hades-1": {
     "configName": "hades-1",

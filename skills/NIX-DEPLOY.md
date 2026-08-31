@@ -15,7 +15,7 @@ nix-deploy local switch     # Same as 'nix-deploy local'
 ```
 
 - Forces local building (overrides remote builders with `--option builders ""`)
-- On Datadog work laptop: requests admin privileges via Privileges.app, uses TouchID or askpass depending on clamshell mode
+- Can run an optional `NIX_DEPLOY_PRIVILEGE_COMMAND` from private config before sudo-based local deploys
 - Do NOT run with `sudo` — the script handles privilege escalation internally
 
 ### `nix-deploy build <HOST> [HOST...]`
@@ -31,7 +31,7 @@ nix-deploy build all            # Build all hosts
 
 - Detects cross-platform builds automatically
 - Cross-builds use the linux-builder VM on macOS
-- Loads GitHub token from Bitwarden (or 1Password on work laptop) for private flake access
+- Loads GitHub token from `GITHUB_TOKEN`, `NIX_DEPLOY_GITHUB_TOKEN_COMMAND`, or Bitwarden for private flake access
 
 ### `nix-deploy deploy <HOST> [HOST...] [OPTIONS]`
 
@@ -133,14 +133,16 @@ The `system` field determines whether cross-compilation is needed. The `hostname
 
 ## GitHub Token
 
-The script loads a GitHub token for private flake access:
-- **Work laptop (COMP-CQ5H77T0CQ):** reads from 1Password
-- **Other machines:** reads from Bitwarden (`github-nix-token`)
+The script loads a GitHub token for private flake access. Sources are tried in this order:
+
+1. Existing `GITHUB_TOKEN`
+2. `NIX_DEPLOY_GITHUB_TOKEN_COMMAND` from private config
+3. Bitwarden item `github-nix-token`
 
 The token is passed to nix via `--option access-tokens`.
 
 ## Attic Binary Cache
 
-All builds automatically push artifacts to the Attic binary cache at `nix-cache.martinache.net/hades` via a post-build-hook (configured in `machines/default.nix`). This means:
+Home-network machines automatically push artifacts to the Attic binary cache at `nix-cache.martinache.net/hades` via a post-build-hook (configured in `machines/networks/home/default.nix`). This means:
 - After cross-compiling for hades-1, deploying to hades-2..6 pulls from cache instead of rebuilding
 - The hook is a no-op on machines without `/etc/attic/token` (see `skills/SOPS.md` for setup)

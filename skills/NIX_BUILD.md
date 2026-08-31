@@ -14,12 +14,12 @@ idunn (macOS, aarch64-darwin)
   |     |     Configured in: machines/hosts/idunn/default.nix (nix.linux-builder)
   |     |     Managed by: launchd (org.nixos.linux-builder)
   |     |
-  |     +-- post-build-hook → attic push (machines/default.nix)
-  |           Pushes every built path to nix-cache.martinache.net/hades
+  |     +-- post-build-hook → attic push (machines/networks/home/default.nix)
+  |           Pushes built paths to nix-cache.martinache.net/hades from home-network hosts
   |
   +-- attic binary cache (nix-cache.martinache.net/hades)
         Served via Traefik IngressRoute on the hades k3s cluster
-        All machines (hades-1..7, idunn) are configured as substituters
+        Home-network machines (hades-1..7, idunn) are configured as substituters
 ```
 
 ## Linux Builder VM
@@ -68,7 +68,7 @@ nix.linux-builder = {
 The builder VM is a **separate NixOS system** with its own `nix.conf`. This means:
 
 - **DNS**: Must be configured independently. Set `networking.nameservers = [ "192.168.3.1" ]` so it can resolve `nix-cache.martinache.net` (local-only hostname). Without this, the VM uses public DNS which can't resolve local services.
-- **Substituters**: Must be configured independently. The global config in `machines/default.nix` doesn't apply to the builder VM — add `extra-substituters` and `extra-trusted-public-keys` in the builder's `nix.settings`.
+- **Substituters**: Must be configured independently. The home-network config in `machines/networks/home/default.nix` doesn't apply to the builder VM — add `extra-substituters` and `extra-trusted-public-keys` in the builder's `nix.settings`.
 - **`lib.mkForce`**: Required for `memorySize` and `diskSize` because the VZ module sets its own defaults (3072 MB / 20 GB) that conflict without forced override.
 
 ### Managing the Builder
@@ -110,11 +110,11 @@ sudo launchctl bootstrap system /Library/LaunchDaemons/org.nixos.linux-builder.p
 
 ## Attic Binary Cache
 
-The attic binary cache at `nix-cache.martinache.net/hades` accelerates builds by sharing build artifacts across all machines.
+The attic binary cache at `nix-cache.martinache.net/hades` accelerates builds by sharing build artifacts across home-network machines.
 
 ### How It Works
 
-1. **Substituters** (pull): All machines are configured in `machines/default.nix` to use the cache as a substituter:
+1. **Substituters** (pull): Home-network machines are configured in `machines/networks/home/default.nix` to use the cache as a substituter:
    ```nix
    nix.settings = {
      substituters = [ "https://nix-cache.martinache.net/hades" ];
@@ -124,7 +124,7 @@ The attic binary cache at `nix-cache.martinache.net/hades` accelerates builds by
    };
    ```
 
-2. **Post-build-hook** (push): Every successful build automatically pushes to the cache via a post-build-hook defined in `machines/default.nix`. The hook:
+2. **Post-build-hook** (push): Successful builds on home-network machines automatically push to the cache via a post-build-hook defined in `machines/networks/home/default.nix`. The hook:
    - Checks for `/etc/attic/token` (no-op without it)
    - Does a 3-second connectivity check before pushing
    - Times out after 30 seconds per push

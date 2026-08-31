@@ -2,8 +2,6 @@
   description = "M-Gregoire infrastructure";
 
   inputs = {
-    self.submodules = true;
-
     # Linux
     nixpkgs-linux.url = "github:NixOS/nixpkgs/nixos-26.05";
     home-manager-linux = {
@@ -36,10 +34,6 @@
 
     # Common
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    emacs-dotfiles = {
-      url = "github:M-Gregoire/Doom-emacs-config/main";
-      flake = false;
-    };
     # Private config: clone infrastructure-private into /private/etc/nix/ (not a
     # symlink — Nix >= 2.20 rejects symlinks in git+file: paths). See README.
     private-config.url = "git+file:///private/etc/nix/infrastructure-private";
@@ -52,7 +46,9 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs-linux";
     };
-    sops-nix-darwin = { url = "github:Mic92/sops-nix"; };
+    sops-nix-darwin = {
+      url = "github:Mic92/sops-nix";
+    };
 
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
@@ -70,103 +66,122 @@
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
   };
 
-  outputs = { self, nixpkgs-linux, home-manager-linux, nixos-hardware
-    , nix-darwin, nixpkgs-darwin, home-manager-darwin, ... }@inputs:
+  outputs =
+    {
+      self,
+      nixpkgs-linux,
+      home-manager-linux,
+      nixos-hardware,
+      nix-darwin,
+      nixpkgs-darwin,
+      home-manager-darwin,
+      ...
+    }@inputs:
     let
       lib = nixpkgs-linux.lib;
 
-      hostVars = builtins.fromJSON (builtins.readFile ./hosts.json);
+      publicHostVars = builtins.fromJSON (builtins.readFile ./hosts.json);
+      privateHostVarsPath = inputs.private-config + "/hosts.json";
+      privateHostVars =
+        if builtins.pathExists privateHostVarsPath then
+          builtins.fromJSON (builtins.readFile privateHostVarsPath)
+        else
+          { };
+      hostVars = publicHostVars // privateHostVars;
 
-      conditionalImports = relativePath:
+      conditionalImports =
+        relativePath:
         let
           localPath = ./. + "/${relativePath}";
           privatePath = inputs.private-config + "/${relativePath}";
-        in lib.optionals (builtins.pathExists localPath) [ localPath ]
+        in
+        lib.optionals (builtins.pathExists localPath) [ localPath ]
         ++ lib.optionals (builtins.pathExists privatePath) [ privatePath ];
 
-      systemImports = relativePath: system:
+      systemImports =
+        relativePath: system:
         let
           localPath = ./. + "/${relativePath}";
           localPathSystem = localPath + "/${system}.nix";
           privatePath = inputs.private-config + "/${relativePath}";
           privatePathSystem = privatePath + "/${system}.nix";
-        in lib.optionals (builtins.pathExists localPath) [ localPath ]
+        in
+        lib.optionals (builtins.pathExists localPath) [ localPath ]
         ++ lib.optionals (builtins.pathExists privatePath) [ privatePath ]
-        ++ lib.optionals (builtins.pathExists localPathSystem)
-        [ localPathSystem ]
-        ++ lib.optionals (builtins.pathExists privatePathSystem)
-        [ privatePathSystem ];
+        ++ lib.optionals (builtins.pathExists localPathSystem) [ localPathSystem ]
+        ++ lib.optionals (builtins.pathExists privatePathSystem) [ privatePathSystem ];
 
-      resourcesList = configName: system:
+      resourcesList =
+        configName: system:
         let
           h = hostVars.${configName};
 
           systemResources = systemImports "resources" system;
 
-          hostResources = lib.optionals (h.cluster == "")
-            (conditionalImports "resources/hosts/${configName}");
+          hostResources = lib.optionals (h.cluster == "") (
+            conditionalImports "resources/hosts/${configName}"
+          );
 
-          clusterResources = lib.optionals (h.cluster != "")
-            (conditionalImports "resources/hosts/${h.cluster}"
-              ++ conditionalImports
-              "resources/hosts/${h.cluster}/${configName}");
+          clusterResources = lib.optionals (h.cluster != "") (
+            conditionalImports "resources/hosts/${h.cluster}"
+            ++ conditionalImports "resources/hosts/${h.cluster}/${configName}"
+          );
 
-          networkResources =
-            systemImports "resources/networks/${h.network}" system;
+          networkResources = systemImports "resources/networks/${h.network}" system;
 
-          profilesResources =
-            systemImports "resources/profiles/${h.profile}" system;
+          profilesResources = systemImports "resources/profiles/${h.profile}" system;
 
-        in systemResources ++ clusterResources ++ networkResources
-        ++ hostResources ++ profilesResources;
+        in
+        systemResources ++ clusterResources ++ networkResources ++ hostResources ++ profilesResources;
 
-      modulesList = configName: system:
+      modulesList =
+        configName: system:
         let
           h = hostVars.${configName};
 
           systemModules = systemImports "machines/" system;
 
-          hostModules = lib.optionals (h.cluster == "")
-            (conditionalImports "resources/hosts/${configName}");
+          hostModules = lib.optionals (h.cluster == "") (conditionalImports "resources/hosts/${configName}");
 
-          clusterModules = lib.optionals (h.cluster != "")
-            (conditionalImports "machines/hosts/${h.cluster}")
+          clusterModules =
+            lib.optionals (h.cluster != "") (conditionalImports "machines/hosts/${h.cluster}")
             ++ conditionalImports "machines/hosts/${h.cluster}/${configName}";
 
-          networkModules =
-            systemImports "machines/networks/${h.network}" system;
+          networkModules = systemImports "machines/networks/${h.network}" system;
 
-          profilesModules =
-            systemImports "machines/profiles/${h.profile}" system;
+          profilesModules = systemImports "machines/profiles/${h.profile}" system;
 
-        in systemModules ++ hostModules ++ clusterModules ++ networkModules
-        ++ profilesModules;
+        in
+        systemModules ++ hostModules ++ clusterModules ++ networkModules ++ profilesModules;
 
-      homeList = configName: system:
+      homeList =
+        configName: system:
         let
           h = hostVars.${configName};
 
           homeModules = systemImports "home" system;
 
-          hostModules = lib.optionals (h.cluster == "")
-            (conditionalImports "home/hosts/${configName}");
+          hostModules = lib.optionals (h.cluster == "") (conditionalImports "home/hosts/${configName}");
 
-          clusterModules = lib.optionals (h.cluster != "")
-            ((conditionalImports "home/hosts/${h.cluster}")
-            ++ conditionalImports "home/hosts/${h.cluster}/${configName}");
+          clusterModules = lib.optionals (h.cluster != "") (
+            (conditionalImports "home/hosts/${h.cluster}")
+            ++ conditionalImports "home/hosts/${h.cluster}/${configName}"
+          );
 
           networkModules = systemImports "home/networks/${h.network}" system;
 
           profilesModules = systemImports "home/profiles/${h.profile}" system;
 
-        in homeModules ++ hostModules ++ clusterModules ++ networkModules
-        ++ profilesModules;
+        in
+        homeModules ++ hostModules ++ clusterModules ++ networkModules ++ profilesModules;
 
-      mkDarwin = configName: arch: extraModules:
+      mkDarwin =
+        configName: arch: extraModules:
         let
           system = arch;
           h = hostVars.${configName};
-        in nix-darwin.lib.darwinSystem {
+        in
+        nix-darwin.lib.darwinSystem {
           inherit system;
           modules = [
             ./modules
@@ -184,7 +199,14 @@
                 inherit (inputs) private-config;
                 flake-root = ./.;
                 configName = configName;
-                inherit (h) hostname profile network user cluster clusterRole;
+                inherit (h)
+                  hostname
+                  profile
+                  network
+                  user
+                  cluster
+                  clusterRole
+                  ;
               };
             }
 
@@ -200,17 +222,29 @@
                     flake-root = ./.;
                     configName = configName;
                     inherit (h)
-                      hostname profile network user cluster clusterRole;
+                      hostname
+                      profile
+                      network
+                      user
+                      cluster
+                      clusterRole
+                      ;
                   };
                 }
                 ./modules
               ];
 
-              home-manager.users.${h.user} = { config, lib, pkgs, ... }: {
-                imports = homeList configName "darwin"
-                  ++ resourcesList configName "darwin";
+              home-manager.users.${h.user} =
+                {
+                  config,
+                  lib,
+                  pkgs,
+                  ...
+                }:
+                {
+                  imports = homeList configName "darwin" ++ resourcesList configName "darwin";
 
-              };
+                };
             }
 
             self.inputs.nix-homebrew.darwinModules.nix-homebrew
@@ -228,26 +262,24 @@
                   "FelixKratz/homebrew-formulae" = self.inputs.homebrew-borders;
                 };
                 mutableTaps = true;
-                trust = {
-                  taps = [
-                    "DataDog/homebrew-tap"
-                    "datadog-labs/homebrew-pack"
-                    "FelixKratz/homebrew-formulae"
-                  ];
-                };
+                trust.taps = [ "FelixKratz/homebrew-formulae" ];
               };
             }
 
             self.inputs.sops-nix-darwin.darwinModules.sops
-          ] ++ modulesList configName "darwin"
-            ++ resourcesList configName "darwin" ++ extraModules;
+          ]
+          ++ modulesList configName "darwin"
+          ++ resourcesList configName "darwin"
+          ++ extraModules;
         };
 
-      mkNixos = configName: arch: extraModules:
+      mkNixos =
+        configName: arch: extraModules:
         let
           system = arch;
           h = hostVars.${configName};
-        in nixpkgs-linux.lib.nixosSystem {
+        in
+        nixpkgs-linux.lib.nixosSystem {
           inherit system;
           modules = [
             ./modules
@@ -268,7 +300,14 @@
                 inherit (inputs) private-config;
                 flake-root = ./.;
                 configName = configName;
-                inherit (h) hostname profile network user cluster clusterRole;
+                inherit (h)
+                  hostname
+                  profile
+                  network
+                  user
+                  cluster
+                  clusterRole
+                  ;
               };
             }
 
@@ -284,92 +323,125 @@
                     flake-root = ./.;
                     configName = configName;
                     inherit (h)
-                      hostname profile network user cluster clusterRole;
+                      hostname
+                      profile
+                      network
+                      user
+                      cluster
+                      clusterRole
+                      ;
                   };
                 }
                 ./modules
               ];
-              home-manager.users.${h.user} = { config, lib, pkgs, ... }: {
-                imports = homeList configName "linux"
-                  ++ resourcesList configName "linux";
-              };
+              home-manager.users.${h.user} =
+                {
+                  config,
+                  lib,
+                  pkgs,
+                  ...
+                }:
+                {
+                  imports = homeList configName "linux" ++ resourcesList configName "linux";
+                };
             }
 
             self.inputs.sops-nix-linux.nixosModules.sops
-          ] ++ modulesList configName "linux"
-            ++ resourcesList configName "linux" ++ extraModules;
+          ]
+          ++ modulesList configName "linux"
+          ++ resourcesList configName "linux"
+          ++ extraModules;
         };
 
-    in {
-
-      darwinConfigurations = {
-        idunn = mkDarwin "idunn" "aarch64-darwin" [ ];
-        datadog = mkDarwin "datadog" "aarch64-darwin" [ ];
-      };
-
-      nixosConfigurations = {
-        vali = mkNixos "vali" "x86_64-linux"
-          [ nixos-hardware.nixosModules.dell-xps-13-9350 ];
-        mimir = mkNixos "mimir" "x86_64-linux" [
+      extraNixosModules = {
+        vali = [ nixos-hardware.nixosModules.dell-xps-13-9350 ];
+        mimir = [
           nixos-hardware.nixosModules.common-cpu-amd
           nixos-hardware.nixosModules.common-pc-ssd
         ];
-        hades-1 = mkNixos "hades-1" "aarch64-linux"
-          [ nixos-hardware.nixosModules.raspberry-pi-4 ];
-        hades-2 = mkNixos "hades-2" "aarch64-linux"
-          [ nixos-hardware.nixosModules.raspberry-pi-4 ];
-        hades-3 = mkNixos "hades-3" "aarch64-linux"
-          [ nixos-hardware.nixosModules.raspberry-pi-4 ];
-        hades-4 = mkNixos "hades-4" "aarch64-linux"
-          [ nixos-hardware.nixosModules.raspberry-pi-4 ];
-        hades-5 = mkNixos "hades-5" "aarch64-linux"
-          [ nixos-hardware.nixosModules.raspberry-pi-4 ];
-        hades-6 = mkNixos "hades-6" "aarch64-linux" [
+        hades-1 = [
           nixos-hardware.nixosModules.raspberry-pi-4
           inputs.nixos-raspberrypi.lib.inject-overlays
         ];
-        hades-7 = mkNixos "hades-7" "x86_64-linux" [
+        hades-2 = [
+          nixos-hardware.nixosModules.raspberry-pi-4
+          inputs.nixos-raspberrypi.lib.inject-overlays
+        ];
+        hades-3 = [
+          nixos-hardware.nixosModules.raspberry-pi-4
+          inputs.nixos-raspberrypi.lib.inject-overlays
+        ];
+        hades-4 = [
+          nixos-hardware.nixosModules.raspberry-pi-4
+          inputs.nixos-raspberrypi.lib.inject-overlays
+        ];
+        hades-5 = [
+          nixos-hardware.nixosModules.raspberry-pi-4
+          inputs.nixos-raspberrypi.lib.inject-overlays
+        ];
+        hades-6 = [
+          nixos-hardware.nixosModules.raspberry-pi-4
+          inputs.nixos-raspberrypi.lib.inject-overlays
+        ];
+        hades-7 = [
           nixos-hardware.nixosModules.common-cpu-intel
           nixos-hardware.nixosModules.common-pc-ssd
         ];
-        orion = mkNixos "orion" "x86_64-linux"
-          [ self.inputs.disko.nixosModules.disko ];
-
+        orion = [ self.inputs.disko.nixosModules.disko ];
       };
+
+      extraModulesFor = attrs: name: attrs.${name} or [ ];
+      darwinHosts = lib.filterAttrs (_: h: lib.hasSuffix "-darwin" h.system) hostVars;
+      nixosHosts = lib.filterAttrs (_: h: lib.hasSuffix "-linux" h.system) hostVars;
+
+    in
+    {
+
+      darwinConfigurations = lib.mapAttrs (configName: h: mkDarwin configName h.system [ ]) darwinHosts;
+
+      nixosConfigurations = lib.mapAttrs (
+        configName: h: mkNixos configName h.system (extraModulesFor extraNixosModules configName)
+      ) nixosHosts;
 
       deploy.nodes = {
         vali = {
           hostname = "localhost";
-          sshOpts = [ "-p" "5421" ];
+          sshOpts = [
+            "-p"
+            "5421"
+          ];
           sshUser = "root";
           remoteBuild = true;
           profiles.system = {
             user = "root";
-            path = self.inputs.deploy-rs.lib.x86_64-linux.activate.nixos
-              self.nixosConfigurations.vali;
+            path = self.inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.vali;
           };
         };
 
         mimir = {
           hostname = "localhost";
-          sshOpts = [ "-p" "5421" ];
+          sshOpts = [
+            "-p"
+            "5421"
+          ];
           sshUser = "root";
           remoteBuild = true;
           profiles.system = {
             user = "root";
-            path = self.inputs.deploy-rs.lib.x86_64-linux.activate.nixos
-              self.nixosConfigurations.mimir;
+            path = self.inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.mimir;
           };
         };
         hades-1 = {
           hostname = "hades-1.martinache.net";
-          sshOpts = [ "-p" "5421" ];
+          sshOpts = [
+            "-p"
+            "5421"
+          ];
           sshUser = "root";
           remoteBuild = true;
           profiles.system = {
             user = "root";
-            path = self.inputs.deploy-rs.lib.aarch64-linux.activate.nixos
-              self.nixosConfigurations.hades-1;
+            path = self.inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.hades-1;
           };
           autoRollback = false;
           magicRollback = false;
@@ -377,91 +449,105 @@
 
         hades-2 = {
           hostname = "hades-2.martinache.net";
-          sshOpts = [ "-p" "5421" ];
+          sshOpts = [
+            "-p"
+            "5421"
+          ];
           sshUser = "root";
           remoteBuild = true;
           profiles.system = {
             user = "root";
-            path = self.inputs.deploy-rs.lib.aarch64-linux.activate.nixos
-              self.nixosConfigurations.hades-2;
+            path = self.inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.hades-2;
           };
           autoRollback = false;
           magicRollback = false;
         };
         hades-3 = {
           hostname = "hades-3.martinache.net";
-          sshOpts = [ "-p" "5421" ];
+          sshOpts = [
+            "-p"
+            "5421"
+          ];
           sshUser = "root";
           remoteBuild = true;
           profiles.system = {
             user = "root";
-            path = self.inputs.deploy-rs.lib.aarch64-linux.activate.nixos
-              self.nixosConfigurations.hades-3;
+            path = self.inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.hades-3;
           };
           autoRollback = false;
           magicRollback = false;
         };
         hades-4 = {
           hostname = "hades-4.martinache.net";
-          sshOpts = [ "-p" "5421" ];
+          sshOpts = [
+            "-p"
+            "5421"
+          ];
           sshUser = "root";
           remoteBuild = true;
           profiles.system = {
             user = "root";
-            path = self.inputs.deploy-rs.lib.aarch64-linux.activate.nixos
-              self.nixosConfigurations.hades-4;
+            path = self.inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.hades-4;
           };
           autoRollback = false;
           magicRollback = false;
         };
         hades-5 = {
           hostname = "hades-5.martinache.net";
-          sshOpts = [ "-p" "5421" ];
+          sshOpts = [
+            "-p"
+            "5421"
+          ];
           sshUser = "root";
           remoteBuild = true;
           profiles.system = {
             user = "root";
-            path = self.inputs.deploy-rs.lib.aarch64-linux.activate.nixos
-              self.nixosConfigurations.hades-5;
+            path = self.inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.hades-5;
           };
           autoRollback = false;
           magicRollback = false;
         };
         hades-6 = {
           hostname = "hades-6.martinache.net";
-          sshOpts = [ "-p" "5421" ];
+          sshOpts = [
+            "-p"
+            "5421"
+          ];
           sshUser = "root";
           remoteBuild = true;
           profiles.system = {
             user = "root";
-            path = self.inputs.deploy-rs.lib.aarch64-linux.activate.nixos
-              self.nixosConfigurations.hades-6;
+            path = self.inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.hades-6;
           };
           autoRollback = false;
           magicRollback = false;
         };
         hades-7 = {
           hostname = "192.168.3.37";
-          sshOpts = [ "-p" "5421" ];
+          sshOpts = [
+            "-p"
+            "5421"
+          ];
           sshUser = "root";
           remoteBuild = true;
           profiles.system = {
             user = "root";
-            path = self.inputs.deploy-rs.lib.x86_64-linux.activate.nixos
-              self.nixosConfigurations.hades-7;
+            path = self.inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.hades-7;
           };
           autoRollback = false;
           magicRollback = false;
         };
         orion = {
           hostname = "orion.martinache.net";
-          sshOpts = [ "-p" "5421" ];
+          sshOpts = [
+            "-p"
+            "5421"
+          ];
           sshUser = "root";
           remoteBuild = true;
           profiles.system = {
             user = "root";
-            path = self.inputs.deploy-rs.lib.x86_64-linux.activate.nixos
-              self.nixosConfigurations.orion;
+            path = self.inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.orion;
           };
           autoRollback = false;
           magicRollback = false;
@@ -481,19 +567,6 @@
         #   magicRollback = false;
         # };
 
-        datadog = {
-          hostname =
-            "localhost"; # or specify the actual hostname/IP if deploying remotely
-          sshUser = "gregoire.cadenemartinache";
-          remoteBuild = true;
-          profiles.system = {
-            user = "root";
-            path = self.inputs.deploy-rs.lib.aarch64-darwin.activate.darwin
-              self.darwinConfigurations.datadog;
-          };
-          autoRollback = false;
-          magicRollback = false;
-        };
       };
 
       # Optional: Disable global checks to avoid evaluating all hosts
@@ -501,41 +574,49 @@
       # checks = {};
 
       # Current: Global checks (evaluates all hosts - slower but safer)
-      checks = builtins.mapAttrs
-        (system: deployLib: deployLib.deployChecks self.deploy)
-        self.inputs.deploy-rs.lib;
+      checks = builtins.mapAttrs (
+        system: deployLib: deployLib.deployChecks self.deploy
+      ) self.inputs.deploy-rs.lib;
       devShells = {
-        x86_64-linux = let
-          pkgs-linux = import inputs.nixpkgs-linux {
-            system = "x86_64-linux";
-            config.allowUnfree = true;
+        x86_64-linux =
+          let
+            pkgs-linux = import inputs.nixpkgs-linux {
+              system = "x86_64-linux";
+              config.allowUnfree = true;
+            };
+          in
+          {
+            default = pkgs-linux.mkShell {
+              buildInputs =
+                with pkgs-linux;
+                [
+                  nixos-rebuild
+                  nix-output-monitor
+                ]
+                ++ [ inputs.deploy-rs.packages.x86_64-linux.deploy-rs ];
+              shellHook = ''
+                export PATH="$PWD/bin:$PATH"
+              '';
+            };
           };
-        in {
-          default = pkgs-linux.mkShell {
-            buildInputs = with pkgs-linux;
-              [ nixos-rebuild nix-output-monitor ]
-              ++ [ inputs.deploy-rs.packages.x86_64-linux.deploy-rs ];
-            shellHook = ''
-              export PATH="$PWD/bin:$PATH"
-            '';
-          };
-        };
 
-        aarch64-darwin = let
-          pkgs-darwin = import inputs.nixpkgs-darwin {
-            system = "aarch64-darwin";
-            config.allowUnfree = true;
+        aarch64-darwin =
+          let
+            pkgs-darwin = import inputs.nixpkgs-darwin {
+              system = "aarch64-darwin";
+              config.allowUnfree = true;
+            };
+          in
+          {
+            default = pkgs-darwin.mkShell {
+              buildInputs =
+                with pkgs-darwin;
+                [ nix-output-monitor ] ++ [ inputs.deploy-rs.packages.aarch64-darwin.deploy-rs ];
+              shellHook = ''
+                export PATH="$PWD/bin:$PATH"
+              '';
+            };
           };
-        in {
-          default = pkgs-darwin.mkShell {
-            buildInputs = with pkgs-darwin;
-              [ nix-output-monitor ]
-              ++ [ inputs.deploy-rs.packages.aarch64-darwin.deploy-rs ];
-            shellHook = ''
-              export PATH="$PWD/bin:$PATH"
-            '';
-          };
-        };
       };
     };
 }

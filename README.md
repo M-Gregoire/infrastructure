@@ -23,7 +23,7 @@ Personal infrastructure configuration using NixOS, nix-darwin, and home-manager 
 
 🔧 **Modular Architecture**
 - System-aware: Automatic Linux/Darwin configuration selection  
-- Network-aware: Home, work, and cloud-specific settings
+- Network-aware: Environment-specific settings, with private overlays for sensitive contexts
 - Profile-based: PC vs server optimized configurations
 - Cluster support: Kubernetes cluster with role-based configs
 
@@ -50,8 +50,8 @@ graph TD
     B --> B2[Darwin/macOS]
     
     C --> C1[🏠 Home]
-    C --> C2[🏢 Work] 
-    C --> C3[☁️ Cloud]
+    C --> C2[☁️ Cloud]
+    C --> C3[🔒 Private overlays]
     
     D --> D1[💻 PC]
     D --> D2[🖥️ Server]
@@ -63,7 +63,7 @@ graph TD
 | Dimension | Purpose | Examples |
 |-----------|---------|----------|
 | **System** | Platform-specific optimizations | `linux`, `darwin` |
-| **Network** | Environment-based configuration | `home`, `work`, `cloud` |
+| **Network** | Environment-based configuration | `home`, `cloud`, plus private overlays |
 | **Profile** | Usage-pattern optimization | `PC`, `server` |
 | **Cluster** | Multi-node coordination | `hades` (k8s), `""` (standalone) |
 
@@ -193,8 +193,8 @@ Each host is defined in [`hosts.json`](./hosts.json) with its configuration attr
    mkdir -p home/hosts/newhost  
    mkdir -p resources/hosts/newhost
    ```
-3. **Add to flake.nix** nixosConfigurations or darwinConfigurations
-4. **Create deployment script**: `bin/deploy-newhost`
+3. **Set the correct `system`** so flake outputs are generated automatically
+4. **Add any private host overlays** in the private configuration repo when needed
 
 ## 🚢 Deployment Commands
 
@@ -205,15 +205,13 @@ The deployment scripts automatically detect local vs remote deployments:
 deploy-mimir        # Gaming/workstation (home network)  
 deploy-vali         # Laptop (home network)
 deploy-orion        # Cloud server
-deploy-datadog      # Work MacBook
 ```
 
 ### Cluster Deployments  
 ```bash
 deploy-hades        # Kubernetes cluster (6x Raspberry Pi 4)
 deploy-local        # All home development machines
-deploy-work         # Work machines
-deploy-all          # All hosts
+deploy-all          # All public hosts
 ```
 
 ### Options
@@ -268,10 +266,9 @@ nix profile diff-closures --profile /nix/var/nix/profiles/system
 - **Hardware**: Desktop PCs, laptops, Raspberry Pi cluster  
 - **Services**: Self-hosted infrastructure, NAS, monitoring
 
-### 🏢 Work Network  
-- **Features**: Corporate compliance, restricted package sets
-- **Hardware**: Managed MacBooks with nix-darwin
-- **Integration**: Company SSO, VPN, security policies
+### 🔒 Private Overlays
+- **Purpose**: Host, network, and service configuration that should not be public
+- **Location**: Separate private repository imported by this flake
 
 ### ☁️ Cloud Network
 - **Features**: Minimal server profiles, automated deployment

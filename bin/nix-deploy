@@ -18,7 +18,11 @@ fi
 # Script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." &>/dev/null && pwd)"
-HOSTS_JSON="$REPO_ROOT/hosts.json"
+PUBLIC_HOSTS_JSON="$REPO_ROOT/hosts.json"
+PRIVATE_CONFIG_PATH="${INFRASTRUCTURE_PRIVATE:-/private/etc/nix/infrastructure-private}"
+PRIVATE_HOSTS_JSON="$PRIVATE_CONFIG_PATH/hosts.json"
+HOSTS_JSON="$PUBLIC_HOSTS_JSON"
+HOSTS_JSON_TMP=""
 
 # Colors for output using tput (more compatible)
 if command -v tput >/dev/null 2>&1 && [[ -t 1 ]]; then
@@ -116,28 +120,43 @@ print_warning() {
 }
 
 load_github_token() {
+    if [[ -n "${GITHUB_TOKEN:-}" ]]; then
+        return
+    fi
+
     echo "🔐 Loading GitHub token from password manager..."
 
-    if [ "$HOSTNAME" = "COMP-CQ5H77T0CQ" ]; then
-        echo "   Using 1Password for $HOSTNAME"
-        export GITHUB_TOKEN=$(op read "op://Employee/GitHub/add more/nix-token")
+    if [[ -n "${NIX_DEPLOY_GITHUB_TOKEN_COMMAND:-}" ]]; then
+        echo "   Using configured token command"
+        export GITHUB_TOKEN="$(eval "$NIX_DEPLOY_GITHUB_TOKEN_COMMAND")"
+    elif command -v bw >/dev/null 2>&1; then
+        echo "   Using Bitwarden"
+        export GITHUB_TOKEN="$(bw get password github-nix-token)"
     else
-        echo "   Using Bitwarden for $HOSTNAME"
-        export GITHUB_TOKEN=$(bw get password github-nix-token)
-    fi
-
-}
-
-# Load and parse hosts.json
-load_hosts() {
-    if [[ ! -f "$HOSTS_JSON" ]]; then
-        print_error "hosts.json not found at $HOSTS_JSON"
+        print_error "No GitHub token source configured. Set GITHUB_TOKEN or NIX_DEPLOY_GITHUB_TOKEN_COMMAND."
         exit 1
     fi
-    
+}
+
+# Load and parse hosts.json, optionally overlaying private host metadata.
+load_hosts() {
+    if [[ ! -f "$PUBLIC_HOSTS_JSON" ]]; then
+        print_error "hosts.json not found at $PUBLIC_HOSTS_JSON"
+        exit 1
+    fi
+
     if ! command -v jq >/dev/null 2>&1; then
         print_error "jq is required but not installed"
         exit 1
+    fi
+
+    if [[ -f "$PRIVATE_HOSTS_JSON" ]]; then
+        HOSTS_JSON_TMP="$(mktemp -t nix-deploy-hosts.XXXXXX)"
+        trap '[[ -n "${HOSTS_JSON_TMP:-}" ]] && rm -f "$HOSTS_JSON_TMP"' EXIT
+        jq -s '.[0] * .[1]' "$PUBLIC_HOSTS_JSON" "$PRIVATE_HOSTS_JSON" > "$HOSTS_JSON_TMP"
+        HOSTS_JSON="$HOSTS_JSON_TMP"
+    else
+        HOSTS_JSON="$PUBLIC_HOSTS_JSON"
     fi
 }
 
@@ -179,6 +198,12 @@ get_current_hostname() {
     hostname
 }
 
+get_private_flake_options() {
+    if [[ -d "$PRIVATE_CONFIG_PATH/.git" ]]; then
+        printf '%s\0' --override-input private-config "git+file://$PRIVATE_CONFIG_PATH"
+    fi
+}
+
 get_current_system() {
     case "$(uname -s)" in
         Darwin)
@@ -205,30 +230,20 @@ is_local_host() {
     current_hostname="$(get_current_hostname)"
     local target_hostname
     target_hostname="$(get_host_info "$target_host" "hostname")"
-    
-    # Check direct hostname match
-    if [[ "$current_hostname" == "$target_hostname"* ]] || [[ "$current_hostname" == *"$target_hostname"* ]]; then
+
+    # Check direct hostname match.
+    if [[ -n "$target_hostname" ]] && { [[ "$current_hostname" == "$target_hostname"* ]] || [[ "$current_hostname" == *"$target_hostname"* ]]; }; then
         return 0
     fi
-    
-    # Check special cases from existing scripts
-    case "$target_host" in
-        idunn)
-            [[ "$current_hostname" == *"idunn"* ]] || [[ "$current_hostname" == *"MacbookPro-De-Gregoire"* ]]
-            ;;
-        datadog)
-            [[ "$current_hostname" == *"datadog"* ]] || [[ "$current_hostname" == *"DATADOG"* ]] || [[ "$current_hostname" == *"COMP-CQ5H77T0CQ"* ]]
-            ;;
-        mimir)
-            [[ "$current_hostname" == "mimir"* ]]
-            ;;
-        vali)  
-            [[ "$current_hostname" == "vali"* ]]
-            ;;
-        *)
-            return 1
-            ;;
-    esac
+
+    # Check optional aliases from hosts.json/private hosts.json.
+    while IFS= read -r alias; do
+        if [[ -n "$alias" ]] && [[ "$current_hostname" == *"$alias"* ]]; then
+            return 0
+        fi
+    done < <(jq -r ".\"$target_host\".localHostAliases[]? // empty" "$HOSTS_JSON")
+
+    return 1
 }
 
 needs_cross_build() {
@@ -266,15 +281,9 @@ handle_dry_flag() {
 
 get_flake_uri() {
     local host="$1"
-    local use_submodules=false
-    
-    # Check if host requires submodules (datadog and idunn based on existing scripts)
-    case "$host" in
-        datadog|idunn)
-            use_submodules=true
-            ;;
-    esac
-    
+    local use_submodules
+    use_submodules="$(jq -r ".\"$host\".requiresSubmodules // false" "$HOSTS_JSON")"
+
     if [[ "$use_submodules" == "true" ]]; then
         echo ".?submodules=1#$host"
     else
@@ -303,20 +312,18 @@ cmd_local() {
     shift || true
     local -a extra_args=("$@")
 
-    # Work laptop requires Privileges.app for sudo access
     local current_hostname
     current_hostname="$(get_current_hostname)"
     local use_askpass=false
 
-    if [[ "$current_hostname" == *"COMP-CQ5H77T0CQ"* ]] || [[ "$current_hostname" == *"datadog"* ]]; then
-        print_info "Work laptop detected - requesting admin privileges..."
-        /Applications/Privileges.app/Contents/MacOS/PrivilegesCLI --add
-        if [[ $? -ne 0 ]]; then
-            print_error "Failed to obtain admin privileges via Privileges.app"
+    if [[ -n "${NIX_DEPLOY_PRIVILEGE_COMMAND:-}" ]]; then
+        print_info "Requesting admin privileges..."
+        if ! eval "$NIX_DEPLOY_PRIVILEGE_COMMAND"; then
+            print_error "Failed to obtain admin privileges"
             exit 1
         fi
 
-        # Use askpass in clamshell mode OR non-interactive mode
+        # Use askpass in clamshell mode OR non-interactive mode.
         if is_clamshell_mode; then
             print_info "Clamshell mode - using password prompt"
             export SUDO_ASKPASS="$SCRIPT_DIR/sudo-askpass-pinentry"
@@ -325,8 +332,6 @@ cmd_local() {
             print_info "Non-interactive mode - using password prompt"
             export SUDO_ASKPASS="$SCRIPT_DIR/sudo-askpass-pinentry"
             use_askpass=true
-        else
-            print_info "Normal mode - will use TouchID"
         fi
     fi
 
@@ -338,6 +343,8 @@ cmd_local() {
 
     local current_system
     current_system="$(get_current_system)"
+    local -a flake_options=()
+    readarray -d '' -t flake_options < <(get_private_flake_options)
     local is_dry_run=false
 
     if handle_dry_flag extra_args "false"; then
@@ -363,6 +370,15 @@ cmd_local() {
     
     local flake_uri
     flake_uri="$(get_flake_uri "$host_config")"
+
+    local host_network
+    host_network="$(get_host_info "$host_config" "network")"
+    local -a cache_options=()
+    if [[ "$host_network" != "home" ]]; then
+        # Avoid inheriting a stale home-only Attic cache from the current system
+        # while building the new non-home configuration.
+        cache_options=(--option substituters "https://cache.nixos.org/")
+    fi
     
     case "$current_system" in
         *darwin*)
@@ -374,14 +390,14 @@ cmd_local() {
             if [[ "$action" == "switch" ]]; then
                 if [[ "$is_dry_run" == "true" ]]; then
                     print_info "${EMOJI_LOCAL} Local deployment (dry run): $cmd build --flake $flake_uri"
-                    exec $sudo_cmd "$cmd" build --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
+                    exec $sudo_cmd "$cmd" build --flake "$flake_uri" "${flake_options[@]}" "${cache_options[@]}" "${nix_options[@]}" "${extra_args[@]}"
                 else
                     print_info "${EMOJI_LOCAL} Local deployment: $cmd switch --flake $flake_uri"
-                    exec $sudo_cmd "$cmd" switch --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
+                    exec $sudo_cmd "$cmd" switch --flake "$flake_uri" "${flake_options[@]}" "${cache_options[@]}" "${nix_options[@]}" "${extra_args[@]}"
                 fi
             else
                 print_info "${EMOJI_BUILD} Local build: $cmd build --flake $flake_uri"
-                exec sudo -A "$cmd" build --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
+                exec sudo -A "$cmd" build --flake "$flake_uri" "${flake_options[@]}" "${cache_options[@]}" "${nix_options[@]}" "${extra_args[@]}"
             fi
             ;;
         *linux*)
@@ -394,14 +410,14 @@ cmd_local() {
             if [[ "$action" == "switch" ]]; then
                 if [[ "$is_dry_run" == "true" ]]; then
                     print_info "${EMOJI_LOCAL} Local deployment (dry run): $cmd build --flake $flake_uri"
-                    exec $sudo_cmd "$cmd" build --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
+                    exec $sudo_cmd "$cmd" build --flake "$flake_uri" "${flake_options[@]}" "${cache_options[@]}" "${nix_options[@]}" "${extra_args[@]}"
                 else
-                    print_info "${EMOJI_LOCAL} Local deployment: $cmd switch --flake $flake_uri"  
-                    exec $sudo_cmd "$cmd" switch --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
+                    print_info "${EMOJI_LOCAL} Local deployment: $cmd switch --flake $flake_uri"
+                    exec $sudo_cmd "$cmd" switch --flake "$flake_uri" "${flake_options[@]}" "${cache_options[@]}" "${nix_options[@]}" "${extra_args[@]}"
                 fi
             else
                 print_info "${EMOJI_BUILD} Local build: $cmd build --flake $flake_uri"
-                exec sudo -A "$cmd" build --flake "$flake_uri" "${nix_options[@]}" "${extra_args[@]}"
+                exec sudo -A "$cmd" build --flake "$flake_uri" "${flake_options[@]}" "${cache_options[@]}" "${nix_options[@]}" "${extra_args[@]}"
             fi
             ;;
         *)
@@ -487,6 +503,8 @@ cmd_build() {
     
     local -a expanded_hosts
     readarray -t expanded_hosts < <(expand_host_groups "${targets[@]}")
+    local -a flake_options=()
+    readarray -d '' -t flake_options < <(get_private_flake_options)
     
     for host in "${expanded_hosts[@]}"; do
         local target_system
@@ -502,11 +520,11 @@ cmd_build() {
         
         if needs_cross_build "$host"; then
             print_info "${EMOJI_BUILD} Cross-building $host ($target_system)..."
-            nix build "$build_target" --option access-tokens "github.com/M-Gregoire=$GITHUB_TOKEN" "${extra_args[@]}"
+            nix build "$build_target" "${flake_options[@]}" --option access-tokens "github.com/M-Gregoire=$GITHUB_TOKEN" "${extra_args[@]}"
         else
             # Building for same platform - force local building
             print_info "${EMOJI_BUILD} Building $host (local)"
-            nix build "$build_target" --option builders "" --option max-jobs auto --option access-tokens "github.com/M-Gregoire=$GITHUB_TOKEN" "${extra_args[@]}"
+            nix build "$build_target" "${flake_options[@]}" --option builders "" --option max-jobs auto --option access-tokens "github.com/M-Gregoire=$GITHUB_TOKEN" "${extra_args[@]}"
         fi
     done
     
@@ -623,6 +641,8 @@ cmd_deploy() {
     # If cross-compiling locally, build closures, copy to target, and activate
     if [[ "$force_local_build" == "true" ]]; then
         load_github_token
+        local -a flake_options=()
+        readarray -d '' -t flake_options < <(get_private_flake_options)
         for host in "${expanded_hosts[@]}"; do
             
             local target_hostname
@@ -637,7 +657,7 @@ cmd_deploy() {
             local build_target=".#nixosConfigurations.${host}.config.system.build.toplevel"
             print_info "${EMOJI_BUILD} Cross-compiling $host locally..."
             local out_path
-            out_path=$(nix build "$build_target" --print-out-paths --no-link \
+            out_path=$(nix build "$build_target" "${flake_options[@]}" --print-out-paths --no-link \
                 --option access-tokens "github.com/M-Gregoire=$GITHUB_TOKEN") || {
                 print_error "Local build failed for $host"
                 exit 1

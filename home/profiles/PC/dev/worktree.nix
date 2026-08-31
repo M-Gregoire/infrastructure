@@ -1,4 +1,10 @@
-{ config, lib, pkgs, inputs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
   # Worktrunk - CLI for Git worktree management, designed for parallel AI agent workflows
@@ -7,9 +13,7 @@
   # Worktrunk configuration
   xdg.configFile."worktrunk/config.toml".text = ''
     # Worktree path template - siblings alongside trunk
-    # For repo at ~/dd/dd-source/trunk, branch greg.cm/gcp-work creates ~/dd/dd-source/gcp-work
-    # Strip greg.cm/ prefix from folder name while keeping it in branch name
-    worktree-path = '{{ repo_path }}/../{{ branch | replace("greg.cm/", "") | sanitize }}'
+    worktree-path = '{{ repo_path }}/../{{ branch | sanitize }}'
 
     [commit]
     # Auto-stage all changes before commit
@@ -38,20 +42,14 @@
     full = false
   '';
 
-
   programs.zsh.initContent = ''
     # Worktrunk shell integration for directory navigation
     eval "''$(wt config shell init zsh)"
 
-    # Wrapper for wt switch --create to enforce greg.cm/ branch prefix
+    # Wrapper for wt switch --create.
     wtn() {
       local branch_name="''$1"
-      shift  # Remove first argument, keep the rest
-
-      # Add greg.cm/ prefix if not already present
-      if [[ ! "''$branch_name" =~ ^greg\.cm/ ]]; then
-        branch_name="greg.cm/''$branch_name"
-      fi
+      shift
 
       wt switch --create "''$branch_name" "''$@"
       # Unset upstream so the new branch doesn't inherit tracking from master

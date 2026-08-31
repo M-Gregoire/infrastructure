@@ -62,10 +62,10 @@ to pull individual commits from git.kernel.org or GitHub.
 
 ### Configuration
 
-Add to the shared hades config (`machines/hosts/hades/default.nix`) so it
-applies to all RPi4 nodes once they're on the 6.18 kernel. Since hades-7 is
-x86_64 and may already be on kernel 7.0+, guard with a conditional or put it
-in the RPi-specific config.
+The patch set is now in the shared hades config
+(`machines/hosts/hades/default.nix`) and guarded so it applies only to the RPi4
+nodes (`hades-1` through `hades-6`). `hades-7` is x86_64 and is intentionally
+excluded.
 
 ```nix
 boot.kernelPatches = [
@@ -136,15 +136,12 @@ the correct hash. Or use `nix-prefetch-url` on each URL.
 
 ## Steps
 
-1. Add `boot.kernelPatches` to `machines/hosts/hades/hades-6/default.nix`
-   (test on hades-6 first)
-2. Build with `nix build .#nixosConfigurations.hades-6.config.system.build.toplevel`
-   — fix hashes and any patch conflicts
-3. Deploy to hades-6, verify boot: `uname -r` should still show `6.18.x`
-4. Verify AES256K support: `modprobe rbd ceph`, then test with an AES256K key
-5. Rotate CSI keys to AES256K (steps in `hades-cluster/ceph-aes.md`)
-6. Once verified, move patches to shared hades config, roll to all RPi4 nodes
-7. Lock down `auth_allowed_ciphers` to `aes256k` only
+1. Build and deploy hades-6 first — done, boot verified.
+2. Verify AES256K support on hades-6 with a real AES256K CephX key — done.
+3. Move patches to shared hades config for `hades-1` through `hades-6` — done.
+4. Roll out to the remaining RPi4 nodes.
+5. Rotate CSI keys to AES256K (steps in `hades-cluster/ceph-aes.md`).
+6. Lock down `auth_allowed_ciphers` to `aes256k` only.
 
 ## References
 

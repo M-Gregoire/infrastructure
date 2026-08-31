@@ -1,3 +1,4 @@
 nixops/state.json
 .direnv/*
 result
+.claude/settings.local.json

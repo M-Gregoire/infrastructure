@@ -7,10 +7,10 @@ This infrastructure uses [sops-nix](https://github.com/Mic92/sops-nix) with [age
 ```
 .sops.yaml                    # Defines age keys and creation rules
 secrets/
-  datadog.yaml                # Encrypted Datadog API credentials
+  datadog.yaml                # Encrypted Datadog monitoring credentials
   attic.yaml                  # Encrypted Attic binary cache token
 machines/dev/
-  datadog.nix                 # Consumes datadog secrets
+  datadog.nix                 # Consumes Datadog monitoring secrets
   attic.nix                   # Consumes attic secrets
 flake.nix                     # Imports sops-nix modules (separate for linux/darwin)
 ```
@@ -210,15 +210,9 @@ The `sops.placeholder.*` values are replaced with actual secret values at activa
 
 ### defaultSopsFile vs per-secret sopsFile
 
-Two patterns exist in this repo:
+Prefer explicit per-secret `sopsFile` entries:
 
 ```nix
-# Pattern 1: defaultSopsFile (used in datadog.nix)
-# Sets the default for ALL sops.secrets in this module
-sops.defaultSopsFile = builtins.toPath "${flake-root}/secrets/datadog.yaml";
-sops.secrets."datadog/hades-cluster/api_secret" = { ... };
-
-# Pattern 2: Per-secret sopsFile (used in attic.nix)
 # Explicit per-secret — safer when multiple modules coexist
 sops.secrets."attic/token" = {
   sopsFile = builtins.toPath "${flake-root}/secrets/attic.yaml";
@@ -226,7 +220,7 @@ sops.secrets."attic/token" = {
 };
 ```
 
-**Recommendation:** Use per-secret `sopsFile` (Pattern 2) to avoid conflicts when a host imports multiple sops modules. If two modules both set `sops.defaultSopsFile` to different files, it will cause a conflict.
+**Recommendation:** Use per-secret `sopsFile` to avoid conflicts when a host imports multiple sops modules. If two modules both set `sops.defaultSopsFile` to different files, it will cause a conflict.
 
 ## Adding a Machine to an Existing Secret
 

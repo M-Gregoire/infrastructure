@@ -85,7 +85,6 @@
     #   wtc <name>   - switch to worktree <name> and create/attach its session
     #
     # Session name is derived from: <repo>-<worktree>
-    # e.g. ~/dd/dd-source/gcp-work → session "dd-source-gcp-work"
     wtc() {
       local target_dir session_name repo_name wt_name
 
