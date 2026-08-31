@@ -21,7 +21,6 @@
       directory = ${
         config.home-manager.users.${user}.home.homeDirectory
       }/src/infrastructure/vendor/polybar-spotify
-      directory = ${config.home-manager.users.${user}.home.homeDirectory}/src/infrastructure/vendor/rofi
   '';
 
   # programs = {
