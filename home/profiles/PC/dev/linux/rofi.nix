@@ -11,8 +11,8 @@ let
     # Base commit of the old M-Gregoire/rofi fork. Local customizations from
     # b65d3f5d54652e5afe527d45e78635839878934d are applied below instead of
     # keeping a fork/submodule.
-    rev = "45241fd31313e7f3653e9e0bfdb837b45ed3e17c";
-    hash = "sha256-G3sAyIZbq1sOJxf+NBlXMOtTMiBCn6Sat8PHryxRS0w=";
+    rev = "512a585fff6da5b2a90e5948059b062516ddb2e7";
+    hash = "sha256-iUX0Quae06tGd7gDgXZo1B3KYgPHU+ADPBrowHlv02A=";
   };
 
   confirmRasi = pkgs.writeText "rofi-confirm.rasi" ''
