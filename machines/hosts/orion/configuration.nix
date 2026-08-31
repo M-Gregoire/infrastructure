@@ -1,8 +1,16 @@
-{ config, pkgs, lib, modulesPath, inputs, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  modulesPath,
+  inputs,
+  ...
+}:
+{
   imports = [
     ../../dev/linux/systemd-networkd.nix
     ./hardware-configuration.nix
-    ../../dev/linux/k3s.nix
+    ../../dev/linux/k3s-single-server.nix
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disk-config.nix
