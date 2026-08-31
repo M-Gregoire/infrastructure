@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ ../../dev/datadog.nix ../../dev/linux/systemd-networkd.nix ];
+  imports = [ ../../dev/datadog.nix ../../dev/attic.nix ../../dev/linux/systemd-networkd.nix ];
 
   environment.systemPackages = with pkgs;
     [ ceph ceph-client util-linux gptfdisk smartmontools ]
@@ -41,11 +41,32 @@
   #   "d /var/log/journal/%m 2755 root systemd-journal -"
   # ];
 
+  # Cap journal size — default (10% of fs) allows multi-GB accumulation that
+  # causes I/O errors when rotation fails after an unclean shutdown.
+  services.journald.extraConfig = ''
+    SystemMaxUse=512M
+  '';
+
+  # Prevent LVM from scanning RBD/NBD devices — avoids circular deadlock
+  # where ceph-volume activate -> lvs -> scans RBD -> blocks waiting for OSD
+  environment.etc."lvm/lvm.conf".text = ''
+    devices {
+      filter = ["r|/dev/rbd.*|", "r|/dev/nbd.*|", "a|.*|"]
+    }
+  '';
+
   # https://serverfault.com/a/949159
   boot.kernel.sysctl = {
     "vm.dirty_ratio" = 10;
     "vm.dirty_background_ratio" = 5;
+    # Auto-reboot on hung tasks (e.g. Ceph RBD I/O stalls)
+    # Detects tasks blocked for 120s, panics, then reboots after 10s (kernel.panic=10)
+    "kernel.hung_task_panic" = 1;
   };
+
+  # Hardware watchdog — reboots if the system becomes completely unresponsive
+  systemd.settings.Manager.RuntimeWatchdogSec = "30s";
+  systemd.settings.Manager.RebootWatchdogSec = "10min";
 
   # boot.blacklistedKernelModules = [ "uas" ];
   # https://github.com/raspberrypi/linux/issues/5060#issuecomment-1306322303

@@ -143,3 +143,14 @@ exec-on-workspace-change = [
     [[on-window-detected]]
     if.app-id = 'us.zoom.xos'
     run = 'move-node-to-workspace 9'
+
+    # Force Finder windows into tiling layout
+    # Finder sometimes opens windows as floating, causing them to appear on top of other workspaces
+    [[on-window-detected]]
+    if.app-id = 'com.apple.finder'
+    run = 'layout tiling'
+
+    # Force Firefox windows into tiling layout
+    [[on-window-detected]]
+    if.app-id = 'org.mozilla.firefox'
+    run = 'layout tiling'
