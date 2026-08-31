@@ -2,7 +2,7 @@
 
 {
 
-  home.packages = with pkgs; [ age sops ];
+  home.packages = with pkgs; [ age sops fluxcd attic-client ];
 
   imports = let
     folder = ./dev;

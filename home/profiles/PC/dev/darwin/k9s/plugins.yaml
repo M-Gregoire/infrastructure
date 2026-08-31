@@ -1,0 +1,46 @@
+plugins:
+  flux-suspend:
+    shortCut: Shift-X
+    confirm: true
+    description: "Flux Suspend"
+    scopes:
+      - kustomizations
+    command: flux
+    args:
+      - suspend
+      - kustomization
+      - $NAME
+      - -n
+      - $NAMESPACE
+    background: false
+
+  flux-resume:
+    shortCut: Shift-R
+    confirm: true
+    description: "Flux Resume"
+    scopes:
+      - kustomizations
+    command: flux
+    args:
+      - resume
+      - kustomization
+      - $NAME
+      - -n
+      - $NAMESPACE
+    background: false
+
+  flux-reconcile:
+    shortCut: Shift-T
+    confirm: false
+    description: "Flux Reconcile"
+    scopes:
+      - kustomizations
+    command: flux
+    args:
+      - reconcile
+      - kustomization
+      - $NAME
+      - -n
+      - $NAMESPACE
+      - --with-source
+    background: false

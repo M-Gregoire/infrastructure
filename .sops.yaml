@@ -8,6 +8,7 @@ keys:
   - &server_hades6 age1w5ekya9ddtgnsx9pxumtappd0lhumjgj3vy0m0jg9tuygxzaqfgsln0ln4
   - &server_hades7 age1j7zm9vh7jlzkhxpteeweas8t9c85d7tuc4zz577zjf9zxpx604hqacdl5a
   - &server_hades_nfs age1t5sz6xqkn5hed4rm0dnapptjlzqeh4fuuekl6t3pv8u3ll4vudgqsafrmm
+  - &server_idunn age16g4yqvqztefx9xv2qzj9luqesf02d48lv86qs82k2mdys64lp4xq9e2jjh
 creation_rules:
   - path_regex: secrets/datadog.yaml
     key_groups:
@@ -21,3 +22,16 @@ creation_rules:
       - *server_hades6
       - *server_hades7
       - *server_hades_nfs
+  - path_regex: secrets/attic.yaml
+    key_groups:
+    - age:
+      - *admin_greg
+      - *server_hades1
+      - *server_hades2
+      - *server_hades3
+      - *server_hades4
+      - *server_hades5
+      - *server_hades6
+      - *server_hades7
+      - *server_hades_nfs
+      - *server_idunn

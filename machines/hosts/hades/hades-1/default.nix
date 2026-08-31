@@ -15,7 +15,17 @@
 
   security.sudo.wheelNeedsPassword = false;
 
-  services.k3s.enable = true;
+  services.k3s = {
+    enable = true;
+    extraFlags = lib.concatStringsSep " " [
+      "--disable servicelb"
+      "--kube-apiserver-arg=default-not-ready-toleration-seconds=30"
+      "--kube-apiserver-arg=default-unreachable-toleration-seconds=30"
+      "--kube-controller-manager-arg=node-monitor-grace-period=30s"
+      "--kube-controller-manager-arg=terminated-pod-gc-threshold=100"
+      "--tls-san ${config.resources.hostname}.${config.resources.networking.domain}"
+    ];
+  };
 
   environment.systemPackages = [ pkgs.k3s pkgs.containerd pkgs.kubectl ];
   networking.firewall.allowedTCPPorts = [ 6443 ];

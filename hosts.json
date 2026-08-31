@@ -123,17 +123,6 @@
     "deployHostname": "hades-7.martinache.net",
     "sshPort": 5421
   },
-  "hades-nfs": {
-    "configName": "hades-nfs",
-    "hostname": "hades-nfs",
-    "profile": "server",
-    "network": "home",
-    "user": "gregoire",
-    "cluster": "",
-    "clusterRole": "",
-    "system": "aarch64-linux",
-    "sshPort": 5421
-  },
   "orion": {
     "configName": "orion",
     "hostname": "orion",

@@ -65,6 +65,11 @@
 
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    nixos-raspberrypi = {
+      url = "github:nvmd/nixos-raspberrypi/main";
+      inputs.nixpkgs.follows = "nixpkgs-linux";
+    };
+
     deploy-rs.url = "github:serokell/deploy-rs";
 
     disko = {
@@ -320,14 +325,14 @@
           [ nixos-hardware.nixosModules.raspberry-pi-4 ];
         hades-5 = mkNixos "hades-5" "aarch64-linux"
           [ nixos-hardware.nixosModules.raspberry-pi-4 ];
-        hades-6 = mkNixos "hades-6" "aarch64-linux"
-          [ nixos-hardware.nixosModules.raspberry-pi-4 ];
+        hades-6 = mkNixos "hades-6" "aarch64-linux" [
+          nixos-hardware.nixosModules.raspberry-pi-4
+          inputs.nixos-raspberrypi.lib.inject-overlays
+        ];
         hades-7 = mkNixos "hades-7" "x86_64-linux" [
           nixos-hardware.nixosModules.common-cpu-intel
           nixos-hardware.nixosModules.common-pc-ssd
         ];
-        hades-nfs = mkNixos "hades-nfs" "aarch64-linux"
-          [ nixos-hardware.nixosModules.pine64-rockpro64 ];
         orion = mkNixos "orion" "x86_64-linux"
           [ self.inputs.disko.nixosModules.disko ];
 
@@ -449,19 +454,6 @@
           autoRollback = false;
           magicRollback = false;
         };
-        hades-nfs = {
-          hostname = "192.168.3.30";
-          sshOpts = [ "-p" "5421" ];
-          sshUser = "root";
-          remoteBuild = true;
-          profiles.system = {
-            user = "root";
-            path = self.inputs.deploy-rs.lib.aarch64-linux.activate.nixos
-              self.nixosConfigurations.hades-nfs;
-          };
-          autoRollback = false;
-          magicRollback = false;
-        };
         orion = {
           hostname = "orion.martinache.net";
           sshOpts = [ "-p" "5421" ];
@@ -526,13 +518,6 @@
               ++ [ inputs.deploy-rs.packages.x86_64-linux.deploy-rs ];
             shellHook = ''
               export PATH="$PWD/bin:$PATH"
-               echo "NixOS Infrastructure Development Shell"
-               echo "Building happens on target hosts (remoteBuild = true)"
-               echo ""
-               echo "Available commands:"
-               echo "  deploy .#<hostname>"
-               echo "  deploy .# --dry-activate"
-               echo "  deploy-help"
             '';
           };
         };
@@ -549,13 +534,6 @@
               ++ [ inputs.deploy-rs.packages.aarch64-darwin.deploy-rs ];
             shellHook = ''
               export PATH="$PWD/bin:$PATH"
-              echo "Darwin Infrastructure Development Shell"
-              echo "Building happens on target hosts (remoteBuild = true)"
-              echo ""
-              echo "Available commands:"
-              echo "  deploy .#<hostname>"
-              echo "  deploy .# --dry-activate"
-              echo "  deploy-help"
             '';
           };
         };
