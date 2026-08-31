@@ -125,8 +125,6 @@ let
     printf '%s\n' 'type="$HOME/.config/rofi/applets/type-2"' "style='style-1.rasi'" \
       > "$out/applets/shared/theme.bash"
 
-    ${pkgs.gnused}/bin/sed -i "s/theme='style-10'/theme='style-11'/" \
-      "$out/launchers/type-3/launcher.sh"
     ${pkgs.gnused}/bin/sed -i "s/theme='style-1'/theme='style-3'/" \
       "$out/powermenu/type-3/powermenu.sh"
     ${pkgs.gnused}/bin/sed -i "s/theme='style-5'/theme='style-2'/" \
