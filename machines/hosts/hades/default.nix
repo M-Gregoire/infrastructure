@@ -110,11 +110,26 @@ in
   #   "d /var/log/journal/%m 2755 root systemd-journal -"
   # ];
 
-  # Cap journal size — default (10% of fs) allows multi-GB accumulation that
-  # causes I/O errors when rotation fails after an unclean shutdown.
-  services.journald.extraConfig = ''
-    SystemMaxUse=512M
-  '';
+  # Raspberry Pi nodes run k3s/Ceph from flash/root media and have shown
+  # journald EIO/rotation failures on /var/log/journal. Keep the system journal
+  # in /run on those nodes to reduce write amplification and avoid a corrupt
+  # persistent journal wedging logging during boot/runtime.
+  #
+  # Non-RPi Hades nodes keep persistent journals, capped to avoid multi-GB
+  # accumulation after unclean shutdowns.
+  services.journald.extraConfig =
+    if isRpiHadesNode then
+      ''
+        Storage=volatile
+        RuntimeMaxUse=128M
+        RuntimeKeepFree=64M
+        RateLimitIntervalSec=30s
+        RateLimitBurst=1000
+      ''
+    else
+      ''
+        SystemMaxUse=512M
+      '';
 
   # Prevent LVM from scanning RBD/NBD devices — avoids circular deadlock
   # where ceph-volume activate -> lvs -> scans RBD -> blocks waiting for OSD
@@ -136,6 +151,20 @@ in
   # Hardware watchdog — reboots if the system becomes completely unresponsive
   systemd.settings.Manager.RuntimeWatchdogSec = "30s";
   systemd.settings.Manager.RebootWatchdogSec = "10min";
+
+  # Remove old persistent journals from the RPi nodes at boot; they are no
+  # longer used with Storage=volatile and can contain corrupted system.journal
+  # files from prior unclean shutdowns.
+  systemd.tmpfiles.rules = lib.mkIf isRpiHadesNode [
+    "R! /var/log/journal - - - -"
+  ];
+
+  # Reduce avoidable writes to the root filesystem on flash-backed RPi nodes.
+  fileSystems."/".options = lib.mkIf isRpiHadesNode [
+    "noatime"
+    "commit=60"
+    "errors=remount-ro"
+  ];
 
   # boot.blacklistedKernelModules = [ "uas" ];
   # https://github.com/raspberrypi/linux/issues/5060#issuecomment-1306322303

@@ -1,5 +1,25 @@
-{ config, lib, pkgs, flake-root, hostname, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  flake-root,
+  hostname,
+  configName,
+  ...
+}:
 
+let
+  volatileJournalHosts = [
+    "hades-1"
+    "hades-2"
+    "hades-3"
+    "hades-4"
+    "hades-5"
+    "hades-6"
+  ];
+  journalPath =
+    if lib.elem configName volatileJournalHosts then "/run/log/journal" else "/var/log/journal";
+in
 {
 
   sops.defaultSopsFile = builtins.toPath "${flake-root}/secrets/datadog.yaml";
@@ -30,27 +50,30 @@
     hostname = hostname;
     # This should work but the API key is not taken into account.
     # So I use EnvironmentFile to specify DD_API_KEY in the systemd service.
-    apiKeyFile =
-      "${config.sops.secrets."datadog/hades-cluster/api_secret".path}";
+    apiKeyFile = "${config.sops.secrets."datadog/hades-cluster/api_secret".path}";
 
-    tags = [ "env:prod" "role:host" ];
+    tags = [
+      "env:prod"
+      "role:host"
+    ];
     extraConfig = {
       logs_enabled = true;
       logs_config.use_http = true;
     };
     checks.journald = {
-      logs = [{
-        type = "journald";
-        path = "/var/log/journal";
-        # include_units = [ "sshd.service" "k3s.service" ];
-        service = "system"; # tag 'service:system' on these entries
-        source = "journald";
-      }];
+      logs = [
+        {
+          type = "journald";
+          path = journalPath;
+          # include_units = [ "sshd.service" "k3s.service" ];
+          service = "system"; # tag 'service:system' on these entries
+          source = "journald";
+        }
+      ];
     };
 
   };
 
-  systemd.services.datadog-agent.serviceConfig.SupplementaryGroups =
-    [ "systemd-journal" ];
+  systemd.services.datadog-agent.serviceConfig.SupplementaryGroups = [ "systemd-journal" ];
   # users.users.datadog.extraGroups = [ "systemd-journal" ];
 }
