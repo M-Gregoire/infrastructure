@@ -61,8 +61,6 @@ in
     xsettingsd
     # Notifications
     dunst
-    # Polybar music module
-    zscroll
     # Brightness
     brightnessctl
   ];

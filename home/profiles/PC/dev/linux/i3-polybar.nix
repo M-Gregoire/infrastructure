@@ -56,6 +56,33 @@ let
       *) echo "" ;;
     esac
   '';
+
+  pipewireVolume = pkgs.writeShellScript "polybar-pipewire-volume" ''
+    volume="$(${pkgs.wireplumber}/bin/wpctl get-volume @DEFAULT_AUDIO_SINK@ 2>/dev/null || true)"
+
+    if [ -z "$volume" ]; then
+      echo " n/a"
+      exit 0
+    fi
+
+    percent="$(printf '%s\n' "$volume" | ${pkgs.gawk}/bin/awk '{ printf("%d", $2 * 100 + 0.5) }')"
+
+    case "$volume" in
+      *'[MUTED]'*)
+        echo " muted"
+        ;;
+      *)
+        if [ "$percent" -lt 30 ]; then
+          icon=""
+        elif [ "$percent" -lt 70 ]; then
+          icon=""
+        else
+          icon=""
+        fi
+        echo "$icon $percent%"
+        ;;
+    esac
+  '';
 in
 {
   # Required for network module
@@ -82,8 +109,7 @@ in
         font-0 = "${config.resources.font.name}:pixelsize=${lib.strings.floatToString config.resources.font.size}:antialias=true;2";
         modules-left = "i3";
         modules-center = "music music-prev music-play-pause music-next sep date";
-        # TODO: Add pipewire module
-        modules-right = "temperature cpu memory network-wired network-wireless battery tray";
+        modules-right = "pipewire temperature cpu memory network-wired network-wireless battery tray";
         wm-restack = "i3";
         cursor-click = "pointer";
         cursor-scroll = "ns-resize";
@@ -120,6 +146,16 @@ in
         format-prefix = " ";
         format = "<label>";
         exec = "${musicScroll}";
+      };
+
+      "module/pipewire" = {
+        type = "custom/script";
+        interval = 1;
+        exec = "${pipewireVolume}";
+        click-left = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+        click-right = "${pkgs.pavucontrol}/bin/pavucontrol";
+        scroll-up = "${pkgs.wireplumber}/bin/wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+";
+        scroll-down = "${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
       };
 
       "module/i3" = {
