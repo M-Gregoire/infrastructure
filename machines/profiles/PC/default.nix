@@ -18,9 +18,6 @@
       directory = ${
         config.home-manager.users.${user}.home.homeDirectory
       }/src/infrastructure/dotfiles/doom.d
-      directory = ${
-        config.home-manager.users.${user}.home.homeDirectory
-      }/src/infrastructure/vendor/polybar-spotify
   '';
 
   # programs = {

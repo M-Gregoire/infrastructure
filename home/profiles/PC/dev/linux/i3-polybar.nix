@@ -1,16 +1,72 @@
-{ config, pkgs, lib, flake-root, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
+let
+  polybarPackage = pkgs.polybar.override {
+    i3Support = true;
+    pulseSupport = true;
+  };
+
+  musicStatus = pkgs.writeShellScript "polybar-music-status" ''
+    status="$(${pkgs.playerctl}/bin/playerctl status 2>/dev/null || true)"
+
+    if [ "''${1:-}" = "--status" ]; then
+      if [ -n "$status" ]; then
+        echo "$status"
+      else
+        echo "No player is running"
+      fi
+      exit 0
+    fi
+
+    case "$status" in
+      "")
+        echo "No player is running"
+        ;;
+      Stopped)
+        echo "No music is playing"
+        ;;
+      *)
+        ${pkgs.playerctl}/bin/playerctl metadata --format '{{ title }} - {{ artist }}' 2>/dev/null \
+          || echo "$status"
+        ;;
+    esac
+  '';
+
+  musicScroll = pkgs.writeShellScript "polybar-music-scroll" ''
+    ${pkgs.zscroll}/bin/zscroll -l 30 \
+      --delay 0.1 \
+      --scroll-padding "  " \
+      --match-command "${musicStatus} --status" \
+      --match-text "Playing" "--scroll 1" \
+      --match-text "Paused" "--scroll 0" \
+      --update-check true "${musicStatus}" &
+
+    wait
+  '';
+
+  musicToggleIcon = pkgs.writeShellScript "polybar-music-toggle-icon" ''
+    case "$(${pkgs.playerctl}/bin/playerctl status 2>/dev/null || true)" in
+      Playing) echo "" ;;
+      Paused|Stopped) echo "" ;;
+      *) echo "" ;;
+    esac
+  '';
+in
 {
   # Required for network module
   home.packages = with pkgs; [ ethtool ];
   services.polybar = {
     enable = true;
-    package = pkgs.polybar.override {
-      i3Support = true;
-      pulseSupport = true;
-    };
+    package = polybarPackage;
     config = {
-      "settings" = { screenchange-reload = "true"; };
+      "settings" = {
+        screenchange-reload = "true";
+      };
 
       "bar/top-main" = {
         width = "100%";
@@ -23,58 +79,47 @@
         padding-right = "1";
         module-margin-left = "1";
         module-margin-right = "1";
-        font-0 = "${config.resources.font.name}:pixelsize=${
-            lib.strings.floatToString config.resources.font.size
-          }:antialias=true;2";
+        font-0 = "${config.resources.font.name}:pixelsize=${lib.strings.floatToString config.resources.font.size}:antialias=true;2";
         modules-left = "i3";
-        modules-center =
-          "spotify spotify-prev spotify-play-pause spotify-next sep date";
+        modules-center = "music music-prev music-play-pause music-next sep date";
         # TODO: Add pipewire module
-        modules-right =
-          "temperature cpu memory network-wired network-wireless battery tray";
+        modules-right = "temperature cpu memory network-wired network-wireless battery tray";
         wm-restack = "i3";
         cursor-click = "pointer";
         cursor-scroll = "ns-resize";
-        # IPC for Spotify
-        enable-ipc = "true";
       };
 
-      "module/spotify-prev" = {
+      "module/music-prev" = {
         type = "custom/script";
-        # interval = "86400";
         format = "%{T3}<label>";
         # Previous song icon
         exec = "echo ";
-        click-left = "playerctl previous -p spotify";
+        click-left = "${pkgs.playerctl}/bin/playerctl previous";
       };
 
-      "module/spotify-next" = {
+      "module/music-next" = {
         type = "custom/script";
-        # interval = "86400";
         format = "%{T3}<label>";
         # Next song icon
         exec = "echo ";
-        click-left = "playerctl next -p spotify";
+        click-left = "${pkgs.playerctl}/bin/playerctl next";
       };
 
-      "module/spotify-play-pause" = {
-        type = "custom/ipc";
-        # Playing
-        hook-0 = "echo ";
-        # Paused
-        hook-1 = "echo ";
-        initial = "1";
-        click-left = "playerctl play-pause -p spotify";
+      "module/music-play-pause" = {
+        type = "custom/script";
+        interval = 1;
+        format = "%{T3}<label>";
+        exec = "${musicToggleIcon}";
+        click-left = "${pkgs.playerctl}/bin/playerctl play-pause";
       };
 
-      "module/spotify" = {
+      "module/music" = {
         type = "custom/script";
         tail = true;
         interval = 1;
-        format-prefix = " ";
+        format-prefix = " ";
         format = "<label>";
-        exec = "${flake-root}/vendor/polybar-spotify/scroll_spotify_status.sh";
-        # format-padding = "2";
+        exec = "${musicScroll}";
       };
 
       "module/i3" = {

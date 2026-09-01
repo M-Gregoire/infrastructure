@@ -1,6 +1,3 @@
-[submodule "vendor/polybar-spotify"]
-	path = vendor/polybar-spotify
-	url = git@github.com:M-Gregoire/polybar-spotify.git
 [submodule "dotfiles/doom.d"]
 	path = dotfiles/doom.d
 	url = git@github.com:M-Gregoire/Doom-emacs-config.git

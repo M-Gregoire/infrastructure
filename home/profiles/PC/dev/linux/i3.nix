@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
 
@@ -20,12 +25,12 @@ let
 
   screenshot = "${config.resources.paths.home}/Screenshots/";
 
-in {
+in
+{
   imports = [ ./i3-polybar.nix ];
 
   # Import pywal config in xresources
-  xresources.extraConfig =
-    ''#include "${config.resources.paths.home}/.cache/wal/colors.Xresources"'';
+  xresources.extraConfig = ''#include "${config.resources.paths.home}/.cache/wal/colors.Xresources"'';
 
   home.packages = with pkgs; [
     # Manage acpi events
@@ -56,7 +61,7 @@ in {
     xsettingsd
     # Notifications
     dunst
-    # Spotify module
+    # Polybar music module
     zscroll
     # Brightness
     brightnessctl
@@ -115,8 +120,8 @@ in {
       };
       assigns = {
         # Use xprop
-        "${workspace1}" = [{ class = "firefox"; }];
-        "${workspace9}" = [{ class = "thunderbird"; }];
+        "${workspace1}" = [ { class = "firefox"; } ];
+        "${workspace9}" = [ { class = "thunderbird"; } ];
       };
 
       defaultWorkspace = "workspace ${workspace1}";
@@ -131,10 +136,8 @@ in {
         "${modifier}+Shift+e" =
           "exec i3-nagbar -t warning -m 'Do you want to exit i3?' -b 'Yes' 'i3-msg exit'";
         "${modifier}+Shift+a" = "kill";
-        "${modifier}+d" =
-          "exec --no-startup-id ${config.resources.paths.scripts}/launcher.sh";
-        "${modifier}+Shift+s" =
-          "exec --no-startup-id ${config.resources.paths.scripts}/powermenu.sh";
+        "${modifier}+d" = "exec --no-startup-id ${config.resources.paths.scripts}/launcher.sh";
+        "${modifier}+Shift+s" = "exec --no-startup-id ${config.resources.paths.scripts}/powermenu.sh";
         "${modifier}+Shift+x" = "exec i3lock-fancy";
         # Basic movements/focus
         "${modifier}+j" = "focus left";
@@ -169,23 +172,18 @@ in {
         "XF86AudioRaiseVolume" = "exec --no-startup-id pamixer -i 5";
         "XF86AudioLowerVolume" = "exec --no-startup-id pamixer -d 5";
         "XF86AudioMute" = "exec --no-startup-id pamixer -t";
-        "XF86AudioPlay" =
-          "exec --no-startup-id playerctl play-pause -p spotify";
-        "XF86AudioPause" =
-          "exec --no-startup-id playerctl play-pause -p spotify";
-        "XF86AudioNext" = "exec --no-startup-id playerctl next -p spotify";
-        "XF86AudioPrev" = "exec --no-startup-id playerctl previous -p spotify";
+        "XF86AudioPlay" = "exec --no-startup-id playerctl play-pause";
+        "XF86AudioPause" = "exec --no-startup-id playerctl play-pause";
+        "XF86AudioNext" = "exec --no-startup-id playerctl next";
+        "XF86AudioPrev" = "exec --no-startup-id playerctl previous";
         # Modes
         "${modifier}+r" = ''mode "resize"'';
         "${modifier}+m" = " focus floating; mode \"moveit\"";
         # Functions
-        "F2" =
-          "exec --no-startup-id ${config.resources.paths.scripts}/switchSoundCard.sh";
-        "F12" =
-          "exec --no-startup-id ${config.resources.paths.scripts}/hidePolybar.sh";
+        "F2" = "exec --no-startup-id ${config.resources.paths.scripts}/switchSoundCard.sh";
+        "F12" = "exec --no-startup-id ${config.resources.paths.scripts}/hidePolybar.sh";
         "Scroll_Lock" = "exec --no-startup-id $SCRIPTS/kbdLayout.sh";
-        "Print" =
-          "exec --no-startup-id ${config.resources.paths.scripts}/screenshot.sh";
+        "Print" = "exec --no-startup-id ${config.resources.paths.scripts}/screenshot.sh";
         # Disable Control+q in Firefox
         "${modifier}+Control+q" =
           "exec --no-startup-id ${config.resources.paths.scripts}/noCTRLqFirefox.sh";
@@ -233,11 +231,6 @@ in {
       window = {
         hideEdgeBorders = "both";
         titlebar = false;
-
-        commands = [{
-          command = "move to workspace ${workspace10}";
-          criteria = { class = "Spotify"; };
-        }];
       };
 
       modes = {
@@ -274,12 +267,6 @@ in {
       startup = [
         #{ command = "${config.resources.pcs.browser}"; always = false; notification = false; }
         #{ command = "${config.resources.pcs.mailer}"; always = false; notification = false; }
-        {
-          command =
-            "while ! systemctl is-active --quiet network-online.target; do sleep 3; done; spotify --force-device-scale-factor=${config.resources.screen.scaleFactor}";
-          always = false;
-          notification = false;
-        }
         # {
         #   command =
         #     "${config.resources.paths.scripts}/theme.sh ${config.resources.paths.wallpaper.folder} ${config.resources.paths.wallpaper.current} > /tmp/theme.sh.log 2>&1";
@@ -299,8 +286,7 @@ in {
         }
         # Remove all urgencies on startup
         {
-          command =
-            "sleep ${wait-for-urgency}; for win in $(wmctrl -l | awk -F' ' '{print $1}'); do wmctrl -i -r $win -b remove,demands_attention; done";
+          command = "sleep ${wait-for-urgency}; for win in $(wmctrl -l | awk -F' ' '{print $1}'); do wmctrl -i -r $win -b remove,demands_attention; done";
           always = false;
           notification = false;
         }
