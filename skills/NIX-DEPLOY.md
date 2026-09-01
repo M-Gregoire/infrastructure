@@ -38,11 +38,11 @@ nix-deploy build all            # Build all hosts
 Deploy configuration to remote hosts.
 
 ```bash
-nix-deploy deploy vali              # Deploy to vali (remote build on target)
+nix-deploy deploy mimir             # Deploy to mimir (remote build on target)
 nix-deploy deploy hades-1 --local   # Cross-compile locally, copy closure, activate
 nix-deploy deploy hades --local     # Deploy to all hades nodes (local build)
 nix-deploy deploy all               # Deploy to all hosts
-nix-deploy deploy local-hosts       # Deploy to vali, mimir, idunn
+nix-deploy deploy local-hosts       # Deploy to mimir, idunn
 ```
 
 **Two deployment modes for remote hosts:**
@@ -102,7 +102,7 @@ When deploying via deploy-rs (without `--local`), activation behavior is control
 |-------|-----------|
 | `all` | Every host in `hosts.json` |
 | `hades` | All hosts with `cluster: "hades"` (hades-1 through hades-7) |
-| `local-hosts` | vali, mimir, idunn |
+| `local-hosts` | mimir, idunn |
 
 ## How It Works
 

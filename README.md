@@ -158,7 +158,7 @@ deploy .#orion
 deploy-hades
 
 # Dry run (test without activation)
-deploy-vali --dry
+deploy-mimir --dry
 ```
 
 ## ⚙️ Host Configuration
@@ -205,7 +205,6 @@ The deployment scripts automatically detect local vs remote deployments:
 ### Individual Hosts
 ```bash
 deploy-mimir        # Gaming/workstation (home network)  
-deploy-vali         # Laptop (home network)
 deploy-orion        # Cloud server
 ```
 

@@ -93,8 +93,8 @@ print_usage() {
     printf "    nix-deploy local                 # Deploy to current machine\n"
     printf "    nix-deploy local build --dry     # Test build current machine config\n"
     printf "    nix-deploy build mimir           # Cross-build mimir config\n"  
-    printf "    nix-deploy deploy vali           # Deploy to vali (remote build)\n"
-    printf "    nix-deploy deploy vali --local   # Deploy to vali (local build)\n"
+    printf "    nix-deploy deploy mimir          # Deploy to mimir (remote build)\n"
+    printf "    nix-deploy deploy mimir --local  # Deploy to mimir (local build)\n"
     printf "    nix-deploy deploy hades-1 --local --switch  # Deploy and activate immediately\n"
     printf "    nix-deploy deploy all --dry      # Dry run deploy to all hosts\n"
     printf "    nix-deploy update-private-lock --push  # Push private config and update flake.lock\n"
@@ -448,7 +448,7 @@ expand_host_groups() {
                 done < <(jq -r 'keys[]' "$HOSTS_JSON")
                 ;;
             local-hosts)
-                for host in vali mimir idunn; do
+                for host in mimir idunn; do
                     if jq -e ".\"$host\"" "$HOSTS_JSON" >/dev/null 2>&1; then
                         expanded+=("$host")
                     fi

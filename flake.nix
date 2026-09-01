@@ -359,7 +359,6 @@
         };
 
       extraNixosModules = {
-        vali = [ nixos-hardware.nixosModules.dell-xps-13-9350 ];
         mimir = [
           nixos-hardware.nixosModules.common-cpu-amd
           nixos-hardware.nixosModules.common-pc-ssd
@@ -409,20 +408,6 @@
       ) nixosHosts;
 
       deploy.nodes = {
-        vali = {
-          hostname = "localhost";
-          sshOpts = [
-            "-p"
-            "5421"
-          ];
-          sshUser = "root";
-          remoteBuild = true;
-          profiles.system = {
-            user = "root";
-            path = self.inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.vali;
-          };
-        };
-
         mimir = {
           hostname = "localhost";
           sshOpts = [

@@ -13,17 +13,6 @@
     ],
     "requiresSubmodules": true
   },
-  "vali": {
-    "configName": "vali",
-    "hostname": "vali",
-    "profile": "PC",
-    "network": "home",
-    "user": "gregoire",
-    "cluster": "",
-    "clusterRole": "",
-    "system": "x86_64-linux",
-    "requiresSubmodules": true
-  },
   "mimir": {
     "configName": "mimir",
     "hostname": "mimir",

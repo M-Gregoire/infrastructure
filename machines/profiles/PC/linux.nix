@@ -37,9 +37,6 @@
     exfat
   ];
 
-  environment.etc."wpa_supplicant.conf".source =
-    "${config.resources.paths.secrets}/wpa_supplicant.conf";
-
   users.extraGroups.plugdev = { };
   users.users.${config.resources.username} = {
     extraGroups = [
