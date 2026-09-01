@@ -167,9 +167,12 @@ in
         "${modifier}+c" = "exec ${pkgs.dunst}/bin/dunstctl close";
         "${modifier}+shift+c" = "exec ${pkgs.dunst}/bin/dunstctl close-all";
         # Media bindings
-        "XF86AudioRaiseVolume" = "exec --no-startup-id pamixer -i 5";
-        "XF86AudioLowerVolume" = "exec --no-startup-id pamixer -d 5";
-        "XF86AudioMute" = "exec --no-startup-id pamixer -t";
+        "XF86AudioRaiseVolume" =
+          "exec --no-startup-id ${pkgs.wireplumber}/bin/wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+";
+        "XF86AudioLowerVolume" =
+          "exec --no-startup-id ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
+        "XF86AudioMute" =
+          "exec --no-startup-id ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
         "XF86AudioPlay" = "exec --no-startup-id playerctl play-pause";
         "XF86AudioPause" = "exec --no-startup-id playerctl play-pause";
         "XF86AudioNext" = "exec --no-startup-id playerctl next";
@@ -286,12 +289,6 @@ in
         {
           command = "sleep ${wait-for-urgency}; for win in $(wmctrl -l | awk -F' ' '{print $1}'); do wmctrl -i -r $win -b remove,demands_attention; done";
           always = false;
-          notification = false;
-        }
-        # Polybar
-        {
-          command = "${config.resources.paths.scripts}/polybar.sh";
-          always = true;
           notification = false;
         }
         # Xbanish to hide mouse if unused

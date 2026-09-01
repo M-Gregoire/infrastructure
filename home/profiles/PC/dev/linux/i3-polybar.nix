@@ -83,10 +83,28 @@ let
         ;;
     esac
   '';
+
+  startPolybar = pkgs.writeShellScript "start-polybar" ''
+    ${pkgs.procps}/bin/pkill -x polybar || true
+
+    while ${pkgs.procps}/bin/pgrep -x polybar >/dev/null; do
+      sleep 1
+    done
+
+    exec ${polybarPackage}/bin/polybar top-main
+  '';
 in
 {
   # Required for network module
   home.packages = with pkgs; [ ethtool ];
+  xsession.windowManager.i3.config.startup = [
+    {
+      command = "${startPolybar}";
+      always = true;
+      notification = false;
+    }
+  ];
+
   services.polybar = {
     enable = true;
     package = polybarPackage;

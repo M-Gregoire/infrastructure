@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   # Needed for pcmanfm "Open terminal here"
@@ -9,21 +14,28 @@ let
     icon = "kitty";
     comment = "Fast, feature-rich, GPU based terminal";
     genericName = "Terminal emulator";
-    categories = [ "System" "TerminalEmulator" ];
+    categories = [
+      "System"
+      "TerminalEmulator"
+    ];
     terminal = false;
   };
 
-in {
-  imports = let
-    folder = ./dev/linux;
-    files = builtins.attrNames (builtins.readDir folder);
-    nixFiles =
-      builtins.filter (name: builtins.match ".*\\.nix" name != null) files;
-  in map (name: folder + "/${name}") nixFiles;
+in
+{
+  imports =
+    let
+      folder = ./dev/linux;
+      files = builtins.attrNames (builtins.readDir folder);
+      nixFiles = builtins.filter (name: builtins.match ".*\\.nix" name != null) files;
+    in
+    map (name: folder + "/${name}") nixFiles;
 
   xsession.scriptPath = ".hm-xsession";
 
-  xresources.properties = { "Xft.dpi" = config.resources.screen.dpi; };
+  xresources.properties = {
+    "Xft.dpi" = config.resources.screen.dpi;
+  };
 
   home.packages = with pkgs; [
 
@@ -76,12 +88,10 @@ in {
     # Hide polybar script
     xdo
 
-    # Scripting audio
-    pamixer
+    # Scripting audio/media
     playerctl
-    # I'm using pipewire but can still use pulseaudio commands
+    # Provides pactl for PipeWire-Pulse compatibility scripts.
     pulseaudio
-    pulseaudio-ctl
 
     # fuser, killall and pstree
     # Needed by polybar theme
