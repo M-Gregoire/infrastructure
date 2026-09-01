@@ -5,14 +5,19 @@ This infrastructure uses [sops-nix](https://github.com/Mic92/sops-nix) with [age
 ## Architecture Overview
 
 ```
-.sops.yaml                    # Defines age keys and creation rules
-secrets/
-  datadog.yaml                # Encrypted Datadog monitoring credentials
-  attic.yaml                  # Encrypted Attic binary cache token
-machines/dev/
-  datadog.nix                 # Consumes Datadog monitoring secrets
-  attic.nix                   # Consumes attic secrets
-flake.nix                     # Imports sops-nix modules (separate for linux/darwin)
+~/src/infrastructure-private/
+  .sops.yaml                  # Defines age keys and creation rules
+  secrets/
+    datadog.yaml              # Encrypted Datadog monitoring credentials
+    attic.yaml                # Encrypted Attic binary cache token
+    hades.yaml                # Encrypted Hades cluster secrets
+    pc.yaml                   # Encrypted laptop/desktop secrets
+    personal.yaml             # Encrypted personal/home service secrets
+~/src/infrastructure/
+  machines/dev/
+    datadog.nix               # Consumes Datadog monitoring secrets
+    attic.nix                 # Consumes attic secrets
+  flake.nix                   # Imports sops-nix modules and private-config input
 ```
 
 **Encryption:** age (via SSH host ed25519 keys on deployed machines, personal age key for admin).
@@ -44,9 +49,9 @@ self.inputs.sops-nix-darwin.darwinModules.sops
 self.inputs.sops-nix-linux.nixosModules.sops
 ```
 
-No additional imports are needed in `flake.nix` to use sops — just create a module that references `sops.secrets.*` and import it from the relevant host config.
+No additional imports are needed in `flake.nix` to use sops — just create a module that references `sops.secrets.*` and import it from the relevant host config. Secret payload files should live in `~/src/infrastructure-private/secrets`; public modules refer to them through the `private-config` flake input.
 
-## .sops.yaml Structure
+## Private `.sops.yaml` Structure
 
 ```yaml
 keys:
@@ -83,7 +88,7 @@ The `ssh-to-age` tool is available via `nix shell nixpkgs#ssh-to-age`.
 
 ## Adding a New Secret
 
-### Step 1: Define the creation rule in `.sops.yaml`
+### Step 1: Define the creation rule in `~/src/infrastructure-private/.sops.yaml`
 
 Add the new machine keys (if needed) and a creation rule:
 
@@ -105,7 +110,7 @@ creation_rules:
 ### Step 2: Create the encrypted secret file
 
 ```bash
-cd ~/src/infrastructure
+cd ~/src/infrastructure-private
 
 # Create plaintext, then encrypt in-place:
 echo 'my_service:
@@ -126,7 +131,7 @@ SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt sops -d secrets/mysecret.yaml
 Create `machines/dev/myservice.nix`:
 
 ```nix
-{ config, lib, pkgs, flake-root, ... }:
+{ config, lib, pkgs, private-config, ... }:
 
 {
   # Tell sops-nix where to find the host's age private key
@@ -134,7 +139,7 @@ Create `machines/dev/myservice.nix`:
 
   # Define the secret — sops-nix decrypts it at activation time
   sops.secrets."my_service/api_key" = {
-    sopsFile = builtins.toPath "${flake-root}/secrets/mysecret.yaml";
+    sopsFile = builtins.toPath "${private-config}/secrets/mysecret.yaml";
     mode = "0400";          # File permissions
     owner = "root";         # Optional: file owner (default: root)
     # path = "/etc/myservice/api_key";  # Optional: custom path
@@ -156,7 +161,8 @@ Create `machines/dev/myservice.nix`:
 ### Step 6: Git add (critical for flakes)
 
 ```bash
-git add secrets/mysecret.yaml machines/dev/myservice.nix
+cd ~/src/infrastructure-private && git add secrets/mysecret.yaml
+cd ~/src/infrastructure && git add machines/dev/myservice.nix
 ```
 
 ## Referencing Secrets in Nix Config
@@ -179,7 +185,7 @@ Set `path` on the secret to control where it's decrypted:
 
 ```nix
 sops.secrets."attic/token" = {
-  sopsFile = builtins.toPath "${flake-root}/secrets/attic.yaml";
+  sopsFile = builtins.toPath "${private-config}/secrets/attic.yaml";
   path = "/etc/attic/token";   # Decrypted here at activation
   mode = "0400";
 };
@@ -215,7 +221,7 @@ Prefer explicit per-secret `sopsFile` entries:
 ```nix
 # Explicit per-secret — safer when multiple modules coexist
 sops.secrets."attic/token" = {
-  sopsFile = builtins.toPath "${flake-root}/secrets/attic.yaml";
+  sopsFile = builtins.toPath "${private-config}/secrets/attic.yaml";
   ...
 };
 ```
@@ -227,20 +233,20 @@ sops.secrets."attic/token" = {
 When a new machine needs access to an already-encrypted secret:
 
 ```bash
-cd ~/src/infrastructure
+cd ~/src/infrastructure-private
 
 # 1. Add the machine's age key to .sops.yaml (under keys: and the relevant creation_rules:)
 
 # 2. Update the encrypted file's recipients:
 SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt sops updatekeys secrets/mysecret.yaml
 
-# 3. Import the sops module from the machine's host config
+# 3. Import the sops module from the machine's host config in ~/src/infrastructure
 ```
 
 ## Rotating / Updating a Secret Value
 
 ```bash
-cd ~/src/infrastructure
+cd ~/src/infrastructure-private
 
 # Edit the encrypted file (sops decrypts, opens $EDITOR, re-encrypts on save):
 SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt sops secrets/mysecret.yaml
@@ -248,10 +254,13 @@ SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt sops secrets/mysecret.yaml
 
 ## Current Secrets Inventory
 
-| File | Secret Keys | Used By | Machines |
+| Private File | Secret Keys | Used By | Machines |
 |------|-------------|---------|----------|
 | `secrets/datadog.yaml` | `datadog/hades-cluster/api_id`, `datadog/hades-cluster/api_secret` | `machines/dev/datadog.nix` | hades-1..7 |
 | `secrets/attic.yaml` | `attic/token` | `machines/dev/attic.nix` | hades-1..7, idunn |
+| `secrets/hades.yaml` | `hades/k3s/token` | `machines/hosts/hades/default.nix` | hades-1..7 |
+| `secrets/pc.yaml` | Wi-Fi, WireGuard, OpenVPN material | `machines/profiles/PC/linux.nix`, `machines/dev/linux/vpn-home.nix` | admin personal age key |
+| `secrets/personal.yaml` | Nextcloud password, Gotify tokens | encrypted inventory / future consumers | admin, idunn, orion |
 
 ## Troubleshooting
 

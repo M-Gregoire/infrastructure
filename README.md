@@ -314,21 +314,23 @@ deploy-hades
 
 ## 🔐 Secrets Management
 
-Secrets are managed using [SOPS](https://github.com/Mic92/sops-nix):
+Secrets are managed using [SOPS](https://github.com/Mic92/sops-nix). The public repo contains only secret consumers; encrypted secret payloads live in `~/src/infrastructure-private/secrets`.
 
 ```bash
-# Edit secrets
-sops secrets/hosts/hostname/secrets.yaml
+# Edit private secrets
+cd ~/src/infrastructure-private
+sops secrets/pc.yaml
 
 # Deploy with secrets
-deploy .#hostname  # Secrets automatically decrypted on target
+cd ~/src/infrastructure
+nix-deploy deploy hostname  # Secrets automatically decrypted on target
 ```
 
 ### Secret Structure
 ```yaml
-# secrets/hosts/mimir/secrets.yaml
-wifi_password: ENC[AES256_GCM,data:...,tag:...]
-ssh_private_key: ENC[AES256_GCM,data:...,tag:...]
+# ~/src/infrastructure-private/secrets/pc.yaml
+wifi:
+  wpa_supplicant_conf: ENC[AES256_GCM,data:...,tag:...]
 ```
 
 ## 📚 Documentation

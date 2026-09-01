@@ -2,7 +2,7 @@
   config,
   lib,
   pkgs,
-  flake-root,
+  private-config,
   hostname,
   configName,
   ...
@@ -22,10 +22,10 @@ let
 in
 {
 
-  sops.defaultSopsFile = builtins.toPath "${flake-root}/secrets/datadog.yaml";
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
   sops.secrets."datadog/hades-cluster/api_secret" = {
+    sopsFile = builtins.toPath "${private-config}/secrets/datadog.yaml";
     mode = "0440";
     owner = config.systemd.services.datadog-agent.serviceConfig.User;
     group = config.systemd.services.datadog-agent.serviceConfig.Group;
