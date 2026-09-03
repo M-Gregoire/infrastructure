@@ -24,6 +24,7 @@
       "--kube-controller-manager-arg=node-monitor-grace-period=30s"
       "--kube-controller-manager-arg=terminated-pod-gc-threshold=100"
       "--tls-san ${config.resources.hostname}.${config.resources.networking.domain}"
+      "--tls-san 192.168.3.60"
     ];
   };
 

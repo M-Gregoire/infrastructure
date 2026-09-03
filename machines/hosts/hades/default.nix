@@ -1,12 +1,76 @@
 {
   config,
   configName,
+  clusterRole,
   lib,
   pkgs,
   ...
 }:
 
 let
+  isServer = clusterRole == "server";
+
+  kubeVipManifest = pkgs.writeText "kube-vip.yaml" ''
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: kube-vip
+      namespace: kube-system
+    spec:
+      containers:
+      - name: kube-vip
+        image: ghcr.io/kube-vip/kube-vip:v0.8.7
+        imagePullPolicy: IfNotPresent
+        args: ["manager"]
+        env:
+        - name: vip_arp
+          value: "true"
+        - name: port
+          value: "6443"
+        - name: vip_address
+          value: "192.168.3.60"
+        - name: vip_cidr
+          value: "32"
+        - name: cp_enable
+          value: "true"
+        - name: cp_namespace
+          value: "kube-system"
+        - name: svc_enable
+          value: "false"
+        - name: vip_leaderelection
+          value: "true"
+        - name: vip_leasename
+          value: "plndr-cp-lock"
+        - name: vip_leaseduration
+          value: "5"
+        - name: vip_renewdeadline
+          value: "3"
+        - name: vip_retryperiod
+          value: "1"
+        - name: prometheus_server
+          value: ":2113"
+        securityContext:
+          capabilities:
+            add: ["NET_ADMIN", "NET_RAW"]
+        volumeMounts:
+        - name: k3s-kubeconfig
+          mountPath: /.kube/config
+          readOnly: true
+        - name: k3s-tls
+          mountPath: /var/lib/rancher/k3s/server/tls
+          readOnly: true
+      hostNetwork: true
+      volumes:
+      - name: k3s-kubeconfig
+        hostPath:
+          path: /var/lib/rancher/k3s/server/cred/admin.kubeconfig
+          type: File
+      - name: k3s-tls
+        hostPath:
+          path: /var/lib/rancher/k3s/server/tls
+          type: Directory
+  '';
+
   rpiHadesNodes = [
     "hades-1"
     "hades-2"
@@ -166,10 +230,28 @@ in
     "errors=remount-ro"
   ];
 
+  # Disable BCM43xx Bluetooth on RPi nodes — the onboard BT is unused and
+  # its firmware-load timeouts (hci0: BCM: Reset failed) waste kernel resources.
+  boot.blacklistedKernelModules = lib.mkIf isRpiHadesNode [
+    "bluetooth"
+    "btusb"
+    "btbcm"
+    "hci_uart"
+  ];
+
   # boot.blacklistedKernelModules = [ "uas" ];
   # https://github.com/raspberrypi/linux/issues/5060#issuecomment-1306322303
   # https://www.reddit.com/r/NixOS/comments/znh1fm/blacklisting_in_uas_module/
   # boot.extraModprobeConfig = ''
   #   options usb-storage quirks=174c:55aa:u
   # '';
+
+  # kube-vip control plane VIP static pod — placed on server nodes so the
+  # API VIP (192.168.3.60) floats across all control-plane members.
+  system.activationScripts.kube-vip = lib.mkIf isServer {
+    text = ''
+      mkdir -p /var/lib/rancher/k3s/agent/pod-manifests
+      cp ${kubeVipManifest} /var/lib/rancher/k3s/agent/pod-manifests/kube-vip.yaml
+    '';
+  };
 }

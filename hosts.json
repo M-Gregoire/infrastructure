@@ -91,7 +91,7 @@
     "network": "home",
     "user": "gregoire",
     "cluster": "hades",
-    "clusterRole": "agent",
+    "clusterRole": "server",
     "system": "aarch64-linux",
     "deployHostname": "hades-6.martinache.net",
     "sshPort": 5421
@@ -103,7 +103,7 @@
     "network": "home",
     "user": "gregoire",
     "cluster": "hades",
-    "clusterRole": "agent",
+    "clusterRole": "server",
     "system": "x86_64-linux",
     "deployHostname": "hades-7.martinache.net",
     "sshPort": 5421

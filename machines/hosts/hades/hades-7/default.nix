@@ -21,7 +21,15 @@
 
   services.k3s = {
     enable = true;
-    role = "agent";
+    extraFlags = lib.concatStringsSep " " [
+      "--disable servicelb"
+      "--kube-apiserver-arg=default-not-ready-toleration-seconds=30"
+      "--kube-apiserver-arg=default-unreachable-toleration-seconds=30"
+      "--kube-controller-manager-arg=node-monitor-grace-period=30s"
+      "--kube-controller-manager-arg=terminated-pod-gc-threshold=100"
+      "--tls-san ${config.resources.hostname}.${config.resources.networking.domain}"
+      "--tls-san 192.168.3.60"
+    ];
   };
 
   networking.firewall.allowedTCPPorts = [ 6443 ];
@@ -39,5 +47,8 @@
     /nfs/Cameras    *(rw,no_subtree_check,no_root_squash,anonuid=1000,anongid=1000)
   '';
 
-  services.udev.extraRules = "";
+  services.udev.extraRules = ''
+    # Make alias for zigbee
+    SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{serial}=="0001", SYMLINK+="ttyUSB-Sonoff-Zigbee"
+  '';
 }

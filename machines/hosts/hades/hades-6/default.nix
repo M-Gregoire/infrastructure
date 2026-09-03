@@ -32,7 +32,15 @@
 
   services.k3s = {
     enable = true;
-    role = "agent";
+    extraFlags = lib.concatStringsSep " " [
+      "--disable servicelb"
+      "--kube-apiserver-arg=default-not-ready-toleration-seconds=30"
+      "--kube-apiserver-arg=default-unreachable-toleration-seconds=30"
+      "--kube-controller-manager-arg=node-monitor-grace-period=30s"
+      "--kube-controller-manager-arg=terminated-pod-gc-threshold=100"
+      "--tls-san ${config.resources.hostname}.${config.resources.networking.domain}"
+      "--tls-san 192.168.3.60"
+    ];
   };
 
   networking.firewall.allowedTCPPorts = [ 6443 ];
