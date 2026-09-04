@@ -34,7 +34,14 @@
 
   networking.firewall.allowedTCPPorts = [ 6443 ];
 
-  # mkdir -p /nfs/Cameras && chattr +i /nfs/Cameras
+  # Protect mount point: if the disk is missing or unmounted, the immutable
+  # flag prevents anything from writing to the root filesystem.
+  # mount(2) operates at VFS level and is unaffected by the flag.
+  system.activationScripts.protectNfsMounts = lib.stringAfter [ "specialfs" ] ''
+    mkdir -p /nfs/Cameras
+    ${pkgs.e2fsprogs}/bin/chattr +i /nfs/Cameras
+  '';
+
   fileSystems."/nfs/Cameras" = {
     device = "/dev/disk/by-uuid/c78289ef-b0bf-48c0-a17c-02d6f2cbed6c";
     fsType = "ext4";
