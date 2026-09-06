@@ -101,7 +101,7 @@ When deploying via deploy-rs (without `--local`), activation behavior is control
 | Group | Expands to |
 |-------|-----------|
 | `all` | Every host in `hosts.json` |
-| `hades` | All hosts with `cluster: "hades"` (hades-1 through hades-7) |
+| `hades` | All hosts with `cluster: "hades"` (hades-1 through hades-6) |
 | `local-hosts` | mimir, idunn |
 
 ## How It Works

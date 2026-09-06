@@ -11,7 +11,6 @@
 let
   volatileJournalHosts = [
     "hades-1"
-    "hades-2"
     "hades-3"
     "hades-4"
     "hades-5"

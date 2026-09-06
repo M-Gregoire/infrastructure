@@ -43,8 +43,8 @@
     "network": "home",
     "user": "gregoire",
     "cluster": "hades",
-    "clusterRole": "agent",
-    "system": "aarch64-linux",
+    "clusterRole": "server",
+    "system": "x86_64-linux",
     "deployHostname": "hades-2.martinache.net",
     "sshPort": 5421
   },
@@ -94,18 +94,6 @@
     "clusterRole": "server",
     "system": "aarch64-linux",
     "deployHostname": "hades-6.martinache.net",
-    "sshPort": 5421
-  },
-  "hades-7": {
-    "configName": "hades-7",
-    "hostname": "hades-7",
-    "profile": "server",
-    "network": "home",
-    "user": "gregoire",
-    "cluster": "hades",
-    "clusterRole": "server",
-    "system": "x86_64-linux",
-    "deployHostname": "hades-7.martinache.net",
     "sshPort": 5421
   },
   "orion": {

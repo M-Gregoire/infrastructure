@@ -368,8 +368,8 @@
           inputs.nixos-raspberrypi.lib.inject-overlays
         ];
         hades-2 = [
-          nixos-hardware.nixosModules.raspberry-pi-4
-          inputs.nixos-raspberrypi.lib.inject-overlays
+          nixos-hardware.nixosModules.common-cpu-intel
+          nixos-hardware.nixosModules.common-pc-ssd
         ];
         hades-3 = [
           nixos-hardware.nixosModules.raspberry-pi-4
@@ -386,10 +386,6 @@
         hades-6 = [
           nixos-hardware.nixosModules.raspberry-pi-4
           inputs.nixos-raspberrypi.lib.inject-overlays
-        ];
-        hades-7 = [
-          nixos-hardware.nixosModules.common-cpu-intel
-          nixos-hardware.nixosModules.common-pc-ssd
         ];
         orion = [ self.inputs.disko.nixosModules.disko ];
       };
@@ -447,7 +443,7 @@
           remoteBuild = true;
           profiles.system = {
             user = "root";
-            path = self.inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.hades-2;
+            path = self.inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.hades-2;
           };
           autoRollback = false;
           magicRollback = false;
@@ -508,21 +504,6 @@
           profiles.system = {
             user = "root";
             path = self.inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.hades-6;
-          };
-          autoRollback = false;
-          magicRollback = false;
-        };
-        hades-7 = {
-          hostname = "192.168.3.37";
-          sshOpts = [
-            "-p"
-            "5421"
-          ];
-          sshUser = "root";
-          remoteBuild = true;
-          profiles.system = {
-            user = "root";
-            path = self.inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.hades-7;
           };
           autoRollback = false;
           magicRollback = false;

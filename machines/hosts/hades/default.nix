@@ -73,7 +73,6 @@ let
 
   rpiHadesNodes = [
     "hades-1"
-    "hades-2"
     "hades-3"
     "hades-4"
     "hades-5"
@@ -85,6 +84,7 @@ in
   imports = [
     ../../dev/datadog.nix
     ../../dev/attic.nix
+    ../../dev/linux/nut.nix
     ../../dev/linux/systemd-networkd.nix
   ];
 
@@ -97,7 +97,7 @@ in
       gptfdisk
       smartmontools
     ]
-    ++ lib.optionals (config.networking.hostName != "hades-7") [ libraspberrypi ];
+    ++ lib.optionals (config.networking.hostName != "hades-2") [ libraspberrypi ];
 
   # Auto-boot default generation after 3s (extlinux/U-Boot)
   boot.loader.timeout = 3;
