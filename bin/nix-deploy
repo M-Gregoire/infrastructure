@@ -65,6 +65,9 @@ print_usage() {
     printf "    ${GREEN}deploy${NC} <HOST> [HOST...]       Deploy configuration to target host(s)\n"
     printf "    ${GREEN}update-private-lock${NC} [--push]   Pin flake.lock to current private-config commit\n"
     printf "    ${GREEN}list${NC}                          List all available hosts and their details\n"
+    printf "    ${GREEN}runner-create${NC}                 Start linux-builder VM in foreground (for debugging)\n"
+    printf "    ${GREEN}runner-reboot${NC}                 Restart the linux-builder launchd service\n"
+    printf "    ${GREEN}runner-reset${NC}                  Delete disk image and restart linux-builder from scratch\n"
     printf "    ${GREEN}help${NC}                          Show this help message\n\n"
     printf "${BOLD}${YELLOW}LOCAL COMMAND:${NC}\n"
     printf "    nix-deploy local                 Deploy local config (switch)\n"
@@ -88,6 +91,7 @@ print_usage() {
     printf "    --remote                         Force remote building, skip cross-compile prompt\n"
     printf "    --switch                         Activate immediately (default: boot, requires reboot)\n"
     printf "    --skip-checks                    Skip evaluation checks for faster deployment\n"
+    printf "    --no-cache                       Skip remote builder/cache (use only cache.nixos.org)\n"
     printf "    --help, -h                       Show help for specific command\n\n"
     printf "${BOLD}${YELLOW}EXAMPLES:${NC}\n"
     printf "    nix-deploy local                 # Deploy to current machine\n"
@@ -375,11 +379,19 @@ cmd_local() {
 
     local host_network
     host_network="$(get_host_info "$host_config" "network")"
-    local -a cache_options=()
-    if [[ "$host_network" != "home" ]]; then
-        # Avoid inheriting a stale home-only Attic cache from the current system
-        # while building the new non-home configuration.
-        cache_options=(--option substituters "https://cache.nixos.org/")
+    local no_cache=false
+    local -a filtered_args=()
+    for arg in "${extra_args[@]}"; do
+        if [[ "$arg" == "--no-cache" ]]; then
+            no_cache=true
+        else
+            filtered_args+=("$arg")
+        fi
+    done
+    extra_args=("${filtered_args[@]}")
+    if [[ "$no_cache" == "true" ]] || [[ "$host_network" != "home" ]]; then
+        # Skip remote builder/cache — use only cache.nixos.org
+        export NIX_CONFIG="substituters = https://cache.nixos.org/"
     fi
     
     case "$current_system" in
@@ -392,14 +404,14 @@ cmd_local() {
             if [[ "$action" == "switch" ]]; then
                 if [[ "$is_dry_run" == "true" ]]; then
                     print_info "${EMOJI_LOCAL} Local deployment (dry run): $cmd build --flake $flake_uri"
-                    exec $sudo_cmd "$cmd" build --flake "$flake_uri" "${flake_options[@]}" "${cache_options[@]}" "${nix_options[@]}" "${extra_args[@]}"
+                    exec $sudo_cmd "$cmd" build --flake "$flake_uri" "${flake_options[@]}" "${nix_options[@]}" "${extra_args[@]}"
                 else
                     print_info "${EMOJI_LOCAL} Local deployment: $cmd switch --flake $flake_uri"
-                    exec $sudo_cmd "$cmd" switch --flake "$flake_uri" "${flake_options[@]}" "${cache_options[@]}" "${nix_options[@]}" "${extra_args[@]}"
+                    exec $sudo_cmd "$cmd" switch --flake "$flake_uri" "${flake_options[@]}" "${nix_options[@]}" "${extra_args[@]}"
                 fi
             else
                 print_info "${EMOJI_BUILD} Local build: $cmd build --flake $flake_uri"
-                exec sudo -A "$cmd" build --flake "$flake_uri" "${flake_options[@]}" "${cache_options[@]}" "${nix_options[@]}" "${extra_args[@]}"
+                exec sudo -A "$cmd" build --flake "$flake_uri" "${flake_options[@]}" "${nix_options[@]}" "${extra_args[@]}"
             fi
             ;;
         *linux*)
@@ -412,14 +424,14 @@ cmd_local() {
             if [[ "$action" == "switch" ]]; then
                 if [[ "$is_dry_run" == "true" ]]; then
                     print_info "${EMOJI_LOCAL} Local deployment (dry run): $cmd build --flake $flake_uri"
-                    exec $sudo_cmd "$cmd" build --flake "$flake_uri" "${flake_options[@]}" "${cache_options[@]}" "${nix_options[@]}" "${extra_args[@]}"
+                    exec $sudo_cmd "$cmd" build --flake "$flake_uri" "${flake_options[@]}" "${nix_options[@]}" "${extra_args[@]}"
                 else
                     print_info "${EMOJI_LOCAL} Local deployment: $cmd switch --flake $flake_uri"
-                    exec $sudo_cmd "$cmd" switch --flake "$flake_uri" "${flake_options[@]}" "${cache_options[@]}" "${nix_options[@]}" "${extra_args[@]}"
+                    exec $sudo_cmd "$cmd" switch --flake "$flake_uri" "${flake_options[@]}" "${nix_options[@]}" "${extra_args[@]}"
                 fi
             else
                 print_info "${EMOJI_BUILD} Local build: $cmd build --flake $flake_uri"
-                exec sudo -A "$cmd" build --flake "$flake_uri" "${flake_options[@]}" "${cache_options[@]}" "${nix_options[@]}" "${extra_args[@]}"
+                exec sudo -A "$cmd" build --flake "$flake_uri" "${flake_options[@]}" "${nix_options[@]}" "${extra_args[@]}"
             fi
             ;;
         *)
@@ -472,6 +484,7 @@ cmd_build() {
     local -a targets=()
     local -a extra_args=()
     local dry_run=false
+    local no_cache=false
 
     # Load GitHub token for API access
     load_github_token
@@ -486,6 +499,9 @@ cmd_build() {
             --dry)
                 dry_run=true
                 extra_args+=("--dry-run")
+                ;;
+            --no-cache)
+                no_cache=true
                 ;;
             --*|-*)
                 extra_args+=("$1")
@@ -507,11 +523,14 @@ cmd_build() {
     readarray -t expanded_hosts < <(expand_host_groups "${targets[@]}")
     local -a flake_options=()
     readarray -d '' -t flake_options < <(get_private_flake_options)
-    
+    if [[ "$no_cache" == "true" ]]; then
+        export NIX_CONFIG="substituters = https://cache.nixos.org/"
+    fi
+
     for host in "${expanded_hosts[@]}"; do
         local target_system
         target_system="$(get_host_info "$host" "system")"
-        
+
         # Determine the correct attribute path based on system type
         local build_target
         if [[ "$target_system" == *"darwin"* ]]; then
@@ -519,7 +538,7 @@ cmd_build() {
         else
             build_target=".#nixosConfigurations.$host.config.system.build.toplevel"
         fi
-        
+
         if needs_cross_build "$host"; then
             print_info "${EMOJI_BUILD} Cross-building $host ($target_system)..."
             nix build "$build_target" "${flake_options[@]}" --option access-tokens "github.com/M-Gregoire=$GITHUB_TOKEN" "${extra_args[@]}"
@@ -598,6 +617,7 @@ cmd_deploy() {
     local force_local_build=false
     local force_remote_build=false
     local activation_action="boot"
+    local no_cache=false
 
     # Parse arguments
     while [[ $# -gt 0 ]]; do
@@ -614,6 +634,9 @@ cmd_deploy() {
                 ;;
             --switch)
                 activation_action="switch"
+                ;;
+            --no-cache)
+                no_cache=true
                 ;;
             --dry|--skip-checks)
                 extra_args+=("$1")
@@ -658,10 +681,14 @@ cmd_deploy() {
     # Handle single host local deployment
     if [[ ${#expanded_hosts[@]} -eq 1 ]] && is_local_host "${expanded_hosts[0]}"; then
         print_info "${EMOJI_LOCAL} Detected local deployment for ${expanded_hosts[0]}"
+        local -a local_args=("${extra_args[@]}")
+        if [[ "$no_cache" == "true" ]]; then
+            local_args+=("--no-cache")
+        fi
         if [[ "$is_dry_run" == "true" ]]; then
-            cmd_local "build" "${extra_args[@]}"
+            cmd_local "build" "${local_args[@]}"
         else
-            cmd_local "switch" "${extra_args[@]}"
+            cmd_local "switch" "${local_args[@]}"
         fi
         return
     fi
@@ -704,6 +731,9 @@ cmd_deploy() {
         load_github_token
         local -a flake_options=()
         readarray -d '' -t flake_options < <(get_private_flake_options)
+        if [[ "$no_cache" == "true" ]]; then
+            export NIX_CONFIG="substituters = https://cache.nixos.org/"
+        fi
         for host in "${expanded_hosts[@]}"; do
             
             local target_hostname
@@ -759,6 +789,163 @@ cmd_deploy() {
     exec deploy "${flake_targets[@]}" "${extra_args[@]}"
 }
 
+# --- Linux builder (runner) commands ---
+
+BUILDER_SERVICE="system/org.nixos.linux-builder"
+
+get_create_builder_path() {
+    local start_script
+    start_script=$(sudo launchctl list org.nixos.linux-builder 2>/dev/null | \
+        sed -n 's|.*exec \(/nix/store/[^"]*-linux-builder-start\).*|\1|p')
+
+    if [[ -z "$start_script" || ! -f "$start_script" ]]; then
+        print_error "Could not find linux-builder-start script from launchd"
+        exit 1
+    fi
+
+    local create_builder
+    create_builder=$(grep -o '/nix/store/[^ ]*create-builder' "$start_script" | head -1)
+
+    if [[ -z "$create_builder" || ! -x "$create_builder" ]]; then
+        print_error "Could not find create-builder binary in $start_script"
+        exit 1
+    fi
+
+    echo "$create_builder"
+}
+
+kill_stale_builder() {
+    # Kill any leftover vzvm/qemu processes and anything holding port 31022.
+    # Must be called AFTER launchctl bootout to prevent KeepAlive respawns.
+    local pids
+    pids=$(pgrep -x 'vzvm|qemu-system-aarch64' 2>/dev/null || true)
+    if [[ -n "$pids" ]]; then
+        print_warning "Killing stale VM process(es): $pids"
+        echo "$pids" | xargs sudo kill -9 2>/dev/null || true
+        sleep 2
+    fi
+    # Also kill anything else holding the port (wrapper scripts etc.)
+    pids=$(lsof -ti :31022 2>/dev/null || true)
+    if [[ -n "$pids" ]]; then
+        print_warning "Killing process(es) on port 31022: $pids"
+        echo "$pids" | xargs sudo kill -9 2>/dev/null || true
+        sleep 2
+    fi
+    # Kill the entire process tree rooted at linux-builder-start
+    pids=$(pgrep -f 'linux-builder-start|create-builder|run-nixos-vm|run-builder' 2>/dev/null || true)
+    if [[ -n "$pids" ]]; then
+        echo "$pids" | xargs sudo kill -9 2>/dev/null || true
+        sleep 1
+    fi
+}
+
+cmd_runner_create() {
+    print_info "Starting linux-builder in foreground..."
+    kill_stale_builder
+    local create_builder
+    create_builder="$(get_create_builder_path)"
+    print_info "Running: $create_builder"
+    sudo "$create_builder"
+}
+
+cmd_runner_reboot() {
+    print_info "Restarting linux-builder service..."
+    kill_stale_builder
+    sudo launchctl kickstart -k "$BUILDER_SERVICE"
+    print_info "Waiting for builder VM to start (port 31022)..."
+    local elapsed=0
+    while (( elapsed < 90 )); do
+        if lsof -i :31022 >/dev/null 2>&1; then
+            print_success "Linux builder VM is listening on port 31022"
+            print_info "Waiting for SSH to become ready..."
+            local ssh_elapsed=0
+            while (( ssh_elapsed < 60 )); do
+                if ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no -o BatchMode=yes \
+                       -p 31022 -i /etc/nix/builder_ed25519 root@localhost true 2>/dev/null; then
+                    print_success "Linux builder SSH is ready"
+                    return 0
+                fi
+                sleep 5
+                ssh_elapsed=$((ssh_elapsed + 5))
+            done
+            print_warning "VM is listening but SSH not responding after 60s — guest may still be booting"
+            return 1
+        fi
+        sleep 5
+        elapsed=$((elapsed + 5))
+    done
+    print_warning "Builder did not start listening within 90s — check 'sudo launchctl list org.nixos.linux-builder'"
+    return 1
+}
+
+cmd_runner_reset() {
+    # The store image (erofs) contains the NixOS closure for the guest VM.
+    # After darwin-rebuild or nix upgrades, it can get out of sync with the
+    # kernel/initrd cmdline, causing initrd-find-nixos-closure to fail and
+    # the VM to drop into emergency mode. Deleting both the store image and
+    # the qcow2 data disk forces a full rebuild from the current closure.
+    local builder_dir="/private/var/lib/linux-builder"
+    print_warning "This will delete the builder disk and store images, then recreate from scratch."
+
+    echo -en "${YELLOW}Proceed? [y/N] ${NC}"
+    read -r confirm
+    if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
+        print_info "Aborted"
+        return
+    fi
+
+    # Stop the launchd service first to prevent KeepAlive respawns
+    print_info "Stopping linux-builder service..."
+    sudo launchctl bootout "$BUILDER_SERVICE" 2>/dev/null || true
+    sleep 1
+    kill_stale_builder
+
+    if [[ -f "$builder_dir/nixos.qcow2" ]]; then
+        print_info "Deleting data disk: $builder_dir/nixos.qcow2"
+        sudo rm -f "$builder_dir/nixos.qcow2"
+    fi
+
+    # Delete store images — they get rebuilt from the current nix closure on next boot.
+    # This is the key fix: a stale store image causes initrd-find-nixos-closure to fail.
+    local store_images
+    store_images=$(ls "$builder_dir"/store-*.img 2>/dev/null || true)
+    if [[ -n "$store_images" ]]; then
+        print_info "Deleting store image(s) to force rebuild from current closure..."
+        sudo rm -f "$builder_dir"/store-*.img
+    fi
+
+    print_info "Restarting linux-builder service (store image rebuild may take a minute)..."
+    sudo launchctl bootstrap system /Library/LaunchDaemons/org.nixos.linux-builder.plist 2>/dev/null || \
+        sudo launchctl kickstart "$BUILDER_SERVICE" 2>/dev/null || {
+        print_warning "Could not restart service — you may need to run 'darwin-rebuild switch' first"
+        return 1
+    }
+
+    local elapsed=0
+    while (( elapsed < 180 )); do
+        if lsof -i :31022 >/dev/null 2>&1; then
+            print_success "Linux builder VM is listening on port 31022"
+            print_info "Waiting for SSH to become ready..."
+            local ssh_elapsed=0
+            while (( ssh_elapsed < 90 )); do
+                if ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no -o BatchMode=yes \
+                       -p 31022 -i /etc/nix/builder_ed25519 root@localhost true 2>/dev/null; then
+                    print_success "Linux builder reset complete — SSH is ready"
+                    return 0
+                fi
+                sleep 5
+                ssh_elapsed=$((ssh_elapsed + 5))
+            done
+            print_warning "VM is listening but SSH not responding after 90s — try 'nix-deploy runner-create' to debug"
+            return 1
+        fi
+        sleep 5
+        elapsed=$((elapsed + 5))
+    done
+    print_warning "Builder did not start within 180s — check: log show --predicate 'process == \"vzvm\"' --last 5m"
+    return 1
+}
+
 # Main command dispatcher
 main() {
     cd "$REPO_ROOT"
@@ -787,6 +974,15 @@ main() {
             ;;
         list)
             list_hosts
+            ;;
+        runner-create)
+            cmd_runner_create
+            ;;
+        runner-reboot)
+            cmd_runner_reboot
+            ;;
+        runner-reset)
+            cmd_runner_reset
             ;;
         help|--help|-h)
             print_usage

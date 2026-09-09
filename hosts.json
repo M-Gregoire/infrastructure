@@ -100,10 +100,12 @@
     "configName": "orion",
     "hostname": "orion",
     "profile": "server",
-    "network": "home",
+    "network": "cloud",
     "user": "gregoire",
     "cluster": "",
     "clusterRole": "",
-    "system": "x86_64-linux"
+    "system": "x86_64-linux",
+    "deployHostname": "orion.martinache.net",
+    "sshPort": 5421
   }
 }

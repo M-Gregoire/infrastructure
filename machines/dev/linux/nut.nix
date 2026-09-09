@@ -2,6 +2,7 @@
   config,
   configName,
   lib,
+  pkgs,
   private-config,
   ...
 }:
@@ -11,14 +12,25 @@ let
   upsName = "eaton5px";
   masterAddr = "192.168.3.31";
   upsAddr = "192.168.5.31";
+  unasProAddr = "192.168.3.30";
+
+  # Script called by upsmon on UPS events (master only).
+  # Shuts down the UNAS Pro on low battery before hades-1 goes down.
+  notifyCmd = pkgs.writeShellScript "nut-notify" ''
+    case "$NOTIFYTYPE" in
+      LOWBATT|FSD)
+        ${pkgs.openssh}/bin/ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no \
+          root@${unasProAddr} "shutdown -h now 'UPS low battery'" &
+        ;;
+    esac
+  '';
 in
 {
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
   sops.secrets."nut/upsmon_password" = {
     sopsFile = builtins.toPath "${private-config}/secrets/hades.yaml";
-    mode = "0440";
-    group = "nut";
+    mode = "0400";
   };
 
   power.ups = {
@@ -68,9 +80,23 @@ in
         FINALDELAY = 5;
         POLLFREQ = 5;
         POLLFREQALERT = 5;
+      } // lib.optionalAttrs isMaster {
+        NOTIFYCMD = notifyCmd;
+        NOTIFYFLAG = [
+          [ "LOWBATT" "SYSLOG+EXEC" ]
+          [ "FSD" "SYSLOG+EXEC" ]
+          [ "ONBATT" "SYSLOG" ]
+          [ "ONLINE" "SYSLOG" ]
+        ];
       };
     };
   };
+
+  # Ensure /var/lib/nut exists before drivers start — the NixOS module
+  # relies on systemd StateDirectory but upsdrvctl runs outside that context.
+  systemd.tmpfiles.rules = [
+    "d /var/lib/nut 0750 nut nut -"
+  ];
 
   # Open NUT port on master for slave connections and Home Assistant
   networking.firewall.allowedTCPPorts = lib.mkIf isMaster [ 3493 ];
