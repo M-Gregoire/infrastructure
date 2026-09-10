@@ -37,10 +37,11 @@
 
   security.sudo.wheelNeedsPassword = false;
 
-  # wireguard-homelab: WireGuard listener + forwarded Soulseek port for slskd
+  # wireguard-homelab: WireGuard listener + forwarded ports for slskd
+  # (50300) and transmission (60264, TCP+UDP for BT/uTP)
   # (see orion-cluster/infrastructure/wireguard-homelab).
-  networking.firewall.allowedUDPPorts = [ 51820 ];
-  networking.firewall.allowedTCPPorts = [ 50300 ];
+  networking.firewall.allowedUDPPorts = [ 51820 60264 ];
+  networking.firewall.allowedTCPPorts = [ 50300 60264 ];
 
   # SSH key for k8s CronJob pulling backups from orion to NAS
   users.users.root.openssh.authorizedKeys.keys = [
