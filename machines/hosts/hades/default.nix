@@ -212,6 +212,12 @@ in
     "kernel.hung_task_panic" = 1;
   };
 
+  # Override the home network's default (networking.enableIPv6 = false):
+  # netbird's firewall manager unconditionally sets up an IPv6 nftables table
+  # as part of applying ACL rules, and fails the whole rule application (both
+  # IPv4 and IPv6) when IPv6 is disabled at the kernel level.
+  networking.enableIPv6 = lib.mkForce true;
+
   # Hardware watchdog — reboots if the system becomes completely unresponsive
   systemd.settings.Manager.RuntimeWatchdogSec = "30s";
   systemd.settings.Manager.RebootWatchdogSec = "10min";
