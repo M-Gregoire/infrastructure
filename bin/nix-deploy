@@ -867,8 +867,8 @@ cmd_runner_reboot() {
             print_info "Waiting for SSH to become ready..."
             local ssh_elapsed=0
             while (( ssh_elapsed < 60 )); do
-                if ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no -o BatchMode=yes \
-                       -p 31022 -i /etc/nix/builder_ed25519 root@localhost true 2>/dev/null; then
+                if sudo ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no -o BatchMode=yes \
+                       -p 31022 -i /etc/nix/builder_ed25519 builder@localhost true 2>/dev/null; then
                     print_success "Linux builder SSH is ready"
                     return 0
                 fi
@@ -935,8 +935,8 @@ cmd_runner_reset() {
             print_info "Waiting for SSH to become ready..."
             local ssh_elapsed=0
             while (( ssh_elapsed < 90 )); do
-                if ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no -o BatchMode=yes \
-                       -p 31022 -i /etc/nix/builder_ed25519 root@localhost true 2>/dev/null; then
+                if sudo ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no -o BatchMode=yes \
+                       -p 31022 -i /etc/nix/builder_ed25519 builder@localhost true 2>/dev/null; then
                     # A full reset regenerates the VM's host key. Remote builds
                     # connect via the 'linux-builder' ssh_config alias (real
                     # StrictHostKeyChecking, run as root by the nix-daemon),
