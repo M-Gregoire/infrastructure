@@ -17,7 +17,7 @@ touch "$MARKER"
 git -C "$REPO_ROOT" add -f "$MARKER"
 
 echo "==> Rebuilding idunn (linux-builder cache substituter disabled)..."
-"$SCRIPT_DIR/nix-deploy" local switch
+"$SCRIPT_DIR/nix-deploy" local switch --no-cache
 
 echo "==> Resetting linux-builder VM to pick up the new config..."
 echo "y" | "$SCRIPT_DIR/nix-deploy" runner-reset
