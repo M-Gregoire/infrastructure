@@ -43,14 +43,6 @@ in {
         diskSize = lib.mkForce (60 * 1024);
       };
       networking.nameservers = [ "192.168.3.1" ];
-      # This VM is only ever reached via localhost port-forwarding, so
-      # sshd's reverse-DNS lookup on connecting clients is pure overhead -
-      # and when 192.168.3.1 is briefly unreachable (e.g. mid-VPN-switch on
-      # the host), that lookup hangs until timeout before the SSH banner is
-      # even sent, causing intermittent "connecting to linux-builder" stalls.
-      # Doesn't affect the VM's own outbound DNS (nix-cache.martinache.net,
-      # GitHub, etc.), which still goes through networking.nameservers above.
-      services.openssh.settings.UseDNS = false;
       # NTP — prevent clock drift that breaks TLS verification
       services.timesyncd.enable = lib.mkForce true;
       # Trust the private root CA for nix-cache.martinache.net
