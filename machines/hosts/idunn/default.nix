@@ -49,19 +49,17 @@ in {
       security.pki.certificates = config.resources.pki.acrs;
       nix.settings = {
         always-allow-substitutes = true;
-        # Presence of /tmp/builder-no-cache-marker (toggled by
-        # bin/builder-no-cache / bin/builder-with-cache) controls whether the
-        # builder VM tries nix-cache.martinache.net at all. It's baked into
-        # the VM's own /etc/nix/nix.conf at build time, so there's no way to
-        # toggle this per-invocation from the client side (see the "why
-        # --no-cache didn't work" thread) — the VM must be rebuilt.
-        # Deliberately outside the repo (an absolute /tmp path, not a
-        # repo-relative one) so it can never be swept into a commit by
-        # mistake the way a git-tracked marker was twice in a row.
-        extra-substituters =
-          lib.optionals (!builtins.pathExists /tmp/builder-no-cache-marker) [
-            "https://nix-cache.martinache.net/hades"
-          ];
+        # Toggled by bin/builder-no-cache / bin/builder-with-cache, which
+        # sed the line below directly rather than using an impure marker -
+        # flakes' restricted evaluation makes builtins.pathExists silently
+        # return false for any path outside the flake's own source tree
+        # (verified directly - even /nix/store itself reads as
+        # "not existing" from inside eval), so that approach never actually
+        # worked despite looking like it did. This is baked into the VM's
+        # own /etc/nix/nix.conf at build time, so there's no way to toggle
+        # it per-invocation from the client side (see the "why --no-cache
+        # didn't work" thread) - the VM must be rebuilt either way.
+        extra-substituters = [ "https://nix-cache.martinache.net/hades" ];
         extra-trusted-public-keys = [ "hades:pWcHX3vzVabOBcdgMn+oesgqYxKvda27XQrRicRzK/0=" ];
       };
       # Auto-GC when disk runs low — builds are pushed to attic anyway

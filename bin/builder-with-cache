@@ -2,14 +2,18 @@
 # Rebuild idunn and reset the linux-builder VM so it uses
 # nix-cache.martinache.net as a substituter again. Counterpart to
 # bin/builder-no-cache - see that script for why this needs a VM reset
-# rather than a flag.
+# rather than a flag, and why it sed's the config directly.
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
-MARKER="/tmp/builder-no-cache-marker"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." &>/dev/null && pwd)"
+IDUNN_CONFIG="$REPO_ROOT/machines/hosts/idunn/default.nix"
 
-rm -f "$MARKER"
+sed \
+  's|extra-substituters = \[ \];|extra-substituters = [ "https://nix-cache.martinache.net/hades" ];|' \
+  "$IDUNN_CONFIG" >"$IDUNN_CONFIG.tmp"
+mv "$IDUNN_CONFIG.tmp" "$IDUNN_CONFIG"
 
 echo "==> Rebuilding idunn (linux-builder cache substituter enabled)..."
 "$SCRIPT_DIR/nix-deploy" local switch

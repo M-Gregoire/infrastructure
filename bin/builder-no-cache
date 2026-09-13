@@ -5,14 +5,26 @@
 # This can't be done as a per-invocation flag (see NIX_BUILD.md /
 # machines/hosts/idunn/default.nix comments on the substituter) - the VM's
 # own /etc/nix/nix.conf is baked in at build time, so toggling it means
-# rebuilding idunn's config and resetting the VM to pick up the new closure.
+# editing idunn's config, rebuilding idunn, and resetting the VM to pick
+# up the new closure.
+#
+# Edits machines/hosts/idunn/default.nix directly (no `git add` needed -
+# flakes' dirty-tree tolerance already picks up working-tree changes to
+# files that are already tracked; only brand-new files need staging). An
+# impure marker file was tried first and looked like it worked, but
+# didn't: flakes' restricted evaluation makes builtins.pathExists always
+# return false for anything outside the flake's own source tree.
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
-MARKER="/tmp/builder-no-cache-marker"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." &>/dev/null && pwd)"
+IDUNN_CONFIG="$REPO_ROOT/machines/hosts/idunn/default.nix"
 
-touch "$MARKER"
+sed \
+  's|extra-substituters = \[ "https://nix-cache.martinache.net/hades" \];|extra-substituters = [ ];|' \
+  "$IDUNN_CONFIG" >"$IDUNN_CONFIG.tmp"
+mv "$IDUNN_CONFIG.tmp" "$IDUNN_CONFIG"
 
 echo "==> Rebuilding idunn (linux-builder cache substituter disabled)..."
 "$SCRIPT_DIR/nix-deploy" local switch --no-cache
