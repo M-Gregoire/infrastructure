@@ -389,17 +389,23 @@ cmd_local() {
         fi
     done
     extra_args=("${filtered_args[@]}")
+    local -a cache_options=()
     if [[ "$no_cache" == "true" ]] || [[ "$host_network" != "home" ]]; then
-        # Skip remote builder/cache — use only cache.nixos.org
-        export NIX_CONFIG="substituters = https://cache.nixos.org/"
+        # Skip remote builder/cache — use only cache.nixos.org. This must be
+        # a literal --option, not a NIX_CONFIG env var: the darwin/nixos
+        # branches below exec through plain `sudo` (no -E), which strips
+        # almost all environment variables by default, so NIX_CONFIG alone
+        # never actually reached the root-owned rebuild process.
+        cache_options=(--option substituters "https://cache.nixos.org/" --option extra-substituters "")
     fi
-    
+
     case "$current_system" in
         *darwin*)
             local cmd="darwin-rebuild"
             # Don't override builders on darwin — the linux builder VM is local and needed
             local nix_options=(
                 --option max-jobs auto
+                "${cache_options[@]}"
             )
             if [[ "$action" == "switch" ]]; then
                 if [[ "$is_dry_run" == "true" ]]; then
@@ -420,6 +426,7 @@ cmd_local() {
             local nix_options=(
                 --option builders ""
                 --option max-jobs auto
+                "${cache_options[@]}"
             )
             if [[ "$action" == "switch" ]]; then
                 if [[ "$is_dry_run" == "true" ]]; then
