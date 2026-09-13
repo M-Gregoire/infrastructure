@@ -162,17 +162,27 @@ in
   # ];
   boot.kernelParams = [ "usbcore.autosuspend=-1" ];
   # boot.kernelParams = [ "usb_storage.use_uas=0" ];
-  # fileSystems."/var/log" = {
-  #   device = "tmpfs";
-  #   fsType = "tmpfs";
-  #   options = [ "size=300M" "mode=0755" ];
-  # };
 
-  # Write log files to tmpfs
-  # systemd.tmpfiles.rules = [
-  #   "d /var/log/journal 2755 root systemd-journal -"
-  #   "d /var/log/journal/%m 2755 root systemd-journal -"
-  # ];
+  # kubelet/containerd write pod stdout/stderr directly to /var/log/pods
+  # (bypassing journald entirely, so the Storage=volatile fix below doesn't
+  # cover them). This is a distinct write-amplification source from journald
+  # and was implicated in the hades-4 outage: kubelet hit
+  # "readdirent /var/log/pods: input/output error" right before the node went
+  # down. Keep pod logs off the USB-attached root disk the same way — tmpfs,
+  # capped, with Datadog tailing the files before they're evicted (see
+  # dev/datadog.nix). kubelet's own log rotation (container-log-max-size /
+  # -files, set per-node below) keeps steady-state usage well under the tmpfs
+  # size; if it's ever exceeded, writes fail with ENOSPC rather than wedging
+  # the disk.
+  fileSystems."/var/log/pods" = lib.mkIf isRpiHadesNode {
+    device = "tmpfs";
+    fsType = "tmpfs";
+    options = [
+      "size=512M"
+      "mode=0755"
+      "noatime"
+    ];
+  };
 
   # Raspberry Pi nodes run k3s/Ceph from flash/root media and have shown
   # journald EIO/rotation failures on /var/log/journal. Keep the system journal
