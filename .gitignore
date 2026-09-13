@@ -2,3 +2,9 @@ nixops/state.json
 .direnv/*
 result
 .claude/settings.local.json
+
+# Local, ephemeral toggle for the linux-builder VM's nix-cache substituter
+# (bin/builder-no-cache / bin/builder-with-cache) - never meant to be a
+# permanent repo default; gitignored so a stray `git add .`/`commit -a`
+# can't sweep it into an unrelated commit the way it did once already.
+machines/hosts/idunn/builder-no-cache-marker

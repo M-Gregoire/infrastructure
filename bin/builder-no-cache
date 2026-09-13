@@ -14,7 +14,7 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." &>/dev/null && pwd)"
 MARKER="$REPO_ROOT/machines/hosts/idunn/builder-no-cache-marker"
 
 touch "$MARKER"
-git -C "$REPO_ROOT" add "$MARKER"
+git -C "$REPO_ROOT" add -f "$MARKER"
 
 echo "==> Rebuilding idunn (linux-builder cache substituter disabled)..."
 "$SCRIPT_DIR/nix-deploy" local switch
