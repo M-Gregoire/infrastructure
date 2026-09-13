@@ -81,7 +81,7 @@ in
         POLLFREQ = 5;
         POLLFREQALERT = 5;
       } // lib.optionalAttrs isMaster {
-        NOTIFYCMD = notifyCmd;
+        NOTIFYCMD = "${notifyCmd}";
         NOTIFYFLAG = [
           [ "LOWBATT" "SYSLOG+EXEC" ]
           [ "FSD" "SYSLOG+EXEC" ]
