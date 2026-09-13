@@ -930,6 +930,17 @@ cmd_runner_reset() {
             while (( ssh_elapsed < 90 )); do
                 if ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no -o BatchMode=yes \
                        -p 31022 -i /etc/nix/builder_ed25519 root@localhost true 2>/dev/null; then
+                    # A full reset regenerates the VM's host key. Remote builds
+                    # connect via the 'linux-builder' ssh_config alias (real
+                    # StrictHostKeyChecking, run as root by the nix-daemon),
+                    # which is a separate trust store from the probe above —
+                    # without this, the first build after a reset fails with
+                    # "failed to start SSH connection to 'linux-builder'"
+                    # even though the VM is fully up.
+                    print_info "Trusting new builder host key for remote builds..."
+                    sudo ssh -F /etc/ssh/ssh_config -o StrictHostKeyChecking=accept-new \
+                        -o BatchMode=yes linux-builder true 2>/dev/null || \
+                        print_warning "Could not pre-trust the builder host key — the first remote build may need one manual 'sudo ssh linux-builder' to accept it"
                     print_success "Linux builder reset complete — SSH is ready"
                     return 0
                 fi
