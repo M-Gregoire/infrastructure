@@ -832,7 +832,7 @@ kill_stale_builder() {
         sleep 2
     fi
     # Also kill anything else holding the port (wrapper scripts etc.)
-    pids=$(lsof -ti :31022 2>/dev/null || true)
+    pids=$(sudo lsof -ti :31022 2>/dev/null || true)
     if [[ -n "$pids" ]]; then
         print_warning "Killing process(es) on port 31022: $pids"
         echo "$pids" | xargs sudo kill -9 2>/dev/null || true
@@ -862,7 +862,7 @@ cmd_runner_reboot() {
     print_info "Waiting for builder VM to start (port 31022)..."
     local elapsed=0
     while (( elapsed < 90 )); do
-        if lsof -i :31022 >/dev/null 2>&1; then
+        if sudo lsof -i :31022 >/dev/null 2>&1; then
             print_success "Linux builder VM is listening on port 31022"
             print_info "Waiting for SSH to become ready..."
             local ssh_elapsed=0
@@ -930,7 +930,7 @@ cmd_runner_reset() {
 
     local elapsed=0
     while (( elapsed < 180 )); do
-        if lsof -i :31022 >/dev/null 2>&1; then
+        if sudo lsof -i :31022 >/dev/null 2>&1; then
             print_success "Linux builder VM is listening on port 31022"
             print_info "Waiting for SSH to become ready..."
             local ssh_elapsed=0
