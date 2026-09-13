@@ -49,7 +49,16 @@ in {
       security.pki.certificates = config.resources.pki.acrs;
       nix.settings = {
         always-allow-substitutes = true;
-        extra-substituters = [ "https://nix-cache.martinache.net/hades" ];
+        # Presence of ./builder-no-cache-marker (toggled by
+        # bin/builder-no-cache / bin/builder-with-cache) controls whether the
+        # builder VM tries nix-cache.martinache.net at all. It's baked into
+        # the VM's own /etc/nix/nix.conf at build time, so there's no way to
+        # toggle this per-invocation from the client side (see the "why
+        # --no-cache didn't work" thread) — the VM must be rebuilt.
+        extra-substituters =
+          lib.optionals (!builtins.pathExists ./builder-no-cache-marker) [
+            "https://nix-cache.martinache.net/hades"
+          ];
         extra-trusted-public-keys = [ "hades:pWcHX3vzVabOBcdgMn+oesgqYxKvda27XQrRicRzK/0=" ];
       };
       # Auto-GC when disk runs low — builds are pushed to attic anyway

@@ -1,0 +1,21 @@
+#!/bin/bash
+# Rebuild idunn and reset the linux-builder VM so it uses
+# nix-cache.martinache.net as a substituter again. Counterpart to
+# bin/builder-no-cache - see that script for why this needs a VM reset
+# rather than a flag.
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." &>/dev/null && pwd)"
+MARKER="$REPO_ROOT/machines/hosts/idunn/builder-no-cache-marker"
+
+if [[ -f "$MARKER" ]]; then
+    git -C "$REPO_ROOT" rm -f --quiet "$MARKER" 2>/dev/null || rm -f "$MARKER"
+fi
+
+echo "==> Rebuilding idunn (linux-builder cache substituter enabled)..."
+"$SCRIPT_DIR/nix-deploy" local switch
+
+echo "==> Resetting linux-builder VM to pick up the new config..."
+echo "y" | "$SCRIPT_DIR/nix-deploy" runner-reset
