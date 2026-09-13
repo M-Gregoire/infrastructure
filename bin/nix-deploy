@@ -733,6 +733,13 @@ cmd_deploy() {
         readarray -d '' -t flake_options < <(get_private_flake_options)
         if [[ "$no_cache" == "true" ]]; then
             export NIX_CONFIG="substituters = https://cache.nixos.org/"
+            # NIX_CONFIG only replaces the base `substituters` list — it can't
+            # clear `extra-substituters` contributed by the flake's own
+            # nixConfig (once accepted, nix applies it automatically on every
+            # invocation, additively, regardless of NIX_CONFIG). An explicit
+            # --option flag on the build command itself is the only thing
+            # with high enough priority to actually suppress it.
+            flake_options+=(--option extra-substituters "")
         fi
         for host in "${expanded_hosts[@]}"; do
             
