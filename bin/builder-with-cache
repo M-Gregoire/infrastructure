@@ -7,12 +7,9 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/.." &>/dev/null && pwd)"
-MARKER="$REPO_ROOT/machines/hosts/idunn/builder-no-cache-marker"
+MARKER="/tmp/builder-no-cache-marker"
 
-if [[ -f "$MARKER" ]]; then
-    git -C "$REPO_ROOT" rm -f --quiet "$MARKER" 2>/dev/null || rm -f "$MARKER"
-fi
+rm -f "$MARKER"
 
 echo "==> Rebuilding idunn (linux-builder cache substituter enabled)..."
 "$SCRIPT_DIR/nix-deploy" local switch

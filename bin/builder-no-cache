@@ -10,11 +10,9 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/.." &>/dev/null && pwd)"
-MARKER="$REPO_ROOT/machines/hosts/idunn/builder-no-cache-marker"
+MARKER="/tmp/builder-no-cache-marker"
 
 touch "$MARKER"
-git -C "$REPO_ROOT" add -f "$MARKER"
 
 echo "==> Rebuilding idunn (linux-builder cache substituter disabled)..."
 "$SCRIPT_DIR/nix-deploy" local switch --no-cache
