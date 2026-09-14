@@ -5,11 +5,21 @@ let
     url = "https://github.com/mulbc/homebrew-ceph-client";
     rev = "5243db315d7541bd7e190dbc66d1237b2c815f68";
   };
+  netbirdTap = builtins.fetchGit {
+    url = "https://github.com/netbirdio/homebrew-tap";
+    rev = "884a0cdd82a7eb6a68d99a51e4c5fc398ea8dc41";
+  };
   # linux-builder-vz is in nixos-unstable (landing in 26.11), not yet in 26.05
   pkgs-unstable = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system};
 in {
   imports = [ ../../dev/attic.nix ];
-  nix-homebrew = { taps = { "mulbc/homebrew-ceph-client" = cephTap; }; };
+  nix-homebrew = {
+    taps = {
+      "mulbc/homebrew-ceph-client" = cephTap;
+      "netbirdio/homebrew-tap" = netbirdTap;
+    };
+    trust.taps = [ "netbirdio/homebrew-tap" ];
+  };
   homebrew.brews =
     [ "ceph-client" "openssh" "openvpn" "docker" "python3" "esphome" "pipx" ];
   homebrew.casks = [
@@ -22,6 +32,7 @@ in {
     "libreoffice"
     "multipass"
     "android-platform-tools"
+    "netbirdio/tap/netbird-ui"
   ];
 
   users.groups.nfs_access = {
