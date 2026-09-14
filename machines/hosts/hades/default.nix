@@ -220,6 +220,16 @@ in
     # Auto-reboot on hung tasks (e.g. Ceph RBD I/O stalls)
     # Detects tasks blocked for 120s, panics, then reboots after 10s (kernel.panic=10)
     "kernel.hung_task_panic" = 1;
+    # kube-proxy/kube-router generate enough netlink traffic on these nodes that
+    # netbird's nftables firewall manager (which watches for external chain changes
+    # via netlink) overflows its receive buffer within seconds of starting, then
+    # backs off reconnecting for minutes at a time. While desynced it can't keep its
+    # own NAT/forward rules in place, breaking netbird-routed access to kube-proxy
+    # LoadBalancer VIPs (raw ARP-based VIPs like kube-vip's control-plane VIP are
+    # unaffected). rmem_max is already raised; rmem_default (what netbird's socket
+    # actually gets, since it doesn't call SO_RCVBUF itself) was still the 212992
+    # stock value — match it to rmem_max.
+    "net.core.rmem_default" = 4194304;
   };
 
   # Override the home network's default (networking.enableIPv6 = false):
