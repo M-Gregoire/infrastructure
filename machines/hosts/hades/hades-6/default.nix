@@ -40,6 +40,10 @@
       "--kube-controller-manager-arg=terminated-pod-gc-threshold=100"
       "--tls-san ${config.resources.hostname}.${config.resources.networking.domain}"
       "--tls-san 192.168.3.60"
+      # Cap per-container log rotation so steady-state usage stays well under
+      # the /var/log/pods tmpfs budget (see hades/default.nix).
+      "--kubelet-arg=container-log-max-size=5Mi"
+      "--kubelet-arg=container-log-max-files=2"
     ];
   };
 

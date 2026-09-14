@@ -28,6 +28,12 @@
   services.k3s = {
     enable = true;
     role = "agent";
+    # Cap per-container log rotation so steady-state usage stays well under
+    # the /var/log/pods tmpfs budget (see hades/default.nix).
+    extraFlags = lib.concatStringsSep " " [
+      "--kubelet-arg=container-log-max-size=5Mi"
+      "--kubelet-arg=container-log-max-files=2"
+    ];
   };
 
   networking.firewall.allowedTCPPorts = [ 6443 ];
