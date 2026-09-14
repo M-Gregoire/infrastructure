@@ -70,7 +70,7 @@ in {
         # own /etc/nix/nix.conf at build time, so there's no way to toggle
         # it per-invocation from the client side (see the "why --no-cache
         # didn't work" thread) - the VM must be rebuilt either way.
-        extra-substituters = [ "https://nix-cache.martinache.net/hades" ];
+        extra-substituters = [ ];
         extra-trusted-public-keys = [ "hades:pWcHX3vzVabOBcdgMn+oesgqYxKvda27XQrRicRzK/0=" ];
       };
       # Auto-GC when disk runs low — builds are pushed to attic anyway
