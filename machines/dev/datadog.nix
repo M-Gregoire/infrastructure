@@ -71,8 +71,32 @@ in
       ];
     };
 
+    # Pod stdout/stderr, tailed straight off disk (or tmpfs on the RPi nodes,
+    # see hades/default.nix) so they're shipped before kubelet's log rotation
+    # deletes them. "source: kubernetes" gets the built-in Datadog pipeline
+    # that parses the CRI log line format.
+    checks.kubernetes_pods = {
+      logs = [
+        {
+          type = "file";
+          path = "/var/log/pods/*/*/*.log";
+          service = "kubernetes";
+          source = "kubernetes";
+        }
+      ];
+    };
+
   };
 
   systemd.services.datadog-agent.serviceConfig.SupplementaryGroups = [ "systemd-journal" ];
   # users.users.datadog.extraGroups = [ "systemd-journal" ];
+
+  # Pod log files under /var/log/pods are written by containerd as root:root
+  # (0640), unreadable by the datadog user otherwise. CAP_DAC_READ_SEARCH
+  # grants read access to any file regardless of permission bits without
+  # running the agent as root.
+  systemd.services.datadog-agent.serviceConfig = {
+    AmbientCapabilities = [ "CAP_DAC_READ_SEARCH" ];
+    CapabilityBoundingSet = [ "CAP_DAC_READ_SEARCH" ];
+  };
 }
