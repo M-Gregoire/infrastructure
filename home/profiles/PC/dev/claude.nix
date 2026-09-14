@@ -53,9 +53,9 @@
   home.file.".claude/hooks".source = config.lib.file.mkOutOfStoreSymlink
     "${config.resources.paths.claudeConfig}/hooks";
 
-  # Symlink plugins directory for instant changes without rebuild
+  # Symlink per-host plugins directory for instant changes without rebuild
   home.file.".claude/plugins".source = config.lib.file.mkOutOfStoreSymlink
-    "${config.resources.paths.claudeConfig}/plugins";
+    "${config.resources.paths.claudeConfig}/settings/${configName}/plugins";
 
   # Symlink claude-hook-guard config for instant changes without rebuild
   home.file.".config/claude-hook-guard/config.yaml".source =
