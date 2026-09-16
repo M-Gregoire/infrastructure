@@ -11,7 +11,7 @@ let
   isMaster = configName == "hades-1";
   upsName = "eaton5px";
   masterAddr = "192.168.3.31";
-  upsAddr = "192.168.5.31";
+  upsAddr = "192.168.5.32";
   unasProAddr = "192.168.3.30";
 
   # Script called by upsmon on UPS events (master only).
