@@ -2,3 +2,6 @@ nixops/state.json
 .direnv/*
 result
 .claude/settings.local.json
+.DS_Store
+/keys/
+/vendor/
