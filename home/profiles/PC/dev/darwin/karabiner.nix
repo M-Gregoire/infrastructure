@@ -164,6 +164,25 @@ let
     }];
   };
 
+  cmdQRemapKarabinerConfig = {
+    title = "Custom - Remap Cmd+Q to Cmd+Shift+Q globally";
+    rules = [{
+      description = "Require Shift to quit apps (Cmd+Q -> Cmd+Shift+Q)";
+      manipulators = [{
+        description = "Cmd+Q to Cmd+Shift+Q";
+        type = "basic";
+        from = {
+          key_code = "q";
+          modifiers = { mandatory = [ "command" ]; };
+        };
+        to = [{
+          key_code = "q";
+          modifiers = [ "command" "shift" ];
+        }];
+      }];
+    }];
+  };
+
   browserTabSwapKarabinerConfig = {
     title = "Custom - Swap Ctrl and Cmd for specific keys in browsers";
     rules = [{
@@ -183,6 +202,10 @@ in {
     {
       text = builtins.toJSON browserOpenTermKarabinerConfig;
     };
+
+  xdg.configFile."karabiner/assets/complex_modifications/cmd-q-remap.json" = {
+    text = builtins.toJSON cmdQRemapKarabinerConfig;
+  };
 
   xdg.configFile."karabiner/assets/complex_modifications/aerospace-cmd-ctrl-swap-browser-remap.json" =
     {

@@ -154,3 +154,13 @@ exec-on-workspace-change = [
     [[on-window-detected]]
     if.app-id = 'org.mozilla.firefox'
     run = 'layout tiling'
+
+    # Force 1Password windows into tiling layout
+    [[on-window-detected]]
+    if.app-id = 'com.1password.1password'
+    run = 'layout tiling'
+
+    # Force System Settings windows into tiling layout
+    [[on-window-detected]]
+    if.app-id = 'com.apple.systempreferences'
+    run = 'layout tiling'
