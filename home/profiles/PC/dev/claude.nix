@@ -10,7 +10,7 @@
   home.packages = with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
     rtk
     pi
-  ];
+  ] ++ [ pkgs.claude-code ];
 
   # Remove old non-symlink files before creating symlinks
   home.activation.cleanupClaudeFiles =
