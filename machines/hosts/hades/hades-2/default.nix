@@ -1,4 +1,12 @@
-{ config, pkgs, lib, inputs, flake-root, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  flake-root,
+  ...
+}:
+{
   imports = [
 
     ./hardware-configuration.nix
@@ -43,9 +51,13 @@
   '';
 
   fileSystems."/nfs/Cameras" = {
-    device = "/dev/disk/by-uuid/c78289ef-b0bf-48c0-a17c-02d6f2cbed6c";
+    device = "/dev/disk/by-uuid/cd3bfbfb-37a3-4b14-82a8-be42e5b31610";
     fsType = "ext4";
-    options = [ "auto" "nofail" "x-systemd.device-timeout=30" ];
+    options = [
+      "auto"
+      "nofail"
+      "x-systemd.device-timeout=30"
+    ];
   };
 
   services.nfs.server.enable = true;
