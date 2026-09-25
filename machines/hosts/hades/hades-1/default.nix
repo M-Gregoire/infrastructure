@@ -35,18 +35,10 @@
   environment.systemPackages = [ pkgs.k3s pkgs.containerd pkgs.kubectl ];
   networking.firewall.allowedTCPPorts = [ 6443 ];
 
-  # mkdir -p /nfs/Data && chattr +i /nfs/Data
-  fileSystems."/nfs/Data" = {
-    device = "/dev/disk/by-uuid/beee5400-19ac-43d6-8d0f-4a3d87e8ce6d";
-    fsType = "ext4";
-    options = [ "auto" "nofail" "x-systemd.device-timeout=30" ];
-  };
-
   services.nfs.server.enable = true;
   # /nfs/Harbor    *(rw,no_subtree_check,no_root_squash,anonuid=1000,anongid=1000)
   services.nfs.server.exports = ''
     /nfs         *(rw,fsid=0,no_subtree_check)
-    /nfs/Data    *(rw,no_subtree_check,no_root_squash,anonuid=1000,anongid=1000)
   '';
 
 }
