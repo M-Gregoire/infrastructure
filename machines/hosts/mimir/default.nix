@@ -39,5 +39,12 @@
     greeter-setup-script=${pkgs.numlockx}/bin/numlockx on
   '';
 
+  services.sunshine = {
+    enable = true;
+    openFirewall = true;
+    # capSysAdmin is required for AMD DRM/KMS screen capture
+    capSysAdmin = true;
+  };
+
   system.stateVersion = "20.03";
 }
