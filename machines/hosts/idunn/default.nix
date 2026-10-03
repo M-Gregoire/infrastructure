@@ -33,6 +33,7 @@ in {
     "multipass"
     "android-platform-tools"
     "netbirdio/tap/netbird-ui"
+    "moonlight"
   ];
 
   users.groups.nfs_access = {
