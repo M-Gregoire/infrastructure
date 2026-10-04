@@ -22,6 +22,15 @@
   boot.initrd.kernelModules = [ "amdgpu" ];
   services.xserver.videoDrivers = [ "amdgpu" ];
 
+  # Disable DPMS/screen blanking - Sunshine can't capture a blanked
+  # display, which breaks new Moonlight connections.
+  services.xserver.serverFlagsSection = ''
+    Option "BlankTime" "0"
+    Option "StandbyTime" "0"
+    Option "SuspendTime" "0"
+    Option "OffTime" "0"
+  '';
+
   # virtualisation.libvirtd.enable = true;
   # programs.virt-manager.enable = true;
   # virtualisation.virtualbox.host.enable = true;
