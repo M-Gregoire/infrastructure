@@ -99,7 +99,7 @@ in
   home.packages = with pkgs; [ ethtool ];
   xsession.windowManager.i3.config.startup = [
     {
-      command = "${startPolybar}";
+      command = "systemctl --user restart polybar";
       always = true;
       notification = false;
     }

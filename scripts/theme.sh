@@ -11,6 +11,9 @@
 # 3 -> Preset theme
 # 4 -> If not null, use light theme
 
+# Ensure home-manager packages (feh, etc.) are in PATH when launched from lightdm
+export PATH="/etc/profiles/per-user/$(whoami)/bin:$PATH"
+
 reload_dunst() {
   # Kill existing dunst; dbus will auto-activate a new instance
   # on the next notification with the updated config
