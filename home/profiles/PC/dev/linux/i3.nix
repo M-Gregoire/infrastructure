@@ -307,7 +307,7 @@ in
       # exec --no-startup-id i3-msg "workspace ${workspace1}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/firefox.json" \
       #                              && i3-msg "workspace ${workspace9}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/thunderbird.json" \
       #                              && ${config.resources.paths.scripts}/theme.sh ${config.resources.pcs.wallpaper.folder} ${config.resources.pcs.wallpaper.current} > /tmp/theme.sh.log 2>&1
-      exec --no-startup-id ${config.resources.paths.scripts}/theme.sh ${config.resources.pcs.wallpaper.folder} ${config.resources.pcs.wallpaper.current} > /tmp/theme.sh.log 2>&1
+      exec_always --no-startup-id ${config.resources.paths.scripts}/theme.sh ${config.resources.pcs.wallpaper.folder} ${config.resources.pcs.wallpaper.current} > /tmp/theme.sh.log 2>&1
       # Get color from Xresources
       # https://i3wm.org/docs/userguide.html#xresources
       # Defaults to ugly red so I can immediatelyly see there is an issue
