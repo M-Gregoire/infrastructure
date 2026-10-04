@@ -13,6 +13,15 @@
   boot.initrd.kernelModules = [ "amdgpu" ];
   services.xserver.videoDrivers = [ "amdgpu" ];
 
+  # Disable DPMS/screen blanking - Sunshine can't capture a blanked
+  # display, which breaks new Moonlight connections.
+  services.xserver.serverFlagsSection = ''
+    Option "BlankTime" "0"
+    Option "StandbyTime" "0"
+    Option "SuspendTime" "0"
+    Option "OffTime" "0"
+  '';
+
   boot.kernelModules = [ "kvm-amd" "kvm-intel" ];
 
   # Disable autosuspend which seems to mess with KVM switch
