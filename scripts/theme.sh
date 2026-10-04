@@ -68,15 +68,3 @@ pywalfox install
 pkill pywalfox 2>/dev/null
 pywalfox start &
 
-# Wait for network before starting Firefox and Thunderbird
-while ! systemctl is-active --quiet network-online.target; do sleep 3; done;
-
-if ! pgrep -f firefox >/dev/null; then
-  echo "[+] Firefox not running. Starting..."
-  firefox &
-fi
-
-if ! pgrep -f thunderbird >/dev/null; then
-  echo "[+] Thunderbird not running. Starting..."
-  thunderbird &
-fi
