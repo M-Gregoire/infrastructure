@@ -300,12 +300,14 @@ in
       ];
     };
     windowManager.i3.extraConfig = ''
-      exec --no-startup-id i3-msg "workspace ${workspace2}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/kitty.json" && kitty
-      exec --no-startup-id i3-msg "workspace ${workspace3}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/emacs.json" &&  while ! ${pkgs.emacs}/bin/emacsclient -s /run/user/1000/emacs/main -ca false; do sleep 2; done;
-      exec --no-startup-id i3-msg "workspace ${workspace4}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/pcmanfm.json" && pcmanfm
-      exec --no-startup-id i3-msg "workspace ${workspace1}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/firefox.json" \
-                                   && i3-msg "workspace ${workspace9}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/thunderbird.json" \
-                                   && ${config.resources.paths.scripts}/theme.sh ${config.resources.pcs.wallpaper.folder} ${config.resources.pcs.wallpaper.current} > /tmp/theme.sh.log 2>&1
+      # Workspace layout templates — uncomment in host-specific config to restore
+      # exec --no-startup-id i3-msg "workspace ${workspace2}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/kitty.json" && kitty
+      # exec --no-startup-id i3-msg "workspace ${workspace3}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/emacs.json" &&  while ! ${pkgs.emacs}/bin/emacsclient -s /run/user/1000/emacs/main -ca false; do sleep 2; done;
+      # exec --no-startup-id i3-msg "workspace ${workspace4}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/pcmanfm.json" && pcmanfm
+      # exec --no-startup-id i3-msg "workspace ${workspace1}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/firefox.json" \
+      #                              && i3-msg "workspace ${workspace9}; append_layout ${config.resources.paths.publicDotfiles}/i3/layouts/thunderbird.json" \
+      #                              && ${config.resources.paths.scripts}/theme.sh ${config.resources.pcs.wallpaper.folder} ${config.resources.pcs.wallpaper.current} > /tmp/theme.sh.log 2>&1
+      exec --no-startup-id ${config.resources.paths.scripts}/theme.sh ${config.resources.pcs.wallpaper.folder} ${config.resources.pcs.wallpaper.current} > /tmp/theme.sh.log 2>&1
       # Get color from Xresources
       # https://i3wm.org/docs/userguide.html#xresources
       # Defaults to ugly red so I can immediatelyly see there is an issue

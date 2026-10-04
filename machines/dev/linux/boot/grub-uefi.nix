@@ -7,6 +7,7 @@
   # GRUB
   boot.loader.grub = {
     enable = true;
+    efiSupport = true;
     configurationLimit = 100;
     devices = [ "nodev" ];
     # Install the EFI entry in /EFI/BOOT/BOOTX64.EFI instead of /EFI/NixOS-boot/
