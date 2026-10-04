@@ -83,6 +83,8 @@ in
     # Used by noCTRLqFirefox script
     xvkbd
     xdotool
+    # Wallpaper setter — used by pywal/wpgtk to paint wallpaper on X11
+    feh
     # Hide pointer when not in use
     xbanish
     # Hide polybar script
