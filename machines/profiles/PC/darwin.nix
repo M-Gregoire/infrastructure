@@ -44,7 +44,7 @@ in
       "terminal-notifier"
     ];
     casks = [
-      "emacs-mac"
+      "homebrew/emacsmacport/emacs-mac"
       "hammerspoon"
       "raycast"
       "kitty"
