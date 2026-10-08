@@ -1,4 +1,10 @@
-{ config, lib, pkgs, user, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  user,
+  ...
+}:
 
 let
   aerospaceTap = pkgs.fetchFromGitHub {
@@ -8,7 +14,8 @@ let
     sha256 = "sha256-AB7c96r/7JgkBubPrlEFz9yaIPdsD7S8JkLVnGtlhAw=";
   };
 
-in {
+in
+{
   imports = [ ./dev/darwin/shortcuts.nix ];
 
   users.users.${user}.home = "/Users/${user}";
@@ -16,16 +23,26 @@ in {
   # # The platform the configuration will be used on.
   # nixpkgs.hostPlatform = "aarch64-darwin";
 
-  nix-homebrew = { taps = { "nikitabobko/homebrew-tap" = aerospaceTap; }; };
+  nix-homebrew = {
+    taps = {
+      "nikitabobko/homebrew-tap" = aerospaceTap;
+    };
+  };
 
   homebrew = {
     enable = true;
     onActivation = {
       autoUpdate = true;
       upgrade = true;
+      cleanup = "uninstall";
       extraFlags = [ "--upgrade" ];
     };
-    brews = [ "borders" "k9s" "just" "terminal-notifier" ];
+    brews = [
+      "borders"
+      "k9s"
+      "just"
+      "terminal-notifier"
+    ];
     casks = [
       "emacs-mac"
       "hammerspoon"
